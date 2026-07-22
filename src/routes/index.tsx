@@ -219,7 +219,7 @@ function Calculator() {
   const [qty, setQty] = useState<Record<string, number>>({ led: 4, tv: 1, fridge: 1 });
   const set = (id: string, v: number) => setQty((q) => ({ ...q, [id]: Math.max(0, v) }));
 
-  const { peakW, dailyWh, systemKva, batteryUnitAh, batteryCount, panelsCount } = useMemo(() => {
+  const { peakW, dailyWh, systemKva, batteryUnitAh, batteryCount, panelsCount, priceFcfa } = useMemo(() => {
     let peak = 0, daily = 0;
     for (const a of APPLIANCES) {
       const n = qty[a.id] ?? 0;
@@ -228,19 +228,29 @@ function Calculator() {
     }
     // Dimensionnement calibré sur cas réel EDSOLAR :
     // 3370 W crête / 15620 Wh/j → 8 kVA, 2 batteries lithium 48V 400Ah, 12 panneaux 450W
-    const STANDARD_KVA = [1, 1.5, 2, 3, 5, 8, 10, 15, 20, 30, 50];
+    // Tarifs officiels EDSOLAR (kits complets clé en main, FCFA)
+    const PRICING: Record<number, number> = {
+      1: 500_000, 2: 1_000_000, 4: 1_700_000,
+      5: 2_000_000, 6: 2_000_000, 8: 2_500_000, 12: 3_000_000,
+    };
+    const STANDARD_KVA = [1, 2, 4, 5, 6, 8, 12];
     const rawKva = (peak * 2) / 1000; // marge démarrage x2
-    const kva = STANDARD_KVA.find((s) => s >= rawKva) ?? Math.ceil(rawKva / 10) * 10;
+    const kva = STANDARD_KVA.find((s) => s >= rawKva) ?? 12;
     // Batteries lithium 48V 400Ah — autonomie ~2 jours, DoD 80%
     const totalAh = (daily / 48) * 2;
     const unitAh = 400;
     const bCount = daily > 0 ? Math.max(1, Math.ceil(totalAh / unitAh)) : 0;
     // Panneaux 450W, 4h ensoleillement effectif, rendement système 0.72
     const pCount = daily > 0 ? Math.max(1, Math.round(daily / (450 * 4 * 0.72))) : 0;
-    return { peakW: peak, dailyWh: daily, systemKva: kva, batteryUnitAh: unitAh, batteryCount: bCount, panelsCount: pCount };
+    // Upgrade 12 kVA vers version 30 kWh / 600A à 5 000 000 FCFA au-delà de 20 kWh/j
+    let price = PRICING[kva] ?? 3_000_000;
+    if (kva === 12 && daily > 20_000) price = 5_000_000;
+    if (daily === 0) price = 0;
+    return { peakW: peak, dailyWh: daily, systemKva: kva, batteryUnitAh: unitAh, batteryCount: bCount, panelsCount: pCount, priceFcfa: price };
   }, [qty]);
 
-  const msg = `Bonjour EDSOLAR,%0AVoici mon estimation solaire:%0A- Puissance de pointe: ${peakW} W%0A- Consommation journalière: ${dailyWh.toFixed(0)} Wh%0A- Système recommandé: ${systemKva} kVA%0A- Batteries lithium: ${batteryCount} x 48V ${batteryUnitAh}Ah%0A- Panneaux solaires: ${panelsCount} x 450W%0AMerci de me contacter pour un devis.`;
+  const priceLabel = priceFcfa > 0 ? `${priceFcfa.toLocaleString("fr-FR")} FCFA` : "—";
+  const msg = `Bonjour EDSOLAR,%0AVoici mon estimation solaire:%0A- Puissance de pointe: ${peakW} W%0A- Consommation journalière: ${dailyWh.toFixed(0)} Wh%0A- Système recommandé: ${systemKva} kVA%0A- Batteries lithium: ${batteryCount} x 48V ${batteryUnitAh}Ah%0A- Panneaux solaires: ${panelsCount} x 450W%0A- Budget estimatif: ${priceLabel}%0AMerci de me contacter pour un devis.`;
 
   return (
     <section id="calculateur" className="py-20 sm:py-28">
@@ -283,6 +293,8 @@ function Calculator() {
               <Metric icon={Cpu} label="Système recommandé" value={`${systemKva} kVA`} highlight />
               <Metric icon={Battery} label="Batteries lithium 48V" value={`${batteryCount} × ${batteryUnitAh} Ah`} />
               <Metric icon={Sun} label="Panneaux solaires 450W" value={`${panelsCount} panneaux`} />
+              <Metric icon={Zap} label="Budget estimatif" value={priceLabel} highlight />
+
             </div>
             <a href={`${WA}?text=${msg}`} target="_blank" rel="noreferrer"
                className="mt-6 flex items-center justify-center gap-2 rounded-full bg-accent px-5 py-3.5 text-sm font-bold text-accent-foreground shadow-lg glow-green">
@@ -321,8 +333,14 @@ const PRODUCTS: Product[] = [
   { id: "b2", name: "Batterie Gel 200Ah 12V", category: "Batteries", price: "185 000 FCFA", badge: "Sans entretien", desc: "Solution économique et fiable pour petits systèmes.", icon: Battery },
   { id: "o1", name: "Onduleur Hybride 5kVA 48V", category: "Onduleurs", price: "650 000 FCFA", badge: "MPPT intégré", desc: "Onduleur hybride avec régulateur solaire MPPT.", icon: Cpu },
   { id: "o2", name: "Onduleur Hybride 10kVA 48V", category: "Onduleurs", price: "1 250 000 FCFA", badge: "Parallélisable", desc: "Pour installations commerciales et industrielles.", icon: Cpu },
-  { id: "k1", name: "Kit Solaire 3kVA Complet", category: "Kits", price: "2 450 000 FCFA", badge: "Clé en main", desc: "Panneaux + batteries + onduleur + accessoires + installation.", icon: Zap },
-  { id: "k2", name: "Kit Solaire 5kVA Complet", category: "Kits", price: "3 950 000 FCFA", badge: "Installation incluse", desc: "Solution complète pour villa 4 pièces avec clim.", icon: Zap },
+  { id: "k0", name: "Système Solaire 1 kVA 12V", category: "Kits", price: "500 000 FCFA", badge: "Kit d'entrée", desc: "Éclairage LED + petits appareils. Idéal studio ou boutique.", icon: Zap },
+  { id: "k1", name: "Système Solaire 2 kVA 24V", category: "Kits", price: "1 000 000 FCFA", badge: "Clé en main", desc: "Éclairage, TV, réfrigérateur — logement 2 pièces.", icon: Zap },
+  { id: "k2", name: "Système Solaire 4 kVA 24V", category: "Kits", price: "1 700 000 FCFA", badge: "Résidentiel", desc: "Villa 3 pièces avec appareils électroménagers standards.", icon: Zap },
+  { id: "k3", name: "Système Solaire 5 kVA", category: "Kits", price: "2 000 000 FCFA", badge: "Best-seller", desc: "Villa 4 pièces confort. Frigo, congélateur, TV, ventilateurs.", icon: Zap },
+  { id: "k4", name: "Système Solaire 6 kVA", category: "Kits", price: "2 000 000 FCFA", badge: "Meilleur rapport", desc: "Villa 4 pièces avec climatisation ponctuelle.", icon: Zap },
+  { id: "k5", name: "Système Solaire 8 kVA", category: "Kits", price: "2 500 000 FCFA", badge: "Recommandé", desc: "Grande villa, plusieurs climatiseurs — 2 batteries lithium 48V 400Ah + 12 panneaux 450W.", icon: Zap },
+  { id: "k6", name: "Système Solaire 12 kVA (15 kWh / 300A)", category: "Kits", price: "3 000 000 FCFA", badge: "Premium", desc: "Villa haut standing / petit commerce.", icon: Zap },
+  { id: "k7", name: "Système Solaire 12 kVA (30 kWh / 600A)", category: "Kits", price: "5 000 000 FCFA", badge: "XL Autonomie", desc: "Autonomie renforcée — commerces, PME, résidences énergivores.", icon: Zap },
 ];
 
 function Products() {
