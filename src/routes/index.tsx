@@ -500,8 +500,8 @@ function Contact() {
           description="Remplissez le formulaire ou appelez-nous — un expert vous répond sous 24h." />
         <div className="mt-12 grid gap-6 lg:grid-cols-[1fr_1.2fr]">
           <div className="space-y-4">
-            <ContactCard icon={MapPin} title="Siège Yaoundé" lines={["Tradex Olembe", "Rue des pavés, Yaoundé, Cameroun"]} />
-            <ContactCard icon={MapPin} title="Bureau USA" lines={["Holland, Michigan", "United States"]} />
+            <ContactCard icon={MapPin} title="Siège social" lines={["Tradex Olembe", "Yaoundé, Cameroun"]} />
+            <ContactCard icon={Leaf} title="Zone d'intervention" lines={["Tout le Cameroun", "& Afrique Centrale"]} />
             <ContactCard icon={Phone} title="Téléphone / WhatsApp" lines={["+237 650-54-44-44"]} href={`tel:${PHONE}`} />
             <div className="overflow-hidden rounded-2xl border border-border bg-card">
               <iframe title="EDSOLAR Yaoundé" className="h-56 w-full"
