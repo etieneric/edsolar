@@ -18,7 +18,7 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "EDSOLAR Énergie Cameroun — Installation Solaire à Yaoundé" },
-      { name: "description", content: "Installation de panneaux solaires, maintenance et vente d'équipements solaires à Yaoundé. Calculateur solaire, devis gratuit au +237 650-54-44-44." },
+      { name: "description", content: "Installation de panneaux solaires, maintenance et vente d'équipements solaires à Yaoundé. Calculateur solaire, devis gratuit au +237 650544444." },
       { property: "og:title", content: "EDSOLAR — L'énergie propre pour un avenir durable" },
       { property: "og:description", content: "Systèmes solaires sur-mesure, maintenance et équipements de qualité au Cameroun." },
     ],
