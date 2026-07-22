@@ -293,6 +293,8 @@ function Calculator() {
               <Metric icon={Cpu} label="Système recommandé" value={`${systemKva} kVA`} highlight />
               <Metric icon={Battery} label="Batteries lithium 48V" value={`${batteryCount} × ${batteryUnitAh} Ah`} />
               <Metric icon={Sun} label="Panneaux solaires 450W" value={`${panelsCount} panneaux`} />
+              <Metric icon={Zap} label="Budget estimatif" value={priceLabel} highlight />
+
             </div>
             <a href={`${WA}?text=${msg}`} target="_blank" rel="noreferrer"
                className="mt-6 flex items-center justify-center gap-2 rounded-full bg-accent px-5 py-3.5 text-sm font-bold text-accent-foreground shadow-lg glow-green">
