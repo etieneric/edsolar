@@ -135,7 +135,7 @@ function Hero() {
           <div className="mt-10 flex flex-wrap items-center gap-6 text-sm text-white/80">
             <div className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-accent" /> +500 installations</div>
             <div className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-accent" /> Garantie 25 ans</div>
-            <div className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-accent" /> Expertise 🇨🇲 & 🇺🇸</div>
+            <div className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-accent" /> Cameroun & Afrique Centrale</div>
           </div>
         </div>
         <div className="hidden lg:block">
