@@ -622,11 +622,16 @@ function Footer() {
         </div>
       </div>
       <div className="border-t border-white/10">
-        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-4 py-5 text-xs text-white/60 sm:flex-row sm:px-6">
-          <p>© {new Date().getFullYear()} EDSOLAR Énergie Cameroun. Tous droits réservés.</p>
-          <p>Fait avec ☀️ à Yaoundé</p>
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-4 py-5 text-xs text-white/60 sm:flex-row sm:px-6">
+          <p>© 2026 Bimedia Connect Agency. Tous droits réservés.</p>
+          <nav className="flex flex-wrap items-center gap-x-4 gap-y-1">
+            <a href="/mentions-legales" className="hover:text-accent">Mentions légales</a>
+            <a href="/confidentialite" className="hover:text-accent">Confidentialité</a>
+            <a href="/cookies" className="hover:text-accent">Cookies</a>
+          </nav>
         </div>
       </div>
+
     </footer>
   );
 }
