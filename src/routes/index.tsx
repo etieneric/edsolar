@@ -602,8 +602,8 @@ function Footer() {
         <div>
           <p className="text-sm font-bold uppercase tracking-wider text-accent">Contact</p>
           <ul className="mt-4 space-y-3 text-sm text-white/80">
-            <li className="flex gap-2"><MapPin className="h-4 w-4 shrink-0 text-accent" /> Tradex Olembe, Yaoundé</li>
-            <li className="flex gap-2"><MapPin className="h-4 w-4 shrink-0 text-accent" /> Holland, Michigan (USA)</li>
+            <li className="flex gap-2"><MapPin className="h-4 w-4 shrink-0 text-accent" /> Tradex Olembe, Yaoundé, Cameroun</li>
+            <li className="flex gap-2"><Leaf className="h-4 w-4 shrink-0 text-accent" /> Cameroun & Afrique Centrale</li>
             <li className="flex gap-2"><Phone className="h-4 w-4 shrink-0 text-accent" /> +237 650-54-44-44</li>
           </ul>
         </div>
