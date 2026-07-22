@@ -7,11 +7,12 @@ import {
   Laptop, Fan, Microwave, CheckCircle2, Star, Award, Clock, Users,
   Facebook, Instagram, Linkedin, Send, Quote,
 } from "lucide-react";
-import logo from "@/assets/edsolar-logo.asset.json";
-import hero from "@/assets/hero-installers.jpg";
-import gal1 from "@/assets/gallery-1.jpg";
-import gal2 from "@/assets/gallery-2.jpg";
-import gal3 from "@/assets/gallery-3.jpg";
+import logo from "@/assets/edsolar-logo-new.jpeg.asset.json";
+import hero from "@/assets/install-panels.jpeg.asset.json";
+import gal1 from "@/assets/install-inverter.jpeg.asset.json";
+import gal2 from "@/assets/install-team.jpeg.asset.json";
+import gal3 from "@/assets/install-breaker.jpeg.asset.json";
+import teamPortrait from "@/assets/team-portrait.jpeg.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -64,9 +65,7 @@ function Header() {
     <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
         <a href="#accueil" className="flex items-center gap-2 shrink-0">
-          <span className="grid h-11 w-11 place-items-center rounded-xl bg-primary text-primary-foreground shadow-md">
-            <Leaf className="h-5 w-5" />
-          </span>
+          <img src={logo.url} alt="EDSOLAR Énergie Cameroun" className="h-11 w-11 rounded-xl bg-white object-contain p-0.5 shadow-md" />
           <span className="flex flex-col leading-tight">
             <span className="text-lg font-black tracking-tight text-primary">EDSOLAR</span>
             <span className="text-[10px] font-semibold uppercase tracking-[0.15em] text-muted-foreground">Énergie Cameroun</span>
@@ -111,7 +110,7 @@ function Header() {
 function Hero() {
   return (
     <section id="accueil" className="relative isolate overflow-hidden">
-      <img src={hero} alt="Installateurs solaires EDSOLAR sur un toit à Yaoundé" width={1920} height={1080}
+      <img src={hero.url} alt="Installateurs solaires EDSOLAR sur un toit à Yaoundé" width={1920} height={1080}
            className="absolute inset-0 -z-10 h-full w-full object-cover" />
       <div className="absolute inset-0 -z-10 bg-gradient-to-br from-primary-dark/90 via-primary-dark/70 to-primary/40" />
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-24 sm:px-6 md:py-32 lg:grid-cols-[1.15fr_1fr] lg:py-40">
@@ -136,7 +135,7 @@ function Hero() {
           <div className="mt-10 flex flex-wrap items-center gap-6 text-sm text-white/80">
             <div className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-accent" /> +500 installations</div>
             <div className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-accent" /> Garantie 25 ans</div>
-            <div className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-accent" /> Expertise 🇨🇲 & 🇺🇸</div>
+            <div className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-accent" /> Cameroun & Afrique Centrale</div>
           </div>
         </div>
         <div className="hidden lg:block">
@@ -149,8 +148,8 @@ function Hero() {
               </div>
             </div>
             <div className="mt-5 space-y-3 text-sm">
-              <div className="flex items-start gap-3"><MapPin className="mt-0.5 h-4 w-4 text-accent" /> Tradex Olembe, Rue des pavés, Yaoundé</div>
-              <div className="flex items-start gap-3"><MapPin className="mt-0.5 h-4 w-4 text-accent" /> Holland, Michigan (USA)</div>
+              <div className="flex items-start gap-3"><MapPin className="mt-0.5 h-4 w-4 text-accent" /> Tradex Olembe, Yaoundé, Cameroun</div>
+              <div className="flex items-start gap-3"><Leaf className="mt-0.5 h-4 w-4 text-accent" /> Interventions au Cameroun & Afrique Centrale</div>
               <div className="flex items-start gap-3"><Phone className="mt-0.5 h-4 w-4 text-accent" /> +237 650-54-44-44</div>
             </div>
             <a href={waLink("Bonjour EDSOLAR, je souhaite discuter d'un projet solaire.")} target="_blank" rel="noreferrer"
@@ -375,7 +374,7 @@ function Trust() {
     <section className="py-20 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <SectionHeader eyebrow="Pourquoi nous choisir ?" title="La confiance de centaines de clients"
-          description="Expertise binationale Cameroun 🇨🇲 & USA 🇺🇸 pour des installations aux standards internationaux." />
+          description="Une expertise 100% locale, au service du Cameroun et de toute l'Afrique Centrale 🌍." />
         <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {STATS.map((s) => (
             <div key={s.label} className="rounded-2xl border border-border bg-card p-6 text-center glow-green">
@@ -415,9 +414,9 @@ function Trust() {
 
 /* ---------------- Realisations ---------------- */
 const GALLERY = [
-  { src: gal1, title: "Maintenance panneaux", loc: "Yaoundé Centre" },
-  { src: gal2, title: "Installation commerciale", loc: "Bastos" },
-  { src: gal3, title: "Batterie Lithium & Onduleur", loc: "Odza" },
+  { src: gal1.url, title: "Installation onduleur & batterie Lithium", loc: "Yaoundé" },
+  { src: gal2.url, title: "Équipe technique EDSOLAR en intervention", loc: "Tradex Olembe" },
+  { src: gal3.url, title: "Tableau électrique & protections solaires", loc: "Yaoundé" },
 ];
 
 function Realisations() {
@@ -456,10 +455,10 @@ function About() {
         <div>
           <span className="text-xs font-bold uppercase tracking-widest text-primary">À propos</span>
           <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-4xl">
-            EDSOLAR — un pont entre le Cameroun et l'expertise internationale
+            EDSOLAR — votre partenaire solaire au Cameroun & en Afrique Centrale
           </h2>
           <p className="mt-5 text-base leading-relaxed text-muted-foreground">
-            Basés à <strong className="text-foreground">Yaoundé</strong> et à <strong className="text-foreground">Holland, Michigan (USA)</strong>, nous combinons une connaissance approfondie du terrain camerounais et l'exigence des standards nord-américains. Notre mission : rendre l'énergie solaire accessible, fiable et rentable pour chaque foyer et chaque entreprise.
+            Basés à <strong className="text-foreground">Tradex Olembe, Yaoundé</strong>, nous intervenons partout au <strong className="text-foreground">Cameroun</strong> et dans toute l'<strong className="text-foreground">Afrique Centrale</strong>. Notre mission : rendre l'énergie solaire accessible, fiable et rentable pour chaque foyer et chaque entreprise, avec du matériel certifié et une équipe de techniciens qualifiés.
           </p>
           <ul className="mt-6 space-y-3">
             {[
@@ -475,9 +474,9 @@ function About() {
           </ul>
         </div>
         <div className="grid grid-cols-2 gap-4">
-          <img src={gal2} alt="" className="col-span-2 aspect-[16/9] w-full rounded-2xl object-cover" loading="lazy" />
-          <img src={gal1} alt="" className="aspect-square w-full rounded-2xl object-cover" loading="lazy" />
-          <img src={gal3} alt="" className="aspect-square w-full rounded-2xl object-cover" loading="lazy" />
+          <img src={teamPortrait.url} alt="Technicien EDSOLAR" className="col-span-2 aspect-[16/9] w-full rounded-2xl object-cover" loading="lazy" />
+          <img src={gal1.url} alt="" className="aspect-square w-full rounded-2xl object-cover" loading="lazy" />
+          <img src={gal3.url} alt="" className="aspect-square w-full rounded-2xl object-cover" loading="lazy" />
         </div>
       </div>
     </section>
@@ -501,8 +500,8 @@ function Contact() {
           description="Remplissez le formulaire ou appelez-nous — un expert vous répond sous 24h." />
         <div className="mt-12 grid gap-6 lg:grid-cols-[1fr_1.2fr]">
           <div className="space-y-4">
-            <ContactCard icon={MapPin} title="Siège Yaoundé" lines={["Tradex Olembe", "Rue des pavés, Yaoundé, Cameroun"]} />
-            <ContactCard icon={MapPin} title="Bureau USA" lines={["Holland, Michigan", "United States"]} />
+            <ContactCard icon={MapPin} title="Siège social" lines={["Tradex Olembe", "Yaoundé, Cameroun"]} />
+            <ContactCard icon={Leaf} title="Zone d'intervention" lines={["Tout le Cameroun", "& Afrique Centrale"]} />
             <ContactCard icon={Phone} title="Téléphone / WhatsApp" lines={["+237 650-54-44-44"]} href={`tel:${PHONE}`} />
             <div className="overflow-hidden rounded-2xl border border-border bg-card">
               <iframe title="EDSOLAR Yaoundé" className="h-56 w-full"
@@ -603,8 +602,8 @@ function Footer() {
         <div>
           <p className="text-sm font-bold uppercase tracking-wider text-accent">Contact</p>
           <ul className="mt-4 space-y-3 text-sm text-white/80">
-            <li className="flex gap-2"><MapPin className="h-4 w-4 shrink-0 text-accent" /> Tradex Olembe, Yaoundé</li>
-            <li className="flex gap-2"><MapPin className="h-4 w-4 shrink-0 text-accent" /> Holland, Michigan (USA)</li>
+            <li className="flex gap-2"><MapPin className="h-4 w-4 shrink-0 text-accent" /> Tradex Olembe, Yaoundé, Cameroun</li>
+            <li className="flex gap-2"><Leaf className="h-4 w-4 shrink-0 text-accent" /> Cameroun & Afrique Centrale</li>
             <li className="flex gap-2"><Phone className="h-4 w-4 shrink-0 text-accent" /> +237 650-54-44-44</li>
           </ul>
         </div>
