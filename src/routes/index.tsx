@@ -455,10 +455,10 @@ function About() {
         <div>
           <span className="text-xs font-bold uppercase tracking-widest text-primary">À propos</span>
           <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-4xl">
-            EDSOLAR — un pont entre le Cameroun et l'expertise internationale
+            EDSOLAR — votre partenaire solaire au Cameroun & en Afrique Centrale
           </h2>
           <p className="mt-5 text-base leading-relaxed text-muted-foreground">
-            Basés à <strong className="text-foreground">Yaoundé</strong> et à <strong className="text-foreground">Holland, Michigan (USA)</strong>, nous combinons une connaissance approfondie du terrain camerounais et l'exigence des standards nord-américains. Notre mission : rendre l'énergie solaire accessible, fiable et rentable pour chaque foyer et chaque entreprise.
+            Basés à <strong className="text-foreground">Tradex Olembe, Yaoundé</strong>, nous intervenons partout au <strong className="text-foreground">Cameroun</strong> et dans toute l'<strong className="text-foreground">Afrique Centrale</strong>. Notre mission : rendre l'énergie solaire accessible, fiable et rentable pour chaque foyer et chaque entreprise, avec du matériel certifié et une équipe de techniciens qualifiés.
           </p>
           <ul className="mt-6 space-y-3">
             {[
