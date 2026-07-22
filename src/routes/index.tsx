@@ -219,38 +219,54 @@ function Calculator() {
   const [qty, setQty] = useState<Record<string, number>>({ led: 4, tv: 1, fridge: 1 });
   const set = (id: string, v: number) => setQty((q) => ({ ...q, [id]: Math.max(0, v) }));
 
-  const { peakW, dailyWh, systemKva, batteryUnitAh, batteryCount, panelsCount, priceFcfa } = useMemo(() => {
+  const { peakW, dailyWh, systemKva, systemVoltage, batteryUnitAh, batteryCount, panelsCount, priceFcfa } = useMemo(() => {
     let peak = 0, daily = 0;
     for (const a of APPLIANCES) {
       const n = qty[a.id] ?? 0;
       peak += n * a.watts;
       daily += n * a.watts * a.hours;
     }
-    // Dimensionnement calibré sur cas réel EDSOLAR :
-    // 3370 W crête / 15620 Wh/j → 8 kVA, 2 batteries lithium 48V 400Ah, 12 panneaux 450W
-    // Tarifs officiels EDSOLAR (kits complets clé en main, FCFA)
-    const PRICING: Record<number, number> = {
-      1: 500_000, 2: 1_000_000, 4: 1_700_000,
-      5: 2_000_000, 6: 2_000_000, 8: 2_500_000, 12: 3_000_000,
-    };
-    const STANDARD_KVA = [1, 2, 4, 5, 6, 8, 12];
+    // Grille tarifaire officielle EDSOLAR (kits complets clé en main, FCFA)
+    // Réf. réelle : 3370 W crête / 15 620 Wh/j → 8 kVA, 2 × 48V 400Ah, 12 panneaux 450W
+    type Tier = { kva: number; voltage: number; unitAh: number; price: number };
+    const TIERS: Tier[] = [
+      { kva: 1,  voltage: 12, unitAh: 100, price:   500_000 },
+      { kva: 2,  voltage: 24, unitAh: 200, price: 1_000_000 },
+      { kva: 4,  voltage: 24, unitAh: 200, price: 1_700_000 },
+      { kva: 5,  voltage: 48, unitAh: 200, price: 2_000_000 },
+      { kva: 6,  voltage: 48, unitAh: 200, price: 2_000_000 },
+      { kva: 8,  voltage: 48, unitAh: 400, price: 2_500_000 },
+      { kva: 12, voltage: 48, unitAh: 300, price: 3_000_000 }, // 15 kWh / 300A
+    ];
+    const XL_12KVA: Tier = { kva: 12, voltage: 48, unitAh: 600, price: 5_000_000 }; // 30 kWh / 600A
+
     const rawKva = (peak * 2) / 1000; // marge démarrage x2
-    const kva = STANDARD_KVA.find((s) => s >= rawKva) ?? 12;
-    // Batteries lithium 48V 400Ah — autonomie ~2 jours, DoD 80%
-    const totalAh = (daily / 48) * 2;
-    const unitAh = 400;
-    const bCount = daily > 0 ? Math.max(1, Math.ceil(totalAh / unitAh)) : 0;
+    let tier = TIERS.find((t) => t.kva >= rawKva) ?? TIERS[TIERS.length - 1];
+
+    // Batteries : capacité totale requise (2 j d'autonomie, DoD 80%)
+    const targetWh = (daily * 2) / 0.8;
+    let bCount = daily > 0 ? Math.max(1, Math.ceil(targetWh / (tier.voltage * tier.unitAh))) : 0;
+
+    // Upgrade 12 kVA → 30 kWh / 600A si consommation élevée
+    if (tier.kva === 12 && daily > 15_000) {
+      tier = XL_12KVA;
+      bCount = daily > 0 ? Math.max(1, Math.ceil(targetWh / (tier.voltage * tier.unitAh))) : 0;
+    }
+
     // Panneaux 450W, 4h ensoleillement effectif, rendement système 0.72
     const pCount = daily > 0 ? Math.max(1, Math.round(daily / (450 * 4 * 0.72))) : 0;
-    // Upgrade 12 kVA vers version 30 kWh / 600A à 5 000 000 FCFA au-delà de 20 kWh/j
-    let price = PRICING[kva] ?? 3_000_000;
-    if (kva === 12 && daily > 20_000) price = 5_000_000;
-    if (daily === 0) price = 0;
-    return { peakW: peak, dailyWh: daily, systemKva: kva, batteryUnitAh: unitAh, batteryCount: bCount, panelsCount: pCount, priceFcfa: price };
+    const price = daily === 0 ? 0 : tier.price;
+
+    return {
+      peakW: peak, dailyWh: daily,
+      systemKva: tier.kva, systemVoltage: tier.voltage,
+      batteryUnitAh: tier.unitAh, batteryCount: bCount,
+      panelsCount: pCount, priceFcfa: price,
+    };
   }, [qty]);
 
   const priceLabel = priceFcfa > 0 ? `${priceFcfa.toLocaleString("fr-FR")} FCFA` : "—";
-  const msg = `Bonjour EDSOLAR,%0AVoici mon estimation solaire:%0A- Puissance de pointe: ${peakW} W%0A- Consommation journalière: ${dailyWh.toFixed(0)} Wh%0A- Système recommandé: ${systemKva} kVA%0A- Batteries lithium: ${batteryCount} x 48V ${batteryUnitAh}Ah%0A- Panneaux solaires: ${panelsCount} x 450W%0A- Budget estimatif: ${priceLabel}%0AMerci de me contacter pour un devis.`;
+  const msg = `Bonjour EDSOLAR,%0AVoici mon estimation solaire:%0A- Puissance de pointe: ${peakW} W%0A- Consommation journalière: ${dailyWh.toFixed(0)} Wh%0A- Système recommandé: ${systemKva} kVA ${systemVoltage}V%0A- Batteries lithium: ${batteryCount} x ${systemVoltage}V ${batteryUnitAh}Ah%0A- Panneaux solaires: ${panelsCount} x 450W%0A- Budget estimatif: ${priceLabel}%0AMerci de me contacter pour un devis.`;
 
   return (
     <section id="calculateur" className="py-20 sm:py-28">
