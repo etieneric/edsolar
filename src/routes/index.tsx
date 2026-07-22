@@ -474,7 +474,7 @@ function About() {
           </ul>
         </div>
         <div className="grid grid-cols-2 gap-4">
-          <img src={teamPortrait.url} alt="Technicien EDSOLAR" className="col-span-2 aspect-[16/9] w-full rounded-2xl object-cover" loading="lazy" />
+          <img src={teamPortrait.url} alt="Technicien EDSOLAR" className="col-span-2 max-h-[520px] w-full rounded-2xl object-contain" loading="lazy" />
           <img src={gal1.url} alt="" className="aspect-square w-full rounded-2xl object-cover" loading="lazy" />
           <img src={gal3.url} alt="" className="aspect-square w-full rounded-2xl object-cover" loading="lazy" />
         </div>
