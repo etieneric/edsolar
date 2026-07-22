@@ -306,8 +306,8 @@ function Calculator() {
             <div className="mt-6 space-y-4">
               <Metric icon={Zap} label="Puissance de pointe" value={`${peakW.toLocaleString()} W`} />
               <Metric icon={Sun} label="Consommation journalière" value={`${dailyWh.toLocaleString(undefined, { maximumFractionDigits: 0 })} Wh`} />
-              <Metric icon={Cpu} label="Système recommandé" value={`${systemKva} kVA`} highlight />
-              <Metric icon={Battery} label="Batteries lithium 48V" value={`${batteryCount} × ${batteryUnitAh} Ah`} />
+              <Metric icon={Cpu} label="Système recommandé" value={`${systemKva} kVA ${systemVoltage}V`} highlight />
+              <Metric icon={Battery} label={`Batteries lithium ${systemVoltage}V`} value={`${batteryCount} × ${batteryUnitAh} Ah`} />
               <Metric icon={Sun} label="Panneaux solaires 450W" value={`${panelsCount} panneaux`} />
               <Metric icon={Zap} label="Budget estimatif" value={priceLabel} highlight />
 
