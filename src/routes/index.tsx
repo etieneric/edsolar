@@ -65,9 +65,7 @@ function Header() {
     <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
         <a href="#accueil" className="flex items-center gap-2 shrink-0">
-          <span className="grid h-11 w-11 place-items-center rounded-xl bg-primary text-primary-foreground shadow-md">
-            <Leaf className="h-5 w-5" />
-          </span>
+          <img src={logo.url} alt="EDSOLAR Énergie Cameroun" className="h-11 w-11 rounded-xl bg-white object-contain p-0.5 shadow-md" />
           <span className="flex flex-col leading-tight">
             <span className="text-lg font-black tracking-tight text-primary">EDSOLAR</span>
             <span className="text-[10px] font-semibold uppercase tracking-[0.15em] text-muted-foreground">Énergie Cameroun</span>
