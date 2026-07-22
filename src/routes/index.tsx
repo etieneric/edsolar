@@ -374,7 +374,7 @@ function Trust() {
     <section className="py-20 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <SectionHeader eyebrow="Pourquoi nous choisir ?" title="La confiance de centaines de clients"
-          description="Expertise binationale Cameroun 🇨🇲 & USA 🇺🇸 pour des installations aux standards internationaux." />
+          description="Une expertise 100% locale, au service du Cameroun et de toute l'Afrique Centrale 🌍." />
         <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {STATS.map((s) => (
             <div key={s.label} className="rounded-2xl border border-border bg-card p-6 text-center glow-green">
