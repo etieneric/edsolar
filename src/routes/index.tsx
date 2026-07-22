@@ -416,9 +416,9 @@ function Trust() {
 
 /* ---------------- Realisations ---------------- */
 const GALLERY = [
-  { src: gal1, title: "Maintenance panneaux", loc: "Yaoundé Centre" },
-  { src: gal2, title: "Installation commerciale", loc: "Bastos" },
-  { src: gal3, title: "Batterie Lithium & Onduleur", loc: "Odza" },
+  { src: gal1.url, title: "Installation onduleur & batterie Lithium", loc: "Yaoundé" },
+  { src: gal2.url, title: "Équipe technique EDSOLAR en intervention", loc: "Tradex Olembe" },
+  { src: gal3.url, title: "Tableau électrique & protections solaires", loc: "Yaoundé" },
 ];
 
 function Realisations() {
