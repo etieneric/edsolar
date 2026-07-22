@@ -129,7 +129,7 @@ function Hero() {
               <Zap className="h-4 w-4" /> Simuler vos besoins énergétiques
             </a>
             <a href={`tel:${PHONE}`} className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-6 py-3.5 text-sm font-semibold text-white backdrop-blur transition-colors hover:bg-white/20">
-              <Phone className="h-4 w-4" /> Contacter un expert (+237 650-54-44-44)
+              <Phone className="h-4 w-4" /> Contacter un expert (+237 650544444)
             </a>
           </div>
           <div className="mt-10 flex flex-wrap items-center gap-6 text-sm text-white/80">
@@ -150,7 +150,7 @@ function Hero() {
             <div className="mt-5 space-y-3 text-sm">
               <div className="flex items-start gap-3"><MapPin className="mt-0.5 h-4 w-4 text-accent" /> Tradex Olembe, Yaoundé, Cameroun</div>
               <div className="flex items-start gap-3"><Leaf className="mt-0.5 h-4 w-4 text-accent" /> Interventions au Cameroun & Afrique Centrale</div>
-              <div className="flex items-start gap-3"><Phone className="mt-0.5 h-4 w-4 text-accent" /> +237 650-54-44-44</div>
+              <div className="flex items-start gap-3"><Phone className="mt-0.5 h-4 w-4 text-accent" /> +237 650544444</div>
             </div>
             <a href={waLink("Bonjour EDSOLAR, je souhaite discuter d'un projet solaire.")} target="_blank" rel="noreferrer"
                className="mt-5 flex items-center justify-center gap-2 rounded-full bg-accent px-4 py-3 text-sm font-bold text-accent-foreground">
@@ -485,11 +485,11 @@ function About() {
 
 /* ---------------- Contact ---------------- */
 function Contact() {
-  const [form, setForm] = useState({ name: "", phone: "", location: "", type: "Maison", message: "" });
+  const [form, setForm] = useState({ name: "", phone: "", location: "", type: "Maison", zone: "Cameroun", needs: "", message: "" });
   const [sent, setSent] = useState(false);
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
-    const msg = `Bonjour EDSOLAR,%0ANom: ${form.name}%0ATéléphone: ${form.phone}%0AQuartier: ${form.location}%0AType: ${form.type}%0AMessage: ${form.message}`;
+    const msg = `Bonjour EDSOLAR,%0ANom: ${form.name}%0ATéléphone: ${form.phone}%0AQuartier: ${form.location}%0AZone d'intervention: ${form.zone}%0AType: ${form.type}%0ABesoins spécifiques: ${form.needs || "Non précisé"}%0AMessage: ${form.message}`;
     window.open(`${WA}?text=${msg}`, "_blank");
     setSent(true);
   };
@@ -502,7 +502,7 @@ function Contact() {
           <div className="space-y-4">
             <ContactCard icon={MapPin} title="Siège social" lines={["Tradex Olembe", "Yaoundé, Cameroun"]} />
             <ContactCard icon={Leaf} title="Zone d'intervention" lines={["Tout le Cameroun", "& Afrique Centrale"]} />
-            <ContactCard icon={Phone} title="Téléphone / WhatsApp" lines={["+237 650-54-44-44"]} href={`tel:${PHONE}`} />
+            <ContactCard icon={Phone} title="Téléphone / WhatsApp" lines={["+237 650544444"]} href={`tel:${PHONE}`} />
             <div className="overflow-hidden rounded-2xl border border-border bg-card">
               <iframe title="EDSOLAR Yaoundé" className="h-56 w-full"
                 src="https://www.google.com/maps?q=Tradex+Olembe+Yaounde&output=embed" loading="lazy" />
@@ -519,6 +519,19 @@ function Contact() {
                   className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20">
                   <option>Maison</option><option>Commerce</option><option>Industrie</option><option>Autre</option>
                 </select>
+              </div>
+              <div>
+                <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">Zone d'intervention</label>
+                <select value={form.zone} onChange={(e) => setForm({ ...form, zone: e.target.value })}
+                  className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20">
+                  <option>Cameroun</option><option>Afrique centrale</option>
+                </select>
+              </div>
+              <div className="sm:col-span-2">
+                <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">Besoins spécifiques</label>
+                <input type="text" value={form.needs} onChange={(e) => setForm({ ...form, needs: e.target.value })}
+                  placeholder="Ex: pompage, climatisation, bureaux, hangar..."
+                  className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20" />
               </div>
               <div className="sm:col-span-2">
                 <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">Message</label>
@@ -604,7 +617,7 @@ function Footer() {
           <ul className="mt-4 space-y-3 text-sm text-white/80">
             <li className="flex gap-2"><MapPin className="h-4 w-4 shrink-0 text-accent" /> Tradex Olembe, Yaoundé, Cameroun</li>
             <li className="flex gap-2"><Leaf className="h-4 w-4 shrink-0 text-accent" /> Cameroun & Afrique Centrale</li>
-            <li className="flex gap-2"><Phone className="h-4 w-4 shrink-0 text-accent" /> +237 650-54-44-44</li>
+            <li className="flex gap-2"><Phone className="h-4 w-4 shrink-0 text-accent" /> +237 650544444</li>
           </ul>
         </div>
       </div>
