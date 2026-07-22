@@ -7,11 +7,12 @@ import {
   Laptop, Fan, Microwave, CheckCircle2, Star, Award, Clock, Users,
   Facebook, Instagram, Linkedin, Send, Quote,
 } from "lucide-react";
-import logo from "@/assets/edsolar-logo.asset.json";
-import hero from "@/assets/hero-installers.jpg";
-import gal1 from "@/assets/gallery-1.jpg";
-import gal2 from "@/assets/gallery-2.jpg";
-import gal3 from "@/assets/gallery-3.jpg";
+import logo from "@/assets/edsolar-logo-new.jpeg.asset.json";
+import hero from "@/assets/install-panels.jpeg.asset.json";
+import gal1 from "@/assets/install-inverter.jpeg.asset.json";
+import gal2 from "@/assets/install-team.jpeg.asset.json";
+import gal3 from "@/assets/install-breaker.jpeg.asset.json";
+import teamPortrait from "@/assets/team-portrait.jpeg.asset.json";
 
 export const Route = createFileRoute("/")({
   head: () => ({
