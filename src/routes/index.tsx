@@ -219,19 +219,28 @@ function Calculator() {
   const [qty, setQty] = useState<Record<string, number>>({ led: 4, tv: 1, fridge: 1 });
   const set = (id: string, v: number) => setQty((q) => ({ ...q, [id]: Math.max(0, v) }));
 
-  const { peakW, dailyWh, systemKva, batteryAh } = useMemo(() => {
+  const { peakW, dailyWh, systemKva, batteryUnitAh, batteryCount, panelsCount } = useMemo(() => {
     let peak = 0, daily = 0;
     for (const a of APPLIANCES) {
       const n = qty[a.id] ?? 0;
       peak += n * a.watts;
       daily += n * a.watts * a.hours;
     }
-    const kva = Math.max(peak / 800, 0); // pf 0.8
-    const ah = daily / 48 * 1.3; // 48V bank, 30% margin
-    return { peakW: peak, dailyWh: daily, systemKva: kva, batteryAh: ah };
+    // Dimensionnement calibré sur cas réel EDSOLAR :
+    // 3370 W crête / 15620 Wh/j → 8 kVA, 2 batteries lithium 48V 400Ah, 12 panneaux 450W
+    const STANDARD_KVA = [1, 1.5, 2, 3, 5, 8, 10, 15, 20, 30, 50];
+    const rawKva = (peak * 2) / 1000; // marge démarrage x2
+    const kva = STANDARD_KVA.find((s) => s >= rawKva) ?? Math.ceil(rawKva / 10) * 10;
+    // Batteries lithium 48V 400Ah — autonomie ~2 jours, DoD 80%
+    const totalAh = (daily / 48) * 2;
+    const unitAh = 400;
+    const bCount = daily > 0 ? Math.max(1, Math.ceil(totalAh / unitAh)) : 0;
+    // Panneaux 450W, 4h ensoleillement effectif, rendement système 0.72
+    const pCount = daily > 0 ? Math.max(1, Math.round(daily / (450 * 4 * 0.72))) : 0;
+    return { peakW: peak, dailyWh: daily, systemKva: kva, batteryUnitAh: unitAh, batteryCount: bCount, panelsCount: pCount };
   }, [qty]);
 
-  const msg = `Bonjour EDSOLAR,%0AVoici mon estimation solaire:%0A- Puissance de pointe: ${peakW} W%0A- Consommation journalière: ${dailyWh.toFixed(0)} Wh%0A- Système recommandé: ${systemKva.toFixed(2)} kVA%0A- Batterie 48V: ${batteryAh.toFixed(0)} Ah%0AMerci de me contacter pour un devis.`;
+  const msg = `Bonjour EDSOLAR,%0AVoici mon estimation solaire:%0A- Puissance de pointe: ${peakW} W%0A- Consommation journalière: ${dailyWh.toFixed(0)} Wh%0A- Système recommandé: ${systemKva} kVA%0A- Batteries lithium: ${batteryCount} x 48V ${batteryUnitAh}Ah%0A- Panneaux solaires: ${panelsCount} x 450W%0AMerci de me contacter pour un devis.`;
 
   return (
     <section id="calculateur" className="py-20 sm:py-28">
