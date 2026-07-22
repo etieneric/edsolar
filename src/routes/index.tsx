@@ -280,8 +280,9 @@ function Calculator() {
             <div className="mt-6 space-y-4">
               <Metric icon={Zap} label="Puissance de pointe" value={`${peakW.toLocaleString()} W`} />
               <Metric icon={Sun} label="Consommation journalière" value={`${dailyWh.toLocaleString(undefined, { maximumFractionDigits: 0 })} Wh`} />
-              <Metric icon={Cpu} label="Système recommandé" value={`${systemKva.toFixed(2)} kVA`} highlight />
-              <Metric icon={Battery} label="Batterie 48V nécessaire" value={`${batteryAh.toFixed(0)} Ah`} />
+              <Metric icon={Cpu} label="Système recommandé" value={`${systemKva} kVA`} highlight />
+              <Metric icon={Battery} label="Batteries lithium 48V" value={`${batteryCount} × ${batteryUnitAh} Ah`} />
+              <Metric icon={Sun} label="Panneaux solaires 450W" value={`${panelsCount} panneaux`} />
             </div>
             <a href={`${WA}?text=${msg}`} target="_blank" rel="noreferrer"
                className="mt-6 flex items-center justify-center gap-2 rounded-full bg-accent px-5 py-3.5 text-sm font-bold text-accent-foreground shadow-lg glow-green">
