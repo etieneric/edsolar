@@ -351,18 +351,31 @@ type Product = {
 };
 const CATEGORIES = ["Tous", "Panneaux", "Batteries", "Onduleurs", "Kits"];
 const PRODUCTS: Product[] = [
+  // Panneaux
   { id: "p1", name: "Panneau Mono 550W", category: "Panneaux", price: "125 000 FCFA", badge: "Garantie 25 ans", desc: "Monocristallin haut rendement, idéal résidentiel & commercial.", icon: Sun },
   { id: "p2", name: "Panneau Mono 450W", category: "Panneaux", price: "95 000 FCFA", badge: "Tier 1", desc: "Panneau performant pour installations moyennes.", icon: Sun },
-  { id: "b1", name: "Batterie Lithium 200Ah 48V", category: "Batteries", price: "1 350 000 FCFA", badge: "LiFePO4 6000 cycles", desc: "Sécurité maximale, longue durée de vie, sans entretien.", icon: Battery },
-  { id: "b2", name: "Batterie Gel 200Ah 12V", category: "Batteries", price: "185 000 FCFA", badge: "Sans entretien", desc: "Solution économique et fiable pour petits systèmes.", icon: Battery },
-  { id: "o1", name: "Onduleur Hybride 5kVA 48V", category: "Onduleurs", price: "650 000 FCFA", badge: "MPPT intégré", desc: "Onduleur hybride avec régulateur solaire MPPT.", icon: Cpu },
-  { id: "o2", name: "Onduleur Hybride 10kVA 48V", category: "Onduleurs", price: "1 250 000 FCFA", badge: "Parallélisable", desc: "Pour installations commerciales et industrielles.", icon: Cpu },
+  // Onduleurs SAKO (Marketing Price PDF officiel)
+  { id: "o1", name: "Onduleur SAKO E-SUN 1 KVA", category: "Onduleurs", price: "95 000 FCFA", badge: "Entrée de gamme", desc: "Onduleur solaire compact 1 kVA — idéal petit système.", icon: Cpu },
+  { id: "o2", name: "Onduleur SAKO SUNON 2 KVA", category: "Onduleurs", price: "140 000 FCFA", badge: "Hybride", desc: "Onduleur hybride 2 kVA avec MPPT intégré.", icon: Cpu },
+  { id: "o3", name: "Onduleur SAKO SUNON 3 KVA", category: "Onduleurs", price: "170 000 FCFA", badge: "Populaire", desc: "Onduleur hybride 3 kVA — logement 2/3 pièces.", icon: Cpu },
+  { id: "o4", name: "Onduleur SAKO SUNPOLO 4.2 KVA", category: "Onduleurs", price: "200 000 FCFA", badge: "Résidentiel", desc: "Onduleur hybride 4.2 kVA haut rendement.", icon: Cpu },
+  { id: "o5", name: "Onduleur SAKO SUNPOLO 6.2 KVA", category: "Onduleurs", price: "230 000 FCFA", badge: "Best-seller", desc: "Onduleur hybride 6.2 kVA — villas.", icon: Cpu },
+  { id: "o6", name: "Onduleur SAKO SUNIN 10.2 KVA", category: "Onduleurs", price: "360 000 FCFA", badge: "Pro / Commerce", desc: "Onduleur hybride 10.2 kVA parallélisable.", icon: Cpu },
+  // Batteries Li-SUN SAKO
+  { id: "b1", name: "Batterie Li-SUN 25.6V 100Ah", category: "Batteries", price: "310 000 FCFA", badge: "LiFePO4", desc: "Batterie lithium 24V 100Ah, sans entretien.", icon: Battery },
+  { id: "b2", name: "Batterie Li-SUN 25.6V 200Ah", category: "Batteries", price: "550 000 FCFA", badge: "LiFePO4", desc: "Batterie lithium 24V 200Ah longue durée.", icon: Battery },
+  { id: "b3", name: "Batterie Li-SUN 25.6V 300Ah", category: "Batteries", price: "700 000 FCFA", badge: "LiFePO4", desc: "Batterie lithium 24V 300Ah pour usage intensif.", icon: Battery },
+  { id: "b4", name: "Batterie Li-SUN 51.2V 100Ah", category: "Batteries", price: "550 000 FCFA", badge: "48V", desc: "Batterie lithium 48V 100Ah — systèmes 48V.", icon: Battery },
+  { id: "b5", name: "Batterie Li-SUN 51.2V 200Ah", category: "Batteries", price: "950 000 FCFA", badge: "48V", desc: "Batterie lithium 48V 200Ah — villas & PME.", icon: Battery },
+  { id: "b6", name: "Batterie Li-SUN 51.2V 300Ah", category: "Batteries", price: "1 350 000 FCFA", badge: "48V", desc: "Batterie lithium 48V 300Ah — haute autonomie.", icon: Battery },
+  { id: "b7", name: "Batterie Li-SUN 51.2V 600Ah", category: "Batteries", price: "2 500 000 FCFA", badge: "XL Autonomie", desc: "Batterie lithium 48V 600Ah — commerces énergivores.", icon: Battery },
+  // Kits complets clé en main
   { id: "k0", name: "Système Solaire 1 kVA 12V", category: "Kits", price: "500 000 FCFA", badge: "Kit d'entrée", desc: "Éclairage LED + petits appareils. Idéal studio ou boutique.", icon: Zap },
   { id: "k1", name: "Système Solaire 2 kVA 24V", category: "Kits", price: "1 000 000 FCFA", badge: "Clé en main", desc: "Éclairage, TV, réfrigérateur — logement 2 pièces.", icon: Zap },
   { id: "k2", name: "Système Solaire 4 kVA 24V", category: "Kits", price: "1 700 000 FCFA", badge: "Résidentiel", desc: "Villa 3 pièces avec appareils électroménagers standards.", icon: Zap },
   { id: "k3", name: "Système Solaire 5 kVA", category: "Kits", price: "2 000 000 FCFA", badge: "Best-seller", desc: "Villa 4 pièces confort. Frigo, congélateur, TV, ventilateurs.", icon: Zap },
   { id: "k4", name: "Système Solaire 6 kVA", category: "Kits", price: "2 000 000 FCFA", badge: "Meilleur rapport", desc: "Villa 4 pièces avec climatisation ponctuelle.", icon: Zap },
-  { id: "k5", name: "Système Solaire 8 kVA", category: "Kits", price: "2 500 000 FCFA", badge: "Recommandé", desc: "Grande villa, plusieurs climatiseurs — 2 batteries lithium 48V 400Ah + 12 panneaux 450W.", icon: Zap },
+  { id: "k5", name: "Système Solaire 8 kVA", category: "Kits", price: "2 500 000 FCFA", badge: "Recommandé", desc: "Grande villa — 2 batteries lithium 48V 400Ah + 12 panneaux 450W.", icon: Zap },
   { id: "k6", name: "Système Solaire 12 kVA (15 kWh / 300A)", category: "Kits", price: "3 000 000 FCFA", badge: "Premium", desc: "Villa haut standing / petit commerce.", icon: Zap },
   { id: "k7", name: "Système Solaire 12 kVA (30 kWh / 600A)", category: "Kits", price: "5 000 000 FCFA", badge: "XL Autonomie", desc: "Autonomie renforcée — commerces, PME, résidences énergivores.", icon: Zap },
 ];
