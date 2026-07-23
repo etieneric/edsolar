@@ -1,11 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
 import {
   Sun, Leaf, Phone, MapPin, MessageCircle, Menu, X, ArrowRight,
   Wrench, ShoppingBag, ClipboardCheck, ShieldCheck, Battery,
   Zap, Cpu, Tv, Refrigerator, Snowflake, Lightbulb, WashingMachine,
   Laptop, Fan, Microwave, CheckCircle2, Star, Award, Clock, Users,
-  Facebook, Instagram, Linkedin, Send, Quote,
+  Facebook, Instagram, Linkedin, Send, Quote, Youtube, PlayCircle, Package,
 } from "lucide-react";
 import logo from "@/assets/edsolar-logo-new.jpeg.asset.json";
 import hero from "@/assets/install-panels.jpeg.asset.json";
@@ -13,6 +14,8 @@ import gal1 from "@/assets/install-inverter.jpeg.asset.json";
 import gal2 from "@/assets/install-team.jpeg.asset.json";
 import gal3 from "@/assets/install-breaker.jpeg.asset.json";
 import teamPortrait from "@/assets/team-portrait.jpeg.asset.json";
+import { supabase } from "@/integrations/supabase/client";
+import { fetchYouTubeVideos } from "@/lib/admin.functions";
 
 export const Route = createFileRoute("/")({
   head: () => ({
