@@ -1,11 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { useServerFn } from "@tanstack/react-start";
 import {
   Sun, Leaf, Phone, MapPin, MessageCircle, Menu, X, ArrowRight,
   Wrench, ShoppingBag, ClipboardCheck, ShieldCheck, Battery,
   Zap, Cpu, Tv, Refrigerator, Snowflake, Lightbulb, WashingMachine,
   Laptop, Fan, Microwave, CheckCircle2, Star, Award, Clock, Users,
-  Facebook, Instagram, Linkedin, Send, Quote,
+  Facebook, Instagram, Linkedin, Send, Quote, Youtube, PlayCircle, Package,
 } from "lucide-react";
 import logo from "@/assets/edsolar-logo-new.jpeg.asset.json";
 import hero from "@/assets/install-panels.jpeg.asset.json";
@@ -13,6 +14,8 @@ import gal1 from "@/assets/install-inverter.jpeg.asset.json";
 import gal2 from "@/assets/install-team.jpeg.asset.json";
 import gal3 from "@/assets/install-breaker.jpeg.asset.json";
 import teamPortrait from "@/assets/team-portrait.jpeg.asset.json";
+import { supabase } from "@/integrations/supabase/client";
+import { fetchYouTubeVideos } from "@/lib/admin.functions";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -33,10 +36,12 @@ const waLink = (msg: string) => `${WA}?text=${encodeURIComponent(msg)}`;
 const NAV = [
   { href: "#accueil", label: "Accueil" },
   { href: "#services", label: "Nos Services" },
+  { href: "#kits", label: "Nos Kits" },
   { href: "#boutique", label: "Équipements" },
   { href: "#calculateur", label: "Calculateur" },
+  { href: "#videos", label: "Vidéos" },
   { href: "#realisations", label: "Réalisations" },
-  { href: "#apropos", label: "À propos" },
+  { href: "#avis", label: "Avis clients" },
   { href: "#contact", label: "Contact" },
 ];
 
@@ -46,10 +51,13 @@ function Index() {
       <Header />
       <Hero />
       <Services />
+      <Kits />
       <Calculator />
       <Products />
+      <Videos />
       <Trust />
       <Realisations />
+      <Reviews />
       <About />
       <Contact />
       <Footer />
@@ -343,18 +351,31 @@ type Product = {
 };
 const CATEGORIES = ["Tous", "Panneaux", "Batteries", "Onduleurs", "Kits"];
 const PRODUCTS: Product[] = [
+  // Panneaux
   { id: "p1", name: "Panneau Mono 550W", category: "Panneaux", price: "125 000 FCFA", badge: "Garantie 25 ans", desc: "Monocristallin haut rendement, idéal résidentiel & commercial.", icon: Sun },
   { id: "p2", name: "Panneau Mono 450W", category: "Panneaux", price: "95 000 FCFA", badge: "Tier 1", desc: "Panneau performant pour installations moyennes.", icon: Sun },
-  { id: "b1", name: "Batterie Lithium 200Ah 48V", category: "Batteries", price: "1 350 000 FCFA", badge: "LiFePO4 6000 cycles", desc: "Sécurité maximale, longue durée de vie, sans entretien.", icon: Battery },
-  { id: "b2", name: "Batterie Gel 200Ah 12V", category: "Batteries", price: "185 000 FCFA", badge: "Sans entretien", desc: "Solution économique et fiable pour petits systèmes.", icon: Battery },
-  { id: "o1", name: "Onduleur Hybride 5kVA 48V", category: "Onduleurs", price: "650 000 FCFA", badge: "MPPT intégré", desc: "Onduleur hybride avec régulateur solaire MPPT.", icon: Cpu },
-  { id: "o2", name: "Onduleur Hybride 10kVA 48V", category: "Onduleurs", price: "1 250 000 FCFA", badge: "Parallélisable", desc: "Pour installations commerciales et industrielles.", icon: Cpu },
+  // Onduleurs SAKO (Marketing Price PDF officiel)
+  { id: "o1", name: "Onduleur SAKO E-SUN 1 KVA", category: "Onduleurs", price: "95 000 FCFA", badge: "Entrée de gamme", desc: "Onduleur solaire compact 1 kVA — idéal petit système.", icon: Cpu },
+  { id: "o2", name: "Onduleur SAKO SUNON 2 KVA", category: "Onduleurs", price: "140 000 FCFA", badge: "Hybride", desc: "Onduleur hybride 2 kVA avec MPPT intégré.", icon: Cpu },
+  { id: "o3", name: "Onduleur SAKO SUNON 3 KVA", category: "Onduleurs", price: "170 000 FCFA", badge: "Populaire", desc: "Onduleur hybride 3 kVA — logement 2/3 pièces.", icon: Cpu },
+  { id: "o4", name: "Onduleur SAKO SUNPOLO 4.2 KVA", category: "Onduleurs", price: "200 000 FCFA", badge: "Résidentiel", desc: "Onduleur hybride 4.2 kVA haut rendement.", icon: Cpu },
+  { id: "o5", name: "Onduleur SAKO SUNPOLO 6.2 KVA", category: "Onduleurs", price: "230 000 FCFA", badge: "Best-seller", desc: "Onduleur hybride 6.2 kVA — villas.", icon: Cpu },
+  { id: "o6", name: "Onduleur SAKO SUNIN 10.2 KVA", category: "Onduleurs", price: "360 000 FCFA", badge: "Pro / Commerce", desc: "Onduleur hybride 10.2 kVA parallélisable.", icon: Cpu },
+  // Batteries Li-SUN SAKO
+  { id: "b1", name: "Batterie Li-SUN 25.6V 100Ah", category: "Batteries", price: "310 000 FCFA", badge: "LiFePO4", desc: "Batterie lithium 24V 100Ah, sans entretien.", icon: Battery },
+  { id: "b2", name: "Batterie Li-SUN 25.6V 200Ah", category: "Batteries", price: "550 000 FCFA", badge: "LiFePO4", desc: "Batterie lithium 24V 200Ah longue durée.", icon: Battery },
+  { id: "b3", name: "Batterie Li-SUN 25.6V 300Ah", category: "Batteries", price: "700 000 FCFA", badge: "LiFePO4", desc: "Batterie lithium 24V 300Ah pour usage intensif.", icon: Battery },
+  { id: "b4", name: "Batterie Li-SUN 51.2V 100Ah", category: "Batteries", price: "550 000 FCFA", badge: "48V", desc: "Batterie lithium 48V 100Ah — systèmes 48V.", icon: Battery },
+  { id: "b5", name: "Batterie Li-SUN 51.2V 200Ah", category: "Batteries", price: "950 000 FCFA", badge: "48V", desc: "Batterie lithium 48V 200Ah — villas & PME.", icon: Battery },
+  { id: "b6", name: "Batterie Li-SUN 51.2V 300Ah", category: "Batteries", price: "1 350 000 FCFA", badge: "48V", desc: "Batterie lithium 48V 300Ah — haute autonomie.", icon: Battery },
+  { id: "b7", name: "Batterie Li-SUN 51.2V 600Ah", category: "Batteries", price: "2 500 000 FCFA", badge: "XL Autonomie", desc: "Batterie lithium 48V 600Ah — commerces énergivores.", icon: Battery },
+  // Kits complets clé en main
   { id: "k0", name: "Système Solaire 1 kVA 12V", category: "Kits", price: "500 000 FCFA", badge: "Kit d'entrée", desc: "Éclairage LED + petits appareils. Idéal studio ou boutique.", icon: Zap },
   { id: "k1", name: "Système Solaire 2 kVA 24V", category: "Kits", price: "1 000 000 FCFA", badge: "Clé en main", desc: "Éclairage, TV, réfrigérateur — logement 2 pièces.", icon: Zap },
   { id: "k2", name: "Système Solaire 4 kVA 24V", category: "Kits", price: "1 700 000 FCFA", badge: "Résidentiel", desc: "Villa 3 pièces avec appareils électroménagers standards.", icon: Zap },
   { id: "k3", name: "Système Solaire 5 kVA", category: "Kits", price: "2 000 000 FCFA", badge: "Best-seller", desc: "Villa 4 pièces confort. Frigo, congélateur, TV, ventilateurs.", icon: Zap },
   { id: "k4", name: "Système Solaire 6 kVA", category: "Kits", price: "2 000 000 FCFA", badge: "Meilleur rapport", desc: "Villa 4 pièces avec climatisation ponctuelle.", icon: Zap },
-  { id: "k5", name: "Système Solaire 8 kVA", category: "Kits", price: "2 500 000 FCFA", badge: "Recommandé", desc: "Grande villa, plusieurs climatiseurs — 2 batteries lithium 48V 400Ah + 12 panneaux 450W.", icon: Zap },
+  { id: "k5", name: "Système Solaire 8 kVA", category: "Kits", price: "2 500 000 FCFA", badge: "Recommandé", desc: "Grande villa — 2 batteries lithium 48V 400Ah + 12 panneaux 450W.", icon: Zap },
   { id: "k6", name: "Système Solaire 12 kVA (15 kWh / 300A)", category: "Kits", price: "3 000 000 FCFA", badge: "Premium", desc: "Villa haut standing / petit commerce.", icon: Zap },
   { id: "k7", name: "Système Solaire 12 kVA (30 kWh / 600A)", category: "Kits", price: "5 000 000 FCFA", badge: "XL Autonomie", desc: "Autonomie renforcée — commerces, PME, résidences énergivores.", icon: Zap },
 ];
@@ -457,21 +478,27 @@ function Trust() {
 }
 
 /* ---------------- Realisations ---------------- */
-const GALLERY = [
+const STATIC_GALLERY = [
   { src: gal1.url, title: "Installation onduleur & batterie Lithium", loc: "Yaoundé" },
   { src: gal2.url, title: "Équipe technique EDSOLAR en intervention", loc: "Tradex Olembe" },
   { src: gal3.url, title: "Tableau électrique & protections solaires", loc: "Yaoundé" },
 ];
 
 function Realisations() {
+  const [extra, setExtra] = useState<{ src: string; title: string; loc: string }[]>([]);
+  useEffect(() => {
+    supabase.from("gallery_photos").select("url, caption").order("sort_order").order("created_at", { ascending: false })
+      .then(({ data }) => setExtra((data ?? []).map((p) => ({ src: p.url, title: p.caption ?? "Réalisation EDSOLAR", loc: "Cameroun" }))));
+  }, []);
+  const items = [...extra, ...STATIC_GALLERY];
   return (
     <section id="realisations" className="bg-secondary/40 py-20 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <SectionHeader eyebrow="Nos Réalisations" title="Projets récents au Cameroun"
           description="Découvrez nos installations récentes chez les particuliers et les entreprises." />
         <div className="mt-12 grid gap-6 md:grid-cols-3">
-          {GALLERY.map((g) => (
-            <figure key={g.title} className="group overflow-hidden rounded-2xl border border-border bg-card glow-green">
+          {items.map((g, i) => (
+            <figure key={`${g.src}-${i}`} className="group overflow-hidden rounded-2xl border border-border bg-card glow-green">
               <div className="aspect-[4/3] overflow-hidden">
                 <img src={g.src} alt={g.title} width={1200} height={800} loading="lazy"
                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
@@ -703,3 +730,192 @@ function SectionHeader({ eyebrow, title, description }: { eyebrow: string; title
     </div>
   );
 }
+
+/* ---------------- Kits (éditable admin) ---------------- */
+const DEFAULT_KITS = [
+  { id: "d1", slug: "prestige", title: "Kit Prestige", subtitle: "Villa haut standing", description: "Système solaire complet pour villa avec climatisation, électroménager et confort total.", price: "3 000 000 FCFA", image_url: null as string | null, features: ["Onduleur hybride 12 kVA", "Batteries lithium 48V 300Ah", "12 panneaux 550W", "Installation clé en main", "Garantie 25 ans panneaux"] },
+  { id: "d2", slug: "congelateur", title: "Kit Congélateur", subtitle: "Commerce & alimentation", description: "Solution dédiée aux commerçants pour maintenir congélateurs et réfrigérateurs 24h/24.", price: "1 700 000 FCFA", image_url: null, features: ["Onduleur hybride 4 kVA", "Batteries lithium 24V 200Ah", "6 panneaux 450W", "Autonomie 48h", "Support technique 7j/7"] },
+  { id: "d3", slug: "filet-bleu", title: "Kit Filet Bleu", subtitle: "Résidence familiale", description: "Kit résidentiel équilibré : éclairage, télévision, réfrigérateur et petits appareils.", price: "1 000 000 FCFA", image_url: null, features: ["Onduleur hybride 2 kVA", "Batteries lithium 24V 200Ah", "4 panneaux 450W", "Installation en 1 journée", "Suivi maintenance"] },
+];
+
+function Kits() {
+  const [items, setItems] = useState<any[]>(DEFAULT_KITS);
+  useEffect(() => {
+    supabase.from("kits").select("*").order("sort_order").then(({ data }) => {
+      if (data && data.length) setItems(data);
+    });
+  }, []);
+  return (
+    <section id="kits" className="py-20 sm:py-28">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <SectionHeader eyebrow="Nos Kits" title="Des solutions solaires prêtes à l'emploi"
+          description="Nos kits phares, sélectionnés pour les besoins réels des foyers et commerces camerounais." />
+        <div className="mt-12 grid gap-6 md:grid-cols-3">
+          {items.map((k) => (
+            <article key={k.id} className="flex flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-sm glow-green">
+              <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-primary/15 to-accent/15">
+                {k.image_url ? (
+                  <img src={k.image_url} alt={k.title} className="h-full w-full object-cover" loading="lazy" />
+                ) : (
+                  <div className="grid h-full w-full place-items-center">
+                    <Package className="h-16 w-16 text-primary" />
+                  </div>
+                )}
+                {k.price && (
+                  <span className="absolute right-3 top-3 rounded-full bg-primary px-3 py-1 text-xs font-bold text-primary-foreground shadow">
+                    {k.price}
+                  </span>
+                )}
+              </div>
+              <div className="flex flex-1 flex-col p-6">
+                <p className="text-xs font-bold uppercase tracking-widest text-primary">{k.subtitle}</p>
+                <h3 className="mt-1 text-xl font-black">{k.title}</h3>
+                <p className="mt-2 text-sm text-muted-foreground">{k.description}</p>
+                <ul className="mt-4 space-y-2 text-sm">
+                  {(k.features ?? []).map((f: string) => (
+                    <li key={f} className="flex items-start gap-2"><CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-primary" /> {f}</li>
+                  ))}
+                </ul>
+                <a href={waLink(`Bonjour EDSOLAR, je suis intéressé par le ${k.title} (${k.price ?? ""}).`)} target="_blank" rel="noreferrer"
+                   className="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-bold text-accent-foreground">
+                  <MessageCircle className="h-4 w-4" /> Demander ce kit
+                </a>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---------------- Videos (YouTube @Bimediatv) ---------------- */
+function Videos() {
+  const [videos, setVideos] = useState<{ id: string; title: string; thumbnail: string }[]>([]);
+  const [loading, setLoading] = useState(true);
+  const load = useServerFn(fetchYouTubeVideos);
+  useEffect(() => {
+    load().then((v) => { setVideos(v as any); setLoading(false); }).catch(() => setLoading(false));
+  }, []);
+  return (
+    <section id="videos" className="bg-primary-dark py-20 text-primary-foreground sm:py-28">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="mx-auto max-w-2xl text-center">
+          <span className="text-xs font-bold uppercase tracking-widest text-accent">Vidéos de terrain</span>
+          <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-4xl md:text-5xl">Découvrez nos vidéos de terrain</h2>
+          <p className="mt-4 text-base text-white/80">Retrouvez toutes nos installations et interventions sur notre chaîne YouTube @Bimediatv.</p>
+        </div>
+        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {loading && Array.from({ length: 6 }).map((_, i) => (
+            <div key={i} className="aspect-video animate-pulse rounded-2xl bg-white/10" />
+          ))}
+          {!loading && videos.length === 0 && (
+            <div className="col-span-full rounded-2xl border border-white/15 bg-white/5 p-6 text-center text-sm text-white/80">
+              Impossible de charger les vidéos pour l'instant. <a className="underline" href="https://www.youtube.com/@Bimediatv" target="_blank" rel="noreferrer">Voir la chaîne</a>
+            </div>
+          )}
+          {videos.map((v) => (
+            <a key={v.id} href={`https://www.youtube.com/watch?v=${v.id}`} target="_blank" rel="noreferrer"
+               className="group overflow-hidden rounded-2xl border border-white/15 bg-white/5 transition-all hover:border-accent hover:bg-white/10">
+              <div className="relative aspect-video overflow-hidden">
+                <img src={v.thumbnail} alt={v.title} loading="lazy" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                <div className="absolute inset-0 grid place-items-center bg-black/25 opacity-0 transition-opacity group-hover:opacity-100">
+                  <PlayCircle className="h-16 w-16 text-white drop-shadow-xl" />
+                </div>
+              </div>
+              <div className="p-4">
+                <p className="line-clamp-2 text-sm font-semibold">{v.title}</p>
+              </div>
+            </a>
+          ))}
+        </div>
+        <div className="mt-10 flex justify-center">
+          <a href="https://www.youtube.com/@Bimediatv?sub_confirmation=1" target="_blank" rel="noreferrer"
+             className="inline-flex items-center gap-2 rounded-full bg-[#FF0000] px-6 py-3 text-sm font-bold text-white shadow-lg transition-transform hover:scale-105">
+            <Youtube className="h-5 w-5" /> S'abonner à @Bimediatv
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---------------- Reviews ---------------- */
+function Reviews() {
+  const [items, setItems] = useState<any[]>([]);
+  const [form, setForm] = useState({ name: "", rating: 5, comment: "" });
+  const [sent, setSent] = useState(false);
+  const [busy, setBusy] = useState(false);
+
+  const load = () => supabase.from("reviews").select("*").eq("approved", true).order("created_at", { ascending: false }).limit(12).then(({ data }) => setItems(data ?? []));
+  useEffect(() => { load(); }, []);
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.name || !form.comment) return;
+    setBusy(true);
+    const { error } = await supabase.from("reviews").insert({ name: form.name, rating: form.rating, comment: form.comment, approved: false });
+    setBusy(false);
+    if (!error) { setSent(true); setForm({ name: "", rating: 5, comment: "" }); }
+  };
+
+  return (
+    <section id="avis" className="bg-secondary/40 py-20 sm:py-28">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <SectionHeader eyebrow="Avis clients" title="Partagez votre expérience EDSOLAR"
+          description="Votre satisfaction compte. Laissez un avis — il sera publié après validation de notre équipe." />
+        <div className="mt-12 grid gap-8 lg:grid-cols-[1fr_1.3fr]">
+          <form onSubmit={submit} className="h-fit rounded-3xl border border-border bg-card p-6 sm:p-8">
+            <p className="text-sm font-bold">Laisser un avis</p>
+            <div className="mt-4 space-y-3">
+              <div>
+                <label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Nom</label>
+                <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required
+                  className="mt-1 w-full rounded-xl border border-input bg-background px-4 py-2.5 text-sm outline-none focus:border-primary" />
+              </div>
+              <div>
+                <label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Note</label>
+                <div className="mt-1 flex gap-1">
+                  {[1, 2, 3, 4, 5].map((n) => (
+                    <button type="button" key={n} onClick={() => setForm({ ...form, rating: n })} aria-label={`${n} étoiles`}>
+                      <Star className={`h-7 w-7 ${n <= form.rating ? "fill-accent text-accent" : "text-muted-foreground/40"}`} />
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Votre commentaire</label>
+                <textarea rows={4} value={form.comment} onChange={(e) => setForm({ ...form, comment: e.target.value })} required
+                  className="mt-1 w-full resize-none rounded-xl border border-input bg-background px-4 py-2.5 text-sm outline-none focus:border-primary" />
+              </div>
+              <button disabled={busy} className="w-full rounded-full bg-primary px-5 py-3 text-sm font-bold text-primary-foreground disabled:opacity-60">
+                {busy ? "Envoi…" : "Publier mon avis"}
+              </button>
+              {sent && <p className="text-sm text-primary">Merci ! Votre avis sera publié après validation.</p>}
+            </div>
+          </form>
+          <div className="grid gap-4 sm:grid-cols-2">
+            {items.length === 0 && (
+              <p className="col-span-full rounded-2xl border border-dashed border-border p-6 text-center text-sm text-muted-foreground">
+                Soyez le premier à partager votre expérience !
+              </p>
+            )}
+            {items.map((r) => (
+              <div key={r.id} className="rounded-2xl border border-border bg-card p-5">
+                <div className="flex items-center gap-1">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Star key={i} className={`h-4 w-4 ${i < r.rating ? "fill-accent text-accent" : "text-muted-foreground/30"}`} />
+                  ))}
+                </div>
+                <p className="mt-3 text-sm leading-relaxed text-foreground/90">"{r.comment}"</p>
+                <p className="mt-3 text-sm font-bold">{r.name}</p>
+                <p className="text-xs text-muted-foreground">{new Date(r.created_at).toLocaleDateString("fr-FR")}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
