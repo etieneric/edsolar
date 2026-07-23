@@ -730,3 +730,192 @@ function SectionHeader({ eyebrow, title, description }: { eyebrow: string; title
     </div>
   );
 }
+
+/* ---------------- Kits (éditable admin) ---------------- */
+const DEFAULT_KITS = [
+  { id: "d1", slug: "prestige", title: "Kit Prestige", subtitle: "Villa haut standing", description: "Système solaire complet pour villa avec climatisation, électroménager et confort total.", price: "3 000 000 FCFA", image_url: null as string | null, features: ["Onduleur hybride 12 kVA", "Batteries lithium 48V 300Ah", "12 panneaux 550W", "Installation clé en main", "Garantie 25 ans panneaux"] },
+  { id: "d2", slug: "congelateur", title: "Kit Congélateur", subtitle: "Commerce & alimentation", description: "Solution dédiée aux commerçants pour maintenir congélateurs et réfrigérateurs 24h/24.", price: "1 700 000 FCFA", image_url: null, features: ["Onduleur hybride 4 kVA", "Batteries lithium 24V 200Ah", "6 panneaux 450W", "Autonomie 48h", "Support technique 7j/7"] },
+  { id: "d3", slug: "filet-bleu", title: "Kit Filet Bleu", subtitle: "Résidence familiale", description: "Kit résidentiel équilibré : éclairage, télévision, réfrigérateur et petits appareils.", price: "1 000 000 FCFA", image_url: null, features: ["Onduleur hybride 2 kVA", "Batteries lithium 24V 200Ah", "4 panneaux 450W", "Installation en 1 journée", "Suivi maintenance"] },
+];
+
+function Kits() {
+  const [items, setItems] = useState<any[]>(DEFAULT_KITS);
+  useEffect(() => {
+    supabase.from("kits").select("*").order("sort_order").then(({ data }) => {
+      if (data && data.length) setItems(data);
+    });
+  }, []);
+  return (
+    <section id="kits" className="py-20 sm:py-28">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <SectionHeader eyebrow="Nos Kits" title="Des solutions solaires prêtes à l'emploi"
+          description="Nos kits phares, sélectionnés pour les besoins réels des foyers et commerces camerounais." />
+        <div className="mt-12 grid gap-6 md:grid-cols-3">
+          {items.map((k) => (
+            <article key={k.id} className="flex flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-sm glow-green">
+              <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-primary/15 to-accent/15">
+                {k.image_url ? (
+                  <img src={k.image_url} alt={k.title} className="h-full w-full object-cover" loading="lazy" />
+                ) : (
+                  <div className="grid h-full w-full place-items-center">
+                    <Package className="h-16 w-16 text-primary" />
+                  </div>
+                )}
+                {k.price && (
+                  <span className="absolute right-3 top-3 rounded-full bg-primary px-3 py-1 text-xs font-bold text-primary-foreground shadow">
+                    {k.price}
+                  </span>
+                )}
+              </div>
+              <div className="flex flex-1 flex-col p-6">
+                <p className="text-xs font-bold uppercase tracking-widest text-primary">{k.subtitle}</p>
+                <h3 className="mt-1 text-xl font-black">{k.title}</h3>
+                <p className="mt-2 text-sm text-muted-foreground">{k.description}</p>
+                <ul className="mt-4 space-y-2 text-sm">
+                  {(k.features ?? []).map((f: string) => (
+                    <li key={f} className="flex items-start gap-2"><CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-primary" /> {f}</li>
+                  ))}
+                </ul>
+                <a href={waLink(`Bonjour EDSOLAR, je suis intéressé par le ${k.title} (${k.price ?? ""}).`)} target="_blank" rel="noreferrer"
+                   className="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-bold text-accent-foreground">
+                  <MessageCircle className="h-4 w-4" /> Demander ce kit
+                </a>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---------------- Videos (YouTube @Bimediatv) ---------------- */
+function Videos() {
+  const [videos, setVideos] = useState<{ id: string; title: string; thumbnail: string }[]>([]);
+  const [loading, setLoading] = useState(true);
+  const load = useServerFn(fetchYouTubeVideos);
+  useEffect(() => {
+    load().then((v) => { setVideos(v as any); setLoading(false); }).catch(() => setLoading(false));
+  }, []);
+  return (
+    <section id="videos" className="bg-primary-dark py-20 text-primary-foreground sm:py-28">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="mx-auto max-w-2xl text-center">
+          <span className="text-xs font-bold uppercase tracking-widest text-accent">Vidéos de terrain</span>
+          <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-4xl md:text-5xl">Découvrez nos vidéos de terrain</h2>
+          <p className="mt-4 text-base text-white/80">Retrouvez toutes nos installations et interventions sur notre chaîne YouTube @Bimediatv.</p>
+        </div>
+        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+          {loading && Array.from({ length: 6 }).map((_, i) => (
+            <div key={i} className="aspect-video animate-pulse rounded-2xl bg-white/10" />
+          ))}
+          {!loading && videos.length === 0 && (
+            <div className="col-span-full rounded-2xl border border-white/15 bg-white/5 p-6 text-center text-sm text-white/80">
+              Impossible de charger les vidéos pour l'instant. <a className="underline" href="https://www.youtube.com/@Bimediatv" target="_blank" rel="noreferrer">Voir la chaîne</a>
+            </div>
+          )}
+          {videos.map((v) => (
+            <a key={v.id} href={`https://www.youtube.com/watch?v=${v.id}`} target="_blank" rel="noreferrer"
+               className="group overflow-hidden rounded-2xl border border-white/15 bg-white/5 transition-all hover:border-accent hover:bg-white/10">
+              <div className="relative aspect-video overflow-hidden">
+                <img src={v.thumbnail} alt={v.title} loading="lazy" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
+                <div className="absolute inset-0 grid place-items-center bg-black/25 opacity-0 transition-opacity group-hover:opacity-100">
+                  <PlayCircle className="h-16 w-16 text-white drop-shadow-xl" />
+                </div>
+              </div>
+              <div className="p-4">
+                <p className="line-clamp-2 text-sm font-semibold">{v.title}</p>
+              </div>
+            </a>
+          ))}
+        </div>
+        <div className="mt-10 flex justify-center">
+          <a href="https://www.youtube.com/@Bimediatv?sub_confirmation=1" target="_blank" rel="noreferrer"
+             className="inline-flex items-center gap-2 rounded-full bg-[#FF0000] px-6 py-3 text-sm font-bold text-white shadow-lg transition-transform hover:scale-105">
+            <Youtube className="h-5 w-5" /> S'abonner à @Bimediatv
+          </a>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---------------- Reviews ---------------- */
+function Reviews() {
+  const [items, setItems] = useState<any[]>([]);
+  const [form, setForm] = useState({ name: "", rating: 5, comment: "" });
+  const [sent, setSent] = useState(false);
+  const [busy, setBusy] = useState(false);
+
+  const load = () => supabase.from("reviews").select("*").eq("approved", true).order("created_at", { ascending: false }).limit(12).then(({ data }) => setItems(data ?? []));
+  useEffect(() => { load(); }, []);
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.name || !form.comment) return;
+    setBusy(true);
+    const { error } = await supabase.from("reviews").insert({ name: form.name, rating: form.rating, comment: form.comment, approved: false });
+    setBusy(false);
+    if (!error) { setSent(true); setForm({ name: "", rating: 5, comment: "" }); }
+  };
+
+  return (
+    <section id="avis" className="bg-secondary/40 py-20 sm:py-28">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <SectionHeader eyebrow="Avis clients" title="Partagez votre expérience EDSOLAR"
+          description="Votre satisfaction compte. Laissez un avis — il sera publié après validation de notre équipe." />
+        <div className="mt-12 grid gap-8 lg:grid-cols-[1fr_1.3fr]">
+          <form onSubmit={submit} className="h-fit rounded-3xl border border-border bg-card p-6 sm:p-8">
+            <p className="text-sm font-bold">Laisser un avis</p>
+            <div className="mt-4 space-y-3">
+              <div>
+                <label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Nom</label>
+                <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required
+                  className="mt-1 w-full rounded-xl border border-input bg-background px-4 py-2.5 text-sm outline-none focus:border-primary" />
+              </div>
+              <div>
+                <label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Note</label>
+                <div className="mt-1 flex gap-1">
+                  {[1, 2, 3, 4, 5].map((n) => (
+                    <button type="button" key={n} onClick={() => setForm({ ...form, rating: n })} aria-label={`${n} étoiles`}>
+                      <Star className={`h-7 w-7 ${n <= form.rating ? "fill-accent text-accent" : "text-muted-foreground/40"}`} />
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Votre commentaire</label>
+                <textarea rows={4} value={form.comment} onChange={(e) => setForm({ ...form, comment: e.target.value })} required
+                  className="mt-1 w-full resize-none rounded-xl border border-input bg-background px-4 py-2.5 text-sm outline-none focus:border-primary" />
+              </div>
+              <button disabled={busy} className="w-full rounded-full bg-primary px-5 py-3 text-sm font-bold text-primary-foreground disabled:opacity-60">
+                {busy ? "Envoi…" : "Publier mon avis"}
+              </button>
+              {sent && <p className="text-sm text-primary">Merci ! Votre avis sera publié après validation.</p>}
+            </div>
+          </form>
+          <div className="grid gap-4 sm:grid-cols-2">
+            {items.length === 0 && (
+              <p className="col-span-full rounded-2xl border border-dashed border-border p-6 text-center text-sm text-muted-foreground">
+                Soyez le premier à partager votre expérience !
+              </p>
+            )}
+            {items.map((r) => (
+              <div key={r.id} className="rounded-2xl border border-border bg-card p-5">
+                <div className="flex items-center gap-1">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Star key={i} className={`h-4 w-4 ${i < r.rating ? "fill-accent text-accent" : "text-muted-foreground/30"}`} />
+                  ))}
+                </div>
+                <p className="mt-3 text-sm leading-relaxed text-foreground/90">"{r.comment}"</p>
+                <p className="mt-3 text-sm font-bold">{r.name}</p>
+                <p className="text-xs text-muted-foreground">{new Date(r.created_at).toLocaleDateString("fr-FR")}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
