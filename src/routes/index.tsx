@@ -36,10 +36,12 @@ const waLink = (msg: string) => `${WA}?text=${encodeURIComponent(msg)}`;
 const NAV = [
   { href: "#accueil", label: "Accueil" },
   { href: "#services", label: "Nos Services" },
+  { href: "#kits", label: "Nos Kits" },
   { href: "#boutique", label: "Équipements" },
   { href: "#calculateur", label: "Calculateur" },
+  { href: "#videos", label: "Vidéos" },
   { href: "#realisations", label: "Réalisations" },
-  { href: "#apropos", label: "À propos" },
+  { href: "#avis", label: "Avis clients" },
   { href: "#contact", label: "Contact" },
 ];
 
