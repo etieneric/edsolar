@@ -14,7 +14,99 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      gallery_photos: {
+        Row: {
+          caption: string | null
+          created_at: string
+          id: string
+          sort_order: number
+          url: string
+        }
+        Insert: {
+          caption?: string | null
+          created_at?: string
+          id?: string
+          sort_order?: number
+          url: string
+        }
+        Update: {
+          caption?: string | null
+          created_at?: string
+          id?: string
+          sort_order?: number
+          url?: string
+        }
+        Relationships: []
+      }
+      kits: {
+        Row: {
+          created_at: string
+          description: string
+          features: Json
+          id: string
+          image_url: string | null
+          price: string | null
+          slug: string
+          sort_order: number
+          subtitle: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          features?: Json
+          id?: string
+          image_url?: string | null
+          price?: string | null
+          slug: string
+          sort_order?: number
+          subtitle?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          features?: Json
+          id?: string
+          image_url?: string | null
+          price?: string | null
+          slug?: string
+          sort_order?: number
+          subtitle?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      reviews: {
+        Row: {
+          approved: boolean
+          comment: string
+          created_at: string
+          id: string
+          name: string
+          rating: number
+        }
+        Insert: {
+          approved?: boolean
+          comment: string
+          created_at?: string
+          id?: string
+          name: string
+          rating: number
+        }
+        Update: {
+          approved?: boolean
+          comment?: string
+          created_at?: string
+          id?: string
+          name?: string
+          rating?: number
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
