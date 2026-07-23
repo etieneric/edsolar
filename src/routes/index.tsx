@@ -51,10 +51,13 @@ function Index() {
       <Header />
       <Hero />
       <Services />
+      <Kits />
       <Calculator />
       <Products />
+      <Videos />
       <Trust />
       <Realisations />
+      <Reviews />
       <About />
       <Contact />
       <Footer />
