@@ -478,21 +478,27 @@ function Trust() {
 }
 
 /* ---------------- Realisations ---------------- */
-const GALLERY = [
+const STATIC_GALLERY = [
   { src: gal1.url, title: "Installation onduleur & batterie Lithium", loc: "Yaoundé" },
   { src: gal2.url, title: "Équipe technique EDSOLAR en intervention", loc: "Tradex Olembe" },
   { src: gal3.url, title: "Tableau électrique & protections solaires", loc: "Yaoundé" },
 ];
 
 function Realisations() {
+  const [extra, setExtra] = useState<{ src: string; title: string; loc: string }[]>([]);
+  useEffect(() => {
+    supabase.from("gallery_photos").select("url, caption").order("sort_order").order("created_at", { ascending: false })
+      .then(({ data }) => setExtra((data ?? []).map((p) => ({ src: p.url, title: p.caption ?? "Réalisation EDSOLAR", loc: "Cameroun" }))));
+  }, []);
+  const items = [...extra, ...STATIC_GALLERY];
   return (
     <section id="realisations" className="bg-secondary/40 py-20 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <SectionHeader eyebrow="Nos Réalisations" title="Projets récents au Cameroun"
           description="Découvrez nos installations récentes chez les particuliers et les entreprises." />
         <div className="mt-12 grid gap-6 md:grid-cols-3">
-          {GALLERY.map((g) => (
-            <figure key={g.title} className="group overflow-hidden rounded-2xl border border-border bg-card glow-green">
+          {items.map((g, i) => (
+            <figure key={`${g.src}-${i}`} className="group overflow-hidden rounded-2xl border border-border bg-card glow-green">
               <div className="aspect-[4/3] overflow-hidden">
                 <img src={g.src} alt={g.title} width={1200} height={800} loading="lazy"
                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
