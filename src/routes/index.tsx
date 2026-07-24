@@ -434,18 +434,6 @@ function Trust() {
           ))}
         </div>
 
-        <div className="mt-14 grid gap-6 lg:grid-cols-3">
-          {TESTIMONIALS.map((t) => (
-            <div key={t.name} className="rounded-2xl border border-border bg-card p-6">
-              <Quote className="h-6 w-6 text-accent" />
-              <p className="mt-3 text-sm leading-relaxed text-foreground/90">"{t.text}"</p>
-              <div className="mt-4">
-                <p className="text-sm font-bold">{t.name}</p>
-                <p className="text-xs text-muted-foreground">{t.role}</p>
-              </div>
-            </div>
-          ))}
-        </div>
 
         <div className="mt-14 flex flex-wrap items-center justify-center gap-4">
           {["Normes IEC 61215", "ISO 9001", "Garantie 25 ans", "Ingénieurs certifiés", "Support 7j/7"].map((b) => (
