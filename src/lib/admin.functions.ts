@@ -134,6 +134,39 @@ export const adminDeleteReview = createServerFn({ method: "POST" })
     return { ok: true };
   });
 
+// ---- Products (Boutique) ----
+export const adminUpsertProduct = createServerFn({ method: "POST" })
+  .inputValidator((d: {
+    id?: string; name: string; category: string; price?: string; badge?: string;
+    description?: string; image_url?: string; sort_order?: number;
+  }) => d)
+  .handler(async ({ data }) => {
+    await requireAdmin();
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const payload = {
+      name: data.name, category: data.category,
+      price: data.price ?? null, badge: data.badge ?? null,
+      description: data.description ?? null, image_url: data.image_url ?? null,
+      sort_order: data.sort_order ?? 0, updated_at: new Date().toISOString(),
+    };
+    const q = data.id
+      ? supabaseAdmin.from("products").update(payload).eq("id", data.id).select().single()
+      : supabaseAdmin.from("products").insert(payload).select().single();
+    const { data: row, error } = await q;
+    if (error) throw new Error(error.message);
+    return row;
+  });
+
+export const adminDeleteProduct = createServerFn({ method: "POST" })
+  .inputValidator((d: { id: string }) => d)
+  .handler(async ({ data }) => {
+    await requireAdmin();
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { error } = await supabaseAdmin.from("products").delete().eq("id", data.id);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
+
 // ---- YouTube videos ----
 type YtVideo = { id: string; title: string; published: string; thumbnail: string };
 let ytCache: { at: number; videos: YtVideo[] } | null = null;
