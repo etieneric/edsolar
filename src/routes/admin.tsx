@@ -300,3 +300,99 @@ function ReviewsPanel() {
     </section>
   );
 }
+
+/* ---------------- Products (Boutique) ---------------- */
+type ProdForm = { id?: string; name: string; category: string; price: string; badge: string; description: string; image_url: string; sort_order: number };
+const emptyProd: ProdForm = { name: "", category: "Panneaux", price: "", badge: "", description: "", image_url: "", sort_order: 0 };
+const PROD_CATEGORIES = ["Panneaux", "Batteries", "Onduleurs", "Kits", "Accessoires"];
+
+function ProductsPanel() {
+  const [items, setItems] = useState<any[]>([]);
+  const [form, setForm] = useState<ProdForm>(emptyProd);
+  const [busy, setBusy] = useState(false);
+  const upsert = useServerFn(adminUpsertProduct);
+  const del = useServerFn(adminDeleteProduct);
+
+  const load = async () => {
+    const { data } = await supabase.from("products").select("*").order("sort_order").order("created_at", { ascending: false });
+    setItems(data ?? []);
+  };
+  useEffect(() => { load(); }, []);
+
+  const edit = (p: any) => setForm({
+    id: p.id, name: p.name, category: p.category, price: p.price ?? "",
+    badge: p.badge ?? "", description: p.description ?? "", image_url: p.image_url ?? "",
+    sort_order: p.sort_order ?? 0,
+  });
+
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setBusy(true);
+    try {
+      await upsert({ data: {
+        id: form.id, name: form.name, category: form.category,
+        price: form.price || undefined, badge: form.badge || undefined,
+        description: form.description || undefined, image_url: form.image_url || undefined,
+        sort_order: Number(form.sort_order) || 0,
+      }});
+      setForm(emptyProd);
+      await load();
+    } finally { setBusy(false); }
+  };
+
+  return (
+    <section className="grid gap-6 lg:grid-cols-[1fr_1.2fr]">
+      <form onSubmit={submit} className="rounded-2xl border border-border bg-card p-5 space-y-3">
+        <p className="text-sm font-bold">{form.id ? "Modifier l'équipement" : "Nouvel équipement"}</p>
+        <TxtField label="Nom" v={form.name} onC={(v) => setForm({ ...form, name: v })} req />
+        <div>
+          <label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Catégorie</label>
+          <select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })}
+            className="mt-1 w-full rounded-xl border border-input bg-background px-4 py-2.5 text-sm outline-none focus:border-primary">
+            {PROD_CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
+          </select>
+        </div>
+        <TxtField label="Prix" v={form.price} onC={(v) => setForm({ ...form, price: v })} placeholder="125 000 FCFA" />
+        <TxtField label="Badge (ex : Best-seller)" v={form.badge} onC={(v) => setForm({ ...form, badge: v })} />
+        <div>
+          <label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Description</label>
+          <textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} rows={3}
+            className="mt-1 w-full rounded-xl border border-input bg-background px-4 py-2.5 text-sm outline-none focus:border-primary" />
+        </div>
+        <TxtField label="URL image (photo produit)" v={form.image_url} onC={(v) => setForm({ ...form, image_url: v })} placeholder="https://…/photo.jpg" />
+        <TxtField label="Ordre" v={String(form.sort_order)} onC={(v) => setForm({ ...form, sort_order: Number(v) || 0 })} />
+        <div className="flex gap-2">
+          <button disabled={busy} className="flex-1 rounded-full bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground disabled:opacity-60">
+            {form.id ? "Enregistrer" : "Ajouter à la boutique"}
+          </button>
+          {form.id && <button type="button" onClick={() => setForm(emptyProd)} className="rounded-full border border-border px-4 py-2.5 text-sm">Annuler</button>}
+        </div>
+      </form>
+      <div className="space-y-3">
+        {items.map((p) => (
+          <div key={p.id} className="flex gap-3 rounded-2xl border border-border bg-card p-3">
+            {p.image_url
+              ? <img src={p.image_url} alt={p.name} className="h-20 w-20 shrink-0 rounded-xl bg-secondary object-contain p-1" />
+              : <div className="grid h-20 w-20 shrink-0 place-items-center rounded-xl bg-secondary"><ShoppingBag className="h-8 w-8 text-muted-foreground" /></div>}
+            <div className="min-w-0 flex-1">
+              <div className="flex items-start justify-between gap-2">
+                <div className="min-w-0">
+                  <p className="truncate font-bold">{p.name}</p>
+                  <p className="text-xs text-muted-foreground">{p.category}{p.badge ? ` · ${p.badge}` : ""}</p>
+                  {p.price && <p className="text-sm font-bold text-primary">{p.price}</p>}
+                </div>
+                <div className="flex flex-col gap-1">
+                  <button onClick={() => edit(p)} className="rounded-full border border-border px-3 py-1 text-xs font-semibold hover:bg-secondary">Éditer</button>
+                  <button onClick={async () => { if (confirm("Supprimer cet équipement ?")) { await del({ data: { id: p.id } }); await load(); } }}
+                    className="rounded-full border border-destructive/30 px-3 py-1 text-xs font-semibold text-destructive hover:bg-destructive/10">Supprimer</button>
+                </div>
+              </div>
+              {p.description && <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">{p.description}</p>}
+            </div>
+          </div>
+        ))}
+        {items.length === 0 && <p className="text-sm text-muted-foreground">Aucun équipement pour l'instant.</p>}
+      </div>
+    </section>
+  );
+}
