@@ -1,13 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useState } from "react";
-import { Lock, LogOut, Plus, Trash2, Check, X, Image as ImageIcon, Package, MessageSquare, Star } from "lucide-react";
+import { Lock, LogOut, Plus, Trash2, Check, X, Image as ImageIcon, Package, MessageSquare, ShoppingBag } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import {
   adminLogin, adminLogout, adminCheck,
   adminAddPhoto, adminDeletePhoto,
   adminUpsertKit, adminDeleteKit,
   adminListReviews, adminSetReviewApproved, adminDeleteReview,
+  adminUpsertProduct, adminDeleteProduct,
 } from "@/lib/admin.functions";
 
 export const Route = createFileRoute("/admin")({
