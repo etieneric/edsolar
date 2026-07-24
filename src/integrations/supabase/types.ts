@@ -80,6 +80,45 @@ export type Database = {
         }
         Relationships: []
       }
+      products: {
+        Row: {
+          badge: string | null
+          category: string
+          created_at: string
+          description: string | null
+          id: string
+          image_url: string | null
+          name: string
+          price: string | null
+          sort_order: number
+          updated_at: string
+        }
+        Insert: {
+          badge?: string | null
+          category: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          name: string
+          price?: string | null
+          sort_order?: number
+          updated_at?: string
+        }
+        Update: {
+          badge?: string | null
+          category?: string
+          created_at?: string
+          description?: string | null
+          id?: string
+          image_url?: string | null
+          name?: string
+          price?: string | null
+          sort_order?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
       reviews: {
         Row: {
           approved: boolean

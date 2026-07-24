@@ -6,7 +6,7 @@ import {
   Wrench, ShoppingBag, ClipboardCheck, ShieldCheck, Battery,
   Zap, Cpu, Tv, Refrigerator, Snowflake, Lightbulb, WashingMachine,
   Laptop, Fan, Microwave, CheckCircle2, Star, Award, Clock, Users,
-  Facebook, Instagram, Linkedin, Send, Quote, Youtube, PlayCircle, Package,
+  Facebook, Instagram, Linkedin, Send, Youtube, PlayCircle, Package,
 } from "lucide-react";
 import logo from "@/assets/edsolar-logo-new.jpeg.asset.json";
 import hero from "@/assets/install-panels.jpeg.asset.json";
@@ -346,50 +346,33 @@ function Metric({ icon: Icon, label, value, highlight }: { icon: any; label: str
 
 /* ---------------- Products ---------------- */
 type Product = {
-  id: string; name: string; category: string; price: string; badge: string;
-  desc: string; icon: any;
+  id: string; name: string; category: string; price: string | null; badge: string | null;
+  description: string | null; image_url: string | null;
 };
-const CATEGORIES = ["Tous", "Panneaux", "Batteries", "Onduleurs", "Kits"];
-const PRODUCTS: Product[] = [
-  // Panneaux
-  { id: "p1", name: "Panneau Mono 550W", category: "Panneaux", price: "125 000 FCFA", badge: "Garantie 25 ans", desc: "Monocristallin haut rendement, idéal résidentiel & commercial.", icon: Sun },
-  { id: "p2", name: "Panneau Mono 450W", category: "Panneaux", price: "95 000 FCFA", badge: "Tier 1", desc: "Panneau performant pour installations moyennes.", icon: Sun },
-  // Onduleurs SAKO (Marketing Price PDF officiel)
-  { id: "o1", name: "Onduleur SAKO E-SUN 1 KVA", category: "Onduleurs", price: "95 000 FCFA", badge: "Entrée de gamme", desc: "Onduleur solaire compact 1 kVA — idéal petit système.", icon: Cpu },
-  { id: "o2", name: "Onduleur SAKO SUNON 2 KVA", category: "Onduleurs", price: "140 000 FCFA", badge: "Hybride", desc: "Onduleur hybride 2 kVA avec MPPT intégré.", icon: Cpu },
-  { id: "o3", name: "Onduleur SAKO SUNON 3 KVA", category: "Onduleurs", price: "170 000 FCFA", badge: "Populaire", desc: "Onduleur hybride 3 kVA — logement 2/3 pièces.", icon: Cpu },
-  { id: "o4", name: "Onduleur SAKO SUNPOLO 4.2 KVA", category: "Onduleurs", price: "200 000 FCFA", badge: "Résidentiel", desc: "Onduleur hybride 4.2 kVA haut rendement.", icon: Cpu },
-  { id: "o5", name: "Onduleur SAKO SUNPOLO 6.2 KVA", category: "Onduleurs", price: "230 000 FCFA", badge: "Best-seller", desc: "Onduleur hybride 6.2 kVA — villas.", icon: Cpu },
-  { id: "o6", name: "Onduleur SAKO SUNIN 10.2 KVA", category: "Onduleurs", price: "360 000 FCFA", badge: "Pro / Commerce", desc: "Onduleur hybride 10.2 kVA parallélisable.", icon: Cpu },
-  // Batteries Li-SUN SAKO
-  { id: "b1", name: "Batterie Li-SUN 25.6V 100Ah", category: "Batteries", price: "310 000 FCFA", badge: "LiFePO4", desc: "Batterie lithium 24V 100Ah, sans entretien.", icon: Battery },
-  { id: "b2", name: "Batterie Li-SUN 25.6V 200Ah", category: "Batteries", price: "550 000 FCFA", badge: "LiFePO4", desc: "Batterie lithium 24V 200Ah longue durée.", icon: Battery },
-  { id: "b3", name: "Batterie Li-SUN 25.6V 300Ah", category: "Batteries", price: "700 000 FCFA", badge: "LiFePO4", desc: "Batterie lithium 24V 300Ah pour usage intensif.", icon: Battery },
-  { id: "b4", name: "Batterie Li-SUN 51.2V 100Ah", category: "Batteries", price: "550 000 FCFA", badge: "48V", desc: "Batterie lithium 48V 100Ah — systèmes 48V.", icon: Battery },
-  { id: "b5", name: "Batterie Li-SUN 51.2V 200Ah", category: "Batteries", price: "950 000 FCFA", badge: "48V", desc: "Batterie lithium 48V 200Ah — villas & PME.", icon: Battery },
-  { id: "b6", name: "Batterie Li-SUN 51.2V 300Ah", category: "Batteries", price: "1 350 000 FCFA", badge: "48V", desc: "Batterie lithium 48V 300Ah — haute autonomie.", icon: Battery },
-  { id: "b7", name: "Batterie Li-SUN 51.2V 600Ah", category: "Batteries", price: "2 500 000 FCFA", badge: "XL Autonomie", desc: "Batterie lithium 48V 600Ah — commerces énergivores.", icon: Battery },
-  // Kits complets clé en main
-  { id: "k0", name: "Système Solaire 1 kVA 12V", category: "Kits", price: "500 000 FCFA", badge: "Kit d'entrée", desc: "Éclairage LED + petits appareils. Idéal studio ou boutique.", icon: Zap },
-  { id: "k1", name: "Système Solaire 2 kVA 24V", category: "Kits", price: "1 000 000 FCFA", badge: "Clé en main", desc: "Éclairage, TV, réfrigérateur — logement 2 pièces.", icon: Zap },
-  { id: "k2", name: "Système Solaire 4 kVA 24V", category: "Kits", price: "1 700 000 FCFA", badge: "Résidentiel", desc: "Villa 3 pièces avec appareils électroménagers standards.", icon: Zap },
-  { id: "k3", name: "Système Solaire 5 kVA", category: "Kits", price: "2 000 000 FCFA", badge: "Best-seller", desc: "Villa 4 pièces confort. Frigo, congélateur, TV, ventilateurs.", icon: Zap },
-  { id: "k4", name: "Système Solaire 6 kVA", category: "Kits", price: "2 000 000 FCFA", badge: "Meilleur rapport", desc: "Villa 4 pièces avec climatisation ponctuelle.", icon: Zap },
-  { id: "k5", name: "Système Solaire 8 kVA", category: "Kits", price: "2 500 000 FCFA", badge: "Recommandé", desc: "Grande villa — 2 batteries lithium 48V 400Ah + 12 panneaux 450W.", icon: Zap },
-  { id: "k6", name: "Système Solaire 12 kVA (15 kWh / 300A)", category: "Kits", price: "3 000 000 FCFA", badge: "Premium", desc: "Villa haut standing / petit commerce.", icon: Zap },
-  { id: "k7", name: "Système Solaire 12 kVA (30 kWh / 600A)", category: "Kits", price: "5 000 000 FCFA", badge: "XL Autonomie", desc: "Autonomie renforcée — commerces, PME, résidences énergivores.", icon: Zap },
-];
 
 function Products() {
+  const [items, setItems] = useState<Product[]>([]);
   const [cat, setCat] = useState("Tous");
-  const list = cat === "Tous" ? PRODUCTS : PRODUCTS.filter((p) => p.category === cat);
+
+  useEffect(() => {
+    supabase.from("products").select("*").order("sort_order").order("created_at", { ascending: false })
+      .then(({ data }) => setItems((data ?? []) as Product[]));
+  }, []);
+
+  const categories = useMemo(() => {
+    const s = new Set<string>();
+    items.forEach((p) => p.category && s.add(p.category));
+    return ["Tous", ...Array.from(s)];
+  }, [items]);
+  const list = cat === "Tous" ? items : items.filter((p) => p.category === cat);
+
   return (
     <section id="boutique" className="bg-secondary/40 py-20 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <SectionHeader eyebrow="Boutique" title="Équipements solaires de qualité"
           description="Panneaux, batteries, onduleurs et kits complets — sélectionnés pour leur fiabilité." />
         <div className="mt-8 flex flex-wrap justify-center gap-2">
-          {CATEGORIES.map((c) => (
+          {categories.map((c) => (
             <button key={c} onClick={() => setCat(c)}
               className={`rounded-full px-5 py-2 text-sm font-semibold transition-all ${cat === c ? "bg-primary text-primary-foreground shadow-md" : "border border-border bg-card text-foreground hover:border-primary hover:text-primary"}`}>
               {c}
@@ -400,26 +383,30 @@ function Products() {
           {list.map((p) => (
             <div key={p.id} className="flex flex-col rounded-2xl border border-border bg-card p-5 glow-green">
               <div className="relative grid aspect-square place-items-center overflow-hidden rounded-xl bg-gradient-to-br from-primary/10 to-accent/10">
-                <p.icon className="h-16 w-16 text-primary" />
-                <span className="absolute left-3 top-3 rounded-full bg-accent px-2.5 py-1 text-[10px] font-bold uppercase text-accent-foreground">{p.badge}</span>
+                {p.image_url
+                  ? <img src={p.image_url} alt={p.name} loading="lazy" className="h-full w-full object-contain p-3" />
+                  : <ShoppingBag className="h-16 w-16 text-primary" />}
+                {p.badge && <span className="absolute left-3 top-3 rounded-full bg-accent px-2.5 py-1 text-[10px] font-bold uppercase text-accent-foreground">{p.badge}</span>}
               </div>
               <h3 className="mt-4 text-base font-bold">{p.name}</h3>
-              <p className="mt-1 text-xs text-muted-foreground">{p.desc}</p>
+              {p.description && <p className="mt-1 text-xs text-muted-foreground">{p.description}</p>}
               <div className="mt-4 flex items-end justify-between gap-2">
-                <span className="text-lg font-black text-primary">{p.price}</span>
+                <span className="text-lg font-black text-primary">{p.price ?? "Sur devis"}</span>
                 <span className="text-[10px] uppercase tracking-wide text-muted-foreground">{p.category}</span>
               </div>
-              <a href={waLink(`Bonjour EDSOLAR, je souhaite commander: ${p.name} (${p.price})`)} target="_blank" rel="noreferrer"
+              <a href={waLink(`Bonjour EDSOLAR, je souhaite commander: ${p.name}${p.price ? ` (${p.price})` : ""}`)} target="_blank" rel="noreferrer"
                  className="mt-4 inline-flex items-center justify-center gap-2 rounded-full bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary-dark">
                 <MessageCircle className="h-4 w-4" /> Commander via WhatsApp
               </a>
             </div>
           ))}
+          {list.length === 0 && <p className="col-span-full text-center text-sm text-muted-foreground">Aucun équipement disponible pour cette catégorie.</p>}
         </div>
       </div>
     </section>
   );
 }
+
 
 /* ---------------- Trust ---------------- */
 const STATS = [
@@ -427,11 +414,6 @@ const STATS = [
   { icon: Star, value: "99%", label: "Satisfaction client" },
   { icon: Clock, value: "24/48h", label: "Intervention à Yaoundé" },
   { icon: Award, value: "10+", label: "Années d'expertise" },
-];
-const TESTIMONIALS = [
-  { name: "M. Nguema", role: "Villa à Odza", text: "Installation impeccable en 2 jours. Plus de coupures depuis 8 mois." },
-  { name: "SARL Kribi Trade", role: "Commerce, Yaoundé", text: "Économies de 65% sur la facture ENEO. Équipe très professionnelle." },
-  { name: "Mme Etoa", role: "Résidence Bastos", text: "Devis clair, matériel de qualité, service après-vente réactif." },
 ];
 
 function Trust() {
@@ -452,18 +434,6 @@ function Trust() {
           ))}
         </div>
 
-        <div className="mt-14 grid gap-6 lg:grid-cols-3">
-          {TESTIMONIALS.map((t) => (
-            <div key={t.name} className="rounded-2xl border border-border bg-card p-6">
-              <Quote className="h-6 w-6 text-accent" />
-              <p className="mt-3 text-sm leading-relaxed text-foreground/90">"{t.text}"</p>
-              <div className="mt-4">
-                <p className="text-sm font-bold">{t.name}</p>
-                <p className="text-xs text-muted-foreground">{t.role}</p>
-              </div>
-            </div>
-          ))}
-        </div>
 
         <div className="mt-14 flex flex-wrap items-center justify-center gap-4">
           {["Normes IEC 61215", "ISO 9001", "Garantie 25 ans", "Ingénieurs certifiés", "Support 7j/7"].map((b) => (
