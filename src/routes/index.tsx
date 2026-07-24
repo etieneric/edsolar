@@ -6,7 +6,7 @@ import {
   Wrench, ShoppingBag, ClipboardCheck, ShieldCheck, Battery,
   Zap, Cpu, Tv, Refrigerator, Snowflake, Lightbulb, WashingMachine,
   Laptop, Fan, Microwave, CheckCircle2, Star, Award, Clock, Users,
-  Facebook, Instagram, Linkedin, Send, Quote, Youtube, PlayCircle, Package,
+  Facebook, Instagram, Linkedin, Send, Youtube, PlayCircle, Package,
 } from "lucide-react";
 import logo from "@/assets/edsolar-logo-new.jpeg.asset.json";
 import hero from "@/assets/install-panels.jpeg.asset.json";
