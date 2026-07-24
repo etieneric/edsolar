@@ -63,7 +63,7 @@ function Login({ onOk }: { onOk: () => void }) {
   );
 }
 
-type Tab = "photos" | "kits" | "reviews";
+type Tab = "photos" | "kits" | "products" | "reviews";
 
 function Dashboard({ onLogout }: { onLogout: () => void }) {
   const [tab, setTab] = useState<Tab>("photos");
@@ -74,7 +74,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
           <div>
             <p className="text-lg font-black text-primary">Tableau de bord EDSOLAR</p>
-            <p className="text-xs text-muted-foreground">Gérez photos, kits et avis clients</p>
+            <p className="text-xs text-muted-foreground">Gérez photos, kits, boutique et avis clients</p>
           </div>
           <button onClick={async () => { await logout(); onLogout(); }}
             className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-2 text-sm font-semibold hover:bg-secondary">
@@ -85,6 +85,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
           {([
             { k: "photos", label: "Photos", icon: ImageIcon },
             { k: "kits", label: "Kits", icon: Package },
+            { k: "products", label: "Boutique", icon: ShoppingBag },
             { k: "reviews", label: "Avis", icon: MessageSquare },
           ] as const).map((t) => (
             <button key={t.k} onClick={() => setTab(t.k)}
@@ -97,6 +98,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
       <main className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
         {tab === "photos" && <PhotosPanel />}
         {tab === "kits" && <KitsPanel />}
+        {tab === "products" && <ProductsPanel />}
         {tab === "reviews" && <ReviewsPanel />}
       </main>
     </div>
