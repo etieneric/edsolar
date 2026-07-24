@@ -415,11 +415,6 @@ const STATS = [
   { icon: Clock, value: "24/48h", label: "Intervention à Yaoundé" },
   { icon: Award, value: "10+", label: "Années d'expertise" },
 ];
-const TESTIMONIALS = [
-  { name: "M. Nguema", role: "Villa à Odza", text: "Installation impeccable en 2 jours. Plus de coupures depuis 8 mois." },
-  { name: "SARL Kribi Trade", role: "Commerce, Yaoundé", text: "Économies de 65% sur la facture ENEO. Équipe très professionnelle." },
-  { name: "Mme Etoa", role: "Résidence Bastos", text: "Devis clair, matériel de qualité, service après-vente réactif." },
-];
 
 function Trust() {
   return (
