@@ -137,7 +137,7 @@ function Hero() {
               <Zap className="h-4 w-4" /> Simuler vos besoins énergétiques
             </a>
             <a href={`tel:${PHONE}`} className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-6 py-3.5 text-sm font-semibold text-white backdrop-blur transition-colors hover:bg-white/20">
-              <Phone className="h-4 w-4" /> Contacter un expert (+237 650544444)
+              <Phone className="h-4 w-4" /> Contacter un expert
             </a>
           </div>
           <div className="mt-10 flex flex-wrap items-center gap-6 text-sm text-white/80">
