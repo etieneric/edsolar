@@ -94,12 +94,14 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
           </div>
         </div>
         <div className="mx-auto flex max-w-6xl gap-2 overflow-x-auto px-4 pb-3 sm:px-6">
-          {([
-            { k: "photos", label: "Photos", icon: ImageIcon },
-            { k: "kits", label: "Kits", icon: Package },
-            { k: "products", label: "Boutique", icon: ShoppingBag },
-            { k: "reviews", label: "Avis", icon: MessageSquare },
-          ] as const).map((t) => (
+          {(
+            [
+              { k: "photos", label: "Photos", icon: ImageIcon },
+              { k: "kits", label: "Kits", icon: Package },
+              { k: "products", label: "Boutique", icon: ShoppingBag },
+              { k: "reviews", label: "Avis", icon: MessageSquare },
+            ] as const
+          ).map((t) => (
             <button key={t.k} onClick={() => setTab(t.k)}
               className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold transition-colors ${tab === t.k ? "bg-primary text-primary-foreground" : "border border-border bg-background hover:bg-secondary"}`}>
               <t.icon className="h-4 w-4" /> {t.label}
@@ -117,7 +119,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
   );
 }
 
-/* ---------- Image uploader (file → server → bucket URL) ---------- */
+/* ---------- Image uploader corrigé ---------- */
 function ImageUploader({
   folder, value, onChange,
 }: { folder: "photos" | "kits" | "products"; value: string; onChange: (url: string) => void }) {
@@ -126,6 +128,12 @@ function ImageUploader({
   const [err, setErr] = useState<string | null>(null);
   const upload = useServerFn(adminUploadImage);
 
+  const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    inputRef.current?.click();
+  };
+
   const pickFile = async (file: File) => {
     setErr(null);
     if (!file.type.startsWith("image/")) { setErr("Fichier non image"); return; }
@@ -133,7 +141,6 @@ function ImageUploader({
     setBusy(true);
     try {
       const buf = await file.arrayBuffer();
-      // Convert to base64 (chunked pour éviter les gros stacks)
       let binary = "";
       const bytes = new Uint8Array(buf);
       const chunk = 0x8000;
@@ -153,25 +160,54 @@ function ImageUploader({
   return (
     <div className="space-y-2">
       <label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Photo</label>
+      
+      {/* Input de fichier caché natif */}
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/*"
+        style={{ display: "none" }}
+        onChange={(e) => {
+          const f = e.target.files?.[0];
+          if (f) pickFile(f);
+          e.target.value = "";
+        }}
+      />
+
       <div className="flex items-center gap-3">
         <div className="grid h-20 w-20 shrink-0 place-items-center overflow-hidden rounded-xl border border-border bg-secondary">
           {value ? <img src={value} alt="" className="h-full w-full object-contain" /> : <ImageIcon className="h-8 w-8 text-muted-foreground" />}
         </div>
         <div className="flex-1 space-y-2">
-          <button type="button" onClick={() => inputRef.current?.click()} disabled={busy}
-            className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-bold text-primary-foreground disabled:opacity-60">
-            {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
-            {busy ? "Envoi…" : value ? "Remplacer la photo" : "Téléverser depuis l'appareil"}
-          </button>
-          {value && (
-            <button type="button" onClick={() => onChange("")} className="ml-2 text-xs font-semibold text-destructive hover:underline">
-              Retirer
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={handleButtonClick}
+              disabled={busy}
+              className="inline-flex items-center gap-2 rounded-full bg-emerald-700 hover:bg-emerald-800 px-4 py-2 text-sm font-bold text-white disabled:opacity-60 transition-colors cursor-pointer"
+            >
+              {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
+              {busy ? "Envoi…" : value ? "Remplacer la photo" : "Téléverser une image"}
             </button>
-          )}
-          <input ref={inputRef} type="file" accept="image/*" className="hidden"
-            onChange={(e) => { const f = e.target.files?.[0]; if (f) pickFile(f); e.target.value = ""; }} />
-          <input type="url" value={value} onChange={(e) => onChange(e.target.value)} placeholder="… ou collez une URL d'image"
-            className="w-full rounded-lg border border-input bg-background px-3 py-2 text-xs outline-none focus:border-primary" />
+            
+            {value && (
+              <button
+                type="button"
+                onClick={(e) => { e.preventDefault(); onChange(""); }}
+                className="text-xs font-semibold text-destructive hover:underline"
+              >
+                Retirer
+              </button>
+            )}
+          </div>
+
+          <input
+            type="text"
+            value={value}
+            onChange={(e) => onChange(e.target.value)}
+            placeholder="URL de l'image (se remplit automatiquement)"
+            className="w-full rounded-lg border border-input bg-background px-3 py-2 text-xs outline-none focus:border-primary"
+          />
         </div>
       </div>
       {err && <p className="text-xs text-destructive">{err}</p>}
