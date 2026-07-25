@@ -922,6 +922,7 @@ function Videos() {
 function Reviews() {
   const [items, setItems] = useState<any[]>([]);
   const [form, setForm] = useState({ name: "", rating: 5, comment: "" });
+  const [hoverRating, setHoverRating] = useState(0);
   const [sent, setSent] = useState(false);
   const [busy, setBusy] = useState(false);
 
