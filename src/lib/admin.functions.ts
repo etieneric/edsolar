@@ -139,6 +139,7 @@ export const adminUpsertProduct = createServerFn({ method: "POST" })
   .inputValidator((d: {
     id?: string; name: string; category: string; price?: string; badge?: string;
     description?: string; image_url?: string; sort_order?: number;
+    popularity?: number; warranty?: string; price_amount?: number;
   }) => d)
   .handler(async ({ data }) => {
     await requireAdmin();
@@ -147,7 +148,11 @@ export const adminUpsertProduct = createServerFn({ method: "POST" })
       name: data.name, category: data.category,
       price: data.price ?? null, badge: data.badge ?? null,
       description: data.description ?? null, image_url: data.image_url ?? null,
-      sort_order: data.sort_order ?? 0, updated_at: new Date().toISOString(),
+      sort_order: data.sort_order ?? 0,
+      popularity: data.popularity ?? 0,
+      warranty: data.warranty ?? null,
+      price_amount: data.price_amount ?? null,
+      updated_at: new Date().toISOString(),
     };
     const q = data.id
       ? supabaseAdmin.from("products").update(payload).eq("id", data.id).select().single()
@@ -166,6 +171,24 @@ export const adminDeleteProduct = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
     return { ok: true };
   });
+
+// ---- Image upload (private bucket "media", served via /api/public/media/*) ----
+export const adminUploadImage = createServerFn({ method: "POST" })
+  .inputValidator((d: { folder: "photos" | "kits" | "products"; filename: string; contentType: string; dataBase64: string }) => d)
+  .handler(async ({ data }) => {
+    await requireAdmin();
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const ext = (data.filename.split(".").pop() || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "");
+    const safe = `${data.folder}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+    const bytes = Buffer.from(data.dataBase64, "base64");
+    const { error } = await supabaseAdmin.storage.from("media").upload(safe, bytes, {
+      contentType: data.contentType || "image/jpeg",
+      upsert: false,
+    });
+    if (error) throw new Error(error.message);
+    return { url: `/api/public/media/${safe}`, path: safe };
+  });
+
 
 // ---- YouTube videos ----
 type YtVideo = { id: string; title: string; published: string; thumbnail: string };

@@ -7,6 +7,7 @@ import {
   Zap, Cpu, Tv, Refrigerator, Snowflake, Lightbulb, WashingMachine,
   Laptop, Fan, Microwave, CheckCircle2, Star, Award, Clock, Users,
   Facebook, Instagram, Linkedin, Send, Youtube, PlayCircle, Package,
+  Search, ArrowUp,
 } from "lucide-react";
 import logo from "@/assets/edsolar-logo-new.jpeg.asset.json";
 import hero from "@/assets/install-panels.jpeg.asset.json";
@@ -62,6 +63,7 @@ function Index() {
       <Contact />
       <Footer />
       <FloatingWhatsApp />
+      <ScrollToTop />
     </div>
   );
 }
@@ -137,7 +139,7 @@ function Hero() {
               <Zap className="h-4 w-4" /> Simuler vos besoins énergétiques
             </a>
             <a href={`tel:${PHONE}`} className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-6 py-3.5 text-sm font-semibold text-white backdrop-blur transition-colors hover:bg-white/20">
-              <Phone className="h-4 w-4" /> Contacter un expert (+237 650544444)
+              <Phone className="h-4 w-4" /> Contacter un expert
             </a>
           </div>
           <div className="mt-10 flex flex-wrap items-center gap-6 text-sm text-white/80">
@@ -348,11 +350,29 @@ function Metric({ icon: Icon, label, value, highlight }: { icon: any; label: str
 type Product = {
   id: string; name: string; category: string; price: string | null; badge: string | null;
   description: string | null; image_url: string | null;
+  popularity?: number | null; warranty?: string | null; price_amount?: number | null;
 };
+
+type SortKey = "featured" | "price_asc" | "price_desc" | "popularity" | "warranty";
+
+function parsePrice(p: Product): number {
+  if (p.price_amount != null) return p.price_amount;
+  if (!p.price) return Number.POSITIVE_INFINITY;
+  const n = Number(p.price.replace(/\D/g, ""));
+  return Number.isFinite(n) && n > 0 ? n : Number.POSITIVE_INFINITY;
+}
+function parseWarranty(p: Product): number {
+  if (!p.warranty) return 0;
+  const n = Number((p.warranty.match(/\d+/) ?? ["0"])[0]);
+  return Number.isFinite(n) ? n : 0;
+}
 
 function Products() {
   const [items, setItems] = useState<Product[]>([]);
   const [cat, setCat] = useState("Tous");
+  const [q, setQ] = useState("");
+  const [sort, setSort] = useState<SortKey>("featured");
+  const [buyer, setBuyer] = useState({ name: "", phone: "" });
 
   useEffect(() => {
     supabase.from("products").select("*").order("sort_order").order("created_at", { ascending: false })
@@ -364,14 +384,65 @@ function Products() {
     items.forEach((p) => p.category && s.add(p.category));
     return ["Tous", ...Array.from(s)];
   }, [items]);
-  const list = cat === "Tous" ? items : items.filter((p) => p.category === cat);
+
+  const list = useMemo(() => {
+    let arr = cat === "Tous" ? [...items] : items.filter((p) => p.category === cat);
+    const term = q.trim().toLowerCase();
+    if (term) {
+      arr = arr.filter((p) =>
+        [p.name, p.description, p.category, p.badge, p.warranty].filter(Boolean).join(" ").toLowerCase().includes(term),
+      );
+    }
+    switch (sort) {
+      case "price_asc": arr.sort((a, b) => parsePrice(a) - parsePrice(b)); break;
+      case "price_desc": arr.sort((a, b) => parsePrice(b) - parsePrice(a)); break;
+      case "popularity": arr.sort((a, b) => (b.popularity ?? 0) - (a.popularity ?? 0)); break;
+      case "warranty": arr.sort((a, b) => parseWarranty(b) - parseWarranty(a)); break;
+    }
+    return arr;
+  }, [items, cat, q, sort]);
+
+  const buildOrderMsg = (p: Product) => {
+    const lines = [
+      `Bonjour EDSOLAR, je souhaite commander :`,
+      `• Équipement : ${p.name}`,
+      p.category ? `• Catégorie : ${p.category}` : "",
+      p.price ? `• Prix affiché : ${p.price}` : "",
+      p.warranty ? `• Garantie : ${p.warranty}` : "",
+      ``,
+      `Mes informations :`,
+      `• Nom : ${buyer.name || "(à préciser)"}`,
+      `• Téléphone : ${buyer.phone || "(à préciser)"}`,
+    ].filter(Boolean);
+    return lines.join("\n");
+  };
 
   return (
     <section id="boutique" className="bg-secondary/40 py-20 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <SectionHeader eyebrow="Boutique" title="Équipements solaires de qualité"
           description="Panneaux, batteries, onduleurs et kits complets — sélectionnés pour leur fiabilité." />
-        <div className="mt-8 flex flex-wrap justify-center gap-2">
+
+        {/* Toolbar: search + sort */}
+        <div className="mx-auto mt-8 grid max-w-4xl gap-3 sm:grid-cols-[1fr_auto]">
+          <div className="relative">
+            <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <input value={q} onChange={(e) => setQ(e.target.value)}
+              placeholder="Rechercher un équipement (onduleur, batterie, panneau…)"
+              className="w-full rounded-full border border-border bg-card py-3 pl-11 pr-4 text-sm outline-none focus:border-primary" />
+          </div>
+          <select value={sort} onChange={(e) => setSort(e.target.value as SortKey)}
+            className="rounded-full border border-border bg-card px-4 py-3 text-sm font-semibold outline-none focus:border-primary">
+            <option value="featured">Trier : à la une</option>
+            <option value="price_asc">Prix croissant</option>
+            <option value="price_desc">Prix décroissant</option>
+            <option value="popularity">Popularité</option>
+            <option value="warranty">Garantie (longue → courte)</option>
+          </select>
+        </div>
+
+        {/* Category chips */}
+        <div className="mt-6 flex flex-wrap justify-center gap-2">
           {categories.map((c) => (
             <button key={c} onClick={() => setCat(c)}
               className={`rounded-full px-5 py-2 text-sm font-semibold transition-all ${cat === c ? "bg-primary text-primary-foreground shadow-md" : "border border-border bg-card text-foreground hover:border-primary hover:text-primary"}`}>
@@ -379,6 +450,22 @@ function Products() {
             </button>
           ))}
         </div>
+
+        {/* Buyer info (used to prefill WhatsApp message) */}
+        <div className="mx-auto mt-6 grid max-w-3xl gap-3 rounded-2xl border border-border bg-card p-4 sm:grid-cols-[1fr_1fr_auto] sm:items-end">
+          <div>
+            <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Votre nom</label>
+            <input value={buyer.name} onChange={(e) => setBuyer({ ...buyer, name: e.target.value })} placeholder="Ex. Jean Kamga"
+              className="mt-1 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm outline-none focus:border-primary" />
+          </div>
+          <div>
+            <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Votre téléphone</label>
+            <input value={buyer.phone} onChange={(e) => setBuyer({ ...buyer, phone: e.target.value })} placeholder="+237 6XX XX XX XX"
+              className="mt-1 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm outline-none focus:border-primary" />
+          </div>
+          <p className="text-xs text-muted-foreground sm:text-right">Vos infos préremplissent le message WhatsApp.</p>
+        </div>
+
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {list.map((p) => (
             <div key={p.id} className="flex flex-col rounded-2xl border border-border bg-card p-5 glow-green">
@@ -390,22 +477,26 @@ function Products() {
               </div>
               <h3 className="mt-4 text-base font-bold">{p.name}</h3>
               {p.description && <p className="mt-1 text-xs text-muted-foreground">{p.description}</p>}
+              <div className="mt-2 flex flex-wrap gap-1.5 text-[10px] font-semibold">
+                <span className="rounded-full bg-primary/10 px-2 py-0.5 text-primary">{p.category}</span>
+                {p.warranty && <span className="rounded-full bg-accent/15 px-2 py-0.5 text-accent-foreground">Garantie {p.warranty}</span>}
+              </div>
               <div className="mt-4 flex items-end justify-between gap-2">
                 <span className="text-lg font-black text-primary">{p.price ?? "Sur devis"}</span>
-                <span className="text-[10px] uppercase tracking-wide text-muted-foreground">{p.category}</span>
               </div>
-              <a href={waLink(`Bonjour EDSOLAR, je souhaite commander: ${p.name}${p.price ? ` (${p.price})` : ""}`)} target="_blank" rel="noreferrer"
+              <a href={waLink(buildOrderMsg(p))} target="_blank" rel="noreferrer"
                  className="mt-4 inline-flex items-center justify-center gap-2 rounded-full bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary-dark">
                 <MessageCircle className="h-4 w-4" /> Commander via WhatsApp
               </a>
             </div>
           ))}
-          {list.length === 0 && <p className="col-span-full text-center text-sm text-muted-foreground">Aucun équipement disponible pour cette catégorie.</p>}
+          {list.length === 0 && <p className="col-span-full text-center text-sm text-muted-foreground">Aucun équipement ne correspond à votre recherche.</p>}
         </div>
       </div>
     </section>
   );
 }
+
 
 
 /* ---------------- Trust ---------------- */
@@ -627,15 +718,13 @@ function Footer() {
     <footer className="border-t border-border bg-primary-dark text-primary-foreground">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 lg:grid-cols-4">
         <div className="lg:col-span-2">
-          <div className="flex items-center gap-2">
-            <span className="grid h-11 w-11 place-items-center rounded-xl bg-accent text-accent-foreground">
-              <Leaf className="h-5 w-5" />
-            </span>
+          <a href="/" className="inline-flex items-center gap-3 transition-opacity hover:opacity-90" aria-label="Retour à l'accueil">
+            <img src={logo.url} alt="EDSOLAR Énergie Cameroun" className="h-12 w-12 rounded-xl bg-white object-contain p-1 shadow-md" />
             <div>
               <p className="text-lg font-black">EDSOLAR</p>
               <p className="text-[10px] uppercase tracking-[0.15em] text-white/70">Énergie Cameroun</p>
             </div>
-          </div>
+          </a>
           <p className="mt-4 max-w-md text-sm text-white/75">
             L'énergie propre pour un avenir durable. Installation, maintenance et vente d'équipements solaires au Cameroun.
           </p>
@@ -687,6 +776,25 @@ function FloatingWhatsApp() {
       <span className="hidden sm:inline text-sm">Chat WhatsApp</span>
       <span className="absolute -right-1 -top-1 grid h-5 w-5 place-items-center rounded-full bg-accent text-[10px] font-black text-accent-foreground animate-pulse">1</span>
     </a>
+  );
+}
+
+/* ---------------- Scroll to top ---------------- */
+function ScrollToTop() {
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setShow(window.scrollY > 500);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+  if (!show) return null;
+  return (
+    <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      aria-label="Revenir en haut"
+      className="fixed bottom-24 right-6 z-50 grid h-11 w-11 place-items-center rounded-full border border-border bg-card text-primary shadow-xl transition-transform hover:scale-110">
+      <ArrowUp className="h-5 w-5" />
+    </button>
   );
 }
 
@@ -814,6 +922,7 @@ function Videos() {
 function Reviews() {
   const [items, setItems] = useState<any[]>([]);
   const [form, setForm] = useState({ name: "", rating: 5, comment: "" });
+  const [hoverRating, setHoverRating] = useState(0);
   const [sent, setSent] = useState(false);
   const [busy, setBusy] = useState(false);
 
@@ -845,12 +954,18 @@ function Reviews() {
               </div>
               <div>
                 <label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Note</label>
-                <div className="mt-1 flex gap-1">
+                <div className="mt-1 flex items-center gap-1">
                   {[1, 2, 3, 4, 5].map((n) => (
-                    <button type="button" key={n} onClick={() => setForm({ ...form, rating: n })} aria-label={`${n} étoiles`}>
-                      <Star className={`h-7 w-7 ${n <= form.rating ? "fill-accent text-accent" : "text-muted-foreground/40"}`} />
+                    <button type="button" key={n}
+                      onClick={() => setForm((f) => ({ ...f, rating: n }))}
+                      onMouseEnter={() => setHoverRating(n)}
+                      onMouseLeave={() => setHoverRating(0)}
+                      aria-label={`${n} étoile${n > 1 ? "s" : ""}`}
+                      className="p-1 transition-transform hover:scale-110">
+                      <Star className={`pointer-events-none h-8 w-8 ${n <= (hoverRating || form.rating) ? "fill-accent text-accent" : "text-muted-foreground/40"}`} />
                     </button>
                   ))}
+                  <span className="ml-2 text-sm font-semibold text-muted-foreground">{form.rating}/5</span>
                 </div>
               </div>
               <div>

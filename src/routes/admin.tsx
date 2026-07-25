@@ -1,7 +1,10 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
-import { useEffect, useState } from "react";
-import { Lock, LogOut, Plus, Trash2, Check, X, Image as ImageIcon, Package, MessageSquare, ShoppingBag } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import {
+  Lock, LogOut, Plus, Trash2, Check, X, Image as ImageIcon, Package,
+  MessageSquare, ShoppingBag, Home, Upload, Loader2,
+} from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import {
   adminLogin, adminLogout, adminCheck,
@@ -9,6 +12,7 @@ import {
   adminUpsertKit, adminDeleteKit,
   adminListReviews, adminSetReviewApproved, adminDeleteReview,
   adminUpsertProduct, adminDeleteProduct,
+  adminUploadImage,
 } from "@/lib/admin.functions";
 
 export const Route = createFileRoute("/admin")({
@@ -58,6 +62,9 @@ function Login({ onOk }: { onOk: () => void }) {
         <button disabled={busy} className="mt-5 w-full rounded-full bg-primary px-5 py-3 text-sm font-bold text-primary-foreground hover:bg-primary-dark disabled:opacity-60">
           {busy ? "Vérification…" : "Se connecter"}
         </button>
+        <Link to="/" className="mt-4 inline-flex w-full items-center justify-center gap-2 text-xs font-semibold text-muted-foreground hover:text-primary">
+          <Home className="h-3.5 w-3.5" /> Retour vers le site
+        </Link>
       </form>
     </div>
   );
@@ -71,15 +78,20 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
   return (
     <div className="min-h-screen bg-secondary/30">
       <header className="border-b border-border bg-card">
-        <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-4 sm:px-6">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-4 py-4 sm:px-6">
           <div>
             <p className="text-lg font-black text-primary">Tableau de bord EDSOLAR</p>
             <p className="text-xs text-muted-foreground">Gérez photos, kits, boutique et avis clients</p>
           </div>
-          <button onClick={async () => { await logout(); onLogout(); }}
-            className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-2 text-sm font-semibold hover:bg-secondary">
-            <LogOut className="h-4 w-4" /> Déconnexion
-          </button>
+          <div className="flex items-center gap-2">
+            <Link to="/" className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:bg-primary-dark">
+              <Home className="h-4 w-4" /> Retour vers le site
+            </Link>
+            <button onClick={async () => { await logout(); onLogout(); }}
+              className="inline-flex items-center gap-2 rounded-full border border-border px-4 py-2 text-sm font-semibold hover:bg-secondary">
+              <LogOut className="h-4 w-4" /> Déconnexion
+            </button>
+          </div>
         </div>
         <div className="mx-auto flex max-w-6xl gap-2 overflow-x-auto px-4 pb-3 sm:px-6">
           {([
@@ -101,6 +113,68 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
         {tab === "products" && <ProductsPanel />}
         {tab === "reviews" && <ReviewsPanel />}
       </main>
+    </div>
+  );
+}
+
+/* ---------- Image uploader (file → server → bucket URL) ---------- */
+function ImageUploader({
+  folder, value, onChange,
+}: { folder: "photos" | "kits" | "products"; value: string; onChange: (url: string) => void }) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState<string | null>(null);
+  const upload = useServerFn(adminUploadImage);
+
+  const pickFile = async (file: File) => {
+    setErr(null);
+    if (!file.type.startsWith("image/")) { setErr("Fichier non image"); return; }
+    if (file.size > 8 * 1024 * 1024) { setErr("Image trop lourde (max 8 Mo)"); return; }
+    setBusy(true);
+    try {
+      const buf = await file.arrayBuffer();
+      // Convert to base64 (chunked pour éviter les gros stacks)
+      let binary = "";
+      const bytes = new Uint8Array(buf);
+      const chunk = 0x8000;
+      for (let i = 0; i < bytes.length; i += chunk) {
+        binary += String.fromCharCode(...bytes.subarray(i, i + chunk));
+      }
+      const base64 = btoa(binary);
+      const r = await upload({ data: { folder, filename: file.name, contentType: file.type, dataBase64: base64 } });
+      onChange(r.url);
+    } catch (e: any) {
+      setErr(e?.message || "Échec de l'envoi");
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return (
+    <div className="space-y-2">
+      <label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Photo</label>
+      <div className="flex items-center gap-3">
+        <div className="grid h-20 w-20 shrink-0 place-items-center overflow-hidden rounded-xl border border-border bg-secondary">
+          {value ? <img src={value} alt="" className="h-full w-full object-contain" /> : <ImageIcon className="h-8 w-8 text-muted-foreground" />}
+        </div>
+        <div className="flex-1 space-y-2">
+          <button type="button" onClick={() => inputRef.current?.click()} disabled={busy}
+            className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-sm font-bold text-primary-foreground disabled:opacity-60">
+            {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
+            {busy ? "Envoi…" : value ? "Remplacer la photo" : "Téléverser depuis l'appareil"}
+          </button>
+          {value && (
+            <button type="button" onClick={() => onChange("")} className="ml-2 text-xs font-semibold text-destructive hover:underline">
+              Retirer
+            </button>
+          )}
+          <input ref={inputRef} type="file" accept="image/*" className="hidden"
+            onChange={(e) => { const f = e.target.files?.[0]; if (f) pickFile(f); e.target.value = ""; }} />
+          <input type="url" value={value} onChange={(e) => onChange(e.target.value)} placeholder="… ou collez une URL d'image"
+            className="w-full rounded-lg border border-input bg-background px-3 py-2 text-xs outline-none focus:border-primary" />
+        </div>
+      </div>
+      {err && <p className="text-xs text-destructive">{err}</p>}
     </div>
   );
 }
@@ -130,18 +204,17 @@ function PhotosPanel() {
 
   return (
     <section className="space-y-6">
-      <form onSubmit={submit} className="rounded-2xl border border-border bg-card p-5">
-        <p className="text-sm font-bold">Ajouter une photo (URL)</p>
-        <p className="mt-1 text-xs text-muted-foreground">Collez l'URL d'une image (upload sur imgur, Google Drive public, etc.)</p>
-        <div className="mt-4 grid gap-3 sm:grid-cols-[1fr_1fr_auto]">
-          <input value={url} onChange={(e) => setUrl(e.target.value)} required placeholder="https://…/photo.jpg"
-            className="rounded-xl border border-input bg-background px-4 py-2.5 text-sm outline-none focus:border-primary" />
-          <input value={caption} onChange={(e) => setCaption(e.target.value)} placeholder="Légende (optionnelle)"
-            className="rounded-xl border border-input bg-background px-4 py-2.5 text-sm outline-none focus:border-primary" />
-          <button disabled={busy} className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground disabled:opacity-60">
-            <Plus className="h-4 w-4" /> Ajouter
-          </button>
+      <form onSubmit={submit} className="rounded-2xl border border-border bg-card p-5 space-y-4">
+        <div>
+          <p className="text-sm font-bold">Ajouter une photo à la galerie</p>
+          <p className="mt-1 text-xs text-muted-foreground">Téléversez une image depuis votre appareil (ordinateur, téléphone, tablette).</p>
         </div>
+        <ImageUploader folder="photos" value={url} onChange={setUrl} />
+        <input value={caption} onChange={(e) => setCaption(e.target.value)} placeholder="Légende (optionnelle)"
+          className="w-full rounded-xl border border-input bg-background px-4 py-2.5 text-sm outline-none focus:border-primary" />
+        <button disabled={busy || !url} className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground disabled:opacity-60">
+          <Plus className="h-4 w-4" /> Ajouter à la galerie
+        </button>
       </form>
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {items.map((p) => (
@@ -214,7 +287,7 @@ function KitsPanel() {
             className="mt-1 w-full rounded-xl border border-input bg-background px-4 py-2.5 text-sm outline-none focus:border-primary" />
         </div>
         <TxtField label="Prix" v={form.price} onC={(v) => setForm({ ...form, price: v })} placeholder="1 000 000 FCFA" />
-        <TxtField label="URL image" v={form.image_url} onC={(v) => setForm({ ...form, image_url: v })} />
+        <ImageUploader folder="kits" value={form.image_url} onChange={(v) => setForm({ ...form, image_url: v })} />
         <div>
           <label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Caractéristiques (une par ligne)</label>
           <textarea value={form.features} onChange={(e) => setForm({ ...form, features: e.target.value })} rows={5}
@@ -251,11 +324,11 @@ function KitsPanel() {
   );
 }
 
-function TxtField({ label, v, onC, req, placeholder }: { label: string; v: string; onC: (v: string) => void; req?: boolean; placeholder?: string }) {
+function TxtField({ label, v, onC, req, placeholder, type }: { label: string; v: string; onC: (v: string) => void; req?: boolean; placeholder?: string; type?: string }) {
   return (
     <div>
       <label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{label}</label>
-      <input value={v} onChange={(e) => onC(e.target.value)} required={req} placeholder={placeholder}
+      <input type={type ?? "text"} value={v} onChange={(e) => onC(e.target.value)} required={req} placeholder={placeholder}
         className="mt-1 w-full rounded-xl border border-input bg-background px-4 py-2.5 text-sm outline-none focus:border-primary" />
     </div>
   );
@@ -302,14 +375,23 @@ function ReviewsPanel() {
 }
 
 /* ---------------- Products (Boutique) ---------------- */
-type ProdForm = { id?: string; name: string; category: string; price: string; badge: string; description: string; image_url: string; sort_order: number };
-const emptyProd: ProdForm = { name: "", category: "Panneaux", price: "", badge: "", description: "", image_url: "", sort_order: 0 };
-const PROD_CATEGORIES = ["Panneaux", "Batteries", "Onduleurs", "Kits", "Accessoires"];
+type ProdForm = {
+  id?: string; name: string; category: string; price: string; badge: string;
+  description: string; image_url: string; sort_order: number;
+  popularity: number; warranty: string; price_amount: string;
+};
+const emptyProd: ProdForm = {
+  name: "", category: "Panneaux", price: "", badge: "", description: "", image_url: "",
+  sort_order: 0, popularity: 0, warranty: "", price_amount: "",
+};
+const DEFAULT_CATEGORIES = ["Panneaux", "Onduleurs", "Batteries", "Kits", "Accessoires"];
 
 function ProductsPanel() {
   const [items, setItems] = useState<any[]>([]);
   const [form, setForm] = useState<ProdForm>(emptyProd);
   const [busy, setBusy] = useState(false);
+  const [filter, setFilter] = useState("Toutes");
+  const [newCat, setNewCat] = useState("");
   const upsert = useServerFn(adminUpsertProduct);
   const del = useServerFn(adminDeleteProduct);
 
@@ -319,10 +401,15 @@ function ProductsPanel() {
   };
   useEffect(() => { load(); }, []);
 
+  const categories = Array.from(new Set([...DEFAULT_CATEGORIES, ...items.map((p) => p.category).filter(Boolean)]));
+  const listed = filter === "Toutes" ? items : items.filter((p) => p.category === filter);
+
   const edit = (p: any) => setForm({
     id: p.id, name: p.name, category: p.category, price: p.price ?? "",
     badge: p.badge ?? "", description: p.description ?? "", image_url: p.image_url ?? "",
     sort_order: p.sort_order ?? 0,
+    popularity: p.popularity ?? 0, warranty: p.warranty ?? "",
+    price_amount: p.price_amount != null ? String(p.price_amount) : "",
   });
 
   const submit = async (e: React.FormEvent) => {
@@ -334,6 +421,9 @@ function ProductsPanel() {
         price: form.price || undefined, badge: form.badge || undefined,
         description: form.description || undefined, image_url: form.image_url || undefined,
         sort_order: Number(form.sort_order) || 0,
+        popularity: Number(form.popularity) || 0,
+        warranty: form.warranty || undefined,
+        price_amount: form.price_amount ? Number(form.price_amount.replace(/\D/g, "")) : undefined,
       }});
       setForm(emptyProd);
       await load();
@@ -341,57 +431,89 @@ function ProductsPanel() {
   };
 
   return (
-    <section className="grid gap-6 lg:grid-cols-[1fr_1.2fr]">
-      <form onSubmit={submit} className="rounded-2xl border border-border bg-card p-5 space-y-3">
-        <p className="text-sm font-bold">{form.id ? "Modifier l'équipement" : "Nouvel équipement"}</p>
-        <TxtField label="Nom" v={form.name} onC={(v) => setForm({ ...form, name: v })} req />
-        <div>
-          <label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Catégorie</label>
-          <select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })}
-            className="mt-1 w-full rounded-xl border border-input bg-background px-4 py-2.5 text-sm outline-none focus:border-primary">
-            {PROD_CATEGORIES.map((c) => <option key={c} value={c}>{c}</option>)}
-          </select>
+    <section className="space-y-6">
+      {/* Category filter chips */}
+      <div className="rounded-2xl border border-border bg-card p-4">
+        <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Catégories</p>
+        <div className="mt-2 flex flex-wrap gap-2">
+          {["Toutes", ...categories].map((c) => (
+            <button key={c} onClick={() => setFilter(c)}
+              className={`rounded-full px-3 py-1 text-xs font-semibold ${filter === c ? "bg-primary text-primary-foreground" : "border border-border hover:bg-secondary"}`}>
+              {c} {c !== "Toutes" && <span className="ml-1 text-[10px] opacity-70">({items.filter((p) => p.category === c).length})</span>}
+            </button>
+          ))}
         </div>
-        <TxtField label="Prix" v={form.price} onC={(v) => setForm({ ...form, price: v })} placeholder="125 000 FCFA" />
-        <TxtField label="Badge (ex : Best-seller)" v={form.badge} onC={(v) => setForm({ ...form, badge: v })} />
-        <div>
-          <label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Description</label>
-          <textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} rows={3}
-            className="mt-1 w-full rounded-xl border border-input bg-background px-4 py-2.5 text-sm outline-none focus:border-primary" />
-        </div>
-        <TxtField label="URL image (photo produit)" v={form.image_url} onC={(v) => setForm({ ...form, image_url: v })} placeholder="https://…/photo.jpg" />
-        <TxtField label="Ordre" v={String(form.sort_order)} onC={(v) => setForm({ ...form, sort_order: Number(v) || 0 })} />
-        <div className="flex gap-2">
-          <button disabled={busy} className="flex-1 rounded-full bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground disabled:opacity-60">
-            {form.id ? "Enregistrer" : "Ajouter à la boutique"}
+        <div className="mt-3 flex gap-2">
+          <input value={newCat} onChange={(e) => setNewCat(e.target.value)} placeholder="Nouvelle catégorie…"
+            className="flex-1 rounded-lg border border-input bg-background px-3 py-2 text-sm outline-none focus:border-primary" />
+          <button onClick={() => { if (newCat.trim()) { setForm((f) => ({ ...f, category: newCat.trim() })); setNewCat(""); } }}
+            className="rounded-full border border-border px-3 py-2 text-xs font-semibold hover:bg-secondary">
+            Utiliser pour le prochain produit
           </button>
-          {form.id && <button type="button" onClick={() => setForm(emptyProd)} className="rounded-full border border-border px-4 py-2.5 text-sm">Annuler</button>}
         </div>
-      </form>
-      <div className="space-y-3">
-        {items.map((p) => (
-          <div key={p.id} className="flex gap-3 rounded-2xl border border-border bg-card p-3">
-            {p.image_url
-              ? <img src={p.image_url} alt={p.name} className="h-20 w-20 shrink-0 rounded-xl bg-secondary object-contain p-1" />
-              : <div className="grid h-20 w-20 shrink-0 place-items-center rounded-xl bg-secondary"><ShoppingBag className="h-8 w-8 text-muted-foreground" /></div>}
-            <div className="min-w-0 flex-1">
-              <div className="flex items-start justify-between gap-2">
-                <div className="min-w-0">
-                  <p className="truncate font-bold">{p.name}</p>
-                  <p className="text-xs text-muted-foreground">{p.category}{p.badge ? ` · ${p.badge}` : ""}</p>
-                  {p.price && <p className="text-sm font-bold text-primary">{p.price}</p>}
-                </div>
-                <div className="flex flex-col gap-1">
-                  <button onClick={() => edit(p)} className="rounded-full border border-border px-3 py-1 text-xs font-semibold hover:bg-secondary">Éditer</button>
-                  <button onClick={async () => { if (confirm("Supprimer cet équipement ?")) { await del({ data: { id: p.id } }); await load(); } }}
-                    className="rounded-full border border-destructive/30 px-3 py-1 text-xs font-semibold text-destructive hover:bg-destructive/10">Supprimer</button>
-                </div>
-              </div>
-              {p.description && <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">{p.description}</p>}
-            </div>
+      </div>
+
+      <div className="grid gap-6 lg:grid-cols-[1fr_1.2fr]">
+        <form onSubmit={submit} className="rounded-2xl border border-border bg-card p-5 space-y-3">
+          <p className="text-sm font-bold">{form.id ? "Modifier l'équipement" : "Nouvel équipement"}</p>
+          <TxtField label="Nom" v={form.name} onC={(v) => setForm({ ...form, name: v })} req />
+          <div>
+            <label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Catégorie</label>
+            <input list="categories-list" value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })}
+              className="mt-1 w-full rounded-xl border border-input bg-background px-4 py-2.5 text-sm outline-none focus:border-primary" />
+            <datalist id="categories-list">
+              {categories.map((c) => <option key={c} value={c} />)}
+            </datalist>
           </div>
-        ))}
-        {items.length === 0 && <p className="text-sm text-muted-foreground">Aucun équipement pour l'instant.</p>}
+          <TxtField label="Prix (affiché)" v={form.price} onC={(v) => setForm({ ...form, price: v })} placeholder="125 000 FCFA" />
+          <TxtField label="Prix (montant chiffré, pour tri)" v={form.price_amount} onC={(v) => setForm({ ...form, price_amount: v.replace(/\D/g, "") })} placeholder="125000" />
+          <TxtField label="Badge (ex : Best-seller)" v={form.badge} onC={(v) => setForm({ ...form, badge: v })} />
+          <TxtField label="Garantie (ex : 25 ans)" v={form.warranty} onC={(v) => setForm({ ...form, warranty: v })} />
+          <TxtField label="Popularité (0-100, pour tri)" v={String(form.popularity)} onC={(v) => setForm({ ...form, popularity: Number(v.replace(/\D/g, "")) || 0 })} placeholder="0" />
+          <div>
+            <label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Description</label>
+            <textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} rows={3}
+              className="mt-1 w-full rounded-xl border border-input bg-background px-4 py-2.5 text-sm outline-none focus:border-primary" />
+          </div>
+          <ImageUploader folder="products" value={form.image_url} onChange={(v) => setForm({ ...form, image_url: v })} />
+          <TxtField label="Ordre" v={String(form.sort_order)} onC={(v) => setForm({ ...form, sort_order: Number(v) || 0 })} />
+          <div className="flex gap-2">
+            <button disabled={busy} className="flex-1 rounded-full bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground disabled:opacity-60">
+              {form.id ? "Enregistrer" : "Ajouter à la boutique"}
+            </button>
+            {form.id && <button type="button" onClick={() => setForm(emptyProd)} className="rounded-full border border-border px-4 py-2.5 text-sm">Annuler</button>}
+          </div>
+        </form>
+        <div className="space-y-3">
+          {listed.map((p) => (
+            <div key={p.id} className="flex gap-3 rounded-2xl border border-border bg-card p-3">
+              {p.image_url
+                ? <img src={p.image_url} alt={p.name} className="h-20 w-20 shrink-0 rounded-xl bg-secondary object-contain p-1" />
+                : <div className="grid h-20 w-20 shrink-0 place-items-center rounded-xl bg-secondary"><ShoppingBag className="h-8 w-8 text-muted-foreground" /></div>}
+              <div className="min-w-0 flex-1">
+                <div className="flex items-start justify-between gap-2">
+                  <div className="min-w-0">
+                    <p className="truncate font-bold">{p.name}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {p.category}
+                      {p.warranty ? ` · Garantie ${p.warranty}` : ""}
+                      {p.popularity ? ` · ★ ${p.popularity}` : ""}
+                      {p.badge ? ` · ${p.badge}` : ""}
+                    </p>
+                    {p.price && <p className="text-sm font-bold text-primary">{p.price}</p>}
+                  </div>
+                  <div className="flex flex-col gap-1">
+                    <button onClick={() => edit(p)} className="rounded-full border border-border px-3 py-1 text-xs font-semibold hover:bg-secondary">Éditer</button>
+                    <button onClick={async () => { if (confirm("Supprimer cet équipement ?")) { await del({ data: { id: p.id } }); await load(); } }}
+                      className="rounded-full border border-destructive/30 px-3 py-1 text-xs font-semibold text-destructive hover:bg-destructive/10">Supprimer</button>
+                  </div>
+                </div>
+                {p.description && <p className="mt-1 line-clamp-2 text-xs text-muted-foreground">{p.description}</p>}
+              </div>
+            </div>
+          ))}
+          {listed.length === 0 && <p className="text-sm text-muted-foreground">Aucun équipement pour l'instant.</p>}
+        </div>
       </div>
     </section>
   );
