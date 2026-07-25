@@ -46,6 +46,30 @@ export const adminCheck = createServerFn({ method: "GET" }).handler(async () => 
   return { unlocked: !!s.data.unlocked };
 });
 
+// ---- Image upload (Supporte Kits, Boutique "products", et Galerie "photos") ----
+export const adminUploadImage = createServerFn({ method: "POST" })
+  .inputValidator((d: { 
+    folder: "photos" | "kits" | "products"; 
+    filename: string; 
+    contentType: string; 
+    dataBase64: string 
+  }) => d)
+  .handler(async ({ data }) => {
+    await requireAdmin();
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const ext = (data.filename.split(".").pop() || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "");
+    const safe = `${data.folder}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+    const bytes = Buffer.from(data.dataBase64, "base64");
+    
+    const { error } = await supabaseAdmin.storage.from("media").upload(safe, bytes, {
+      contentType: data.contentType || "image/jpeg",
+      upsert: false,
+    });
+    if (error) throw new Error(error.message);
+    
+    return { url: `/api/public/media/${safe}`, path: safe };
+  });
+
 // ---- Gallery photos ----
 export const adminAddPhoto = createServerFn({ method: "POST" })
   .inputValidator((d: { url: string; caption?: string; sort_order?: number }) => d)
@@ -171,24 +195,6 @@ export const adminDeleteProduct = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
     return { ok: true };
   });
-
-// ---- Image upload (private bucket "media", served via /api/public/media/*) ----
-export const adminUploadImage = createServerFn({ method: "POST" })
-  .inputValidator((d: { folder: "photos" | "kits" | "products"; filename: string; contentType: string; dataBase64: string }) => d)
-  .handler(async ({ data }) => {
-    await requireAdmin();
-    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-    const ext = (data.filename.split(".").pop() || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "");
-    const safe = `${data.folder}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
-    const bytes = Buffer.from(data.dataBase64, "base64");
-    const { error } = await supabaseAdmin.storage.from("media").upload(safe, bytes, {
-      contentType: data.contentType || "image/jpeg",
-      upsert: false,
-    });
-    if (error) throw new Error(error.message);
-    return { url: `/api/public/media/${safe}`, path: safe };
-  });
-
 
 // ---- YouTube videos ----
 type YtVideo = { id: string; title: string; published: string; thumbnail: string };
