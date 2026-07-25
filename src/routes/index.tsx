@@ -779,6 +779,25 @@ function FloatingWhatsApp() {
   );
 }
 
+/* ---------------- Scroll to top ---------------- */
+function ScrollToTop() {
+  const [show, setShow] = useState(false);
+  useEffect(() => {
+    const onScroll = () => setShow(window.scrollY > 500);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+  if (!show) return null;
+  return (
+    <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      aria-label="Revenir en haut"
+      className="fixed bottom-24 right-6 z-50 grid h-11 w-11 place-items-center rounded-full border border-border bg-card text-primary shadow-xl transition-transform hover:scale-110">
+      <ArrowUp className="h-5 w-5" />
+    </button>
+  );
+}
+
 /* ---------------- Shared ---------------- */
 function SectionHeader({ eyebrow, title, description }: { eyebrow: string; title: string; description: string }) {
   return (
