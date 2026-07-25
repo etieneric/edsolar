@@ -63,6 +63,7 @@ function Index() {
       <Contact />
       <Footer />
       <FloatingWhatsApp />
+      <ScrollToTop />
     </div>
   );
 }
