@@ -953,12 +953,18 @@ function Reviews() {
               </div>
               <div>
                 <label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Note</label>
-                <div className="mt-1 flex gap-1">
+                <div className="mt-1 flex items-center gap-1">
                   {[1, 2, 3, 4, 5].map((n) => (
-                    <button type="button" key={n} onClick={() => setForm({ ...form, rating: n })} aria-label={`${n} étoiles`}>
-                      <Star className={`h-7 w-7 ${n <= form.rating ? "fill-accent text-accent" : "text-muted-foreground/40"}`} />
+                    <button type="button" key={n}
+                      onClick={() => setForm((f) => ({ ...f, rating: n }))}
+                      onMouseEnter={() => setHoverRating(n)}
+                      onMouseLeave={() => setHoverRating(0)}
+                      aria-label={`${n} étoile${n > 1 ? "s" : ""}`}
+                      className="p-1 transition-transform hover:scale-110">
+                      <Star className={`pointer-events-none h-8 w-8 ${n <= (hoverRating || form.rating) ? "fill-accent text-accent" : "text-muted-foreground/40"}`} />
                     </button>
                   ))}
+                  <span className="ml-2 text-sm font-semibold text-muted-foreground">{form.rating}/5</span>
                 </div>
               </div>
               <div>
