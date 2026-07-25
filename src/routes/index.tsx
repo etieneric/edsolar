@@ -718,15 +718,13 @@ function Footer() {
     <footer className="border-t border-border bg-primary-dark text-primary-foreground">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 lg:grid-cols-4">
         <div className="lg:col-span-2">
-          <div className="flex items-center gap-2">
-            <span className="grid h-11 w-11 place-items-center rounded-xl bg-accent text-accent-foreground">
-              <Leaf className="h-5 w-5" />
-            </span>
+          <a href="/" className="inline-flex items-center gap-3 transition-opacity hover:opacity-90" aria-label="Retour à l'accueil">
+            <img src={logo.url} alt="EDSOLAR Énergie Cameroun" className="h-12 w-12 rounded-xl bg-white object-contain p-1 shadow-md" />
             <div>
               <p className="text-lg font-black">EDSOLAR</p>
               <p className="text-[10px] uppercase tracking-[0.15em] text-white/70">Énergie Cameroun</p>
             </div>
-          </div>
+          </a>
           <p className="mt-4 max-w-md text-sm text-white/75">
             L'énergie propre pour un avenir durable. Installation, maintenance et vente d'équipements solaires au Cameroun.
           </p>
