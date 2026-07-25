@@ -89,9 +89,12 @@ export type Database = {
           id: string
           image_url: string | null
           name: string
+          popularity: number
           price: string | null
+          price_amount: number | null
           sort_order: number
           updated_at: string
+          warranty: string | null
         }
         Insert: {
           badge?: string | null
@@ -101,9 +104,12 @@ export type Database = {
           id?: string
           image_url?: string | null
           name: string
+          popularity?: number
           price?: string | null
+          price_amount?: number | null
           sort_order?: number
           updated_at?: string
+          warranty?: string | null
         }
         Update: {
           badge?: string | null
@@ -113,9 +119,12 @@ export type Database = {
           id?: string
           image_url?: string | null
           name?: string
+          popularity?: number
           price?: string | null
+          price_amount?: number | null
           sort_order?: number
           updated_at?: string
+          warranty?: string | null
         }
         Relationships: []
       }
