@@ -9,7 +9,7 @@ import {
   Facebook, Instagram, Linkedin, Send, Youtube, PlayCircle, Package,
   Search, ArrowUp,
 } from "lucide-react";
-import logo from "@/assets/edsolar-logo-new.jpeg.asset.json";
+import logo from "@/assets/edsolar-logo-new.jpeg";
 import hero from "@/assets/install-panels.jpeg";
 import gal1 from "@/assets/install-inverter.jpeg.asset.json";
 import gal2 from "@/assets/install-team.jpeg.asset.json";
