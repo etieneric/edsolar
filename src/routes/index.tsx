@@ -11,9 +11,9 @@ import {
 } from "lucide-react";
 import logo from "@/assets/edsolar-logo-new.jpeg";
 import hero from "@/assets/install-panels.jpeg";
-import gal1 from "@/assets/install-inverter.jpeg.asset.json";
-import gal2 from "@/assets/install-team.jpeg.asset.json";
-import gal3 from "@/assets/install-breaker.jpeg.asset.json";
+import gal1 from "@/assets/gallery-1.jpg";
+import gal2 from "@/assets/gallery-2.jpg";
+import gal3 from "@/assets/gallery-3.jpg";
 import teamPortrait from "@/assets/team-portrait.jpeg";
 import { supabase } from "@/integrations/supabase/client";
 import { fetchYouTubeVideos } from "@/lib/admin.functions";
@@ -236,8 +236,6 @@ function Calculator() {
       peak += n * a.watts;
       daily += n * a.watts * a.hours;
     }
-    // Grille tarifaire officielle EDSOLAR (kits complets clé en main, FCFA)
-    // Réf. réelle : 3370 W crête / 15 620 Wh/j → 8 kVA, 2 × 48V 400Ah, 12 panneaux 450W
     type Tier = { kva: number; voltage: number; unitAh: number; price: number };
     const TIERS: Tier[] = [
       { kva: 1,  voltage: 12, unitAh: 100, price:   500_000 },
@@ -246,24 +244,21 @@ function Calculator() {
       { kva: 5,  voltage: 48, unitAh: 200, price: 2_000_000 },
       { kva: 6,  voltage: 48, unitAh: 200, price: 2_000_000 },
       { kva: 8,  voltage: 48, unitAh: 400, price: 2_500_000 },
-      { kva: 12, voltage: 48, unitAh: 300, price: 3_000_000 }, // 15 kWh / 300A
+      { kva: 12, voltage: 48, unitAh: 300, price: 3_000_000 },
     ];
-    const XL_12KVA: Tier = { kva: 12, voltage: 48, unitAh: 600, price: 5_000_000 }; // 30 kWh / 600A
+    const XL_12KVA: Tier = { kva: 12, voltage: 48, unitAh: 600, price: 5_000_000 };
 
-    const rawKva = (peak * 2) / 1000; // marge démarrage x2
+    const rawKva = (peak * 2) / 1000;
     let tier = TIERS.find((t) => t.kva >= rawKva) ?? TIERS[TIERS.length - 1];
 
-    // Batteries : capacité totale requise (2 j d'autonomie, DoD 80%)
     const targetWh = (daily * 2) / 0.8;
     let bCount = daily > 0 ? Math.max(1, Math.ceil(targetWh / (tier.voltage * tier.unitAh))) : 0;
 
-    // Upgrade 12 kVA → 30 kWh / 600A si consommation élevée
     if (tier.kva === 12 && daily > 15_000) {
       tier = XL_12KVA;
       bCount = daily > 0 ? Math.max(1, Math.ceil(targetWh / (tier.voltage * tier.unitAh))) : 0;
     }
 
-    // Panneaux 450W, 4h ensoleillement effectif, rendement système 0.72
     const pCount = daily > 0 ? Math.max(1, Math.round(daily / (450 * 4 * 0.72))) : 0;
     const price = daily === 0 ? 0 : tier.price;
 
@@ -320,7 +315,6 @@ function Calculator() {
               <Metric icon={Battery} label={`Batteries lithium ${systemVoltage}V`} value={`${batteryCount} × ${batteryUnitAh} Ah`} />
               <Metric icon={Sun} label="Panneaux solaires 450W" value={`${panelsCount} panneaux`} />
               <Metric icon={Zap} label="Budget estimatif" value={priceLabel} highlight />
-
             </div>
             <a href={`${WA}?text=${msg}`} target="_blank" rel="noreferrer"
                className="mt-6 flex items-center justify-center gap-2 rounded-full bg-accent px-5 py-3.5 text-sm font-bold text-accent-foreground shadow-lg glow-green">
@@ -423,7 +417,6 @@ function Products() {
         <SectionHeader eyebrow="Boutique" title="Équipements solaires de qualité"
           description="Panneaux, batteries, onduleurs et kits complets — sélectionnés pour leur fiabilité." />
 
-        {/* Toolbar: search + sort */}
         <div className="mx-auto mt-8 grid max-w-4xl gap-3 sm:grid-cols-[1fr_auto]">
           <div className="relative">
             <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
@@ -441,7 +434,6 @@ function Products() {
           </select>
         </div>
 
-        {/* Category chips */}
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           {categories.map((c) => (
             <button key={c} onClick={() => setCat(c)}
@@ -451,7 +443,6 @@ function Products() {
           ))}
         </div>
 
-        {/* Buyer info (used to prefill WhatsApp message) */}
         <div className="mx-auto mt-6 grid max-w-3xl gap-3 rounded-2xl border border-border bg-card p-4 sm:grid-cols-[1fr_1fr_auto] sm:items-end">
           <div>
             <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Votre nom</label>
@@ -497,8 +488,6 @@ function Products() {
   );
 }
 
-
-
 /* ---------------- Trust ---------------- */
 const STATS = [
   { icon: Users, value: "+500", label: "Installations réalisées" },
@@ -525,7 +514,6 @@ function Trust() {
           ))}
         </div>
 
-
         <div className="mt-14 flex flex-wrap items-center justify-center gap-4">
           {["Normes IEC 61215", "ISO 9001", "Garantie 25 ans", "Ingénieurs certifiés", "Support 7j/7"].map((b) => (
             <span key={b} className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-4 py-2 text-xs font-semibold text-primary">
@@ -540,9 +528,9 @@ function Trust() {
 
 /* ---------------- Realisations ---------------- */
 const STATIC_GALLERY = [
-  { src: gal1.url, title: "Installation onduleur & batterie Lithium", loc: "Yaoundé" },
-  { src: gal2.url, title: "Équipe technique EDSOLAR en intervention", loc: "Tradex Olembe" },
-  { src: gal3.url, title: "Tableau électrique & protections solaires", loc: "Yaoundé" },
+  { src: gal1, title: "Installation onduleur & batterie Lithium", loc: "Yaoundé" },
+  { src: gal2, title: "Équipe technique EDSOLAR en intervention", loc: "Tradex Olembe" },
+  { src: gal3, title: "Tableau électrique & protections solaires", loc: "Yaoundé" },
 ];
 
 function Realisations() {
@@ -560,9 +548,13 @@ function Realisations() {
         <div className="mt-12 grid gap-6 md:grid-cols-3">
           {items.map((g, i) => (
             <figure key={`${g.src}-${i}`} className="group overflow-hidden rounded-2xl border border-border bg-card glow-green">
-              <div className="aspect-[4/3] overflow-hidden">
-                <img src={g.src} alt={g.title} width={1200} height={800} loading="lazy"
-                     className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+              <div className="aspect-[4/3] overflow-hidden bg-muted">
+                {g.src ? (
+                  <img src={g.src} alt={g.title} width={1200} height={800} loading="lazy"
+                       className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                ) : (
+                  <div className="grid h-full w-full place-items-center text-xs text-muted-foreground">Photo indisponible</div>
+                )}
               </div>
               <figcaption className="flex items-center justify-between p-4">
                 <div>
@@ -607,8 +599,8 @@ function About() {
         </div>
         <div className="grid grid-cols-2 gap-4">
           <img src={teamPortrait} alt="Technicien EDSOLAR" className="col-span-2 max-h-[520px] w-full rounded-2xl object-contain" loading="lazy" />
-          <img src={gal1.url} alt="" className="aspect-square w-full rounded-2xl object-cover" loading="lazy" />
-          <img src={gal3.url} alt="" className="aspect-square w-full rounded-2xl object-cover" loading="lazy" />
+          <img src={gal1} alt="Installation EDSOLAR" className="aspect-square w-full rounded-2xl object-cover" loading="lazy" />
+          <img src={gal3} alt="Tableau électrique" className="aspect-square w-full rounded-2xl object-cover" loading="lazy" />
         </div>
       </div>
     </section>
@@ -761,7 +753,6 @@ function Footer() {
           </nav>
         </div>
       </div>
-
     </footer>
   );
 }
@@ -1003,4 +994,3 @@ function Reviews() {
     </section>
   );
 }
-
