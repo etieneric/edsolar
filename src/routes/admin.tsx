@@ -12,7 +12,7 @@ import {
   adminUpsertKit, adminDeleteKit,
   adminListReviews, adminSetReviewApproved, adminDeleteReview,
   adminUpsertProduct, adminDeleteProduct,
-  adminUploadImage,
+  adminCreateUploadUrl,
 } from "@/lib/admin.functions";
 
 export const Route = createFileRoute("/admin")({
