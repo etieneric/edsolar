@@ -14,7 +14,7 @@ import hero from "@/assets/install-panels.jpeg";
 import gal1 from "@/assets/install-inverter.jpeg.asset.json";
 import gal2 from "@/assets/install-team.jpeg.asset.json";
 import gal3 from "@/assets/install-breaker.jpeg.asset.json";
-import teamPortrait from "@/assets/team-portrait.jpeg.asset.json";
+import teamPortrait from "@/assets/team-portrait.jpeg";
 import { supabase } from "@/integrations/supabase/client";
 import { fetchYouTubeVideos } from "@/lib/admin.functions";
 
