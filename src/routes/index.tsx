@@ -75,7 +75,7 @@ function Header() {
     <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
         <a href="#accueil" className="flex items-center gap-2 shrink-0">
-          <img src={logo.url} alt="EDSOLAR Énergie Cameroun" className="h-11 w-11 rounded-xl bg-white object-contain p-0.5 shadow-md" />
+          <img src={logo} alt="EDSOLAR Énergie Cameroun" className="h-11 w-11 rounded-xl bg-white object-contain p-0.5 shadow-md" />
           <span className="flex flex-col leading-tight">
             <span className="text-lg font-black tracking-tight text-primary">EDSOLAR</span>
             <span className="text-[10px] font-semibold uppercase tracking-[0.15em] text-muted-foreground">Énergie Cameroun</span>
@@ -151,7 +151,7 @@ function Hero() {
         <div className="hidden lg:block">
           <div className="ml-auto max-w-sm rounded-3xl border border-white/20 bg-white/10 p-6 text-white shadow-2xl backdrop-blur-xl">
             <div className="flex items-center gap-3">
-              <img src={logo.url} alt="EDSOLAR" className="h-14 w-14 rounded-xl bg-white object-contain p-1" />
+              <img src={logo} alt="EDSOLAR" className="h-14 w-14 rounded-xl bg-white object-contain p-1" />
               <div>
                 <p className="text-xs uppercase tracking-widest text-white/70">Contactez-nous</p>
                 <p className="text-lg font-bold">EDSOLAR Yaoundé</p>
@@ -719,7 +719,7 @@ function Footer() {
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 lg:grid-cols-4">
         <div className="lg:col-span-2">
           <a href="/" className="inline-flex items-center gap-3 transition-opacity hover:opacity-90" aria-label="Retour à l'accueil">
-            <img src={logo.url} alt="EDSOLAR Énergie Cameroun" className="h-12 w-12 rounded-xl bg-white object-contain p-1 shadow-md" />
+            <img src={logo} alt="EDSOLAR Énergie Cameroun" className="h-12 w-12 rounded-xl bg-white object-contain p-1 shadow-md" />
             <div>
               <p className="text-lg font-black">EDSOLAR</p>
               <p className="text-[10px] uppercase tracking-[0.15em] text-white/70">Énergie Cameroun</p>
