@@ -867,7 +867,7 @@ function Kits() {
   );
 }
 
-/* ---------------- Videos (YouTube @Bimediatv) ---------------- */
+/* ---------------- Videos (YouTube @EDSOLAR) ---------------- */
 function Videos() {
   const [videos, setVideos] = useState<{ id: string; title: string; thumbnail: string }[]>([]);
   const [loading, setLoading] = useState(true);
@@ -881,7 +881,7 @@ function Videos() {
         <div className="mx-auto max-w-2xl text-center">
           <span className="text-xs font-bold uppercase tracking-widest text-accent">Vidéos de terrain</span>
           <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-4xl md:text-5xl">Découvrez nos vidéos de terrain</h2>
-          <p className="mt-4 text-base text-white/80">Retrouvez toutes nos installations et interventions sur notre chaîne YouTube @Bimediatv.</p>
+          <p className="mt-4 text-base text-white/80">Retrouvez toutes nos installations et interventions sur notre chaîne YouTube @EDSOLAR.</p>
         </div>
         <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {loading && Array.from({ length: 6 }).map((_, i) => (
@@ -889,7 +889,7 @@ function Videos() {
           ))}
           {!loading && videos.length === 0 && (
             <div className="col-span-full rounded-2xl border border-white/15 bg-white/5 p-6 text-center text-sm text-white/80">
-              Impossible de charger les vidéos pour l'instant. <a className="underline" href="https://www.youtube.com/@Bimediatv" target="_blank" rel="noreferrer">Voir la chaîne</a>
+              Impossible de charger les vidéos pour l'instant. <a className="underline" href="https://www.youtube.com/@EDSOLAR" target="_blank" rel="noreferrer">Voir la chaîne</a>
             </div>
           )}
           {videos.map((v) => (
@@ -908,9 +908,9 @@ function Videos() {
           ))}
         </div>
         <div className="mt-10 flex justify-center">
-          <a href="https://www.youtube.com/@Bimediatv?sub_confirmation=1" target="_blank" rel="noreferrer"
+          <a href="https://www.youtube.com/@EDSOLAR?sub_confirmation=1" target="_blank" rel="noreferrer"
              className="inline-flex items-center gap-2 rounded-full bg-[#FF0000] px-6 py-3 text-sm font-bold text-white shadow-lg transition-transform hover:scale-105">
-            <Youtube className="h-5 w-5" /> S'abonner à @Bimediatv
+            <Youtube className="h-5 w-5" /> S'abonner à @EDSOLAR
           </a>
         </div>
       </div>
