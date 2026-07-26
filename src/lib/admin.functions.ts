@@ -202,7 +202,7 @@ let ytCache: { at: number; videos: YtVideo[] } | null = null;
 
 export const fetchYouTubeVideos = createServerFn({ method: "GET" }).handler(async () => {
   if (ytCache && Date.now() - ytCache.at < 1000 * 60 * 30) return ytCache.videos;
-  const handle = process.env.YOUTUBE_CHANNEL_HANDLE || "Bimediatv";
+  const handle = process.env.YOUTUBE_CHANNEL_HANDLE || "EDSOLAR";
   try {
     const pageRes = await fetch(`https://www.youtube.com/@${handle}`, {
       headers: { "user-agent": "Mozilla/5.0" },
