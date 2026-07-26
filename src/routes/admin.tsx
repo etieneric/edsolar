@@ -12,7 +12,7 @@ import {
   adminUpsertKit, adminDeleteKit,
   adminListReviews, adminSetReviewApproved, adminDeleteReview,
   adminUpsertProduct, adminDeleteProduct,
-  adminUploadImage,
+  adminCreateUploadUrl,
 } from "@/lib/admin.functions";
 
 export const Route = createFileRoute("/admin")({
@@ -126,7 +126,7 @@ function ImageUploader({
   const inputRef = useRef<HTMLInputElement>(null);
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
-  const upload = useServerFn(adminUploadImage);
+  const createUploadUrl = useServerFn(adminCreateUploadUrl);
 
   const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -137,19 +137,20 @@ function ImageUploader({
   const pickFile = async (file: File) => {
     setErr(null);
     if (!file.type.startsWith("image/")) { setErr("Fichier non image"); return; }
-    if (file.size > 8 * 1024 * 1024) { setErr("Image trop lourde (max 8 Mo)"); return; }
+    if (file.size > 15 * 1024 * 1024) { setErr("Image trop lourde (max 15 Mo)"); return; }
     setBusy(true);
     try {
-      const buf = await file.arrayBuffer();
-      let binary = "";
-      const bytes = new Uint8Array(buf);
-      const chunk = 0x8000;
-      for (let i = 0; i < bytes.length; i += chunk) {
-        binary += String.fromCharCode(...bytes.subarray(i, i + chunk));
+      const { signedUrl, publicUrl } = await createUploadUrl({ data: { folder, filename: file.name } });
+      const put = await fetch(signedUrl, {
+        method: "PUT",
+        headers: { "Content-Type": file.type || "image/jpeg" },
+        body: file,
+      });
+      if (!put.ok) {
+        const t = await put.text().catch(() => "");
+        throw new Error(`Upload échoué (${put.status}) ${t}`.trim());
       }
-      const base64 = btoa(binary);
-      const r = await upload({ data: { folder, filename: file.name, contentType: file.type, dataBase64: base64 } });
-      onChange(r.url);
+      onChange(publicUrl);
     } catch (e: any) {
       setErr(e?.message || "Échec de l'envoi");
     } finally {

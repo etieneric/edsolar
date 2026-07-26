@@ -46,13 +46,28 @@ export const adminCheck = createServerFn({ method: "GET" }).handler(async () => 
   return { unlocked: !!s.data.unlocked };
 });
 
-// ---- Image upload (Supporte Kits, Boutique "products", et Galerie "photos") ----
+// ---- Image upload : URL d'upload signée (Photos, Kits, Boutique) ----
+// Le navigateur PUT le fichier directement dans le bucket privé — pas de base64,
+// pas de limite de payload sur les server functions.
+export const adminCreateUploadUrl = createServerFn({ method: "POST" })
+  .inputValidator((d: { folder: "photos" | "kits" | "products"; filename: string }) => d)
+  .handler(async ({ data }) => {
+    await requireAdmin();
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const ext = (data.filename.split(".").pop() || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "") || "jpg";
+    const path = `${data.folder}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+    const { data: signed, error } = await supabaseAdmin.storage.from("media").createSignedUploadUrl(path);
+    if (error || !signed) throw new Error(error?.message || "Impossible de créer l'URL d'upload");
+    return { path, signedUrl: signed.signedUrl, token: signed.token, publicUrl: `/api/public/media/${path}` };
+  });
+
+// Fallback base64 (conservé pour compatibilité)
 export const adminUploadImage = createServerFn({ method: "POST" })
-  .inputValidator((d: { 
-    folder: "photos" | "kits" | "products"; 
-    filename: string; 
-    contentType: string; 
-    dataBase64: string 
+  .inputValidator((d: {
+    folder: "photos" | "kits" | "products";
+    filename: string;
+    contentType: string;
+    dataBase64: string
   }) => d)
   .handler(async ({ data }) => {
     await requireAdmin();
@@ -60,13 +75,11 @@ export const adminUploadImage = createServerFn({ method: "POST" })
     const ext = (data.filename.split(".").pop() || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "");
     const safe = `${data.folder}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
     const bytes = Buffer.from(data.dataBase64, "base64");
-    
     const { error } = await supabaseAdmin.storage.from("media").upload(safe, bytes, {
       contentType: data.contentType || "image/jpeg",
       upsert: false,
     });
     if (error) throw new Error(error.message);
-    
     return { url: `/api/public/media/${safe}`, path: safe };
   });
 
