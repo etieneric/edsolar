@@ -46,7 +46,7 @@ export const adminCheck = createServerFn({ method: "GET" }).handler(async () => 
   return { unlocked: !!s.data.unlocked };
 });
 
-// ---- Image upload (Supporte Kits, Boutique "products", et Galerie "photos") ----
+// ---- Image upload (Kits, Products, Photos/Gallery) ----
 export const adminUploadImage = createServerFn({ method: "POST" })
   .inputValidator((d: { 
     folder: "photos" | "kits" | "products"; 
@@ -61,13 +61,17 @@ export const adminUploadImage = createServerFn({ method: "POST" })
     const safe = `${data.folder}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
     const bytes = Buffer.from(data.dataBase64, "base64");
     
+    // Upload vers le stockage Supabase (Bucket 'media')
     const { error } = await supabaseAdmin.storage.from("media").upload(safe, bytes, {
       contentType: data.contentType || "image/jpeg",
       upsert: false,
     });
     if (error) throw new Error(error.message);
     
-    return { url: `/api/public/media/${safe}`, path: safe };
+    // Génère l'URL publique Supabase complète (évite les erreurs 404 relatives /api/public)
+    const { data: publicUrlData } = supabaseAdmin.storage.from("media").getPublicUrl(safe);
+
+    return { url: publicUrlData.publicUrl, path: safe };
   });
 
 // ---- Gallery photos ----
@@ -90,6 +94,23 @@ export const adminDeletePhoto = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     await requireAdmin();
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+
+    // 1. Récupère d'abord l'URL de la photo pour tenter de supprimer le fichier dans Storage
+    const { data: photo } = await supabaseAdmin
+      .from("gallery_photos")
+      .select("url")
+      .eq("id", data.id)
+      .single();
+
+    if (photo?.url) {
+      // Extrait le chemin relatif 'photos/filename.ext' depuis l'URL Supabase
+      const match = photo.url.match(/media\/(photos\/[^?]+)/);
+      if (match?.[1]) {
+        await supabaseAdmin.storage.from("media").remove([match[1]]);
+      }
+    }
+
+    // 2. Supprime la ligne de la base de données SQL
     const { error } = await supabaseAdmin.from("gallery_photos").delete().eq("id", data.id);
     if (error) throw new Error(error.message);
     return { ok: true };
@@ -203,7 +224,6 @@ let ytCache: { at: number; videos: YtVideo[] } | null = null;
 export const fetchYouTubeVideos = createServerFn({ method: "GET" }).handler(async () => {
   if (ytCache && Date.now() - ytCache.at < 1000 * 60 * 30) return ytCache.videos;
   
-  // Utilise EDSOLAR par défaut et retire le '@' éventuel pour former l'URL proprement
   const handleRaw = process.env.YOUTUBE_CHANNEL_HANDLE || "EDSOLAR";
   const handle = handleRaw.replace(/^@/, "");
   
