@@ -47,8 +47,6 @@ export const adminCheck = createServerFn({ method: "GET" }).handler(async () => 
 });
 
 // ---- Image upload : URL d'upload signée (Photos, Kits, Boutique) ----
-// Le navigateur PUT le fichier directement dans le bucket privé — pas de base64,
-// pas de limite de payload sur les server functions.
 export const adminCreateUploadUrl = createServerFn({ method: "POST" })
   .inputValidator((d: { folder: "photos" | "kits" | "products"; filename: string }) => d)
   .handler(async ({ data }) => {
@@ -56,31 +54,45 @@ export const adminCreateUploadUrl = createServerFn({ method: "POST" })
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const ext = (data.filename.split(".").pop() || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "") || "jpg";
     const path = `${data.folder}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+    
     const { data: signed, error } = await supabaseAdmin.storage.from("media").createSignedUploadUrl(path);
     if (error || !signed) throw new Error(error?.message || "Impossible de créer l'URL d'upload");
-    return { path, signedUrl: signed.signedUrl, token: signed.token, publicUrl: `/api/public/media/${path}` };
+    
+    // Récupération de la vraie URL publique Supabase
+    const { data: pub } = supabaseAdmin.storage.from("media").getPublicUrl(path);
+
+    return { path, signedUrl: signed.signedUrl, token: signed.token, publicUrl: pub.publicUrl };
   });
 
-// Fallback base64 (conservé pour compatibilité)
+// Upload direct en Base64 vers Supabase Storage
 export const adminUploadImage = createServerFn({ method: "POST" })
   .inputValidator((d: {
     folder: "photos" | "kits" | "products";
     filename: string;
     contentType: string;
-    dataBase64: string
+    dataBase64: string;
   }) => d)
   .handler(async ({ data }) => {
     await requireAdmin();
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const ext = (data.filename.split(".").pop() || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "");
-    const safe = `${data.folder}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
-    const bytes = Buffer.from(data.dataBase64, "base64");
-    const { error } = await supabaseAdmin.storage.from("media").upload(safe, bytes, {
+    const safePath = `${data.folder}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
+    
+    // Conversion Base64 -> Buffer
+    const buffer = Buffer.from(data.dataBase64, "base64");
+    
+    // Upload dans le bucket Supabase 'media'
+    const { error } = await supabaseAdmin.storage.from("media").upload(safePath, buffer, {
       contentType: data.contentType || "image/jpeg",
       upsert: false,
     });
-    if (error) throw new Error(error.message);
-    return { url: `/api/public/media/${safe}`, path: safe };
+
+    if (error) throw new Error(`Erreur Supabase Storage: ${error.message}`);
+
+    // Obtenir l'URL publique générée par Supabase
+    const { data: pub } = supabaseAdmin.storage.from("media").getPublicUrl(safePath);
+
+    return { url: pub.publicUrl, path: safePath };
   });
 
 // ---- Gallery photos ----
@@ -103,6 +115,16 @@ export const adminDeletePhoto = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     await requireAdmin();
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+
+    // Optionnel : Récupérer la photo pour supprimer aussi le fichier dans Storage
+    const { data: photo } = await supabaseAdmin.from("gallery_photos").select("url").eq("id", data.id).single();
+    if (photo?.url && photo.url.includes("/storage/v1/object/public/media/")) {
+      const filePath = photo.url.split("/storage/v1/object/public/media/")[1];
+      if (filePath) {
+        await supabaseAdmin.storage.from("media").remove([filePath]);
+      }
+    }
+
     const { error } = await supabaseAdmin.from("gallery_photos").delete().eq("id", data.id);
     if (error) throw new Error(error.message);
     return { ok: true };
@@ -216,7 +238,6 @@ let ytCache: { at: number; videos: YtVideo[] } | null = null;
 export const fetchYouTubeVideos = createServerFn({ method: "GET" }).handler(async () => {
   if (ytCache && Date.now() - ytCache.at < 1000 * 60 * 30) return ytCache.videos;
   
-  // Utilise EDSOLAR par défaut et retire le '@' éventuel pour former l'URL proprement
   const handleRaw = process.env.YOUTUBE_CHANNEL_HANDLE || "EDSOLAR";
   const handle = handleRaw.replace(/^@/, "");
   
