@@ -6,7 +6,8 @@ import {
   Zap, Cpu, Tv, Refrigerator, Snowflake, Lightbulb, WashingMachine,
   Laptop, Fan, Microwave, CheckCircle2, Star, Award, Clock, Users,
   Facebook, Instagram, Linkedin, Send, Package, Search, ArrowUp,
-  Radio, Camera, Video, Sparkles, HelpCircle
+  Radio, Camera, Video, Sparkles, Globe, CreditCard, ShieldAlert,
+  Check, AlertTriangle
 } from "lucide-react";
 import logo from "@/assets/edsolar-logo-new.jpeg";
 import hero from "@/assets/install-panels.jpeg";
@@ -19,10 +20,10 @@ import { supabase } from "@/integrations/supabase/client";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "EDSOLAR Énergie Cameroun — Installation Solaire à Yaoundé" },
-      { name: "description", content: "Installation de panneaux solaires, maintenance et vente d'équipements solaires à Yaoundé. Simulateur devis solaire gratuit au +237 650544444." },
-      { property: "og:title", content: "EDSOLAR Énergie Cameroun — Installation Solaire à Yaoundé" },
-      { property: "og:description", content: "Installation de panneaux solaires, maintenance et vente d'équipements solaires à Yaoundé. Simulateur devis solaire gratuit au +237 650544444." },
+      { title: "EDSOLAR Énergie Cameroun — Installation Solaire à Yaoundé & Afrique Centrale" },
+      { name: "description", content: "Solutions anti-délestage Eneo, installation de panneaux solaires, batteries Lithium et matériel certifié à Yaoundé. Devis gratuit sur WhatsApp au +237 650544444." },
+      { property: "og:title", content: "EDSOLAR Énergie Cameroun — Installation Solaire & Anti-Délestage" },
+      { property: "og:description", content: "Fini les coupures Eneo. Équipements solaires certifiés Tier 1 à Yaoundé et livraison dans toute l'Afrique Centrale." },
     ],
   }),
   component: Index,
@@ -48,18 +49,18 @@ const TRANSLATIONS = {
     navContact: "Contact",
     btnQuote: "Devis gratuit",
     
-    heroTag: "L'énergie propre pour un avenir durable",
-    heroTitle1: "Passez à l'Énergie ",
-    heroTitle2: "Solaire",
-    heroTitle3: " avec EDSOLAR",
-    heroDesc: "Installation de panneaux solaires, maintenance préventive et vente d'équipements de haute qualité à Yaoundé et dans tout le Cameroun.",
+    heroTag: "Fini les délestages Eneo intempestifs",
+    heroTitle1: "L'Énergie Solaire ",
+    heroTitle2: "Autonome & Fiable",
+    heroTitle3: " pour Votre Confort",
+    heroDesc: "Assurez une électricité 24h/24 à la maison et au bureau. Équipements certifiés Tier 1, installations garanties et SAV réactif à Yaoundé et dans toute l'Afrique Centrale.",
     heroSimulateBtn: "Simuler vos besoins énergétiques",
     heroExpertBtn: "Contacter un expert",
-    heroStat1: "+500 installations",
-    heroStat2: "Garantie 25 ans",
+    heroStat1: "+500 installations réussies",
+    heroStat2: "Garantie constructeur 25 ans",
     heroStat3: "Cameroun & Afrique Centrale",
     heroCardTitle: "EDSOLAR Yaoundé",
-    heroCardSub: "Contactez-nous",
+    heroCardSub: "Contact direct",
     
     servicesEyebrow: "Nos Services",
     servicesTitle: "Une expertise complète en énergie solaire",
@@ -88,8 +89,8 @@ const TRANSLATIONS = {
     simNote: "Estimation indicative — nos ingénieurs valident le dimensionnement final.",
 
     shopEyebrow: "Boutique",
-    shopTitle: "Équipements solaires de qualité",
-    shopDesc: "Panneaux, batteries, onduleurs et kits complets — sélectionnés pour leur fiabilité.",
+    shopTitle: "Équipements solaires certifiés d'usine",
+    shopDesc: "Panneaux, batteries Lithium, onduleurs et kits complets — zéro contrefaçon.",
     shopSearchPlaceholder: "Rechercher un équipement (onduleur, batterie, panneau…)",
     shopSortFeatured: "Trier : à la une",
     shopSortPriceAsc: "Prix croissant",
@@ -179,18 +180,18 @@ const TRANSLATIONS = {
     navContact: "Contact",
     btnQuote: "Free Quote",
     
-    heroTag: "Clean energy for a sustainable future",
-    heroTitle1: "Switch to ",
-    heroTitle2: "Solar",
-    heroTitle3: " Energy with EDSOLAR",
-    heroDesc: "Solar panel installation, preventive maintenance, and sale of high-quality solar equipment in Yaoundé and across Cameroon.",
+    heroTag: "No more unexpected power outages",
+    heroTitle1: "Autonomous & Reliable ",
+    heroTitle2: "Solar Energy",
+    heroTitle3: " for Your Comfort",
+    heroDesc: "Ensure 24/7 power at home and office. Tier-1 certified equipment, guaranteed installations, and responsive support in Yaoundé and Central Africa.",
     heroSimulateBtn: "Simulate your energy needs",
     heroExpertBtn: "Talk to an expert",
-    heroStat1: "+500 installations",
-    heroStat2: "25-year warranty",
+    heroStat1: "+500 successful setups",
+    heroStat2: "25-year manufacturer warranty",
     heroStat3: "Cameroon & Central Africa",
     heroCardTitle: "EDSOLAR Yaoundé",
-    heroCardSub: "Get in touch",
+    heroCardSub: "Direct Contact",
     
     servicesEyebrow: "Our Services",
     servicesTitle: "Comprehensive expertise in solar energy",
@@ -219,8 +220,8 @@ const TRANSLATIONS = {
     simNote: "Indicative estimate — final sizing validated by our engineers.",
 
     shopEyebrow: "Shop",
-    shopTitle: "High-quality solar equipment",
-    shopDesc: "Panels, batteries, inverters, and complete kits — selected for ultimate reliability.",
+    shopTitle: "Factory certified solar equipment",
+    shopDesc: "Panels, Lithium batteries, inverters, and complete kits — zero counterfeit.",
     shopSearchPlaceholder: "Search equipment (inverter, battery, panel...)",
     shopSortFeatured: "Sort: Featured",
     shopSortPriceAsc: "Price low to high",
@@ -312,7 +313,7 @@ function translateDynamicText(text: string | null | undefined, lang: Lang): stri
     
     [/Alimentez votre maison avec (.*?) d'énergie propre et durable\./gi, "Power your home with $1 of clean, sustainable energy."],
     [/Paiement en plusieurs tranches : (.*?) d'avance puis (.*?)\/mois pendant (.*?)\. Installation gratuite offerte\./gi, "Installment payment: $1 upfront then $2/month for $3. Free installation included."],
-    [/Le Kit Prestige (.*?) est la solution idéale pour les foyers souhaitant bénéficier d'une alimentation électrique fiable, économique et écologique\./gi, "The Prestige $1 Kit is the ideal solar solution for households looking for reliable, cost-effective, and eco-friendly power."],
+    [/Le Kit Prestige (.*?) est la solution idéale pour les foyers souhaitant bénéficier d'une alimentation électrique fiable, écologique et sans coupures\./gi, "The Prestige $1 Kit is the ideal solar solution for households looking for reliable, eco-friendly, blackout-free power."],
     [/Conçu pour répondre aux besoins essentiels d'une maison, il vous permet de profiter de l'électricité même en cas de coupure du réseau\./gi, "Designed to meet essential home energy needs, keeping your power on even during grid outages."],
     [/Paiement comptant (.*?) FCFA ═ Paiement échelonné (.*?) d'avance (.*?)\/mois pendant (.*?)/gi, "Cash payment $1 FCFA ═ Installment payment $2 upfront, $3/month for $4"],
     [/Kit spécifiquement dimensionné pour maintenir un ou plusieurs congélateurs en fonctionnement continu, idéal pour boutiques, poissonneries et restaurants\./gi, "System specifically sized to keep one or multiple freezers running continuously, ideal for shops, fish markets, and restaurants."],
@@ -370,6 +371,8 @@ function Index() {
       <Kits t={t} lang={lang} />
       <Calculator t={t} lang={lang} />
       <Products t={t} lang={lang} />
+      <QualityComparison lang={lang} />
+      <DiasporaSection lang={lang} />
       <WhatsAppChannel t={t} />
       <Trust t={t} />
       <Realisations t={t} lang={lang} />
@@ -401,6 +404,8 @@ function Header({ lang, setLang, t }: { lang: Lang; setLang: (l: Lang) => void; 
     { href: "#kits", label: t.navKits },
     { href: "#boutique", label: t.navBoutique },
     { href: "#calculateur", label: t.navSimulator },
+    { href: "#qualite", label: lang === "fr" ? "Anti-Contrefaçon" : "Quality vs Fakes" },
+    { href: "#diaspora", label: "Diaspora" },
     { href: "#canal", label: t.navWhatsApp },
     { href: "#realisations", label: t.navRealisations },
     { href: "#avis", label: t.navReviews },
@@ -534,8 +539,8 @@ function Header({ lang, setLang, t }: { lang: Lang; setLang: (l: Lang) => void; 
 /* ---------------- Hero ---------------- */
 function Hero({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
   const waMsg = lang === "fr" 
-    ? "Bonjour EDSOLAR, je souhaite discuter d'un projet solaire." 
-    : "Hello EDSOLAR, I would like to discuss a solar energy project.";
+    ? "Bonjour EDSOLAR, je souhaite discuter d'un projet solaire pour ma maison/entreprise." 
+    : "Hello EDSOLAR, I would like to discuss a solar energy project for my home/business.";
 
   return (
     <section id="accueil" className="relative isolate overflow-hidden">
@@ -545,7 +550,7 @@ function Hero({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-20 sm:px-6 md:py-32 lg:grid-cols-[1.15fr_1fr] lg:py-40">
         <div className="text-white">
           <span className="inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-amber-400 backdrop-blur">
-            <Sun className="h-3.5 w-3.5 text-amber-400" /> {t.heroTag}
+            <Zap className="h-3.5 w-3.5 text-amber-400 fill-amber-400" /> {t.heroTag}
           </span>
           <h1 className="mt-6 text-3xl font-black leading-[1.1] tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
             {t.heroTitle1}<span className="text-amber-400">{t.heroTitle2}</span>{t.heroTitle3}
@@ -553,6 +558,15 @@ function Hero({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
           <p className="mt-6 max-w-xl text-base leading-relaxed text-slate-300 sm:text-lg">
             {t.heroDesc}
           </p>
+
+          {/* BANDEAU PAIEMENT MOBILE LOCAL */}
+          <div className="mt-6 flex flex-wrap items-center gap-2 rounded-2xl border border-white/10 bg-white/5 p-3 backdrop-blur text-xs text-slate-300">
+            <span className="font-bold text-amber-400">{lang === "fr" ? "Paiement flexible :" : "Flexible payment:"}</span>
+            <span className="rounded-md bg-amber-500/20 px-2 py-0.5 text-amber-300 font-semibold">MTN MoMo</span>
+            <span className="rounded-md bg-orange-500/20 px-2 py-0.5 text-orange-300 font-semibold">Orange Money</span>
+            <span className="rounded-md bg-blue-500/20 px-2 py-0.5 text-blue-300 font-semibold">Traites échelonnées</span>
+          </div>
+
           <div className="mt-8 flex flex-wrap gap-3">
             <a href="#calculateur" className="inline-flex items-center gap-2 rounded-full bg-amber-500 px-6 py-3.5 text-sm font-bold text-slate-950 shadow-xl shadow-amber-500/20 transition-all hover:scale-105 hover:bg-amber-400">
               <Zap className="h-4 w-4 fill-slate-950" /> {t.heroSimulateBtn}
@@ -627,7 +641,7 @@ function Services({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
 
 /* ---------------- Kits ---------------- */
 const DEFAULT_KITS = [
-  { id: "d1", slug: "prestige", title: "Kit Prestige", subtitle: "CONFORT HAUT DE GAMME POUR VILLAS ET GRANDES RÉSIDENCES", description: "Le Kit Prestige 1500W (1.5 kVA) est la solution idéale pour les foyers souhaitant bénéficier d'une alimentation électrique fiable, économique et écologique.", price: "500 000 FCFA", image_url: null as string | null, features: ["2 panneaux solaires de 200 Wc", "1 onduleur EDSOLAR 1500W (1.5 kVA)", "1 batterie Lithium 12V 100Ah", "1 contrôleur de charge MPPT 20A", "08 ampoules LED offertes", "Installation et mise en service gratuites"] },
+  { id: "d1", slug: "prestige", title: "Kit Prestige", subtitle: "CONFORT HAUT DE GAMME POUR VILLAS ET GRANDES RÉSIDENCES", description: "Le Kit Prestige 1500W (1.5 kVA) est la solution idéale pour les foyers souhaitant bénéficier d'une alimentation électrique fiable, écologique et sans coupures.", price: "500 000 FCFA", image_url: null as string | null, features: ["2 panneaux solaires de 200 Wc", "1 onduleur EDSOLAR 1500W (1.5 kVA)", "1 batterie Lithium 12V 100Ah", "1 contrôleur de charge MPPT 20A", "08 ampoules LED offertes", "Installation et mise en service gratuites"] },
   { id: "d2", slug: "congelateur", title: "Kit Congélateur", subtitle: "SOLUTION DÉDIÉE AUX COMMERCES ET POISSONNERIES", description: "Kit spécifiquement dimensionné pour maintenir un ou plusieurs congélateurs en fonctionnement continu, idéal pour boutiques, poissonneries et restaurants.", price: "1 700 000 FCFA", image_url: null, features: ["Onduleur 2 kVA / 24V", "Batterie lithium 25.6V 200Ah", "4 panneaux 450W", "Autonomie 12h", "Protection surtension"] },
 ];
 
@@ -871,8 +885,8 @@ function Products({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
 
   const buildOrderMsg = (p: Product) => {
     return lang === "fr" 
-      ? `Bonjour EDSOLAR, je souhaite commander l'équipement suivant :\n• Produit : ${p.name}\n• Prix : ${p.price ?? "Sur devis"}\n\nMerci de me donner la disponibilité.`
-      : `Hello EDSOLAR, I would like to order the following equipment:\n• Product: ${p.name}\n• Price: ${p.price ?? "Quote"}\n\nPlease confirm availability.`;
+      ? `Bonjour EDSOLAR, je souhaite commander :\n• Produit : ${p.name}\n• Prix : ${p.price ?? "Sur devis"}\n\nMerci de me donner la disponibilité.`
+      : `Hello EDSOLAR, I would like to order:\n• Product: ${p.name}\n• Price: ${p.price ?? "Quote"}\n\nPlease confirm availability.`;
   };
 
   const adviceMsg = lang === "fr"
@@ -912,7 +926,7 @@ function Products({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
           ))}
         </div>
 
-        {/* BANDEAU COMBINÉ : PILIERS RÉASSURANCE + CONSEIL TECHNIQUE WHATSAPP (OPTION 1 & 2 JUMELÉES) */}
+        {/* BANDEAU COMBINÉ : PILIERS RÉASSURANCE + CONSEIL TECHNIQUE WHATSAPP */}
         <div className="mx-auto mt-8 max-w-5xl overflow-hidden rounded-3xl border border-amber-500/20 bg-card p-6 shadow-sm">
           <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
             
@@ -991,6 +1005,151 @@ function Products({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
             </div>
           ))}
           {list.length === 0 && <p className="col-span-full text-center text-sm text-muted-foreground">{t.shopNoProduct}</p>}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---------------- NOUVELLE SECTION : ANTI-CONTREFAÇON (POURQUOI EDSOLAR) ---------------- */
+function QualityComparison({ lang }: { lang: Lang }) {
+  return (
+    <section id="qualite" className="py-16 sm:py-28">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <SectionHeader 
+          eyebrow={lang === "fr" ? "Sécurité & Transparence" : "Safety & Transparency"} 
+          title={lang === "fr" ? "Pourquoi choisir EDSOLAR vs le matériel du marché ?" : "Why choose EDSOLAR vs market equipment?"} 
+          description={lang === "fr" ? "Évitez les pièges de la contrefaçon. Découvrez ce qui fait la différence pour la sécurité de votre famille." : "Avoid counterfeit traps. See what makes the difference for your family's safety."} 
+        />
+
+        <div className="mt-12 grid gap-6 md:grid-cols-2">
+          {/* Mauvaise Qualité / Marché Local */}
+          <div className="rounded-3xl border border-red-500/20 bg-red-500/5 p-6 sm:p-8">
+            <div className="flex items-center gap-3 text-red-600 dark:text-red-400">
+              <AlertTriangle className="h-6 w-6 shrink-0" />
+              <h3 className="text-lg font-bold">{lang === "fr" ? "Matériel Bas de Gamme du Marché" : "Low Quality Market Equipment"}</h3>
+            </div>
+            <ul className="mt-6 space-y-3.5 text-sm text-muted-foreground">
+              <li className="flex items-start gap-3">
+                <X className="mt-0.5 h-5 w-5 shrink-0 text-red-500" />
+                <span>{lang === "fr" ? "Batteries GEL/Plomb périmées qui lâchent après 12 mois." : "Expired Gel/Lead batteries failing after 12 months."}</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <X className="mt-0.5 h-5 w-5 shrink-0 text-red-500" />
+                <span>{lang === "fr" ? "Onduleurs sans protection surtension (risque d'incendie)." : "Inverters lacking surge protection (fire risk)."}</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <X className="mt-0.5 h-5 w-5 shrink-0 text-red-500" />
+                <span>{lang === "fr" ? "Panneaux sous-dimensionnés et garanties fictives." : "Undersized panels and fake warranties."}</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <X className="mt-0.5 h-5 w-5 shrink-0 text-red-500" />
+                <span>{lang === "fr" ? "Aucun SAV après encaissement de votre argent." : "No after-sales support once paid."}</span>
+              </li>
+            </ul>
+          </div>
+
+          {/* Qualité EDSOLAR */}
+          <div className="rounded-3xl border border-emerald-500/30 bg-emerald-500/5 p-6 sm:p-8 shadow-md">
+            <div className="flex items-center gap-3 text-emerald-600 dark:text-emerald-400">
+              <ShieldCheck className="h-6 w-6 shrink-0" />
+              <h3 className="text-lg font-bold">{lang === "fr" ? "Engagement & Qualité EDSOLAR" : "EDSOLAR Commitment & Quality"}</h3>
+            </div>
+            <ul className="mt-6 space-y-3.5 text-sm text-foreground">
+              <li className="flex items-start gap-3">
+                <Check className="mt-0.5 h-5 w-5 shrink-0 text-emerald-600" />
+                <span><strong>{lang === "fr" ? "Batteries Lithium LiFePO4 :" : "Lithium LiFePO4 Batteries:"}</strong> {lang === "fr" ? "Durée de vie +10 ans, tolérance aux fortes chaleurs." : "+10 year lifespan, heat tolerant."}</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <Check className="mt-0.5 h-5 w-5 shrink-0 text-emerald-600" />
+                <span><strong>{lang === "fr" ? "Onduleurs Hybrides Certifiés :" : "Certified Hybrid Inverters:"}</strong> {lang === "fr" ? "Protections intégrées contre les coupures brutales." : "Built-in protection against brutal outages."}</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <Check className="mt-0.5 h-5 w-5 shrink-0 text-emerald-600" />
+                <span><strong>{lang === "fr" ? "Panneaux Tier 1 :" : "Tier-1 Panels:"}</strong> {lang === "fr" ? "Production optimale même par temps nuageux, garantie 25 ans." : "Optimal yield even on cloudy days, 25yr warranty."}</span>
+              </li>
+              <li className="flex items-start gap-3">
+                <Check className="mt-0.5 h-5 w-5 shrink-0 text-emerald-600" />
+                <span><strong>{lang === "fr" ? "Équipe sur place à Yaoundé :" : "On-site Team in Yaoundé:"}</strong> {lang === "fr" ? "Intervention garantie et suivi personnalisé." : "Guaranteed intervention and personal follow-up."}</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---------------- NOUVELLE SECTION : SPÉCIAL DIASPORA ---------------- */
+function DiasporaSection({ lang }: { lang: Lang }) {
+  const diasporaMsg = lang === "fr"
+    ? "Bonjour EDSOLAR, je vis à l'étranger (Diaspora) et je souhaite équiper la maison familiale au pays."
+    : "Hello EDSOLAR, I live abroad (Diaspora) and want to equip my family home back in Cameroon.";
+
+  return (
+    <section id="diaspora" className="bg-slate-950 py-16 text-white sm:py-28">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
+          <div>
+            <span className="inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-amber-400">
+              <Globe className="h-3.5 w-3.5 text-amber-400" /> {lang === "fr" ? "Offre Diaspora Camerounaise" : "Cameroonian Diaspora Offer"}
+            </span>
+            <h2 className="mt-4 text-2xl font-black sm:text-4xl">
+              {lang === "fr" ? "Équipez la maison familiale au pays en toute tranquillité" : "Equip your family home back home with total peace of mind"}
+            </h2>
+            <p className="mt-4 text-sm leading-relaxed text-slate-300 sm:text-base">
+              {lang === "fr"
+                ? "Vous vivez en France, au Canada, aux USA ou en Europe ? Offrez le confort solaire à vos parents et vos proches au Cameroun sans stress. Nous gérons tout de A à Z avec un suivi photos/vidéos en direct."
+                : "Living in France, Canada, USA, or Europe? Provide solar comfort to your family in Cameroon stress-free. We manage everything from A to Z with live photo/video updates."}
+            </p>
+
+            <div className="mt-6 space-y-3">
+              <div className="flex items-start gap-3 text-sm text-slate-200">
+                <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-amber-400" />
+                <span>{lang === "fr" ? "Paiement sécurisé à distance (CB Internationale, Virement, Ria/Western Union)." : "Secure remote payment (International Card, Wire transfer, Ria/Western Union)."}</span>
+              </div>
+              <div className="flex items-start gap-3 text-sm text-slate-200">
+                <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-amber-400" />
+                <span>{lang === "fr" ? "Compte-rendu vidéo WhatsApp direct à chaque étape du chantier." : "Direct WhatsApp video reports at every stage of the installation."}</span>
+              </div>
+              <div className="flex items-start gap-3 text-sm text-slate-200">
+                <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-amber-400" />
+                <span>{lang === "fr" ? "Visite technique gratuite du logement à Yaoundé, Douala ou en région." : "Free home technical survey in Yaoundé, Douala, or other regions."}</span>
+              </div>
+            </div>
+
+            <div className="mt-8">
+              <a href={waLink(diasporaMsg)} target="_blank" rel="noreferrer"
+                 className="inline-flex items-center gap-2 rounded-full bg-amber-500 px-6 py-3.5 text-sm font-bold text-slate-950 transition-transform hover:scale-105 hover:bg-amber-400">
+                <MessageCircle className="h-4 w-4 fill-slate-950" />
+                <span>{lang === "fr" ? "Lancer un projet à distance" : "Start a project from abroad"}</span>
+              </a>
+            </div>
+          </div>
+
+          <div className="relative rounded-3xl border border-slate-800 bg-slate-900/60 p-6 sm:p-8 backdrop-blur">
+            <h3 className="text-lg font-bold text-amber-400">{lang === "fr" ? "Modes de Règlement Acceptés" : "Accepted Payment Methods"}</h3>
+            <p className="mt-1 text-xs text-slate-400">{lang === "fr" ? "Pour vos proches au pays ou depuis l'étranger :" : "For local relatives or from abroad:"}</p>
+
+            <div className="mt-6 grid grid-cols-2 gap-3 text-xs">
+              <div className="rounded-xl border border-slate-800 bg-slate-950/80 p-3">
+                <span className="font-bold text-white block">MTN Mobile Money</span>
+                <span className="text-slate-400 text-[10px]">{lang === "fr" ? "Règlement local rapide" : "Fast local payment"}</span>
+              </div>
+              <div className="rounded-xl border border-slate-800 bg-slate-950/80 p-3">
+                <span className="font-bold text-white block">Orange Money</span>
+                <span className="text-slate-400 text-[10px]">{lang === "fr" ? "Règlement local rapide" : "Fast local payment"}</span>
+              </div>
+              <div className="rounded-xl border border-slate-800 bg-slate-950/80 p-3">
+                <span className="font-bold text-white block">Carte Visa / Mastercard</span>
+                <span className="text-slate-400 text-[10px]">{lang === "fr" ? "Paiement en ligne sécurisé" : "Secure online payment"}</span>
+              </div>
+              <div className="rounded-xl border border-slate-800 bg-slate-950/80 p-3">
+                <span className="font-bold text-white block">Virement & Agence</span>
+                <span className="text-slate-400 text-[10px]">{lang === "fr" ? "SEPA / Swift / Ria / WU" : "SEPA / Swift / Ria / WU"}</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
