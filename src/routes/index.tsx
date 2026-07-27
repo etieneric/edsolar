@@ -6,7 +6,7 @@ import {
   Zap, Cpu, Tv, Refrigerator, Snowflake, Lightbulb, WashingMachine,
   Laptop, Fan, Microwave, CheckCircle2, Star, Award, Clock, Users,
   Facebook, Instagram, Linkedin, Send, Package, Search, ArrowUp,
-  Radio, Camera, Video, Sparkles
+  Radio, Camera, Video, Sparkles, HelpCircle
 } from "lucide-react";
 import logo from "@/assets/edsolar-logo-new.jpeg";
 import hero from "@/assets/install-panels.jpeg";
@@ -96,9 +96,6 @@ const TRANSLATIONS = {
     shopSortPriceDesc: "Prix décroissant",
     shopSortPopularity: "Popularité",
     shopSortWarranty: "Garantie (longue → courte)",
-    shopNameLabel: "Votre nom",
-    shopPhoneLabel: "Votre téléphone",
-    shopInfoNote: "Vos infos préremplissent le message WhatsApp.",
     shopOrderWA: "Commander via WhatsApp",
     shopNoProduct: "Aucun équipement ne correspond à votre recherche.",
 
@@ -230,9 +227,6 @@ const TRANSLATIONS = {
     shopSortPriceDesc: "Price high to low",
     shopSortPopularity: "Popularity",
     shopSortWarranty: "Warranty (long → short)",
-    shopNameLabel: "Your Name",
-    shopPhoneLabel: "Your Phone Number",
-    shopInfoNote: "Your info pre-fills the WhatsApp message.",
     shopOrderWA: "Order via WhatsApp",
     shopNoProduct: "No equipment matches your search.",
 
@@ -311,14 +305,11 @@ function translateDynamicText(text: string | null | undefined, lang: Lang): stri
   if (!text) return "";
   if (lang === "fr") return text;
 
-  // Dictionnaire de remplacement ciblé pour la base de données
   const map: [RegExp | string, string][] = [
-    // Sous-titres & Badges Kits
     ["CONFORT HAUT DE GAMME POUR VILLAS ET GRANDES RÉSIDENCES", "HIGH-END COMFORT FOR VILLAS & LARGE RESIDENCES"],
     ["SOLUTION DÉDIÉE AUX COMMERCES ET POISSONNERIES", "SOLUTION FOR SHOPS, BUSINESSES & FISH MARKETS"],
     ["PROMOTION EXCEPTIONNELLE", "SPECIAL PROMOTION"],
     
-    // Descriptions Kits & Produits
     [/Alimentez votre maison avec (.*?) d'énergie propre et durable\./gi, "Power your home with $1 of clean, sustainable energy."],
     [/Paiement en plusieurs tranches : (.*?) d'avance puis (.*?)\/mois pendant (.*?)\. Installation gratuite offerte\./gi, "Installment payment: $1 upfront then $2/month for $3. Free installation included."],
     [/Le Kit Prestige (.*?) est la solution idéale pour les foyers souhaitant bénéficier d'une alimentation électrique fiable, économique et écologique\./gi, "The Prestige $1 Kit is the ideal solar solution for households looking for reliable, cost-effective, and eco-friendly power."],
@@ -326,7 +317,6 @@ function translateDynamicText(text: string | null | undefined, lang: Lang): stri
     [/Paiement comptant (.*?) FCFA ═ Paiement échelonné (.*?) d'avance (.*?)\/mois pendant (.*?)/gi, "Cash payment $1 FCFA ═ Installment payment $2 upfront, $3/month for $4"],
     [/Kit spécifiquement dimensionné pour maintenir un ou plusieurs congélateurs en fonctionnement continu, idéal pour boutiques, poissonneries et restaurants\./gi, "System specifically sized to keep one or multiple freezers running continuously, ideal for shops, fish markets, and restaurants."],
     
-    // Éléments des puces techniques (Features)
     [/(\d+) panneaux solaires de (\d+)Wc?/gi, "$1 x $2W solar panels"],
     [/(\d+) panneaux (\d+)W/gi, "$1 x $2W solar panels"],
     [/Onduleur EDSOLAR (.*)/gi, "EDSOLAR Inverter $1"],
@@ -346,7 +336,6 @@ function translateDynamicText(text: string | null | undefined, lang: Lang): stri
     ["Autonomie 48h", "48-hour autonomy"],
     ["Protection surtension", "Surge protection"],
 
-    // Boutique & Catégories
     ["Panneaux solaires", "Solar Panels"],
     ["Batterie Lithium", "Lithium Battery"],
     ["Batteries lithium", "Lithium Batteries"],
@@ -636,7 +625,7 @@ function Services({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
   );
 }
 
-/* ---------------- Kits (Avec Traduction BDD Complète) ---------------- */
+/* ---------------- Kits ---------------- */
 const DEFAULT_KITS = [
   { id: "d1", slug: "prestige", title: "Kit Prestige", subtitle: "CONFORT HAUT DE GAMME POUR VILLAS ET GRANDES RÉSIDENCES", description: "Le Kit Prestige 1500W (1.5 kVA) est la solution idéale pour les foyers souhaitant bénéficier d'une alimentation électrique fiable, économique et écologique.", price: "500 000 FCFA", image_url: null as string | null, features: ["2 panneaux solaires de 200 Wc", "1 onduleur EDSOLAR 1500W (1.5 kVA)", "1 batterie Lithium 12V 100Ah", "1 contrôleur de charge MPPT 20A", "08 ampoules LED offertes", "Installation et mise en service gratuites"] },
   { id: "d2", slug: "congelateur", title: "Kit Congélateur", subtitle: "SOLUTION DÉDIÉE AUX COMMERCES ET POISSONNERIES", description: "Kit spécifiquement dimensionné pour maintenir un ou plusieurs congélateurs en fonctionnement continu, idéal pour boutiques, poissonneries et restaurants.", price: "1 700 000 FCFA", image_url: null, features: ["Onduleur 2 kVA / 24V", "Batterie lithium 25.6V 200Ah", "4 panneaux 450W", "Autonomie 12h", "Protection surtension"] },
@@ -825,7 +814,7 @@ function Metric({ icon: Icon, label, value, highlight }: { icon: any; label: str
   );
 }
 
-/* ---------------- Products ---------------- */
+/* ---------------- Products (Boutique) ---------------- */
 type Product = {
   id: string; name: string; category: string; price: string | null; badge: string | null;
   description: string | null; image_url: string | null;
@@ -851,7 +840,6 @@ function Products({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
   const [cat, setCat] = useState("Tous");
   const [q, setQ] = useState("");
   const [sort, setSort] = useState<SortKey>("featured");
-  const [buyer, setBuyer] = useState({ name: "", phone: "" });
 
   useEffect(() => {
     supabase.from("products").select("*").order("sort_order").order("created_at", { ascending: false })
@@ -861,11 +849,11 @@ function Products({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
   const categories = useMemo(() => {
     const s = new Set<string>();
     items.forEach((p) => p.category && s.add(p.category));
-    return [lang === "fr" ? "Tous" : "All", ...Array.from(s)];
-  }, [items, lang]);
+    return ["Tous", ...Array.from(s)];
+  }, [items]);
 
   const list = useMemo(() => {
-    let arr = (cat === "Tous" || cat === "All") ? [...items] : items.filter((p) => p.category === cat);
+    let arr = (cat === "Tous") ? [...items] : items.filter((p) => p.category === cat);
     const term = q.trim().toLowerCase();
     if (term) {
       arr = arr.filter((p) =>
@@ -883,24 +871,29 @@ function Products({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
 
   const buildOrderMsg = (p: Product) => {
     return lang === "fr" 
-      ? `Bonjour EDSOLAR, je souhaite commander :\n• Équipement : ${p.name}\n• Prix : ${p.price ?? "Sur devis"}\n• Nom : ${buyer.name || "(à préciser)"}`
-      : `Hello EDSOLAR, I want to order:\n• Equipment: ${p.name}\n• Price: ${p.price ?? "Quote"}\n• Name: ${buyer.name || "(to specify)"}`;
+      ? `Bonjour EDSOLAR, je souhaite commander l'équipement suivant :\n• Produit : ${p.name}\n• Prix : ${p.price ?? "Sur devis"}\n\nMerci de me donner la disponibilité.`
+      : `Hello EDSOLAR, I would like to order the following equipment:\n• Product: ${p.name}\n• Price: ${p.price ?? "Quote"}\n\nPlease confirm availability.`;
   };
+
+  const adviceMsg = lang === "fr"
+    ? "Bonjour EDSOLAR, j'ai besoin d'un conseil technique pour choisir mon équipement solaire."
+    : "Hello EDSOLAR, I need technical advice to select my solar equipment.";
 
   return (
     <section id="boutique" className="bg-slate-100/70 dark:bg-slate-900/50 py-16 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <SectionHeader eyebrow={t.shopEyebrow} title={t.shopTitle} description={t.shopDesc} />
 
+        {/* RECHERCHE & TRI */}
         <div className="mx-auto mt-8 grid max-w-4xl gap-3 sm:grid-cols-[1fr_auto]">
           <div className="relative">
             <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <input value={q} onChange={(e) => setQ(e.target.value)}
               placeholder={t.shopSearchPlaceholder}
-              className="w-full rounded-full border border-border bg-card py-3 pl-11 pr-4 text-sm outline-none focus:border-amber-500" />
+              className="w-full rounded-full border border-border bg-card py-3 pl-11 pr-4 text-sm outline-none focus:border-amber-500 shadow-sm" />
           </div>
           <select value={sort} onChange={(e) => setSort(e.target.value as SortKey)}
-            className="rounded-full border border-border bg-card px-4 py-3 text-sm font-semibold outline-none focus:border-amber-500">
+            className="rounded-full border border-border bg-card px-4 py-3 text-sm font-semibold outline-none focus:border-amber-500 shadow-sm">
             <option value="featured">{t.shopSortFeatured}</option>
             <option value="price_asc">{t.shopSortPriceAsc}</option>
             <option value="price_desc">{t.shopSortPriceDesc}</option>
@@ -909,6 +902,7 @@ function Products({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
           </select>
         </div>
 
+        {/* FILTRES CATÉGORIES */}
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           {categories.map((c) => (
             <button key={c} onClick={() => setCat(c)}
@@ -918,20 +912,60 @@ function Products({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
           ))}
         </div>
 
-        <div className="mx-auto mt-6 grid max-w-3xl gap-3 rounded-2xl border border-border bg-card p-4 sm:grid-cols-[1fr_1fr_auto] sm:items-end">
-          <div>
-            <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{t.shopNameLabel}</label>
-            <input value={buyer.name} onChange={(e) => setBuyer({ ...buyer, name: e.target.value })} placeholder="Ex. Jean Kamga"
-              className="mt-1 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm outline-none focus:border-amber-500" />
+        {/* BANDEAU COMBINÉ : PILIERS RÉASSURANCE + CONSEIL TECHNIQUE WHATSAPP (OPTION 1 & 2 JUMELÉES) */}
+        <div className="mx-auto mt-8 max-w-5xl overflow-hidden rounded-3xl border border-amber-500/20 bg-card p-6 shadow-sm">
+          <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
+            
+            {/* Les 3 Piliers de Réassurance */}
+            <div className="grid gap-4 sm:grid-cols-3">
+              <div className="flex items-center gap-3">
+                <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-amber-500/10 text-amber-600">
+                  <ShieldCheck className="h-5 w-5" />
+                </div>
+                <div>
+                  <p className="text-xs font-bold text-foreground">{lang === "fr" ? "Matériel Certifié" : "Certified Equipment"}</p>
+                  <p className="text-[11px] text-muted-foreground">{lang === "fr" ? "Produits Tier 1 garantis" : "Guaranteed Tier-1 products"}</p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-emerald-500/10 text-emerald-600">
+                  <Package className="h-5 w-5" />
+                </div>
+                <div>
+                  <p className="text-xs font-bold text-foreground">{lang === "fr" ? "Livraison Cameroun" : "Cameroon Shipping"}</p>
+                  <p className="text-[11px] text-muted-foreground">{lang === "fr" ? "Yaoundé & toutes régions" : "Yaoundé & all regions"}</p>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3">
+                <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-blue-500/10 text-blue-600">
+                  <Wrench className="h-5 w-5" />
+                </div>
+                <div>
+                  <p className="text-xs font-bold text-foreground">{lang === "fr" ? "SAV & Support" : "After-Sales Support"}</p>
+                  <p className="text-[11px] text-muted-foreground">{lang === "fr" ? "Assistance technique 7j/7" : "7/7 Technical assistance"}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Bouton d'Aide & Conseil WhatsApp Direct */}
+            <div className="flex flex-col sm:flex-row items-center justify-between lg:justify-end gap-3 pt-4 border-t border-border lg:border-t-0 lg:border-l lg:pt-0 lg:pl-6">
+              <div className="text-center sm:text-left lg:text-right">
+                <p className="text-xs font-bold text-foreground">{lang === "fr" ? "Besoin d'aide pour choisir ?" : "Need help choosing?"}</p>
+                <p className="text-[11px] text-muted-foreground">{lang === "fr" ? "Parlez à un ingénieur" : "Talk to a solar engineer"}</p>
+              </div>
+              <a href={waLink(adviceMsg)} target="_blank" rel="noreferrer"
+                 className="inline-flex shrink-0 items-center gap-2 rounded-full bg-emerald-600 px-4 py-2.5 text-xs font-bold text-white shadow-md transition-all hover:scale-105 hover:bg-emerald-700">
+                <MessageCircle className="h-4 w-4" />
+                <span>{lang === "fr" ? "Conseil WhatsApp" : "WhatsApp Advice"}</span>
+              </a>
+            </div>
+
           </div>
-          <div>
-            <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{t.shopPhoneLabel}</label>
-            <input value={buyer.phone} onChange={(e) => setBuyer({ ...buyer, phone: e.target.value })} placeholder="+237 6XX XX XX XX"
-              className="mt-1 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm outline-none focus:border-amber-500" />
-          </div>
-          <p className="text-xs text-muted-foreground sm:text-right">{t.shopInfoNote}</p>
         </div>
 
+        {/* GRILLE DE PRODUITS */}
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {list.map((p) => (
             <div key={p.id} className="flex flex-col rounded-2xl border border-border bg-card p-5 shadow-sm transition-transform hover:-translate-y-1">
@@ -939,13 +973,13 @@ function Products({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
                 {p.image_url
                   ? <img src={p.image_url} alt={p.name} loading="lazy" className="h-full w-full object-contain p-3" />
                   : <ShoppingBag className="h-16 w-16 text-slate-400" />}
-                {p.badge && <span className="absolute left-3 top-3 rounded-full bg-amber-500 px-2.5 py-1 text-[10px] font-bold uppercase text-slate-950">{p.badge}</span>}
+                {p.badge && <span className="absolute left-3 top-3 rounded-full bg-amber-500 px-2.5 py-1 text-[10px] font-bold uppercase text-slate-950">{translateDynamicText(p.badge, lang)}</span>}
               </div>
               <h3 className="mt-4 text-base font-bold">{p.name}</h3>
               {p.description && <p className="mt-1 text-xs text-muted-foreground">{translateDynamicText(p.description, lang)}</p>}
               <div className="mt-2 flex flex-wrap gap-1.5 text-[10px] font-semibold">
                 <span className="rounded-full bg-slate-100 dark:bg-slate-800 px-2 py-0.5 text-slate-700 dark:text-slate-300">{translateDynamicText(p.category, lang)}</span>
-                {p.warranty && <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-emerald-600">{lang === "fr" ? "Garantie" : "Warranty"} {p.warranty}</span>}
+                {p.warranty && <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-emerald-600">{translateDynamicText(p.warranty, lang)}</span>}
               </div>
               <div className="mt-4 flex items-end justify-between gap-2">
                 <span className="text-lg font-black text-amber-600 dark:text-amber-400">{p.price ?? "Sur devis"}</span>
