@@ -36,43 +36,49 @@
 }
 
 :root {
-  --radius: 0.75rem;
-  /* Brand */
-  --primary: oklch(0.45 0.14 145);          /* #2E7D32 deep green */
-  --primary-foreground: oklch(0.99 0 0);
-  --primary-dark: oklch(0.36 0.13 145);     /* #1B5E20 */
-  --accent: oklch(0.78 0.16 75);            /* #F59E0B solar amber */
-  --accent-foreground: oklch(0.2 0.02 145);
-  --whatsapp: oklch(0.68 0.17 150);         /* WhatsApp green */
+  --radius: 0.85rem;
 
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.2 0.02 240);
+  /* Tech Solar Brand Colors */
+  --primary: oklch(0.21 0.03 260);          /* Slate 900 #0F172A - Confiance Tech */
+  --primary-foreground: oklch(0.99 0 0);
+  --primary-dark: oklch(0.14 0.03 260);     /* Slate 950 #020617 */
+  
+  --accent: oklch(0.76 0.17 70);            /* Amber/Solar Amber #F59E0B - Énergie & Soleil */
+  --accent-foreground: oklch(0.15 0.03 260);
+
+  --whatsapp: oklch(0.68 0.17 150);         /* WhatsApp Green #25D366 */
+
+  /* Surface & Backgrounds */
+  --background: oklch(0.985 0.005 240);    /* Blanc cassé/Slate 50 ultra-propre */
+  --foreground: oklch(0.20 0.03 260);
   --card: oklch(1 0 0);
-  --card-foreground: oklch(0.2 0.02 240);
+  --card-foreground: oklch(0.20 0.03 260);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.2 0.02 240);
-  --secondary: oklch(0.97 0.02 145);
-  --secondary-foreground: oklch(0.3 0.05 145);
+  --popover-foreground: oklch(0.20 0.03 260);
+  
+  --secondary: oklch(0.96 0.01 160);        /* Vert Émeraude très doux pour les cartes secondaires */
+  --secondary-foreground: oklch(0.35 0.10 160);
+  
   --muted: oklch(0.96 0.005 240);
-  --muted-foreground: oklch(0.5 0.02 240);
-  --destructive: oklch(0.6 0.24 27);
+  --muted-foreground: oklch(0.50 0.02 240);
+  --destructive: oklch(0.60 0.24 27);
   --destructive-foreground: oklch(0.99 0 0);
   --border: oklch(0.92 0.01 240);
   --input: oklch(0.92 0.01 240);
-  --ring: oklch(0.45 0.14 145);
+  --ring: oklch(0.76 0.17 70);
 }
 
 .dark {
-  --background: oklch(0.18 0.02 240);
+  --background: oklch(0.14 0.03 260);
   --foreground: oklch(0.98 0 0);
-  --card: oklch(0.22 0.02 240);
+  --card: oklch(0.18 0.03 260);
   --card-foreground: oklch(0.98 0 0);
-  --popover: oklch(0.22 0.02 240);
+  --popover: oklch(0.18 0.03 260);
   --popover-foreground: oklch(0.98 0 0);
-  --secondary: oklch(0.28 0.03 145);
+  --secondary: oklch(0.25 0.04 160);
   --secondary-foreground: oklch(0.98 0 0);
-  --muted: oklch(0.28 0.02 240);
-  --muted-foreground: oklch(0.7 0.02 240);
+  --muted: oklch(0.25 0.02 240);
+  --muted-foreground: oklch(0.70 0.02 240);
   --border: oklch(1 0 0 / 12%);
   --input: oklch(1 0 0 / 15%);
 }
@@ -91,11 +97,11 @@
 @utility glow-green {
   transition: box-shadow 300ms ease, transform 300ms ease;
   &:hover {
-    box-shadow: 0 20px 40px -12px color-mix(in oklab, var(--primary) 45%, transparent);
+    box-shadow: 0 20px 40px -12px oklch(0.76 0.17 70 / 25%);
     transform: translateY(-2px);
   }
 }
 
 @utility gradient-hero {
-  background-image: linear-gradient(135deg, var(--primary-dark), var(--primary) 60%, oklch(0.55 0.15 140));
+  background-image: linear-gradient(135deg, var(--primary-dark), var(--primary) 70%, oklch(0.28 0.05 240));
 }
