@@ -6,7 +6,7 @@ import {
   Zap, Cpu, Tv, Refrigerator, Snowflake, Lightbulb, WashingMachine,
   Laptop, Fan, Microwave, CheckCircle2, Star, Award, Clock, Users,
   Facebook, Instagram, Linkedin, Send, Package, Search, ArrowUp,
-  Radio, Camera, Video, Sparkles, Globe
+  Radio, Camera, Video, Sparkles
 } from "lucide-react";
 import logo from "@/assets/edsolar-logo-new.jpeg";
 import hero from "@/assets/install-panels.jpeg";
@@ -33,12 +33,10 @@ const WA = `https://wa.me/${PHONE.replace("+", "")}`;
 const WA_CHANNEL_URL = "https://whatsapp.com/channel/0029VauTigF9Gv7cyMQUQH1x";
 const waLink = (msg: string) => `${WA}?text=${encodeURIComponent(msg)}`;
 
-/* ---------------- Dictionnaire Multilingue (FR / EN) ---------------- */
 type Lang = "fr" | "en";
 
 const TRANSLATIONS = {
   fr: {
-    // Header & Nav
     navServices: "Services",
     navKits: "Kits",
     navBoutique: "Boutique",
@@ -50,7 +48,6 @@ const TRANSLATIONS = {
     navContact: "Contact",
     btnQuote: "Devis gratuit",
     
-    // Hero
     heroTag: "L'énergie propre pour un avenir durable",
     heroTitle1: "Passez à l'Énergie ",
     heroTitle2: "Solaire",
@@ -64,7 +61,6 @@ const TRANSLATIONS = {
     heroCardTitle: "EDSOLAR Yaoundé",
     heroCardSub: "Contactez-nous",
     
-    // Services
     servicesEyebrow: "Nos Services",
     servicesTitle: "Une expertise complète en énergie solaire",
     servicesDesc: "De l'audit à la mise en service, EDSOLAR vous accompagne à chaque étape de votre transition énergétique.",
@@ -78,7 +74,6 @@ const TRANSLATIONS = {
     s4Desc: "Dimensionnement précis par nos ingénieurs qualifiés pour optimiser votre consommation.",
     learnMore: "En savoir plus",
 
-    // Simulator
     simEyebrow: "Simulateur Devis",
     simTitle: "Estimez votre installation solaire en 1 minute",
     simDesc: "Sélectionnez vos appareils. Obtenez immédiatement votre puissance recommandée et une estimation budgétaire.",
@@ -92,7 +87,6 @@ const TRANSLATIONS = {
     simSendWA: "Recevoir l'estimation sur WhatsApp",
     simNote: "Estimation indicative — nos ingénieurs valident le dimensionnement final.",
 
-    // Boutique
     shopEyebrow: "Boutique",
     shopTitle: "Équipements solaires de qualité",
     shopDesc: "Panneaux, batteries, onduleurs et kits complets — sélectionnés pour leur fiabilité.",
@@ -108,7 +102,6 @@ const TRANSLATIONS = {
     shopOrderWA: "Commander via WhatsApp",
     shopNoProduct: "Aucun équipement ne correspond à votre recherche.",
 
-    // WhatsApp Channel
     channelTag: "Direct du terrain",
     channelTitle1: "Rejoignez la Chaîne ",
     channelTitle2: "WhatsApp EDSOLAR",
@@ -123,7 +116,6 @@ const TRANSLATIONS = {
     channelSubNote: "Abonnement 100% gratuit, rapide et confidentiel.",
     channelBtn: "Suivre la Chaîne",
 
-    // Trust
     trustEyebrow: "Pourquoi nous choisir ?",
     trustTitle: "La confiance de centaines de clients",
     trustDesc: "Une expertise 100% locale, au service du Cameroun et de toute l'Afrique Centrale 🌍.",
@@ -132,12 +124,22 @@ const TRANSLATIONS = {
     trustStat3: "Intervention à Yaoundé",
     trustStat4: "Années d'expertise",
 
-    // Realisations
     realEyebrow: "Nos Réalisations",
     realTitle: "Projets récents au Cameroun",
     realDesc: "Découvrez nos installations récentes chez les particuliers et les entreprises.",
 
-    // About
+    reviewsEyebrow: "Avis clients",
+    reviewsTitle: "Partagez votre expérience EDSOLAR",
+    reviewsDesc: "Votre satisfaction compte. Laissez un avis — il sera publié après validation de notre équipe.",
+    reviewsLeaveTitle: "Laisser un avis",
+    reviewsName: "Nom",
+    reviewsRating: "Note",
+    reviewsComment: "Votre commentaire",
+    reviewsSubmit: "Publier mon avis",
+    reviewsSending: "Envoi…",
+    reviewsSuccess: "Merci ! Votre avis sera publié après validation.",
+    reviewsEmpty: "Soyez le premier à partager votre expérience !",
+
     aboutEyebrow: "À propos",
     aboutTitle: "EDSOLAR — votre partenaire solaire au Cameroun & en Afrique Centrale",
     aboutDesc: "Basés à Tradex Olembe, Yaoundé, nous intervenons partout au Cameroun et dans toute l'Afrique Centrale. Notre mission : rendre l'énergie solaire accessible, fiable et rentable pour chaque foyer et chaque entreprise, avec du matériel certifié et une équipe de techniciens qualifiés.",
@@ -146,7 +148,6 @@ const TRANSLATIONS = {
     aboutF3: "Service après-vente réactif à Yaoundé",
     aboutF4: "Financement et options de paiement échelonné",
 
-    // Contact
     contactEyebrow: "Contact",
     contactTitle: "Parlons de votre projet solaire",
     contactDesc: "Remplissez le formulaire ou appelez-nous — un expert vous répond sous 24h.",
@@ -162,7 +163,6 @@ const TRANSLATIONS = {
     formSubmit: "Envoyer sur WhatsApp",
     formSuccess: "Merci ! Votre message a été préparé sur WhatsApp.",
 
-    // Footer
     footerNav: "Navigation",
     footerContact: "Contact",
     footerRights: "© 2026 Bimedia Connect Agency. Tous droits réservés.",
@@ -171,7 +171,6 @@ const TRANSLATIONS = {
     footerCookies: "Cookies",
   },
   en: {
-    // Header & Nav
     navServices: "Services",
     navKits: "Kits",
     navBoutique: "Shop",
@@ -183,7 +182,6 @@ const TRANSLATIONS = {
     navContact: "Contact",
     btnQuote: "Free Quote",
     
-    // Hero
     heroTag: "Clean energy for a sustainable future",
     heroTitle1: "Switch to ",
     heroTitle2: "Solar",
@@ -197,7 +195,6 @@ const TRANSLATIONS = {
     heroCardTitle: "EDSOLAR Yaoundé",
     heroCardSub: "Get in touch",
     
-    // Services
     servicesEyebrow: "Our Services",
     servicesTitle: "Comprehensive expertise in solar energy",
     servicesDesc: "From audit to commissioning, EDSOLAR guides you through every step of your energy transition.",
@@ -211,7 +208,6 @@ const TRANSLATIONS = {
     s4Desc: "Precise sizing by our qualified engineers to optimize your power consumption.",
     learnMore: "Learn more",
 
-    // Simulator
     simEyebrow: "Quote Simulator",
     simTitle: "Estimate your solar installation in 1 minute",
     simDesc: "Select your home appliances. Get your recommended power system and budget estimate instantly.",
@@ -225,7 +221,6 @@ const TRANSLATIONS = {
     simSendWA: "Get estimate on WhatsApp",
     simNote: "Indicative estimate — final sizing validated by our engineers.",
 
-    // Boutique
     shopEyebrow: "Shop",
     shopTitle: "High-quality solar equipment",
     shopDesc: "Panels, batteries, inverters, and complete kits — selected for ultimate reliability.",
@@ -241,7 +236,6 @@ const TRANSLATIONS = {
     shopOrderWA: "Order via WhatsApp",
     shopNoProduct: "No equipment matches your search.",
 
-    // WhatsApp Channel
     channelTag: "Direct from the field",
     channelTitle1: "Join the ",
     channelTitle2: "EDSOLAR WhatsApp Channel",
@@ -256,7 +250,6 @@ const TRANSLATIONS = {
     channelSubNote: "100% free, fast, and confidential subscription.",
     channelBtn: "Follow the Channel",
 
-    // Trust
     trustEyebrow: "Why Choose Us?",
     trustTitle: "Trusted by hundreds of customers",
     trustDesc: "100% local expertise serving Cameroon and the entire Central African region 🌍.",
@@ -265,12 +258,22 @@ const TRANSLATIONS = {
     trustStat3: "Intervention in Yaoundé",
     trustStat4: "Years of expertise",
 
-    // Realisations
     realEyebrow: "Our Projects",
     realTitle: "Recent projects in Cameroon",
     realDesc: "Explore our latest solar installations for homes and businesses.",
 
-    // About
+    reviewsEyebrow: "Customer Reviews",
+    reviewsTitle: "Share your EDSOLAR experience",
+    reviewsDesc: "Your feedback matters. Leave a review — it will be published after team approval.",
+    reviewsLeaveTitle: "Leave a Review",
+    reviewsName: "Name",
+    reviewsRating: "Rating",
+    reviewsComment: "Your Comment",
+    reviewsSubmit: "Post my review",
+    reviewsSending: "Sending...",
+    reviewsSuccess: "Thank you! Your review will be published after approval.",
+    reviewsEmpty: "Be the first to share your experience!",
+
     aboutEyebrow: "About Us",
     aboutTitle: "EDSOLAR — your solar partner in Cameroon & Central Africa",
     aboutDesc: "Based in Tradex Olembe, Yaoundé, we operate across Cameroon and Central Africa. Our mission: make solar energy accessible, reliable, and cost-effective for every home and business, using certified equipment and skilled technicians.",
@@ -279,7 +282,6 @@ const TRANSLATIONS = {
     aboutF3: "Responsive customer support in Yaoundé",
     aboutF4: "Financing and installment payment options",
 
-    // Contact
     contactEyebrow: "Contact",
     contactTitle: "Let's talk about your solar project",
     contactDesc: "Fill out the form or give us a call — an expert will respond within 24 hours.",
@@ -295,7 +297,6 @@ const TRANSLATIONS = {
     formSubmit: "Send on WhatsApp",
     formSuccess: "Thank you! Your message has been prepared on WhatsApp.",
 
-    // Footer
     footerNav: "Navigation",
     footerContact: "Contact",
     footerRights: "© 2026 Bimedia Connect Agency. All rights reserved.",
@@ -304,6 +305,46 @@ const TRANSLATIONS = {
     footerCookies: "Cookies",
   }
 };
+
+/* ---------------- Traduction dynamique pour le contenu Supabase ---------------- */
+function translateText(text: string | null | undefined, lang: Lang): string {
+  if (!text) return "";
+  if (lang === "fr") return text;
+
+  // Mappings automatiques des descriptions de BDD
+  const dictionary: Record<string, string> = {
+    "Villa haut standing": "Luxury Villa",
+    "Système solaire complet pour villa avec climatisation, électroménager et confort total.": "Complete solar power system for luxury villa with AC, home appliances, and full comfort.",
+    "Commerce & alimentation": "Business & Food Retail",
+    "Solution dédiée aux commerçants pour maintenir congélateurs et réfrigérateurs 24h/24.": "Dedicated solution for shop owners to keep freezers and refrigerators running 24/7.",
+    "Résidence familiale": "Family Home",
+    "Kit résidentiel équilibré : éclairage, télévision, réfrigérateur et petits appareils.": "Balanced residential kit: lighting, TV, refrigerator, and essential devices.",
+    "Onduleur hybride": "Hybrid Inverter",
+    "Batteries lithium": "Lithium Batteries",
+    "Installation clé en main": "Turnkey Installation",
+    "Garantie 25 ans panneaux": "25-year panel warranty",
+    "Autonomie 48h": "48h autonomy",
+    "Support technique 7j/7": "7/7 Technical Support",
+    "Installation en 1 journée": "Same-day installation",
+    "Suivi maintenance": "Maintenance follow-up",
+    "Panneaux solaires": "Solar Panels",
+    "Batterie Lithium": "Lithium Battery",
+    "Onduleur Hybride": "Hybrid Inverter",
+    "Régulateur MPPT": "MPPT Controller",
+    "Tableau électrique & protections solaires": "Electrical panel & solar surge protection",
+    "Installation onduleur & batterie Lithium": "Inverter & Lithium Battery Installation",
+    "Équipe technique EDSOLAR en intervention": "EDSOLAR Technical Team on Site"
+  };
+
+  let translated = text;
+  Object.keys(dictionary).forEach((key) => {
+    if (translated.includes(key)) {
+      translated = translated.replaceAll(key, dictionary[key]);
+    }
+  });
+
+  return translated;
+}
 
 function Index() {
   const [lang, setLang] = useState<Lang>("fr");
@@ -319,7 +360,7 @@ function Index() {
       <Products t={t} lang={lang} />
       <WhatsAppChannel t={t} />
       <Trust t={t} />
-      <Realisations t={t} />
+      <Realisations t={t} lang={lang} />
       <Reviews t={t} />
       <About t={t} />
       <Contact t={t} lang={lang} />
@@ -330,7 +371,7 @@ function Index() {
   );
 }
 
-/* ---------------- Header Responsive avec Sélecteur FR / EN ---------------- */
+/* ---------------- Header Responsive avec Switch FR / EN ---------------- */
 function Header({ lang, setLang, t }: { lang: Lang; setLang: (l: Lang) => void; t: typeof TRANSLATIONS["fr"] }) {
   const [open, setOpen] = useState(false);
 
@@ -356,7 +397,7 @@ function Header({ lang, setLang, t }: { lang: Lang; setLang: (l: Lang) => void; 
 
   const quoteMsg = lang === "fr" 
     ? "Bonjour EDSOLAR, je souhaite un devis gratuit." 
-    : "Hello EDSOLAR, I would like to get a free quote.";
+    : "Hello EDSOLAR, I would like to request a free quote.";
 
   return (
     <header className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/90 backdrop-blur-md dark:border-slate-800/80 dark:bg-slate-950/90 transition-all">
@@ -419,7 +460,6 @@ function Header({ lang, setLang, t }: { lang: Lang; setLang: (l: Lang) => void; 
 
         {/* HAMBURGER & SWITCH MOBILE */}
         <div className="flex items-center gap-2 lg:hidden">
-          {/* Switch FR / EN Mobile */}
           <div className="flex items-center rounded-full border border-slate-200 bg-slate-100 p-1 dark:border-slate-800 dark:bg-slate-900">
             <button 
               onClick={() => setLang("fr")}
@@ -562,7 +602,7 @@ function Services({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
               </div>
               <h3 className="mt-5 text-lg font-bold text-foreground">{s.title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{s.desc}</p>
-              <a href={waLink(lang === "fr" ? `Bonjour EDSOLAR, je suis intéressé par : ${s.title}` : `Hello EDSOLAR, I am interested in: ${s.title}`)} target="_blank" rel="noreferrer"
+              <a href={waLink(lang === "fr" ? `Bonjour EDSOLAR, je suis intéressé par: ${s.title}` : `Hello EDSOLAR, I am interested in: ${s.title}`)} target="_blank" rel="noreferrer"
                  className="mt-4 inline-flex items-center gap-1 text-sm font-bold text-emerald-600 hover:gap-2 transition-all">
                 {t.learnMore} <ArrowRight className="h-4 w-4" />
               </a>
@@ -574,18 +614,77 @@ function Services({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
   );
 }
 
+/* ---------------- Kits (Avec traduction dynamique) ---------------- */
+const DEFAULT_KITS = [
+  { id: "d1", slug: "prestige", title: "Kit Prestige", subtitle: "Villa haut standing", description: "Système solaire complet pour villa avec climatisation, électroménager et confort total.", price: "3 000 000 FCFA", image_url: null as string | null, features: ["Onduleur hybride 12 kVA", "Batteries lithium 48V 300Ah", "12 panneaux 550W", "Installation clé en main", "Garantie 25 ans panneaux"] },
+  { id: "d2", slug: "congelateur", title: "Kit Congélateur", subtitle: "Commerce & alimentation", description: "Solution dédiée aux commerçants pour maintenir congélateurs et réfrigérateurs 24h/24.", price: "1 700 000 FCFA", image_url: null, features: ["Onduleur hybride 4 kVA", "Batteries lithium 24V 200Ah", "6 panneaux 450W", "Autonomie 48h", "Support technique 7j/7"] },
+  { id: "d3", slug: "filet-bleu", title: "Kit Filet Bleu", subtitle: "Résidence familiale", description: "Kit résidentiel équilibré : éclairage, télévision, réfrigérateur et petits appareils.", price: "1 000 000 FCFA", image_url: null, features: ["Onduleur hybride 2 kVA", "Batteries lithium 24V 200Ah", "4 panneaux 450W", "Installation en 1 journée", "Suivi maintenance"] },
+];
+
+function Kits({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
+  const [items, setItems] = useState<any[]>(DEFAULT_KITS);
+
+  useEffect(() => {
+    supabase.from("kits").select("*").order("sort_order").then(({ data }) => {
+      if (data && data.length) setItems(data);
+    });
+  }, []);
+
+  return (
+    <section id="kits" className="py-16 sm:py-28">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <SectionHeader eyebrow={t.navKits} title={lang === "fr" ? "Des solutions solaires prêtes à l'emploi" : "Ready-to-use solar solutions"} description={t.servicesDesc} />
+        <div className="mt-12 grid gap-6 sm:grid-cols-2 md:grid-cols-3">
+          {items.map((k) => (
+            <article key={k.id} className="flex flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-sm transition-transform hover:-translate-y-1">
+              <div className="relative aspect-[16/10] overflow-hidden bg-slate-100 dark:bg-slate-800">
+                {k.image_url ? (
+                  <img src={k.image_url} alt={k.title} className="h-full w-full object-cover" loading="lazy" />
+                ) : (
+                  <div className="grid h-full w-full place-items-center">
+                    <Package className="h-16 w-16 text-slate-400" />
+                  </div>
+                )}
+                {k.price && (
+                  <span className="absolute right-3 top-3 rounded-full bg-slate-900 px-3 py-1 text-xs font-bold text-white shadow">
+                    {k.price}
+                  </span>
+                )}
+              </div>
+              <div className="flex flex-1 flex-col p-6">
+                <p className="text-xs font-bold uppercase tracking-widest text-emerald-600">{translateText(k.subtitle, lang)}</p>
+                <h3 className="mt-1 text-xl font-black">{k.title}</h3>
+                <p className="mt-2 text-sm text-muted-foreground">{translateText(k.description, lang)}</p>
+                <ul className="mt-4 space-y-2 text-sm">
+                  {(k.features ?? []).map((f: string) => (
+                    <li key={f} className="flex items-start gap-2"><CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" /> {translateText(f, lang)}</li>
+                  ))}
+                </ul>
+                <a href={waLink(lang === "fr" ? `Bonjour EDSOLAR, je suis intéressé par le ${k.title} (${k.price ?? ""}).` : `Hello EDSOLAR, I am interested in the ${k.title} (${k.price ?? ""}).`)} target="_blank" rel="noreferrer"
+                   className="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-amber-500 px-5 py-3 text-sm font-bold text-slate-950 transition-all hover:bg-amber-400">
+                  <MessageCircle className="h-4 w-4 fill-slate-950" /> {lang === "fr" ? "Demander ce kit" : "Request this kit"}
+                </a>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 /* ---------------- Calculator / Simulateur Devis ---------------- */
-type Appliance = { id: string; name: string; watts: number; icon: any; hours: number };
+type Appliance = { id: string; name: string; nameEn: string; watts: number; icon: any; hours: number };
 const APPLIANCES: Appliance[] = [
-  { id: "led", name: "Éclairage LED", watts: 15, icon: Lightbulb, hours: 6 },
-  { id: "tv", name: "Télévision", watts: 100, icon: Tv, hours: 5 },
-  { id: "fridge", name: "Réfrigérateur", watts: 200, icon: Refrigerator, hours: 12 },
-  { id: "freezer", name: "Congélateur", watts: 300, icon: Snowflake, hours: 10 },
-  { id: "ac", name: "Climatiseur", watts: 1200, icon: Snowflake, hours: 6 },
-  { id: "fan", name: "Ventilateur", watts: 75, icon: Fan, hours: 8 },
-  { id: "wm", name: "Machine à laver", watts: 500, icon: WashingMachine, hours: 1 },
-  { id: "mw", name: "Micro-ondes", watts: 800, icon: Microwave, hours: 0.5 },
-  { id: "pc", name: "Ordinateur", watts: 150, icon: Laptop, hours: 5 },
+  { id: "led", name: "Éclairage LED", nameEn: "LED Lighting", watts: 15, icon: Lightbulb, hours: 6 },
+  { id: "tv", name: "Télévision", nameEn: "Television", watts: 100, icon: Tv, hours: 5 },
+  { id: "fridge", name: "Réfrigérateur", nameEn: "Refrigerator", watts: 200, icon: Refrigerator, hours: 12 },
+  { id: "freezer", name: "Congélateur", nameEn: "Freezer", watts: 300, icon: Snowflake, hours: 10 },
+  { id: "ac", name: "Climatiseur", nameEn: "Air Conditioner", watts: 1200, icon: Snowflake, hours: 6 },
+  { id: "fan", name: "Ventilateur", nameEn: "Fan", watts: 75, icon: Fan, hours: 8 },
+  { id: "wm", name: "Machine à laver", nameEn: "Washing Machine", watts: 500, icon: WashingMachine, hours: 1 },
+  { id: "mw", name: "Micro-ondes", nameEn: "Microwave", watts: 800, icon: Microwave, hours: 0.5 },
+  { id: "pc", name: "Ordinateur", nameEn: "Computer", watts: 150, icon: Laptop, hours: 5 },
 ];
 
 function Calculator({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
@@ -656,7 +755,7 @@ function Calculator({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
                         <a.icon className="h-5 w-5" />
                       </div>
                       <div className="min-w-0">
-                        <p className="truncate text-sm font-semibold">{a.name}</p>
+                        <p className="truncate text-sm font-semibold">{lang === "fr" ? a.name : a.nameEn}</p>
                         <p className="text-xs text-muted-foreground">{a.watts} W · {a.hours}h/{lang === "fr" ? "jour" : "day"}</p>
                       </div>
                     </div>
@@ -705,7 +804,7 @@ function Metric({ icon: Icon, label, value, highlight }: { icon: any; label: str
   );
 }
 
-/* ---------------- Products ---------------- */
+/* ---------------- Products (Avec traduction BDD dynamique) ---------------- */
 type Product = {
   id: string; name: string; category: string; price: string | null; badge: string | null;
   description: string | null; image_url: string | null;
@@ -793,7 +892,7 @@ function Products({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
           {categories.map((c) => (
             <button key={c} onClick={() => setCat(c)}
               className={`rounded-full px-5 py-2 text-sm font-semibold transition-all ${cat === c ? "bg-slate-900 text-white shadow-md dark:bg-amber-500 dark:text-slate-950" : "border border-border bg-card text-foreground hover:border-amber-500"}`}>
-              {c}
+              {translateText(c, lang)}
             </button>
           ))}
         </div>
@@ -822,9 +921,9 @@ function Products({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
                 {p.badge && <span className="absolute left-3 top-3 rounded-full bg-amber-500 px-2.5 py-1 text-[10px] font-bold uppercase text-slate-950">{p.badge}</span>}
               </div>
               <h3 className="mt-4 text-base font-bold">{p.name}</h3>
-              {p.description && <p className="mt-1 text-xs text-muted-foreground">{p.description}</p>}
+              {p.description && <p className="mt-1 text-xs text-muted-foreground">{translateText(p.description, lang)}</p>}
               <div className="mt-2 flex flex-wrap gap-1.5 text-[10px] font-semibold">
-                <span className="rounded-full bg-slate-100 dark:bg-slate-800 px-2 py-0.5 text-slate-700 dark:text-slate-300">{p.category}</span>
+                <span className="rounded-full bg-slate-100 dark:bg-slate-800 px-2 py-0.5 text-slate-700 dark:text-slate-300">{translateText(p.category, lang)}</span>
                 {p.warranty && <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-emerald-600">{lang === "fr" ? "Garantie" : "Warranty"} {p.warranty}</span>}
               </div>
               <div className="mt-4 flex items-end justify-between gap-2">
@@ -949,7 +1048,7 @@ const STATIC_GALLERY = [
   { src: gal3, title: "Tableau électrique & protections solaires", loc: "Yaoundé" },
 ];
 
-function Realisations({ t }: { t: typeof TRANSLATIONS["fr"] }) {
+function Realisations({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
   const [extra, setExtra] = useState<{ src: string; title: string; loc: string }[]>([]);
   useEffect(() => {
     supabase.from("gallery_photos").select("url, caption").order("sort_order").order("created_at", { ascending: false })
@@ -973,7 +1072,7 @@ function Realisations({ t }: { t: typeof TRANSLATIONS["fr"] }) {
               </div>
               <figcaption className="flex items-center justify-between p-4">
                 <div>
-                  <p className="text-sm font-bold">{g.title}</p>
+                  <p className="text-sm font-bold">{translateText(g.title, lang)}</p>
                   <p className="text-xs text-muted-foreground">{g.loc}</p>
                 </div>
                 <ArrowRight className="h-4 w-4 text-amber-500 shrink-0" />
@@ -1217,64 +1316,6 @@ function SectionHeader({ eyebrow, title, description }: { eyebrow: string; title
   );
 }
 
-/* ---------------- Kits ---------------- */
-const DEFAULT_KITS = [
-  { id: "d1", slug: "prestige", title: "Kit Prestige", subtitle: "Villa haut standing", description: "Système solaire complet pour villa avec climatisation, électroménager et confort total.", price: "3 000 000 FCFA", image_url: null as string | null, features: ["Onduleur hybride 12 kVA", "Batteries lithium 48V 300Ah", "12 panneaux 550W", "Installation clé en main", "Garantie 25 ans panneaux"] },
-  { id: "d2", slug: "congelateur", title: "Kit Congélateur", subtitle: "Commerce & alimentation", description: "Solution dédiée aux commerçants pour maintenir congélateurs et réfrigérateurs 24h/24.", price: "1 700 000 FCFA", image_url: null, features: ["Onduleur hybride 4 kVA", "Batteries lithium 24V 200Ah", "6 panneaux 450W", "Autonomie 48h", "Support technique 7j/7"] },
-  { id: "d3", slug: "filet-bleu", title: "Kit Filet Bleu", subtitle: "Résidence familiale", description: "Kit résidentiel équilibré : éclairage, télévision, réfrigérateur et petits appareils.", price: "1 000 000 FCFA", image_url: null, features: ["Onduleur hybride 2 kVA", "Batteries lithium 24V 200Ah", "4 panneaux 450W", "Installation en 1 journée", "Suivi maintenance"] },
-];
-
-function Kits({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
-  const [items, setItems] = useState<any[]>(DEFAULT_KITS);
-  useEffect(() => {
-    supabase.from("kits").select("*").order("sort_order").then(({ data }) => {
-      if (data && data.length) setItems(data);
-    });
-  }, []);
-
-  return (
-    <section id="kits" className="py-16 sm:py-28">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <SectionHeader eyebrow={t.navKits} title={t.simTitle} description={t.servicesDesc} />
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 md:grid-cols-3">
-          {items.map((k) => (
-            <article key={k.id} className="flex flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-sm transition-transform hover:-translate-y-1">
-              <div className="relative aspect-[16/10] overflow-hidden bg-slate-100 dark:bg-slate-800">
-                {k.image_url ? (
-                  <img src={k.image_url} alt={k.title} className="h-full w-full object-cover" loading="lazy" />
-                ) : (
-                  <div className="grid h-full w-full place-items-center">
-                    <Package className="h-16 w-16 text-slate-400" />
-                  </div>
-                )}
-                {k.price && (
-                  <span className="absolute right-3 top-3 rounded-full bg-slate-900 px-3 py-1 text-xs font-bold text-white shadow">
-                    {k.price}
-                  </span>
-                )}
-              </div>
-              <div className="flex flex-1 flex-col p-6">
-                <p className="text-xs font-bold uppercase tracking-widest text-emerald-600">{k.subtitle}</p>
-                <h3 className="mt-1 text-xl font-black">{k.title}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">{k.description}</p>
-                <ul className="mt-4 space-y-2 text-sm">
-                  {(k.features ?? []).map((f: string) => (
-                    <li key={f} className="flex items-start gap-2"><CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" /> {f}</li>
-                  ))}
-                </ul>
-                <a href={waLink(lang === "fr" ? `Bonjour EDSOLAR, je suis intéressé par le ${k.title} (${k.price ?? ""}).` : `Hello EDSOLAR, I am interested in the ${k.title} (${k.price ?? ""}).`)} target="_blank" rel="noreferrer"
-                   className="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-amber-500 px-5 py-3 text-sm font-bold text-slate-950 transition-all hover:bg-amber-400">
-                  <MessageCircle className="h-4 w-4 fill-slate-950" /> {lang === "fr" ? "Demander ce kit" : "Request this kit"}
-                </a>
-              </div>
-            </article>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
 /* ---------------- Reviews ---------------- */
 function Reviews({ t }: { t: typeof TRANSLATIONS["fr"] }) {
   const [items, setItems] = useState<any[]>([]);
@@ -1298,18 +1339,18 @@ function Reviews({ t }: { t: typeof TRANSLATIONS["fr"] }) {
   return (
     <section id="avis" className="bg-slate-100/70 dark:bg-slate-900/50 py-16 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <SectionHeader eyebrow={t.navReviews} title="Partagez votre expérience EDSOLAR" description="Votre satisfaction compte. Laissez un avis — il sera publié après validation de notre équipe." />
+        <SectionHeader eyebrow={t.reviewsEyebrow} title={t.reviewsTitle} description={t.reviewsDesc} />
         <div className="mt-12 grid gap-8 lg:grid-cols-[1fr_1.3fr]">
           <form onSubmit={submit} className="h-fit rounded-3xl border border-border bg-card p-5 sm:p-8 shadow-sm">
-            <p className="text-sm font-bold">Laisser un avis</p>
+            <p className="text-sm font-bold">{t.reviewsLeaveTitle}</p>
             <div className="mt-4 space-y-3">
               <div>
-                <label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t.formName}</label>
+                <label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t.reviewsName}</label>
                 <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required
                   className="mt-1 w-full rounded-xl border border-input bg-background px-4 py-2.5 text-sm outline-none focus:border-amber-500" />
               </div>
               <div>
-                <label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Note</label>
+                <label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t.reviewsRating}</label>
                 <div className="mt-1 flex items-center gap-1">
                   {[1, 2, 3, 4, 5].map((n) => (
                     <button type="button" key={n}
@@ -1325,20 +1366,20 @@ function Reviews({ t }: { t: typeof TRANSLATIONS["fr"] }) {
                 </div>
               </div>
               <div>
-                <label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t.formMessage}</label>
+                <label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t.reviewsComment}</label>
                 <textarea rows={4} value={form.comment} onChange={(e) => setForm({ ...form, comment: e.target.value })} required
                   className="mt-1 w-full resize-none rounded-xl border border-input bg-background px-4 py-2.5 text-sm outline-none focus:border-amber-500" />
               </div>
               <button disabled={busy} className="w-full rounded-full bg-slate-900 px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-slate-800 disabled:opacity-60 dark:bg-amber-500 dark:text-slate-950">
-                {busy ? "Envoi…" : "Publier mon avis"}
+                {busy ? t.reviewsSending : t.reviewsSubmit}
               </button>
-              {sent && <p className="text-sm text-emerald-600 font-semibold">Merci ! Votre avis sera publié après validation.</p>}
+              {sent && <p className="text-sm text-emerald-600 font-semibold">{t.reviewsSuccess}</p>}
             </div>
           </form>
           <div className="grid gap-4 sm:grid-cols-2">
             {items.length === 0 && (
               <p className="col-span-full rounded-2xl border border-dashed border-border p-6 text-center text-sm text-muted-foreground">
-                Soyez le premier à partager votre expérience !
+                {t.reviewsEmpty}
               </p>
             )}
             {items.map((r) => (
