@@ -20,9 +20,9 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "EDSOLAR Énergie Cameroun — Installation Solaire à Yaoundé" },
-      { name: "description", content: "Installation de panneaux solaires, maintenance et vente d'équipements solaires à Yaoundé. Calculateur solaire, devis gratuit au +237 650544444." },
+      { name: "description", content: "Installation de panneaux solaires, maintenance et vente d'équipements solaires à Yaoundé. Simulateur devis solaire gratuit au +237 650544444." },
       { property: "og:title", content: "EDSOLAR Énergie Cameroun — Installation Solaire à Yaoundé" },
-      { property: "og:description", content: "Installation de panneaux solaires, maintenance et vente d'équipements solaires à Yaoundé. Calculateur solaire, devis gratuit au +237 650544444." },
+      { property: "og:description", content: "Installation de panneaux solaires, maintenance et vente d'équipements solaires à Yaoundé. Simulateur devis solaire gratuit au +237 650544444." },
     ],
   }),
   component: Index,
@@ -33,25 +33,25 @@ const WA = `https://wa.me/${PHONE.replace("+", "")}`;
 const WA_CHANNEL_URL = "https://whatsapp.com/channel/0029VauTigF9Gv7cyMQUQH1x";
 const waLink = (msg: string) => `${WA}?text=${encodeURIComponent(msg)}`;
 
-/* Tous les liens pour la version mobile/tablette */
+/* Tous les liens complets pour la version mobile/tablette */
 const NAV_MOBILE = [
   { href: "#accueil", label: "Accueil" },
   { href: "#services", label: "Nos Services" },
   { href: "#kits", label: "Nos Kits" },
   { href: "#boutique", label: "Équipements" },
-  { href: "#calculateur", label: "Calculateur" },
+  { href: "#calculateur", label: "Simulateur Devis" },
   { href: "#canal", label: "Chaîne WhatsApp" },
   { href: "#realisations", label: "Réalisations" },
   { href: "#avis", label: "Avis clients" },
   { href: "#contact", label: "Contact" },
 ];
 
-/* Liens essentiels condensés sur 1 seule ligne pour Desktop */
+/* Liens essentiels condensés pour Desktop (0 chevauchement) */
 const NAV_DESKTOP = [
   { href: "#services", label: "Services" },
   { href: "#kits", label: "Kits" },
   { href: "#boutique", label: "Boutique" },
-  { href: "#calculateur", label: "Calculateur" },
+  { href: "#calculateur", label: "Simulateur Devis" },
   { href: "#realisations", label: "Réalisations" },
 ];
 
@@ -124,7 +124,7 @@ function Header() {
           </a>
         </div>
 
-        {/* HAMBURGER (Mobile / Tablette) */}
+        {/* HAMBURGER (Mobile & Tablette) */}
         <button 
           className="grid h-10 w-10 place-items-center rounded-xl border border-slate-200 bg-slate-50 text-slate-800 transition-colors hover:bg-slate-100 lg:hidden dark:border-slate-800 dark:bg-slate-900 dark:text-slate-100" 
           onClick={() => setOpen((v) => !v)} 
@@ -176,12 +176,12 @@ function Hero() {
       <img src={hero} alt="Installateurs solaires EDSOLAR sur un toit à Yaoundé" width={1920} height={1080}
            className="absolute inset-0 -z-10 h-full w-full object-cover" />
       <div className="absolute inset-0 -z-10 bg-gradient-to-br from-slate-950/90 via-slate-900/80 to-slate-950/60" />
-      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-24 sm:px-6 md:py-32 lg:grid-cols-[1.15fr_1fr] lg:py-40">
+      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-20 sm:px-6 md:py-32 lg:grid-cols-[1.15fr_1fr] lg:py-40">
         <div className="text-white">
           <span className="inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-amber-400 backdrop-blur">
             <Sun className="h-3.5 w-3.5 text-amber-400" /> L'énergie propre pour un avenir durable
           </span>
-          <h1 className="mt-6 text-4xl font-black leading-[1.05] tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
+          <h1 className="mt-6 text-3xl font-black leading-[1.1] tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
             Passez à l'Énergie <span className="text-amber-400">Solaire</span> avec EDSOLAR
           </h1>
           <p className="mt-6 max-w-xl text-base leading-relaxed text-slate-300 sm:text-lg">
@@ -240,13 +240,13 @@ const SERVICES = [
 
 function Services() {
   return (
-    <section id="services" className="bg-slate-100/70 dark:bg-slate-900/50 py-20 sm:py-28">
+    <section id="services" className="bg-slate-100/70 dark:bg-slate-900/50 py-16 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <SectionHeader eyebrow="Nos Services" title="Une expertise complète en énergie solaire"
           description="De l'audit à la mise en service, EDSOLAR vous accompagne à chaque étape de votre transition énergétique." />
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {SERVICES.map((s) => (
-            <div key={s.title} className="group rounded-2xl border border-border bg-card p-6 glow-green shadow-sm">
+            <div key={s.title} className="group rounded-2xl border border-border bg-card p-6 shadow-sm transition-all hover:border-amber-500/40">
               <div className="grid h-12 w-12 place-items-center rounded-xl bg-amber-500/10 text-amber-600 transition-colors group-hover:bg-amber-500 group-hover:text-slate-950">
                 <s.icon className="h-6 w-6" />
               </div>
@@ -264,7 +264,7 @@ function Services() {
   );
 }
 
-/* ---------------- Calculator ---------------- */
+/* ---------------- Calculator / Simulateur Devis ---------------- */
 type Appliance = { id: string; name: string; watts: number; icon: any; hours: number };
 const APPLIANCES: Appliance[] = [
   { id: "led", name: "Éclairage LED", watts: 15, icon: Lightbulb, hours: 6 },
@@ -327,18 +327,21 @@ function Calculator() {
   const msg = `Bonjour EDSOLAR,%0AVoici mon estimation solaire:%0A- Puissance de pointe: ${peakW} W%0A- Consommation journalière: ${dailyWh.toFixed(0)} Wh%0A- Système recommandé: ${systemKva} kVA ${systemVoltage}V%0A- Batteries lithium: ${batteryCount} x ${systemVoltage}V ${batteryUnitAh}Ah%0A- Panneaux solaires: ${panelsCount} x 450W%0A- Budget estimatif: ${priceLabel}%0AMerci de me contacter pour un devis.`;
 
   return (
-    <section id="calculateur" className="py-20 sm:py-28">
+    <section id="calculateur" className="py-16 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <SectionHeader eyebrow="Calculateur Solaire" title="Estimez votre système solaire en 1 minute"
-          description="Sélectionnez vos appareils. Obtenez immédiatement la puissance recommandée et la capacité de batterie." />
+        <SectionHeader 
+          eyebrow="Simulateur Devis" 
+          title="Estimez votre installation solaire en 1 minute"
+          description="Sélectionnez vos appareils. Obtenez immédiatement votre puissance recommandée et une estimation budgétaire." 
+        />
         <div className="mt-12 grid gap-8 lg:grid-cols-[1.4fr_1fr]">
-          <div className="rounded-3xl border border-border bg-card p-6 shadow-sm sm:p-8">
+          <div className="rounded-3xl border border-border bg-card p-5 sm:p-8 shadow-sm">
             <div className="grid gap-3 sm:grid-cols-2">
               {APPLIANCES.map((a) => {
                 const n = qty[a.id] ?? 0;
                 const active = n > 0;
                 return (
-                  <div key={a.id} className={`flex items-center justify-between gap-3 rounded-2xl border p-4 transition-all ${active ? "border-amber-500/50 bg-amber-500/5" : "border-border bg-background"}`}>
+                  <div key={a.id} className={`flex items-center justify-between gap-3 rounded-2xl border p-3.5 transition-all ${active ? "border-amber-500/50 bg-amber-500/5" : "border-border bg-background"}`}>
                     <div className="flex min-w-0 items-center gap-3">
                       <div className={`grid h-10 w-10 shrink-0 place-items-center rounded-xl ${active ? "bg-amber-500 text-slate-950" : "bg-slate-200 dark:bg-slate-800 text-foreground"}`}>
                         <a.icon className="h-5 w-5" />
@@ -348,10 +351,10 @@ function Calculator() {
                         <p className="text-xs text-muted-foreground">{a.watts} W · {a.hours}h/jour</p>
                       </div>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1.5 shrink-0">
                       <button onClick={() => set(a.id, n - 1)} className="grid h-8 w-8 place-items-center rounded-full border border-border text-lg font-bold hover:bg-secondary" aria-label="moins">−</button>
-                      <span className="w-6 text-center text-sm font-bold tabular-nums">{n}</span>
-                      <button onClick={() => set(a.id, n + 1)} className="grid h-8 w-8 place-items-center rounded-full bg-slate-900 text-lg font-bold text-white hover:bg-slate-800" aria-label="plus">+</button>
+                      <span className="w-5 text-center text-sm font-bold tabular-nums">{n}</span>
+                      <button onClick={() => set(a.id, n + 1)} className="grid h-8 w-8 place-items-center rounded-full bg-slate-900 text-lg font-bold text-white hover:bg-slate-800 dark:bg-slate-100 dark:text-slate-900" aria-label="plus">+</button>
                     </div>
                   </div>
                 );
@@ -361,7 +364,7 @@ function Calculator() {
           <div className="rounded-3xl border border-slate-800 bg-slate-950 p-6 text-white shadow-2xl sm:p-8">
             <p className="text-xs font-bold uppercase tracking-widest text-amber-400">Votre estimation</p>
             <h3 className="mt-2 text-2xl font-black">Résultats en temps réel</h3>
-            <div className="mt-6 space-y-4">
+            <div className="mt-6 space-y-3.5">
               <Metric icon={Zap} label="Puissance de pointe" value={`${peakW.toLocaleString()} W`} />
               <Metric icon={Sun} label="Consommation journalière" value={`${dailyWh.toLocaleString(undefined, { maximumFractionDigits: 0 })} Wh`} />
               <Metric icon={Cpu} label="Système recommandé" value={`${systemKva} kVA ${systemVoltage}V`} highlight />
@@ -384,11 +387,11 @@ function Calculator() {
 function Metric({ icon: Icon, label, value, highlight }: { icon: any; label: string; value: string; highlight?: boolean }) {
   return (
     <div className={`flex items-center justify-between rounded-2xl border border-slate-800 ${highlight ? "bg-amber-500/10 border-amber-500/30 text-amber-400" : "bg-slate-900/60"} px-4 py-3`}>
-      <div className="flex items-center gap-3">
-        <Icon className={`h-5 w-5 ${highlight ? "text-amber-400" : "text-slate-400"}`} />
-        <span className="text-sm text-slate-300">{label}</span>
+      <div className="flex items-center gap-2.5">
+        <Icon className={`h-4 w-4 ${highlight ? "text-amber-400" : "text-slate-400"}`} />
+        <span className="text-xs sm:text-sm text-slate-300">{label}</span>
       </div>
-      <span className="text-lg font-black tabular-nums">{value}</span>
+      <span className="text-base sm:text-lg font-black tabular-nums">{value}</span>
     </div>
   );
 }
@@ -465,7 +468,7 @@ function Products() {
   };
 
   return (
-    <section id="boutique" className="bg-slate-100/70 dark:bg-slate-900/50 py-20 sm:py-28">
+    <section id="boutique" className="bg-slate-100/70 dark:bg-slate-900/50 py-16 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <SectionHeader eyebrow="Boutique" title="Équipements solaires de qualité"
           description="Panneaux, batteries, onduleurs et kits complets — sélectionnés pour leur fiabilité." />
@@ -544,7 +547,7 @@ function Products() {
 /* ---------------- WhatsApp Channel Section ---------------- */
 function WhatsAppChannel() {
   return (
-    <section id="canal" className="relative overflow-hidden bg-slate-950 py-20 text-slate-100 sm:py-28">
+    <section id="canal" className="relative overflow-hidden bg-slate-950 py-16 text-slate-100 sm:py-28">
       <div className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#25D366]/10 blur-[120px]" />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
@@ -552,15 +555,15 @@ function WhatsAppChannel() {
           <span className="inline-flex items-center gap-2 rounded-full border border-[#25D366]/30 bg-[#25D366]/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-[#25D366]">
             <Radio className="h-3.5 w-3.5 animate-pulse" /> Direct du terrain
           </span>
-          <h2 className="mt-4 text-3xl font-black tracking-tight text-white sm:text-4xl md:text-5xl">
+          <h2 className="mt-4 text-2xl font-black tracking-tight text-white sm:text-4xl md:text-5xl">
             Rejoignez la Chaîne <span className="text-[#25D366]">WhatsApp EDSOLAR</span>
           </h2>
-          <p className="mt-4 text-base text-slate-400 sm:text-lg">
+          <p className="mt-4 text-sm text-slate-400 sm:text-lg">
             Suivez nos équipes au quotidien : vidéos d'installations, conseils techniques, arrivages de matériel et retours d'expérience.
           </p>
         </div>
 
-        <div className="mt-12 grid gap-6 md:grid-cols-3">
+        <div className="mt-12 grid gap-6 sm:grid-cols-2 md:grid-cols-3">
           <div className="group rounded-2xl border border-slate-800 bg-slate-900/60 p-6 backdrop-blur transition-all hover:border-[#25D366]/50 hover:bg-slate-900">
             <div className="grid h-12 w-12 place-items-center rounded-xl bg-[#25D366]/10 text-[#25D366] transition-transform group-hover:scale-110">
               <Video className="h-6 w-6" />
@@ -581,7 +584,7 @@ function WhatsAppChannel() {
             </p>
           </div>
 
-          <div className="group rounded-2xl border border-slate-800 bg-slate-900/60 p-6 backdrop-blur transition-all hover:border-[#25D366]/50 hover:bg-slate-900">
+          <div className="group rounded-2xl border border-slate-800 bg-slate-900/60 p-6 backdrop-blur transition-all hover:border-[#25D366]/50 hover:bg-slate-900 sm:col-span-2 md:col-span-1">
             <div className="grid h-12 w-12 place-items-center rounded-xl bg-[#25D366]/10 text-[#25D366] transition-transform group-hover:scale-110">
               <Sparkles className="h-6 w-6" />
             </div>
@@ -592,14 +595,14 @@ function WhatsAppChannel() {
           </div>
         </div>
 
-        <div className="mt-10 rounded-3xl border border-slate-800 bg-gradient-to-r from-slate-900 via-slate-900/90 to-slate-900 p-8 shadow-2xl backdrop-blur sm:p-10">
+        <div className="mt-10 rounded-3xl border border-slate-800 bg-gradient-to-r from-slate-900 via-slate-900/90 to-slate-900 p-6 shadow-2xl backdrop-blur sm:p-10">
           <div className="mx-auto flex max-w-2xl flex-col items-center gap-6 text-center sm:flex-row sm:justify-between sm:text-left">
             <div>
-              <p className="text-xl font-bold text-white">Près de 1 000 abonnés nous suivent !</p>
-              <p className="mt-1 text-sm text-slate-400">Abonnement 100% gratuit, rapide et confidentiel.</p>
+              <p className="text-lg sm:text-xl font-bold text-white">Près de 1 000 abonnés nous suivent !</p>
+              <p className="mt-1 text-xs sm:text-sm text-slate-400">Abonnement 100% gratuit, rapide et confidentiel.</p>
             </div>
             <a href={WA_CHANNEL_URL} target="_blank" rel="noreferrer"
-               className="inline-flex shrink-0 items-center gap-3 rounded-full bg-[#25D366] px-8 py-4 text-base font-bold text-slate-950 shadow-lg shadow-[#25D366]/20 transition-all hover:scale-105 hover:bg-[#20ba59]">
+               className="inline-flex shrink-0 items-center gap-3 rounded-full bg-[#25D366] px-6 py-3.5 sm:px-8 sm:py-4 text-sm sm:text-base font-bold text-slate-950 shadow-lg transition-all hover:scale-105 hover:bg-[#20ba59]">
               <MessageCircle className="h-5 w-5 fill-slate-950 text-[#25D366]" /> Suivre la Chaîne
             </a>
           </div>
@@ -619,26 +622,26 @@ const STATS = [
 
 function Trust() {
   return (
-    <section className="py-20 sm:py-28">
+    <section className="py-16 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <SectionHeader eyebrow="Pourquoi nous choisir ?" title="La confiance de centaines de clients"
           description="Une expertise 100% locale, au service du Cameroun et de toute l'Afrique Centrale 🌍." />
-        <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-12 grid gap-4 grid-cols-2 lg:grid-cols-4">
           {STATS.map((s) => (
-            <div key={s.label} className="rounded-2xl border border-border bg-card p-6 text-center shadow-sm transition-transform hover:-translate-y-1">
-              <div className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-amber-500/10 text-amber-600">
-                <s.icon className="h-7 w-7" />
+            <div key={s.label} className="rounded-2xl border border-border bg-card p-5 sm:p-6 text-center shadow-sm transition-transform hover:-translate-y-1">
+              <div className="mx-auto grid h-12 w-12 sm:h-14 sm:w-14 place-items-center rounded-2xl bg-amber-500/10 text-amber-600">
+                <s.icon className="h-6 w-6 sm:h-7 sm:w-7" />
               </div>
-              <div className="mt-4 text-4xl font-black text-slate-900 dark:text-white">{s.value}</div>
-              <div className="mt-1 text-sm text-muted-foreground">{s.label}</div>
+              <div className="mt-3 sm:mt-4 text-2xl sm:text-4xl font-black text-slate-900 dark:text-white">{s.value}</div>
+              <div className="mt-1 text-xs sm:text-sm text-muted-foreground">{s.label}</div>
             </div>
           ))}
         </div>
 
-        <div className="mt-14 flex flex-wrap items-center justify-center gap-4">
+        <div className="mt-10 sm:mt-14 flex flex-wrap items-center justify-center gap-2.5 sm:gap-4">
           {["Normes IEC 61215", "ISO 9001", "Garantie 25 ans", "Ingénieurs certifiés", "Support 7j/7"].map((b) => (
-            <span key={b} className="inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-2 text-xs font-semibold text-emerald-700 dark:text-emerald-400">
-              <ShieldCheck className="h-4 w-4 text-emerald-600" /> {b}
+            <span key={b} className="inline-flex items-center gap-1.5 sm:gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-3.5 py-1.5 text-[11px] sm:text-xs font-semibold text-emerald-700 dark:text-emerald-400">
+              <ShieldCheck className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-emerald-600" /> {b}
             </span>
           ))}
         </div>
@@ -662,11 +665,11 @@ function Realisations() {
   }, []);
   const items = [...extra, ...STATIC_GALLERY];
   return (
-    <section id="realisations" className="bg-slate-100/70 dark:bg-slate-900/50 py-20 sm:py-28">
+    <section id="realisations" className="bg-slate-100/70 dark:bg-slate-900/50 py-16 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <SectionHeader eyebrow="Nos Réalisations" title="Projets récents au Cameroun"
           description="Découvrez nos installations récentes chez les particuliers et les entreprises." />
-        <div className="mt-12 grid gap-6 md:grid-cols-3">
+        <div className="mt-12 grid gap-6 sm:grid-cols-2 md:grid-cols-3">
           {items.map((g, i) => (
             <figure key={`${g.src}-${i}`} className="group overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-transform hover:-translate-y-1">
               <div className="aspect-[4/3] overflow-hidden bg-muted">
@@ -682,7 +685,7 @@ function Realisations() {
                   <p className="text-sm font-bold">{g.title}</p>
                   <p className="text-xs text-muted-foreground">{g.loc}</p>
                 </div>
-                <ArrowRight className="h-4 w-4 text-amber-500" />
+                <ArrowRight className="h-4 w-4 text-amber-500 shrink-0" />
               </figcaption>
             </figure>
           ))}
@@ -695,14 +698,14 @@ function Realisations() {
 /* ---------------- About ---------------- */
 function About() {
   return (
-    <section id="apropos" className="py-20 sm:py-28">
-      <div className="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:items-center">
+    <section id="apropos" className="py-16 sm:py-28">
+      <div className="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:items-center">
         <div>
           <span className="text-xs font-bold uppercase tracking-widest text-emerald-600">À propos</span>
-          <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-4xl">
+          <h2 className="mt-3 text-2xl sm:text-4xl font-black tracking-tight">
             EDSOLAR — votre partenaire solaire au Cameroun & en Afrique Centrale
           </h2>
-          <p className="mt-5 text-base leading-relaxed text-muted-foreground">
+          <p className="mt-4 sm:mt-5 text-sm sm:text-base leading-relaxed text-muted-foreground">
             Basés à <strong className="text-foreground">Tradex Olembe, Yaoundé</strong>, nous intervenons partout au <strong className="text-foreground">Cameroun</strong> et dans toute l'<strong className="text-foreground">Afrique Centrale</strong>. Notre mission : rendre l'énergie solaire accessible, fiable et rentable pour chaque foyer et chaque entreprise, avec du matériel certifié et une équipe de techniciens qualifiés.
           </p>
           <ul className="mt-6 space-y-3">
@@ -718,8 +721,8 @@ function About() {
             ))}
           </ul>
         </div>
-        <div className="grid grid-cols-2 gap-4">
-          <img src={teamPortrait} alt="Technicien EDSOLAR" className="col-span-2 max-h-[520px] w-full rounded-2xl object-contain" loading="lazy" />
+        <div className="grid grid-cols-2 gap-3 sm:gap-4">
+          <img src={teamPortrait} alt="Technicien EDSOLAR" className="col-span-2 max-h-[420px] sm:max-h-[520px] w-full rounded-2xl object-cover" loading="lazy" />
           <img src={gal1} alt="Installation EDSOLAR" className="aspect-square w-full rounded-2xl object-cover" loading="lazy" />
           <img src={gal3} alt="Tableau électrique" className="aspect-square w-full rounded-2xl object-cover" loading="lazy" />
         </div>
@@ -739,7 +742,7 @@ function Contact() {
     setSent(true);
   };
   return (
-    <section id="contact" className="bg-slate-100/70 dark:bg-slate-900/50 py-20 sm:py-28">
+    <section id="contact" className="bg-slate-100/70 dark:bg-slate-900/50 py-16 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <SectionHeader eyebrow="Contact" title="Parlons de votre projet solaire"
           description="Remplissez le formulaire ou appelez-nous — un expert vous répond sous 24h." />
@@ -753,7 +756,7 @@ function Contact() {
                 src="https://www.google.com/maps?q=Tradex+Olembe+Yaounde&output=embed" loading="lazy" />
             </div>
           </div>
-          <form onSubmit={submit} className="rounded-3xl border border-border bg-card p-6 shadow-sm sm:p-8">
+          <form onSubmit={submit} className="rounded-3xl border border-border bg-card p-5 sm:p-8 shadow-sm">
             <div className="grid gap-4 sm:grid-cols-2">
               <Field label="Nom complet" value={form.name} onChange={(v) => setForm({ ...form, name: v })} required />
               <Field label="Téléphone" value={form.phone} onChange={(v) => setForm({ ...form, phone: v })} required type="tel" />
@@ -761,14 +764,14 @@ function Contact() {
               <div>
                 <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">Type de projet</label>
                 <select value={form.type} onChange={(e) => setForm({ ...form, type: e.target.value })}
-                  className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20">
+                  className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-amber-500">
                   <option>Maison</option><option>Commerce</option><option>Industrie</option><option>Autre</option>
                 </select>
               </div>
               <div>
                 <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">Zone d'intervention</label>
                 <select value={form.zone} onChange={(e) => setForm({ ...form, zone: e.target.value })}
-                  className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20">
+                  className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-amber-500">
                   <option>Cameroun</option><option>Afrique centrale</option>
                 </select>
               </div>
@@ -776,13 +779,13 @@ function Contact() {
                 <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">Besoins spécifiques</label>
                 <input type="text" value={form.needs} onChange={(e) => setForm({ ...form, needs: e.target.value })}
                   placeholder="Ex: pompage, climatisation, bureaux, hangar..."
-                  className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20" />
+                  className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-amber-500" />
               </div>
               <div className="sm:col-span-2">
                 <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">Message</label>
                 <textarea rows={4} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })}
                   placeholder="Décrivez brièvement votre besoin..."
-                  className="w-full resize-none rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20" />
+                  className="w-full resize-none rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-amber-500" />
               </div>
             </div>
             <button type="submit"
@@ -820,7 +823,7 @@ function Field({ label, value, onChange, required, type = "text", placeholder }:
       <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">{label}</label>
       <input type={type} required={required} value={value} placeholder={placeholder}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20" />
+        className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-amber-500" />
     </div>
   );
 }
@@ -829,8 +832,8 @@ function Field({ label, value, onChange, required, type = "text", placeholder }:
 function Footer() {
   return (
     <footer className="border-t border-slate-800 bg-slate-950 text-white">
-      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 lg:grid-cols-4">
-        <div className="lg:col-span-2">
+      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="sm:col-span-2 lg:col-span-2">
           <a href="/" className="inline-flex items-center gap-3 transition-opacity hover:opacity-90" aria-label="Retour à l'accueil">
             <img src={logo} alt="EDSOLAR Énergie Cameroun" className="h-12 w-12 rounded-xl bg-white object-contain p-1 shadow-md" />
             <div>
@@ -882,7 +885,7 @@ function Footer() {
 function FloatingWhatsApp() {
   return (
     <a href={waLink("Bonjour EDSOLAR, j'aimerais plus d'informations.")} target="_blank" rel="noreferrer"
-       className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-full bg-[#25D366] px-5 py-3.5 font-bold text-slate-950 shadow-2xl transition-transform hover:scale-105"
+       className="fixed bottom-5 right-5 z-50 flex items-center gap-2 rounded-full bg-[#25D366] px-4 py-3 sm:px-5 sm:py-3.5 font-bold text-slate-950 shadow-2xl transition-transform hover:scale-105"
        aria-label="Contacter sur WhatsApp">
       <MessageCircle className="h-5 w-5 fill-slate-950" />
       <span className="hidden sm:inline text-sm">Chat WhatsApp</span>
@@ -904,7 +907,7 @@ function ScrollToTop() {
   return (
     <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
       aria-label="Revenir en haut"
-      className="fixed bottom-24 right-6 z-50 grid h-11 w-11 place-items-center rounded-full border border-border bg-card text-foreground shadow-xl transition-transform hover:scale-110">
+      className="fixed bottom-20 sm:bottom-24 right-5 sm:right-6 z-50 grid h-10 w-10 sm:h-11 sm:w-11 place-items-center rounded-full border border-border bg-card text-foreground shadow-xl transition-transform hover:scale-110">
       <ArrowUp className="h-5 w-5" />
     </button>
   );
@@ -915,8 +918,8 @@ function SectionHeader({ eyebrow, title, description }: { eyebrow: string; title
   return (
     <div className="mx-auto max-w-2xl text-center">
       <span className="text-xs font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">{eyebrow}</span>
-      <h2 className="mt-3 text-3xl font-black tracking-tight text-foreground sm:text-4xl md:text-5xl">{title}</h2>
-      <p className="mt-4 text-base text-muted-foreground">{description}</p>
+      <h2 className="mt-2.5 text-2xl font-black tracking-tight text-foreground sm:text-4xl md:text-5xl">{title}</h2>
+      <p className="mt-3 sm:mt-4 text-sm sm:text-base text-muted-foreground">{description}</p>
     </div>
   );
 }
@@ -936,11 +939,11 @@ function Kits() {
     });
   }, []);
   return (
-    <section id="kits" className="py-20 sm:py-28">
+    <section id="kits" className="py-16 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <SectionHeader eyebrow="Nos Kits" title="Des solutions solaires prêtes à l'emploi"
           description="Nos kits phares, sélectionnés pour les besoins réels des foyers et commerces camerounais." />
-        <div className="mt-12 grid gap-6 md:grid-cols-3">
+        <div className="mt-12 grid gap-6 sm:grid-cols-2 md:grid-cols-3">
           {items.map((k) => (
             <article key={k.id} className="flex flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-sm transition-transform hover:-translate-y-1">
               <div className="relative aspect-[16/10] overflow-hidden bg-slate-100 dark:bg-slate-800">
@@ -1000,12 +1003,12 @@ function Reviews() {
   };
 
   return (
-    <section id="avis" className="bg-slate-100/70 dark:bg-slate-900/50 py-20 sm:py-28">
+    <section id="avis" className="bg-slate-100/70 dark:bg-slate-900/50 py-16 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <SectionHeader eyebrow="Avis clients" title="Partagez votre expérience EDSOLAR"
           description="Votre satisfaction compte. Laissez un avis — il sera publié après validation de notre équipe." />
         <div className="mt-12 grid gap-8 lg:grid-cols-[1fr_1.3fr]">
-          <form onSubmit={submit} className="h-fit rounded-3xl border border-border bg-card p-6 shadow-sm sm:p-8">
+          <form onSubmit={submit} className="h-fit rounded-3xl border border-border bg-card p-5 sm:p-8 shadow-sm">
             <p className="text-sm font-bold">Laisser un avis</p>
             <div className="mt-4 space-y-3">
               <div>
@@ -1023,7 +1026,7 @@ function Reviews() {
                       onMouseLeave={() => setHoverRating(0)}
                       aria-label={`${n} étoile${n > 1 ? "s" : ""}`}
                       className="p-1 transition-transform hover:scale-110">
-                      <Star className={`pointer-events-none h-8 w-8 ${n <= (hoverRating || form.rating) ? "fill-amber-400 text-amber-400" : "text-muted-foreground/30"}`} />
+                      <Star className={`pointer-events-none h-7 w-7 sm:h-8 sm:w-8 ${n <= (hoverRating || form.rating) ? "fill-amber-400 text-amber-400" : "text-muted-foreground/30"}`} />
                     </button>
                   ))}
                   <span className="ml-2 text-sm font-semibold text-muted-foreground">{form.rating}/5</span>
@@ -1034,7 +1037,7 @@ function Reviews() {
                 <textarea rows={4} value={form.comment} onChange={(e) => setForm({ ...form, comment: e.target.value })} required
                   className="mt-1 w-full resize-none rounded-xl border border-input bg-background px-4 py-2.5 text-sm outline-none focus:border-amber-500" />
               </div>
-              <button disabled={busy} className="w-full rounded-full bg-slate-900 px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-slate-800 disabled:opacity-60">
+              <button disabled={busy} className="w-full rounded-full bg-slate-900 px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-slate-800 disabled:opacity-60 dark:bg-amber-500 dark:text-slate-950">
                 {busy ? "Envoi…" : "Publier mon avis"}
               </button>
               {sent && <p className="text-sm text-emerald-600 font-semibold">Merci ! Votre avis sera publié après validation.</p>}
