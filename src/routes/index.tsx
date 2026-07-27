@@ -21,7 +21,7 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "EDSOLAR Énergie Cameroun — Installation Solaire à Yaoundé & Afrique Centrale" },
-      { name: "description", content: "Solutions anti-délestage Eneo, installation de panneaux solaires, batteries Lithium et matériel certifié à Yaoundé. Devis gratuit sur WhatsApp au +237 650544444 ou par email à edsolarcam@gmail.com." },
+      { name: "description", content: "Solutions anti-délestage Eneo, installation de panneaux solaires, batteries Lithium et matériel certifié à Yaoundé. Contactez-nous à edsolarcam@gmail.com ou au +237 650544444." },
       { property: "og:title", content: "EDSOLAR Énergie Cameroun — Installation Solaire & Anti-Délestage" },
       { property: "og:description", content: "Fini les coupures Eneo. Équipements solaires certifiés Tier 1 à Yaoundé et livraison dans toute l'Afrique Centrale." },
     ],
@@ -1334,7 +1334,7 @@ function About({ t }: { t: typeof TRANSLATIONS["fr"] }) {
   );
 }
 
-/* ---------------- Contact (Avec Email edsolarcam@gmail.com) ---------------- */
+/* ---------------- Contact (Structure Optimisée sans chevauchement) ---------------- */
 function Contact({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
   const [form, setForm] = useState({ name: "", phone: "", location: "", type: "Maison", zone: "Cameroun", needs: "", message: "" });
   const [sent, setSent] = useState(false);
@@ -1352,18 +1352,33 @@ function Contact({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
     <section id="contact" className="bg-slate-100/70 dark:bg-slate-900/50 py-16 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <SectionHeader eyebrow={t.contactEyebrow} title={t.contactTitle} description={t.contactDesc} />
-        <div className="mt-12 grid gap-6 lg:grid-cols-[1fr_1.2fr]">
-          <div className="space-y-4">
-            <ContactCard icon={MapPin} title={t.contactHeadquarters} lines={["Tradex Olembe", "Yaoundé, Cameroun"]} />
-            <ContactCard icon={Leaf} title={t.contactZone} lines={["Tout le Cameroun", "& Afrique Centrale"]} />
-            <ContactCard icon={Phone} title={t.contactPhone} lines={["+237 650544444"]} href={`tel:${PHONE}`} />
-            <ContactCard icon={Mail} title={t.contactEmail} lines={[EMAIL]} href={`mailto:${EMAIL}`} />
-            <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
-              <iframe title="EDSOLAR Yaoundé" className="h-56 w-full"
-                src="https://www.google.com/maps?q=Tradex+Olembe+Yaounde&output=embed" loading="lazy" />
+        
+        <div className="mt-12 grid gap-8 lg:grid-cols-[1.1fr_1.2fr] items-start">
+          
+          {/* BLOC INFOS CONTACT & CARTE MAPS */}
+          <div className="flex flex-col gap-6">
+            
+            {/* Grille 2x2 propre pour les 4 cartes d'information */}
+            <div className="grid gap-4 sm:grid-cols-2">
+              <ContactCard icon={MapPin} title={t.contactHeadquarters} lines={["Tradex Olembe", "Yaoundé, Cameroun"]} />
+              <ContactCard icon={Leaf} title={t.contactZone} lines={["Tout le Cameroun", "& Afrique Centrale"]} />
+              <ContactCard icon={Phone} title={t.contactPhone} lines={["+237 650544444"]} href={`tel:${PHONE}`} />
+              <ContactCard icon={Mail} title={t.contactEmail} lines={[EMAIL]} href={`mailto:${EMAIL}`} />
+            </div>
+
+            {/* Carte Google Maps isolée avec sa propre marge propre */}
+            <div className="overflow-hidden rounded-3xl border border-border bg-card shadow-sm h-64 sm:h-72 w-full">
+              <iframe 
+                title="EDSOLAR Yaoundé" 
+                className="h-full w-full border-0"
+                src="https://www.google.com/maps?q=Tradex+Olembe+Yaounde&output=embed" 
+                loading="lazy" 
+              />
             </div>
           </div>
-          <form onSubmit={submit} className="rounded-3xl border border-border bg-card p-5 sm:p-8 shadow-sm">
+
+          {/* FORMULAIRE DE CONTACT */}
+          <form onSubmit={submit} className="rounded-3xl border border-border bg-card p-6 sm:p-8 shadow-sm">
             <div className="grid gap-4 sm:grid-cols-2">
               <Field label={t.formName} value={form.name} onChange={(v) => setForm({ ...form, name: v })} required />
               <Field label={t.formPhone} value={form.phone} onChange={(v) => setForm({ ...form, phone: v })} required type="tel" />
@@ -1397,6 +1412,7 @@ function Contact({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
             </button>
             {sent && <p className="mt-3 text-sm text-emerald-600 font-semibold">{t.formSuccess}</p>}
           </form>
+
         </div>
       </div>
     </section>
@@ -1405,17 +1421,19 @@ function Contact({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
 
 function ContactCard({ icon: Icon, title, lines, href }: { icon: any; title: string; lines: string[]; href?: string }) {
   const inner = (
-    <div className="flex gap-4 rounded-2xl border border-border bg-card p-5 shadow-sm transition-transform hover:-translate-y-1">
-      <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-amber-500/10 text-amber-600">
+    <div className="flex items-start gap-3.5 rounded-2xl border border-border bg-card p-4 sm:p-5 shadow-sm transition-transform hover:-translate-y-1 h-full">
+      <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-amber-500/10 text-amber-600">
         <Icon className="h-5 w-5" />
       </div>
-      <div className="min-w-0">
-        <p className="text-sm font-bold">{title}</p>
-        {lines.map((l) => <p key={l} className="text-sm text-muted-foreground break-all">{l}</p>)}
+      <div className="min-w-0 flex-1">
+        <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">{title}</p>
+        {lines.map((l) => (
+          <p key={l} className="mt-0.5 text-sm font-bold text-foreground break-all">{l}</p>
+        ))}
       </div>
     </div>
   );
-  return href ? <a href={href}>{inner}</a> : inner;
+  return href ? <a href={href} className="block h-full">{inner}</a> : inner;
 }
 
 function Field({ label, value, onChange, required, type = "text", placeholder }: {
@@ -1431,7 +1449,7 @@ function Field({ label, value, onChange, required, type = "text", placeholder }:
   );
 }
 
-/* ---------------- Footer (Avec Email) ---------------- */
+/* ---------------- Footer ---------------- */
 function Footer({ t }: { t: typeof TRANSLATIONS["fr"] }) {
   return (
     <footer className="border-t border-slate-800 bg-slate-950 text-white">
