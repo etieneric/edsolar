@@ -47,7 +47,7 @@ const NAV = [
 
 function Index() {
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-background text-foreground selection:bg-accent selection:text-accent-foreground">
       <Header />
       <Hero />
       <Services />
@@ -71,25 +71,25 @@ function Index() {
 function Header() {
   const [open, setOpen] = useState(false);
   return (
-    <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-xl">
+    <header className="sticky top-0 z-50 border-b border-border/60 bg-background/85 backdrop-blur-xl">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
         <a href="#accueil" className="flex items-center gap-2 shrink-0">
           <img src={logo} alt="EDSOLAR Énergie Cameroun" className="h-11 w-11 rounded-xl bg-white object-contain p-0.5 shadow-md" />
           <span className="flex flex-col leading-tight">
             <span className="text-lg font-black tracking-tight text-primary">EDSOLAR</span>
-            <span className="text-[10px] font-semibold uppercase tracking-[0.15em] text-muted-foreground">Énergie Cameroun</span>
+            <span className="text-[10px] font-semibold uppercase tracking-[0.15em] text-emerald-600">Énergie Cameroun</span>
           </span>
         </a>
         <nav className="hidden items-center gap-7 lg:flex">
           {NAV.map((n) => (
-            <a key={n.href} href={n.href} className="text-sm font-medium text-foreground/80 transition-colors hover:text-primary">
+            <a key={n.href} href={n.href} className="text-sm font-medium text-foreground/80 transition-colors hover:text-accent">
               {n.label}
             </a>
           ))}
         </nav>
         <div className="hidden items-center gap-3 lg:flex">
           <a href={waLink("Bonjour EDSOLAR, je souhaite un devis gratuit.")} target="_blank" rel="noreferrer"
-             className="inline-flex items-center gap-2 rounded-full bg-accent px-4 py-2.5 text-sm font-semibold text-accent-foreground shadow-md transition-all hover:brightness-105 hover:shadow-lg">
+             className="inline-flex items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-sm font-bold text-slate-950 shadow-md shadow-amber-500/10 transition-all hover:scale-105 hover:bg-amber-400">
             <MessageCircle className="h-4 w-4" /> Devis gratuit
           </a>
         </div>
@@ -105,7 +105,7 @@ function Header() {
                  className="rounded-lg px-3 py-2 text-sm font-medium hover:bg-secondary">{n.label}</a>
             ))}
             <a href={waLink("Bonjour EDSOLAR, je souhaite un devis gratuit.")} target="_blank" rel="noreferrer"
-               className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-accent px-4 py-2.5 text-sm font-semibold text-accent-foreground">
+               className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-accent px-4 py-2.5 text-sm font-bold text-slate-950">
               <MessageCircle className="h-4 w-4" /> Demander un devis gratuit
             </a>
           </div>
@@ -121,49 +121,49 @@ function Hero() {
     <section id="accueil" className="relative isolate overflow-hidden">
       <img src={hero} alt="Installateurs solaires EDSOLAR sur un toit à Yaoundé" width={1920} height={1080}
            className="absolute inset-0 -z-10 h-full w-full object-cover" />
-      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-primary-dark/90 via-primary-dark/70 to-primary/40" />
+      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-slate-950/90 via-slate-900/80 to-slate-950/60" />
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-24 sm:px-6 md:py-32 lg:grid-cols-[1.15fr_1fr] lg:py-40">
-        <div className="text-primary-foreground">
-          <span className="inline-flex items-center gap-2 rounded-full border border-white/25 bg-white/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider backdrop-blur">
-            <Sun className="h-3.5 w-3.5 text-accent" /> L'énergie propre pour un avenir durable
+        <div className="text-white">
+          <span className="inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-amber-400 backdrop-blur">
+            <Sun className="h-3.5 w-3.5 text-amber-400" /> L'énergie propre pour un avenir durable
           </span>
           <h1 className="mt-6 text-4xl font-black leading-[1.05] tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
-            Passez à l'Énergie <span className="text-accent">Solaire</span> avec EDSOLAR
+            Passez à l'Énergie <span className="text-amber-400">Solaire</span> avec EDSOLAR
           </h1>
-          <p className="mt-6 max-w-xl text-base leading-relaxed text-white/85 sm:text-lg">
+          <p className="mt-6 max-w-xl text-base leading-relaxed text-slate-300 sm:text-lg">
             Installation de panneaux solaires, maintenance préventive et vente d'équipements de haute qualité à Yaoundé et dans tout le Cameroun.
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <a href="#calculateur" className="inline-flex items-center gap-2 rounded-full bg-accent px-6 py-3.5 text-sm font-bold text-accent-foreground shadow-xl glow-green">
-              <Zap className="h-4 w-4" /> Simuler vos besoins énergétiques
+            <a href="#calculateur" className="inline-flex items-center gap-2 rounded-full bg-amber-500 px-6 py-3.5 text-sm font-bold text-slate-950 shadow-xl shadow-amber-500/20 transition-all hover:scale-105 hover:bg-amber-400">
+              <Zap className="h-4 w-4 fill-slate-950" /> Simuler vos besoins énergétiques
             </a>
-            <a href={`tel:${PHONE}`} className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/10 px-6 py-3.5 text-sm font-semibold text-white backdrop-blur transition-colors hover:bg-white/20">
+            <a href={`tel:${PHONE}`} className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-6 py-3.5 text-sm font-semibold text-white backdrop-blur transition-colors hover:bg-white/20">
               <Phone className="h-4 w-4" /> Contacter un expert
             </a>
           </div>
-          <div className="mt-10 flex flex-wrap items-center gap-6 text-sm text-white/80">
-            <div className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-accent" /> +500 installations</div>
-            <div className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-accent" /> Garantie 25 ans</div>
-            <div className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-accent" /> Cameroun & Afrique Centrale</div>
+          <div className="mt-10 flex flex-wrap items-center gap-6 text-sm text-slate-300">
+            <div className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-emerald-400" /> +500 installations</div>
+            <div className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-emerald-400" /> Garantie 25 ans</div>
+            <div className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-emerald-400" /> Cameroun & Afrique Centrale</div>
           </div>
         </div>
         <div className="hidden lg:block">
-          <div className="ml-auto max-w-sm rounded-3xl border border-white/20 bg-white/10 p-6 text-white shadow-2xl backdrop-blur-xl">
+          <div className="ml-auto max-w-sm rounded-3xl border border-white/15 bg-slate-900/60 p-6 text-white shadow-2xl backdrop-blur-xl">
             <div className="flex items-center gap-3">
               <img src={logo} alt="EDSOLAR" className="h-14 w-14 rounded-xl bg-white object-contain p-1" />
               <div>
-                <p className="text-xs uppercase tracking-widest text-white/70">Contactez-nous</p>
+                <p className="text-xs uppercase tracking-widest text-slate-400">Contactez-nous</p>
                 <p className="text-lg font-bold">EDSOLAR Yaoundé</p>
               </div>
             </div>
-            <div className="mt-5 space-y-3 text-sm">
-              <div className="flex items-start gap-3"><MapPin className="mt-0.5 h-4 w-4 text-accent" /> Tradex Olembe, Yaoundé, Cameroun</div>
-              <div className="flex items-start gap-3"><Leaf className="mt-0.5 h-4 w-4 text-accent" /> Interventions au Cameroun & Afrique Centrale</div>
-              <div className="flex items-start gap-3"><Phone className="mt-0.5 h-4 w-4 text-accent" /> +237 650544444</div>
+            <div className="mt-5 space-y-3 text-sm text-slate-300">
+              <div className="flex items-start gap-3"><MapPin className="mt-0.5 h-4 w-4 text-amber-400 shrink-0" /> Tradex Olembe, Yaoundé, Cameroun</div>
+              <div className="flex items-start gap-3"><Leaf className="mt-0.5 h-4 w-4 text-emerald-400 shrink-0" /> Interventions au Cameroun & Afrique Centrale</div>
+              <div className="flex items-start gap-3"><Phone className="mt-0.5 h-4 w-4 text-amber-400 shrink-0" /> +237 650544444</div>
             </div>
             <a href={waLink("Bonjour EDSOLAR, je souhaite discuter d'un projet solaire.")} target="_blank" rel="noreferrer"
-               className="mt-5 flex items-center justify-center gap-2 rounded-full bg-accent px-4 py-3 text-sm font-bold text-accent-foreground">
-              <MessageCircle className="h-4 w-4" /> WhatsApp direct
+               className="mt-5 flex items-center justify-center gap-2 rounded-full bg-emerald-500 px-4 py-3 text-sm font-bold text-slate-950 transition-all hover:bg-emerald-400">
+              <MessageCircle className="h-4 w-4 fill-slate-950" /> WhatsApp direct
             </a>
           </div>
         </div>
@@ -186,20 +186,20 @@ const SERVICES = [
 
 function Services() {
   return (
-    <section id="services" className="bg-secondary/40 py-20 sm:py-28">
+    <section id="services" className="bg-slate-100/70 dark:bg-slate-900/50 py-20 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <SectionHeader eyebrow="Nos Services" title="Une expertise complète en énergie solaire"
           description="De l'audit à la mise en service, EDSOLAR vous accompagne à chaque étape de votre transition énergétique." />
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {SERVICES.map((s) => (
-            <div key={s.title} className="group rounded-2xl border border-border bg-card p-6 glow-green">
-              <div className="grid h-12 w-12 place-items-center rounded-xl bg-primary/10 text-primary transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+            <div key={s.title} className="group rounded-2xl border border-border bg-card p-6 glow-green shadow-sm">
+              <div className="grid h-12 w-12 place-items-center rounded-xl bg-amber-500/10 text-amber-600 transition-colors group-hover:bg-amber-500 group-hover:text-slate-950">
                 <s.icon className="h-6 w-6" />
               </div>
               <h3 className="mt-5 text-lg font-bold text-foreground">{s.title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{s.desc}</p>
               <a href={waLink(`Bonjour EDSOLAR, je suis intéressé par: ${s.title}`)} target="_blank" rel="noreferrer"
-                 className="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-primary hover:gap-2 transition-all">
+                 className="mt-4 inline-flex items-center gap-1 text-sm font-bold text-emerald-600 hover:gap-2 transition-all">
                 En savoir plus <ArrowRight className="h-4 w-4" />
               </a>
             </div>
@@ -278,15 +278,15 @@ function Calculator() {
         <SectionHeader eyebrow="Calculateur Solaire" title="Estimez votre système solaire en 1 minute"
           description="Sélectionnez vos appareils. Obtenez immédiatement la puissance recommandée et la capacité de batterie." />
         <div className="mt-12 grid gap-8 lg:grid-cols-[1.4fr_1fr]">
-          <div className="rounded-3xl border border-border bg-card p-6 sm:p-8">
+          <div className="rounded-3xl border border-border bg-card p-6 shadow-sm sm:p-8">
             <div className="grid gap-3 sm:grid-cols-2">
               {APPLIANCES.map((a) => {
                 const n = qty[a.id] ?? 0;
                 const active = n > 0;
                 return (
-                  <div key={a.id} className={`flex items-center justify-between gap-3 rounded-2xl border p-4 transition-all ${active ? "border-primary bg-primary/5" : "border-border bg-background"}`}>
+                  <div key={a.id} className={`flex items-center justify-between gap-3 rounded-2xl border p-4 transition-all ${active ? "border-amber-500/50 bg-amber-500/5" : "border-border bg-background"}`}>
                     <div className="flex min-w-0 items-center gap-3">
-                      <div className={`grid h-10 w-10 shrink-0 place-items-center rounded-xl ${active ? "bg-primary text-primary-foreground" : "bg-secondary text-primary"}`}>
+                      <div className={`grid h-10 w-10 shrink-0 place-items-center rounded-xl ${active ? "bg-amber-500 text-slate-950" : "bg-slate-200 dark:bg-slate-800 text-foreground"}`}>
                         <a.icon className="h-5 w-5" />
                       </div>
                       <div className="min-w-0">
@@ -297,15 +297,15 @@ function Calculator() {
                     <div className="flex items-center gap-2">
                       <button onClick={() => set(a.id, n - 1)} className="grid h-8 w-8 place-items-center rounded-full border border-border text-lg font-bold hover:bg-secondary" aria-label="moins">−</button>
                       <span className="w-6 text-center text-sm font-bold tabular-nums">{n}</span>
-                      <button onClick={() => set(a.id, n + 1)} className="grid h-8 w-8 place-items-center rounded-full bg-primary text-lg font-bold text-primary-foreground hover:bg-primary-dark" aria-label="plus">+</button>
+                      <button onClick={() => set(a.id, n + 1)} className="grid h-8 w-8 place-items-center rounded-full bg-slate-900 text-lg font-bold text-white hover:bg-slate-800" aria-label="plus">+</button>
                     </div>
                   </div>
                 );
               })}
             </div>
           </div>
-          <div className="rounded-3xl border border-primary/30 bg-gradient-to-br from-primary to-primary-dark p-6 text-primary-foreground shadow-xl sm:p-8">
-            <p className="text-xs font-bold uppercase tracking-widest text-accent">Votre estimation</p>
+          <div className="rounded-3xl border border-slate-800 bg-slate-950 p-6 text-white shadow-2xl sm:p-8">
+            <p className="text-xs font-bold uppercase tracking-widest text-amber-400">Votre estimation</p>
             <h3 className="mt-2 text-2xl font-black">Résultats en temps réel</h3>
             <div className="mt-6 space-y-4">
               <Metric icon={Zap} label="Puissance de pointe" value={`${peakW.toLocaleString()} W`} />
@@ -316,10 +316,10 @@ function Calculator() {
               <Metric icon={Zap} label="Budget estimatif" value={priceLabel} highlight />
             </div>
             <a href={`${WA}?text=${msg}`} target="_blank" rel="noreferrer"
-               className="mt-6 flex items-center justify-center gap-2 rounded-full bg-accent px-5 py-3.5 text-sm font-bold text-accent-foreground shadow-lg glow-green">
-              <MessageCircle className="h-4 w-4" /> Recevoir l'estimation sur WhatsApp
+               className="mt-6 flex items-center justify-center gap-2 rounded-full bg-amber-500 px-5 py-3.5 text-sm font-bold text-slate-950 shadow-lg transition-all hover:scale-105 hover:bg-amber-400">
+              <MessageCircle className="h-4 w-4 fill-slate-950" /> Recevoir l'estimation sur WhatsApp
             </a>
-            <p className="mt-3 text-center text-xs text-white/70">Estimation indicative — nos ingénieurs valident le dimensionnement final.</p>
+            <p className="mt-3 text-center text-xs text-slate-400">Estimation indicative — nos ingénieurs valident le dimensionnement final.</p>
           </div>
         </div>
       </div>
@@ -329,10 +329,10 @@ function Calculator() {
 
 function Metric({ icon: Icon, label, value, highlight }: { icon: any; label: string; value: string; highlight?: boolean }) {
   return (
-    <div className={`flex items-center justify-between rounded-2xl border border-white/15 ${highlight ? "bg-accent/20" : "bg-white/5"} px-4 py-3`}>
+    <div className={`flex items-center justify-between rounded-2xl border border-slate-800 ${highlight ? "bg-amber-500/10 border-amber-500/30 text-amber-400" : "bg-slate-900/60"} px-4 py-3`}>
       <div className="flex items-center gap-3">
-        <Icon className="h-5 w-5 text-accent" />
-        <span className="text-sm text-white/85">{label}</span>
+        <Icon className={`h-5 w-5 ${highlight ? "text-amber-400" : "text-slate-400"}`} />
+        <span className="text-sm text-slate-300">{label}</span>
       </div>
       <span className="text-lg font-black tabular-nums">{value}</span>
     </div>
@@ -411,7 +411,7 @@ function Products() {
   };
 
   return (
-    <section id="boutique" className="bg-secondary/40 py-20 sm:py-28">
+    <section id="boutique" className="bg-slate-100/70 dark:bg-slate-900/50 py-20 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <SectionHeader eyebrow="Boutique" title="Équipements solaires de qualité"
           description="Panneaux, batteries, onduleurs et kits complets — sélectionnés pour leur fiabilité." />
@@ -421,10 +421,10 @@ function Products() {
             <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <input value={q} onChange={(e) => setQ(e.target.value)}
               placeholder="Rechercher un équipement (onduleur, batterie, panneau…)"
-              className="w-full rounded-full border border-border bg-card py-3 pl-11 pr-4 text-sm outline-none focus:border-primary" />
+              className="w-full rounded-full border border-border bg-card py-3 pl-11 pr-4 text-sm outline-none focus:border-amber-500" />
           </div>
           <select value={sort} onChange={(e) => setSort(e.target.value as SortKey)}
-            className="rounded-full border border-border bg-card px-4 py-3 text-sm font-semibold outline-none focus:border-primary">
+            className="rounded-full border border-border bg-card px-4 py-3 text-sm font-semibold outline-none focus:border-amber-500">
             <option value="featured">Trier : à la une</option>
             <option value="price_asc">Prix croissant</option>
             <option value="price_desc">Prix décroissant</option>
@@ -436,7 +436,7 @@ function Products() {
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           {categories.map((c) => (
             <button key={c} onClick={() => setCat(c)}
-              className={`rounded-full px-5 py-2 text-sm font-semibold transition-all ${cat === c ? "bg-primary text-primary-foreground shadow-md" : "border border-border bg-card text-foreground hover:border-primary hover:text-primary"}`}>
+              className={`rounded-full px-5 py-2 text-sm font-semibold transition-all ${cat === c ? "bg-slate-900 text-white shadow-md dark:bg-amber-500 dark:text-slate-950" : "border border-border bg-card text-foreground hover:border-amber-500"}`}>
               {c}
             </button>
           ))}
@@ -446,36 +446,36 @@ function Products() {
           <div>
             <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Votre nom</label>
             <input value={buyer.name} onChange={(e) => setBuyer({ ...buyer, name: e.target.value })} placeholder="Ex. Jean Kamga"
-              className="mt-1 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm outline-none focus:border-primary" />
+              className="mt-1 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm outline-none focus:border-amber-500" />
           </div>
           <div>
             <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Votre téléphone</label>
             <input value={buyer.phone} onChange={(e) => setBuyer({ ...buyer, phone: e.target.value })} placeholder="+237 6XX XX XX XX"
-              className="mt-1 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm outline-none focus:border-primary" />
+              className="mt-1 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm outline-none focus:border-amber-500" />
           </div>
           <p className="text-xs text-muted-foreground sm:text-right">Vos infos préremplissent le message WhatsApp.</p>
         </div>
 
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {list.map((p) => (
-            <div key={p.id} className="flex flex-col rounded-2xl border border-border bg-card p-5 glow-green">
-              <div className="relative grid aspect-square place-items-center overflow-hidden rounded-xl bg-gradient-to-br from-primary/10 to-accent/10">
+            <div key={p.id} className="flex flex-col rounded-2xl border border-border bg-card p-5 shadow-sm transition-transform hover:-translate-y-1">
+              <div className="relative grid aspect-square place-items-center overflow-hidden rounded-xl bg-slate-100 dark:bg-slate-800">
                 {p.image_url
                   ? <img src={p.image_url} alt={p.name} loading="lazy" className="h-full w-full object-contain p-3" />
-                  : <ShoppingBag className="h-16 w-16 text-primary" />}
-                {p.badge && <span className="absolute left-3 top-3 rounded-full bg-accent px-2.5 py-1 text-[10px] font-bold uppercase text-accent-foreground">{p.badge}</span>}
+                  : <ShoppingBag className="h-16 w-16 text-slate-400" />}
+                {p.badge && <span className="absolute left-3 top-3 rounded-full bg-amber-500 px-2.5 py-1 text-[10px] font-bold uppercase text-slate-950">{p.badge}</span>}
               </div>
               <h3 className="mt-4 text-base font-bold">{p.name}</h3>
               {p.description && <p className="mt-1 text-xs text-muted-foreground">{p.description}</p>}
               <div className="mt-2 flex flex-wrap gap-1.5 text-[10px] font-semibold">
-                <span className="rounded-full bg-primary/10 px-2 py-0.5 text-primary">{p.category}</span>
-                {p.warranty && <span className="rounded-full bg-accent/15 px-2 py-0.5 text-accent-foreground">Garantie {p.warranty}</span>}
+                <span className="rounded-full bg-slate-100 dark:bg-slate-800 px-2 py-0.5 text-slate-700 dark:text-slate-300">{p.category}</span>
+                {p.warranty && <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-emerald-600">Garantie {p.warranty}</span>}
               </div>
               <div className="mt-4 flex items-end justify-between gap-2">
-                <span className="text-lg font-black text-primary">{p.price ?? "Sur devis"}</span>
+                <span className="text-lg font-black text-amber-600 dark:text-amber-400">{p.price ?? "Sur devis"}</span>
               </div>
               <a href={waLink(buildOrderMsg(p))} target="_blank" rel="noreferrer"
-                 className="mt-4 inline-flex items-center justify-center gap-2 rounded-full bg-primary px-4 py-2.5 text-sm font-bold text-primary-foreground transition-colors hover:bg-primary-dark">
+                 className="mt-4 inline-flex items-center justify-center gap-2 rounded-full bg-emerald-600 px-4 py-2.5 text-sm font-bold text-white transition-colors hover:bg-emerald-700">
                 <MessageCircle className="h-4 w-4" /> Commander via WhatsApp
               </a>
             </div>
@@ -571,11 +571,11 @@ function Trust() {
           description="Une expertise 100% locale, au service du Cameroun et de toute l'Afrique Centrale 🌍." />
         <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {STATS.map((s) => (
-            <div key={s.label} className="rounded-2xl border border-border bg-card p-6 text-center glow-green">
-              <div className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-primary/10 text-primary">
+            <div key={s.label} className="rounded-2xl border border-border bg-card p-6 text-center shadow-sm transition-transform hover:-translate-y-1">
+              <div className="mx-auto grid h-14 w-14 place-items-center rounded-2xl bg-amber-500/10 text-amber-600">
                 <s.icon className="h-7 w-7" />
               </div>
-              <div className="mt-4 text-4xl font-black text-primary">{s.value}</div>
+              <div className="mt-4 text-4xl font-black text-slate-900 dark:text-white">{s.value}</div>
               <div className="mt-1 text-sm text-muted-foreground">{s.label}</div>
             </div>
           ))}
@@ -583,8 +583,8 @@ function Trust() {
 
         <div className="mt-14 flex flex-wrap items-center justify-center gap-4">
           {["Normes IEC 61215", "ISO 9001", "Garantie 25 ans", "Ingénieurs certifiés", "Support 7j/7"].map((b) => (
-            <span key={b} className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/5 px-4 py-2 text-xs font-semibold text-primary">
-              <ShieldCheck className="h-4 w-4" /> {b}
+            <span key={b} className="inline-flex items-center gap-2 rounded-full border border-emerald-500/20 bg-emerald-500/10 px-4 py-2 text-xs font-semibold text-emerald-700 dark:text-emerald-400">
+              <ShieldCheck className="h-4 w-4 text-emerald-600" /> {b}
             </span>
           ))}
         </div>
@@ -608,13 +608,13 @@ function Realisations() {
   }, []);
   const items = [...extra, ...STATIC_GALLERY];
   return (
-    <section id="realisations" className="bg-secondary/40 py-20 sm:py-28">
+    <section id="realisations" className="bg-slate-100/70 dark:bg-slate-900/50 py-20 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <SectionHeader eyebrow="Nos Réalisations" title="Projets récents au Cameroun"
           description="Découvrez nos installations récentes chez les particuliers et les entreprises." />
         <div className="mt-12 grid gap-6 md:grid-cols-3">
           {items.map((g, i) => (
-            <figure key={`${g.src}-${i}`} className="group overflow-hidden rounded-2xl border border-border bg-card glow-green">
+            <figure key={`${g.src}-${i}`} className="group overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-transform hover:-translate-y-1">
               <div className="aspect-[4/3] overflow-hidden bg-muted">
                 {g.src ? (
                   <img src={g.src} alt={g.title} width={1200} height={800} loading="lazy"
@@ -628,7 +628,7 @@ function Realisations() {
                   <p className="text-sm font-bold">{g.title}</p>
                   <p className="text-xs text-muted-foreground">{g.loc}</p>
                 </div>
-                <ArrowRight className="h-4 w-4 text-primary" />
+                <ArrowRight className="h-4 w-4 text-amber-500" />
               </figcaption>
             </figure>
           ))}
@@ -644,7 +644,7 @@ function About() {
     <section id="apropos" className="py-20 sm:py-28">
       <div className="mx-auto grid max-w-7xl gap-12 px-4 sm:px-6 lg:grid-cols-2 lg:items-center">
         <div>
-          <span className="text-xs font-bold uppercase tracking-widest text-primary">À propos</span>
+          <span className="text-xs font-bold uppercase tracking-widest text-emerald-600">À propos</span>
           <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-4xl">
             EDSOLAR — votre partenaire solaire au Cameroun & en Afrique Centrale
           </h2>
@@ -659,7 +659,7 @@ function About() {
               "Financement et options de paiement échelonné",
             ].map((f) => (
               <li key={f} className="flex items-start gap-3 text-sm">
-                <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-primary" /> {f}
+                <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-600" /> {f}
               </li>
             ))}
           </ul>
@@ -685,7 +685,7 @@ function Contact() {
     setSent(true);
   };
   return (
-    <section id="contact" className="bg-gradient-to-b from-background to-secondary/40 py-20 sm:py-28">
+    <section id="contact" className="bg-slate-100/70 dark:bg-slate-900/50 py-20 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <SectionHeader eyebrow="Contact" title="Parlons de votre projet solaire"
           description="Remplissez le formulaire ou appelez-nous — un expert vous répond sous 24h." />
@@ -694,12 +694,12 @@ function Contact() {
             <ContactCard icon={MapPin} title="Siège social" lines={["Tradex Olembe", "Yaoundé, Cameroun"]} />
             <ContactCard icon={Leaf} title="Zone d'intervention" lines={["Tout le Cameroun", "& Afrique Centrale"]} />
             <ContactCard icon={Phone} title="Téléphone / WhatsApp" lines={["+237 650544444"]} href={`tel:${PHONE}`} />
-            <div className="overflow-hidden rounded-2xl border border-border bg-card">
+            <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
               <iframe title="EDSOLAR Yaoundé" className="h-56 w-full"
                 src="https://www.google.com/maps?q=Tradex+Olembe+Yaounde&output=embed" loading="lazy" />
             </div>
           </div>
-          <form onSubmit={submit} className="rounded-3xl border border-border bg-card p-6 sm:p-8">
+          <form onSubmit={submit} className="rounded-3xl border border-border bg-card p-6 shadow-sm sm:p-8">
             <div className="grid gap-4 sm:grid-cols-2">
               <Field label="Nom complet" value={form.name} onChange={(v) => setForm({ ...form, name: v })} required />
               <Field label="Téléphone" value={form.phone} onChange={(v) => setForm({ ...form, phone: v })} required type="tel" />
@@ -707,14 +707,14 @@ function Contact() {
               <div>
                 <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">Type de projet</label>
                 <select value={form.type} onChange={(e) => setForm({ ...form, type: e.target.value })}
-                  className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20">
+                  className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20">
                   <option>Maison</option><option>Commerce</option><option>Industrie</option><option>Autre</option>
                 </select>
               </div>
               <div>
                 <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">Zone d'intervention</label>
                 <select value={form.zone} onChange={(e) => setForm({ ...form, zone: e.target.value })}
-                  className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20">
+                  className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20">
                   <option>Cameroun</option><option>Afrique centrale</option>
                 </select>
               </div>
@@ -722,20 +722,20 @@ function Contact() {
                 <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">Besoins spécifiques</label>
                 <input type="text" value={form.needs} onChange={(e) => setForm({ ...form, needs: e.target.value })}
                   placeholder="Ex: pompage, climatisation, bureaux, hangar..."
-                  className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20" />
+                  className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20" />
               </div>
               <div className="sm:col-span-2">
                 <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">Message</label>
                 <textarea rows={4} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })}
                   placeholder="Décrivez brièvement votre besoin..."
-                  className="w-full resize-none rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20" />
+                  className="w-full resize-none rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20" />
               </div>
             </div>
             <button type="submit"
-              className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-primary px-6 py-3.5 text-sm font-bold text-primary-foreground shadow-lg transition-colors hover:bg-primary-dark sm:w-auto">
+              className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-emerald-600 px-6 py-3.5 text-sm font-bold text-white shadow-lg transition-colors hover:bg-emerald-700 sm:w-auto">
               <Send className="h-4 w-4" /> Envoyer sur WhatsApp
             </button>
-            {sent && <p className="mt-3 text-sm text-primary">Merci ! Votre message a été préparé sur WhatsApp.</p>}
+            {sent && <p className="mt-3 text-sm text-emerald-600 font-semibold">Merci ! Votre message a été préparé sur WhatsApp.</p>}
           </form>
         </div>
       </div>
@@ -745,8 +745,8 @@ function Contact() {
 
 function ContactCard({ icon: Icon, title, lines, href }: { icon: any; title: string; lines: string[]; href?: string }) {
   const inner = (
-    <div className="flex gap-4 rounded-2xl border border-border bg-card p-5 glow-green">
-      <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-primary/10 text-primary">
+    <div className="flex gap-4 rounded-2xl border border-border bg-card p-5 shadow-sm transition-transform hover:-translate-y-1">
+      <div className="grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-amber-500/10 text-amber-600">
         <Icon className="h-5 w-5" />
       </div>
       <div className="min-w-0">
@@ -766,7 +766,7 @@ function Field({ label, value, onChange, required, type = "text", placeholder }:
       <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">{label}</label>
       <input type={type} required={required} value={value} placeholder={placeholder}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-primary focus:ring-2 focus:ring-primary/20" />
+        className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-amber-500 focus:ring-2 focus:ring-amber-500/20" />
     </div>
   );
 }
@@ -774,49 +774,49 @@ function Field({ label, value, onChange, required, type = "text", placeholder }:
 /* ---------------- Footer ---------------- */
 function Footer() {
   return (
-    <footer className="border-t border-border bg-primary-dark text-primary-foreground">
+    <footer className="border-t border-slate-800 bg-slate-950 text-white">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 lg:grid-cols-4">
         <div className="lg:col-span-2">
           <a href="/" className="inline-flex items-center gap-3 transition-opacity hover:opacity-90" aria-label="Retour à l'accueil">
             <img src={logo} alt="EDSOLAR Énergie Cameroun" className="h-12 w-12 rounded-xl bg-white object-contain p-1 shadow-md" />
             <div>
-              <p className="text-lg font-black">EDSOLAR</p>
-              <p className="text-[10px] uppercase tracking-[0.15em] text-white/70">Énergie Cameroun</p>
+              <p className="text-lg font-black text-white">EDSOLAR</p>
+              <p className="text-[10px] uppercase tracking-[0.15em] text-amber-400 font-bold">Énergie Cameroun</p>
             </div>
           </a>
-          <p className="mt-4 max-w-md text-sm text-white/75">
+          <p className="mt-4 max-w-md text-sm text-slate-400">
             L'énergie propre pour un avenir durable. Installation, maintenance et vente d'équipements solaires au Cameroun.
           </p>
           <div className="mt-5 flex gap-3">
             {[Facebook, Instagram, Linkedin].map((I, i) => (
-              <a key={i} href="#" className="grid h-10 w-10 place-items-center rounded-full bg-white/10 transition-colors hover:bg-accent hover:text-accent-foreground">
+              <a key={i} href="#" className="grid h-10 w-10 place-items-center rounded-full bg-slate-900 text-slate-300 transition-colors hover:bg-amber-500 hover:text-slate-950">
                 <I className="h-4 w-4" />
               </a>
             ))}
           </div>
         </div>
         <div>
-          <p className="text-sm font-bold uppercase tracking-wider text-accent">Navigation</p>
-          <ul className="mt-4 space-y-2 text-sm text-white/80">
-            {NAV.map((n) => <li key={n.href}><a href={n.href} className="hover:text-accent">{n.label}</a></li>)}
+          <p className="text-sm font-bold uppercase tracking-wider text-amber-400">Navigation</p>
+          <ul className="mt-4 space-y-2 text-sm text-slate-300">
+            {NAV.map((n) => <li key={n.href}><a href={n.href} className="hover:text-amber-400 transition-colors">{n.label}</a></li>)}
           </ul>
         </div>
         <div>
-          <p className="text-sm font-bold uppercase tracking-wider text-accent">Contact</p>
-          <ul className="mt-4 space-y-3 text-sm text-white/80">
-            <li className="flex gap-2"><MapPin className="h-4 w-4 shrink-0 text-accent" /> Tradex Olembe, Yaoundé, Cameroun</li>
-            <li className="flex gap-2"><Leaf className="h-4 w-4 shrink-0 text-accent" /> Cameroun & Afrique Centrale</li>
-            <li className="flex gap-2"><Phone className="h-4 w-4 shrink-0 text-accent" /> +237 650544444</li>
+          <p className="text-sm font-bold uppercase tracking-wider text-amber-400">Contact</p>
+          <ul className="mt-4 space-y-3 text-sm text-slate-300">
+            <li className="flex gap-2"><MapPin className="h-4 w-4 shrink-0 text-amber-400" /> Tradex Olembe, Yaoundé, Cameroun</li>
+            <li className="flex gap-2"><Leaf className="h-4 w-4 shrink-0 text-emerald-400" /> Cameroun & Afrique Centrale</li>
+            <li className="flex gap-2"><Phone className="h-4 w-4 shrink-0 text-amber-400" /> +237 650544444</li>
           </ul>
         </div>
       </div>
-      <div className="border-t border-white/10">
-        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-4 py-5 text-xs text-white/60 sm:flex-row sm:px-6">
+      <div className="border-t border-slate-900 bg-slate-950">
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-4 py-5 text-xs text-slate-500 sm:flex-row sm:px-6">
           <p>© 2026 Bimedia Connect Agency. Tous droits réservés.</p>
           <nav className="flex flex-wrap items-center gap-x-4 gap-y-1">
-            <a href="/mentions-legales" className="hover:text-accent">Mentions légales</a>
-            <a href="/confidentialite" className="hover:text-accent">Confidentialité</a>
-            <a href="/cookies" className="hover:text-accent">Cookies</a>
+            <a href="/mentions-legales" className="hover:text-amber-400">Mentions légales</a>
+            <a href="/confidentialite" className="hover:text-amber-400">Confidentialité</a>
+            <a href="/cookies" className="hover:text-amber-400">Cookies</a>
           </nav>
         </div>
       </div>
@@ -828,11 +828,11 @@ function Footer() {
 function FloatingWhatsApp() {
   return (
     <a href={waLink("Bonjour EDSOLAR, j'aimerais plus d'informations.")} target="_blank" rel="noreferrer"
-       className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-full bg-whatsapp px-5 py-3.5 font-bold text-white shadow-2xl transition-transform hover:scale-105"
+       className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-full bg-[#25D366] px-5 py-3.5 font-bold text-slate-950 shadow-2xl transition-transform hover:scale-105"
        aria-label="Contacter sur WhatsApp">
-      <MessageCircle className="h-5 w-5" />
+      <MessageCircle className="h-5 w-5 fill-slate-950" />
       <span className="hidden sm:inline text-sm">Chat WhatsApp</span>
-      <span className="absolute -right-1 -top-1 grid h-5 w-5 place-items-center rounded-full bg-accent text-[10px] font-black text-accent-foreground animate-pulse">1</span>
+      <span className="absolute -right-1 -top-1 grid h-5 w-5 place-items-center rounded-full bg-amber-400 text-[10px] font-black text-slate-950 animate-pulse">1</span>
     </a>
   );
 }
@@ -850,7 +850,7 @@ function ScrollToTop() {
   return (
     <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
       aria-label="Revenir en haut"
-      className="fixed bottom-24 right-6 z-50 grid h-11 w-11 place-items-center rounded-full border border-border bg-card text-primary shadow-xl transition-transform hover:scale-110">
+      className="fixed bottom-24 right-6 z-50 grid h-11 w-11 place-items-center rounded-full border border-border bg-card text-foreground shadow-xl transition-transform hover:scale-110">
       <ArrowUp className="h-5 w-5" />
     </button>
   );
@@ -860,14 +860,14 @@ function ScrollToTop() {
 function SectionHeader({ eyebrow, title, description }: { eyebrow: string; title: string; description: string }) {
   return (
     <div className="mx-auto max-w-2xl text-center">
-      <span className="text-xs font-bold uppercase tracking-widest text-primary">{eyebrow}</span>
+      <span className="text-xs font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400">{eyebrow}</span>
       <h2 className="mt-3 text-3xl font-black tracking-tight text-foreground sm:text-4xl md:text-5xl">{title}</h2>
       <p className="mt-4 text-base text-muted-foreground">{description}</p>
     </div>
   );
 }
 
-/* ---------------- Kits (éditable admin) ---------------- */
+/* ---------------- Kits ---------------- */
 const DEFAULT_KITS = [
   { id: "d1", slug: "prestige", title: "Kit Prestige", subtitle: "Villa haut standing", description: "Système solaire complet pour villa avec climatisation, électroménager et confort total.", price: "3 000 000 FCFA", image_url: null as string | null, features: ["Onduleur hybride 12 kVA", "Batteries lithium 48V 300Ah", "12 panneaux 550W", "Installation clé en main", "Garantie 25 ans panneaux"] },
   { id: "d2", slug: "congelateur", title: "Kit Congélateur", subtitle: "Commerce & alimentation", description: "Solution dédiée aux commerçants pour maintenir congélateurs et réfrigérateurs 24h/24.", price: "1 700 000 FCFA", image_url: null, features: ["Onduleur hybride 4 kVA", "Batteries lithium 24V 200Ah", "6 panneaux 450W", "Autonomie 48h", "Support technique 7j/7"] },
@@ -888,33 +888,33 @@ function Kits() {
           description="Nos kits phares, sélectionnés pour les besoins réels des foyers et commerces camerounais." />
         <div className="mt-12 grid gap-6 md:grid-cols-3">
           {items.map((k) => (
-            <article key={k.id} className="flex flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-sm glow-green">
-              <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-primary/15 to-accent/15">
+            <article key={k.id} className="flex flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-sm transition-transform hover:-translate-y-1">
+              <div className="relative aspect-[16/10] overflow-hidden bg-slate-100 dark:bg-slate-800">
                 {k.image_url ? (
                   <img src={k.image_url} alt={k.title} className="h-full w-full object-cover" loading="lazy" />
                 ) : (
                   <div className="grid h-full w-full place-items-center">
-                    <Package className="h-16 w-16 text-primary" />
+                    <Package className="h-16 w-16 text-slate-400" />
                   </div>
                 )}
                 {k.price && (
-                  <span className="absolute right-3 top-3 rounded-full bg-primary px-3 py-1 text-xs font-bold text-primary-foreground shadow">
+                  <span className="absolute right-3 top-3 rounded-full bg-slate-900 px-3 py-1 text-xs font-bold text-white shadow">
                     {k.price}
                   </span>
                 )}
               </div>
               <div className="flex flex-1 flex-col p-6">
-                <p className="text-xs font-bold uppercase tracking-widest text-primary">{k.subtitle}</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-emerald-600">{k.subtitle}</p>
                 <h3 className="mt-1 text-xl font-black">{k.title}</h3>
                 <p className="mt-2 text-sm text-muted-foreground">{k.description}</p>
                 <ul className="mt-4 space-y-2 text-sm">
                   {(k.features ?? []).map((f: string) => (
-                    <li key={f} className="flex items-start gap-2"><CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-primary" /> {f}</li>
+                    <li key={f} className="flex items-start gap-2"><CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" /> {f}</li>
                   ))}
                 </ul>
                 <a href={waLink(`Bonjour EDSOLAR, je suis intéressé par le ${k.title} (${k.price ?? ""}).`)} target="_blank" rel="noreferrer"
-                   className="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-accent px-5 py-3 text-sm font-bold text-accent-foreground">
-                  <MessageCircle className="h-4 w-4" /> Demander ce kit
+                   className="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-amber-500 px-5 py-3 text-sm font-bold text-slate-950 transition-all hover:bg-amber-400">
+                  <MessageCircle className="h-4 w-4 fill-slate-950" /> Demander ce kit
                 </a>
               </div>
             </article>
@@ -946,18 +946,18 @@ function Reviews() {
   };
 
   return (
-    <section id="avis" className="bg-secondary/40 py-20 sm:py-28">
+    <section id="avis" className="bg-slate-100/70 dark:bg-slate-900/50 py-20 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <SectionHeader eyebrow="Avis clients" title="Partagez votre expérience EDSOLAR"
           description="Votre satisfaction compte. Laissez un avis — il sera publié après validation de notre équipe." />
         <div className="mt-12 grid gap-8 lg:grid-cols-[1fr_1.3fr]">
-          <form onSubmit={submit} className="h-fit rounded-3xl border border-border bg-card p-6 sm:p-8">
+          <form onSubmit={submit} className="h-fit rounded-3xl border border-border bg-card p-6 shadow-sm sm:p-8">
             <p className="text-sm font-bold">Laisser un avis</p>
             <div className="mt-4 space-y-3">
               <div>
                 <label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Nom</label>
                 <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required
-                  className="mt-1 w-full rounded-xl border border-input bg-background px-4 py-2.5 text-sm outline-none focus:border-primary" />
+                  className="mt-1 w-full rounded-xl border border-input bg-background px-4 py-2.5 text-sm outline-none focus:border-amber-500" />
               </div>
               <div>
                 <label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Note</label>
@@ -969,7 +969,7 @@ function Reviews() {
                       onMouseLeave={() => setHoverRating(0)}
                       aria-label={`${n} étoile${n > 1 ? "s" : ""}`}
                       className="p-1 transition-transform hover:scale-110">
-                      <Star className={`pointer-events-none h-8 w-8 ${n <= (hoverRating || form.rating) ? "fill-accent text-accent" : "text-muted-foreground/40"}`} />
+                      <Star className={`pointer-events-none h-8 w-8 ${n <= (hoverRating || form.rating) ? "fill-amber-400 text-amber-400" : "text-muted-foreground/30"}`} />
                     </button>
                   ))}
                   <span className="ml-2 text-sm font-semibold text-muted-foreground">{form.rating}/5</span>
@@ -978,12 +978,12 @@ function Reviews() {
               <div>
                 <label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Votre commentaire</label>
                 <textarea rows={4} value={form.comment} onChange={(e) => setForm({ ...form, comment: e.target.value })} required
-                  className="mt-1 w-full resize-none rounded-xl border border-input bg-background px-4 py-2.5 text-sm outline-none focus:border-primary" />
+                  className="mt-1 w-full resize-none rounded-xl border border-input bg-background px-4 py-2.5 text-sm outline-none focus:border-amber-500" />
               </div>
-              <button disabled={busy} className="w-full rounded-full bg-primary px-5 py-3 text-sm font-bold text-primary-foreground disabled:opacity-60">
+              <button disabled={busy} className="w-full rounded-full bg-slate-900 px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-slate-800 disabled:opacity-60">
                 {busy ? "Envoi…" : "Publier mon avis"}
               </button>
-              {sent && <p className="text-sm text-primary">Merci ! Votre avis sera publié après validation.</p>}
+              {sent && <p className="text-sm text-emerald-600 font-semibold">Merci ! Votre avis sera publié après validation.</p>}
             </div>
           </form>
           <div className="grid gap-4 sm:grid-cols-2">
@@ -993,10 +993,10 @@ function Reviews() {
               </p>
             )}
             {items.map((r) => (
-              <div key={r.id} className="rounded-2xl border border-border bg-card p-5">
+              <div key={r.id} className="rounded-2xl border border-border bg-card p-5 shadow-sm">
                 <div className="flex items-center gap-1">
                   {Array.from({ length: 5 }).map((_, i) => (
-                    <Star key={i} className={`h-4 w-4 ${i < r.rating ? "fill-accent text-accent" : "text-muted-foreground/30"}`} />
+                    <Star key={i} className={`h-4 w-4 ${i < r.rating ? "fill-amber-400 text-amber-400" : "text-muted-foreground/30"}`} />
                   ))}
                 </div>
                 <p className="mt-3 text-sm leading-relaxed text-foreground/90">"{r.comment}"</p>
