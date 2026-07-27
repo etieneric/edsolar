@@ -453,14 +453,16 @@ function Header({ lang, setLang, t }: { lang: Lang; setLang: (l: Lang) => void; 
         <div className="hidden items-center gap-3 lg:flex shrink-0">
           <div className="flex items-center rounded-full border border-slate-200 bg-slate-100 p-1 dark:border-slate-800 dark:bg-slate-900">
             <button 
+              type="button"
               onClick={() => setLang("fr")}
-              className={`rounded-full px-2.5 py-1 text-xs font-bold transition-all ${lang === "fr" ? "bg-amber-500 text-slate-950 shadow" : "text-slate-600 dark:text-slate-400"}`}
+              className={`rounded-full px-2.5 py-1 text-xs font-bold transition-all ${lang === "fr" ? "bg-amber-500 text-slate-950 shadow" : "text-slate-600 dark:text-slate-400 hover:text-foreground"}`}
             >
               FR
             </button>
             <button 
+              type="button"
               onClick={() => setLang("en")}
-              className={`rounded-full px-2.5 py-1 text-xs font-bold transition-all ${lang === "en" ? "bg-amber-500 text-slate-950 shadow" : "text-slate-600 dark:text-slate-400"}`}
+              className={`rounded-full px-2.5 py-1 text-xs font-bold transition-all ${lang === "en" ? "bg-amber-500 text-slate-950 shadow" : "text-slate-600 dark:text-slate-400 hover:text-foreground"}`}
             >
               EN
             </button>
@@ -481,12 +483,14 @@ function Header({ lang, setLang, t }: { lang: Lang; setLang: (l: Lang) => void; 
         <div className="flex items-center gap-2 lg:hidden">
           <div className="flex items-center rounded-full border border-slate-200 bg-slate-100 p-1 dark:border-slate-800 dark:bg-slate-900">
             <button 
+              type="button"
               onClick={() => setLang("fr")}
               className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${lang === "fr" ? "bg-amber-500 text-slate-950" : "text-slate-600 dark:text-slate-400"}`}
             >
               FR
             </button>
             <button 
+              type="button"
               onClick={() => setLang("en")}
               className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${lang === "en" ? "bg-amber-500 text-slate-950" : "text-slate-600 dark:text-slate-400"}`}
             >
@@ -495,6 +499,7 @@ function Header({ lang, setLang, t }: { lang: Lang; setLang: (l: Lang) => void; 
           </div>
 
           <button 
+            type="button"
             className="grid h-10 w-10 place-items-center rounded-xl border border-slate-200 bg-slate-50 text-slate-800 transition-colors hover:bg-slate-100 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-100" 
             onClick={() => setOpen((v) => !v)} 
             aria-label="Menu"
@@ -567,7 +572,7 @@ function Hero({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
             <span className="font-bold text-amber-400">{lang === "fr" ? "Paiement flexible :" : "Flexible payment:"}</span>
             <span className="rounded-md bg-amber-500/20 px-2 py-0.5 text-amber-300 font-semibold">MTN MoMo</span>
             <span className="rounded-md bg-orange-500/20 px-2 py-0.5 text-orange-300 font-semibold">Orange Money</span>
-            <span className="rounded-md bg-blue-500/20 px-2 py-0.5 text-blue-300 font-semibold">Traites échelonnées</span>
+            <span className="rounded-md bg-blue-500/20 px-2 py-0.5 text-blue-300 font-semibold">{lang === "fr" ? "Traites échelonnées" : "Installment payments"}</span>
           </div>
 
           <div className="mt-8 flex flex-wrap gap-3">
@@ -925,7 +930,7 @@ function Products({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
           {categories.map((c) => (
             <button key={c} onClick={() => setCat(c)}
               className={`rounded-full px-5 py-2 text-sm font-semibold transition-all ${cat === c ? "bg-slate-900 text-white shadow-md dark:bg-amber-500 dark:text-slate-950" : "border border-border bg-card text-foreground hover:border-amber-500"}`}>
-              {translateDynamicText(c, lang)}
+              {c === "Tous" ? (lang === "fr" ? "Tous" : "All") : translateDynamicText(c, lang)}
             </button>
           ))}
         </div>
@@ -1000,7 +1005,7 @@ function Products({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
                 {p.warranty && <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-emerald-600">{translateDynamicText(p.warranty, lang)}</span>}
               </div>
               <div className="mt-4 flex items-end justify-between gap-2">
-                <span className="text-lg font-black text-amber-600 dark:text-amber-400">{p.price ?? "Sur devis"}</span>
+                <span className="text-lg font-black text-amber-600 dark:text-amber-400">{p.price ?? (lang === "fr" ? "Sur devis" : "On request")}</span>
               </div>
               <a href={waLink(buildOrderMsg(p))} target="_blank" rel="noreferrer"
                  className="mt-4 inline-flex items-center justify-center gap-2 rounded-full bg-emerald-600 px-4 py-2.5 text-sm font-bold text-white transition-colors hover:bg-emerald-700">
@@ -1536,6 +1541,7 @@ function ScrollToTop() {
   if (!show) return null;
   return (
     <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+      type="button"
       aria-label="Revenir en haut"
       className="fixed bottom-20 sm:bottom-24 right-5 sm:right-6 z-50 grid h-10 w-10 sm:h-11 sm:w-11 place-items-center rounded-full border border-border bg-card text-foreground shadow-xl transition-transform hover:scale-110">
       <ArrowUp className="h-5 w-5" />
