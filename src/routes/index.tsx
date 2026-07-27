@@ -6,7 +6,7 @@ import {
   Zap, Cpu, Tv, Refrigerator, Snowflake, Lightbulb, WashingMachine,
   Laptop, Fan, Microwave, CheckCircle2, Star, Award, Clock, Users,
   Facebook, Instagram, Linkedin, Send, Package, Search, ArrowUp,
-  Radio, Camera, Video, Sparkles
+  Radio, Camera, Video, Sparkles, Globe
 } from "lucide-react";
 import logo from "@/assets/edsolar-logo-new.jpeg";
 import hero from "@/assets/install-panels.jpeg";
@@ -33,53 +33,330 @@ const WA = `https://wa.me/${PHONE.replace("+", "")}`;
 const WA_CHANNEL_URL = "https://whatsapp.com/channel/0029VauTigF9Gv7cyMQUQH1x";
 const waLink = (msg: string) => `${WA}?text=${encodeURIComponent(msg)}`;
 
-/* Tous les liens complets pour la version mobile/tablette */
-const NAV_MOBILE = [
-  { href: "#accueil", label: "Accueil" },
-  { href: "#services", label: "Nos Services" },
-  { href: "#kits", label: "Nos Kits" },
-  { href: "#boutique", label: "Équipements" },
-  { href: "#calculateur", label: "Simulateur Devis" },
-  { href: "#canal", label: "Chaîne WhatsApp" },
-  { href: "#realisations", label: "Réalisations" },
-  { href: "#avis", label: "Avis clients" },
-  { href: "#contact", label: "Contact" },
-];
+/* ---------------- Dictionnaire Multilingue (FR / EN) ---------------- */
+type Lang = "fr" | "en";
 
-/* Liens essentiels condensés pour Desktop (0 chevauchement) */
-const NAV_DESKTOP = [
-  { href: "#services", label: "Services" },
-  { href: "#kits", label: "Kits" },
-  { href: "#boutique", label: "Boutique" },
-  { href: "#calculateur", label: "Simulateur Devis" },
-  { href: "#realisations", label: "Réalisations" },
-];
+const TRANSLATIONS = {
+  fr: {
+    // Header & Nav
+    navServices: "Services",
+    navKits: "Kits",
+    navBoutique: "Boutique",
+    navSimulator: "Simulateur Devis",
+    navRealisations: "Réalisations",
+    navHome: "Accueil",
+    navWhatsApp: "Chaîne WhatsApp",
+    navReviews: "Avis clients",
+    navContact: "Contact",
+    btnQuote: "Devis gratuit",
+    
+    // Hero
+    heroTag: "L'énergie propre pour un avenir durable",
+    heroTitle1: "Passez à l'Énergie ",
+    heroTitle2: "Solaire",
+    heroTitle3: " avec EDSOLAR",
+    heroDesc: "Installation de panneaux solaires, maintenance préventive et vente d'équipements de haute qualité à Yaoundé et dans tout le Cameroun.",
+    heroSimulateBtn: "Simuler vos besoins énergétiques",
+    heroExpertBtn: "Contacter un expert",
+    heroStat1: "+500 installations",
+    heroStat2: "Garantie 25 ans",
+    heroStat3: "Cameroun & Afrique Centrale",
+    heroCardTitle: "EDSOLAR Yaoundé",
+    heroCardSub: "Contactez-nous",
+    
+    // Services
+    servicesEyebrow: "Nos Services",
+    servicesTitle: "Une expertise complète en énergie solaire",
+    servicesDesc: "De l'audit à la mise en service, EDSOLAR vous accompagne à chaque étape de votre transition énergétique.",
+    s1Title: "Installation Solaire Sur-Mesure",
+    s1Desc: "Systèmes autonomes (Off-Grid), hybrides et raccordés au réseau pour résidences, entreprises et industries.",
+    s2Title: "Maintenance & Dépannage",
+    s2Desc: "Inspection technique, nettoyage de panneaux, maintenance préventive et remplacement d'onduleurs/batteries.",
+    s3Title: "Vente d'Équipements Solaires",
+    s3Desc: "Panneaux photovoltaïques, onduleurs hybrides, batteries Lithium/Gel et régulateurs MPPT.",
+    s4Title: "Audit & Conseil Énergétique",
+    s4Desc: "Dimensionnement précis par nos ingénieurs qualifiés pour optimiser votre consommation.",
+    learnMore: "En savoir plus",
+
+    // Simulator
+    simEyebrow: "Simulateur Devis",
+    simTitle: "Estimez votre installation solaire en 1 minute",
+    simDesc: "Sélectionnez vos appareils. Obtenez immédiatement votre puissance recommandée et une estimation budgétaire.",
+    simResultTitle: "Résultats en temps réel",
+    simPeakPower: "Puissance de pointe",
+    simDailyCons: "Consommation journalière",
+    simRecSystem: "Système recommandé",
+    simLithiumBatt: "Batteries lithium",
+    simPanels: "Panneaux solaires 450W",
+    simBudget: "Budget estimatif",
+    simSendWA: "Recevoir l'estimation sur WhatsApp",
+    simNote: "Estimation indicative — nos ingénieurs valident le dimensionnement final.",
+
+    // Boutique
+    shopEyebrow: "Boutique",
+    shopTitle: "Équipements solaires de qualité",
+    shopDesc: "Panneaux, batteries, onduleurs et kits complets — sélectionnés pour leur fiabilité.",
+    shopSearchPlaceholder: "Rechercher un équipement (onduleur, batterie, panneau…)",
+    shopSortFeatured: "Trier : à la une",
+    shopSortPriceAsc: "Prix croissant",
+    shopSortPriceDesc: "Prix décroissant",
+    shopSortPopularity: "Popularité",
+    shopSortWarranty: "Garantie (longue → courte)",
+    shopNameLabel: "Votre nom",
+    shopPhoneLabel: "Votre téléphone",
+    shopInfoNote: "Vos infos préremplissent le message WhatsApp.",
+    shopOrderWA: "Commander via WhatsApp",
+    shopNoProduct: "Aucun équipement ne correspond à votre recherche.",
+
+    // WhatsApp Channel
+    channelTag: "Direct du terrain",
+    channelTitle1: "Rejoignez la Chaîne ",
+    channelTitle2: "WhatsApp EDSOLAR",
+    channelDesc: "Suivez nos équipes au quotidien : vidéos d'installations, conseils techniques, arrivages de matériel et retours d'expérience.",
+    c1Title: "Vidéos d'installations",
+    c1Desc: "Découvrez nos chantiers en direct à Yaoundé et dans toutes les régions du Cameroun.",
+    c2Title: "Photos & Matériel",
+    c2Desc: "Présentation détaillée des derniers onduleurs, batteries lithium et panneaux réceptionnés.",
+    c3Title: "Offres Exclusives",
+    c3Desc: "Recevez les promotions et remises réservées uniquement aux membres de la chaîne.",
+    channelSubscribers: "Près de 1 000 abonnés nous suivent !",
+    channelSubNote: "Abonnement 100% gratuit, rapide et confidentiel.",
+    channelBtn: "Suivre la Chaîne",
+
+    // Trust
+    trustEyebrow: "Pourquoi nous choisir ?",
+    trustTitle: "La confiance de centaines de clients",
+    trustDesc: "Une expertise 100% locale, au service du Cameroun et de toute l'Afrique Centrale 🌍.",
+    trustStat1: "Installations réalisées",
+    trustStat2: "Satisfaction client",
+    trustStat3: "Intervention à Yaoundé",
+    trustStat4: "Années d'expertise",
+
+    // Realisations
+    realEyebrow: "Nos Réalisations",
+    realTitle: "Projets récents au Cameroun",
+    realDesc: "Découvrez nos installations récentes chez les particuliers et les entreprises.",
+
+    // About
+    aboutEyebrow: "À propos",
+    aboutTitle: "EDSOLAR — votre partenaire solaire au Cameroun & en Afrique Centrale",
+    aboutDesc: "Basés à Tradex Olembe, Yaoundé, nous intervenons partout au Cameroun et dans toute l'Afrique Centrale. Notre mission : rendre l'énergie solaire accessible, fiable et rentable pour chaque foyer et chaque entreprise, avec du matériel certifié et une équipe de techniciens qualifiés.",
+    aboutF1: "Ingénieurs qualifiés et techniciens certifiés",
+    aboutF2: "Matériel Tier 1 avec garantie constructeur",
+    aboutF3: "Service après-vente réactif à Yaoundé",
+    aboutF4: "Financement et options de paiement échelonné",
+
+    // Contact
+    contactEyebrow: "Contact",
+    contactTitle: "Parlons de votre projet solaire",
+    contactDesc: "Remplissez le formulaire ou appelez-nous — un expert vous répond sous 24h.",
+    contactHeadquarters: "Siège social",
+    contactZone: "Zone d'intervention",
+    contactPhone: "Téléphone / WhatsApp",
+    formName: "Nom complet",
+    formPhone: "Téléphone",
+    formLocation: "Quartier / Ville",
+    formProjectType: "Type de projet",
+    formNeeds: "Besoins spécifiques",
+    formMessage: "Message",
+    formSubmit: "Envoyer sur WhatsApp",
+    formSuccess: "Merci ! Votre message a été préparé sur WhatsApp.",
+
+    // Footer
+    footerNav: "Navigation",
+    footerContact: "Contact",
+    footerRights: "© 2026 Bimedia Connect Agency. Tous droits réservés.",
+    footerLegal: "Mentions légales",
+    footerPrivacy: "Confidentialité",
+    footerCookies: "Cookies",
+  },
+  en: {
+    // Header & Nav
+    navServices: "Services",
+    navKits: "Kits",
+    navBoutique: "Shop",
+    navSimulator: "Quote Simulator",
+    navRealisations: "Projects",
+    navHome: "Home",
+    navWhatsApp: "WhatsApp Channel",
+    navReviews: "Customer Reviews",
+    navContact: "Contact",
+    btnQuote: "Free Quote",
+    
+    // Hero
+    heroTag: "Clean energy for a sustainable future",
+    heroTitle1: "Switch to ",
+    heroTitle2: "Solar",
+    heroTitle3: " Energy with EDSOLAR",
+    heroDesc: "Solar panel installation, preventive maintenance, and sale of high-quality solar equipment in Yaoundé and across Cameroon.",
+    heroSimulateBtn: "Simulate your energy needs",
+    heroExpertBtn: "Talk to an expert",
+    heroStat1: "+500 installations",
+    heroStat2: "25-year warranty",
+    heroStat3: "Cameroon & Central Africa",
+    heroCardTitle: "EDSOLAR Yaoundé",
+    heroCardSub: "Get in touch",
+    
+    // Services
+    servicesEyebrow: "Our Services",
+    servicesTitle: "Comprehensive expertise in solar energy",
+    servicesDesc: "From audit to commissioning, EDSOLAR guides you through every step of your energy transition.",
+    s1Title: "Custom Solar Installation",
+    s1Desc: "Off-grid, hybrid, and grid-tied systems for residences, businesses, and industrial facilities.",
+    s2Title: "Maintenance & Repair",
+    s2Desc: "Technical inspection, panel cleaning, preventive maintenance, and inverter/battery replacement.",
+    s3Title: "Solar Equipment Sales",
+    s3Desc: "Photovoltaic panels, hybrid inverters, Lithium/Gel batteries, and MPPT charge controllers.",
+    s4Title: "Energy Audit & Consulting",
+    s4Desc: "Precise sizing by our qualified engineers to optimize your power consumption.",
+    learnMore: "Learn more",
+
+    // Simulator
+    simEyebrow: "Quote Simulator",
+    simTitle: "Estimate your solar installation in 1 minute",
+    simDesc: "Select your home appliances. Get your recommended power system and budget estimate instantly.",
+    simResultTitle: "Real-time Results",
+    simPeakPower: "Peak Power",
+    simDailyCons: "Daily Consumption",
+    simRecSystem: "Recommended System",
+    simLithiumBatt: "Lithium Batteries",
+    simPanels: "450W Solar Panels",
+    simBudget: "Estimated Budget",
+    simSendWA: "Get estimate on WhatsApp",
+    simNote: "Indicative estimate — final sizing validated by our engineers.",
+
+    // Boutique
+    shopEyebrow: "Shop",
+    shopTitle: "High-quality solar equipment",
+    shopDesc: "Panels, batteries, inverters, and complete kits — selected for ultimate reliability.",
+    shopSearchPlaceholder: "Search equipment (inverter, battery, panel...)",
+    shopSortFeatured: "Sort: Featured",
+    shopSortPriceAsc: "Price low to high",
+    shopSortPriceDesc: "Price high to low",
+    shopSortPopularity: "Popularity",
+    shopSortWarranty: "Warranty (long → short)",
+    shopNameLabel: "Your Name",
+    shopPhoneLabel: "Your Phone Number",
+    shopInfoNote: "Your info pre-fills the WhatsApp message.",
+    shopOrderWA: "Order via WhatsApp",
+    shopNoProduct: "No equipment matches your search.",
+
+    // WhatsApp Channel
+    channelTag: "Direct from the field",
+    channelTitle1: "Join the ",
+    channelTitle2: "EDSOLAR WhatsApp Channel",
+    channelDesc: "Follow our team daily: installation videos, technical advice, stock arrivals, and customer feedback.",
+    c1Title: "Installation Videos",
+    c1Desc: "Watch our live job sites in Yaoundé and across all regions of Cameroon.",
+    c2Title: "Photos & Equipment",
+    c2Desc: "In-depth overview of the latest inverters, lithium batteries, and solar panels received.",
+    c3Title: "Exclusive Deals",
+    c3Desc: "Receive special discounts and promotions reserved exclusively for channel members.",
+    channelSubscribers: "Nearly 1,000 subscribers follow us!",
+    channelSubNote: "100% free, fast, and confidential subscription.",
+    channelBtn: "Follow the Channel",
+
+    // Trust
+    trustEyebrow: "Why Choose Us?",
+    trustTitle: "Trusted by hundreds of customers",
+    trustDesc: "100% local expertise serving Cameroon and the entire Central African region 🌍.",
+    trustStat1: "Completed installations",
+    trustStat2: "Customer satisfaction",
+    trustStat3: "Intervention in Yaoundé",
+    trustStat4: "Years of expertise",
+
+    // Realisations
+    realEyebrow: "Our Projects",
+    realTitle: "Recent projects in Cameroon",
+    realDesc: "Explore our latest solar installations for homes and businesses.",
+
+    // About
+    aboutEyebrow: "About Us",
+    aboutTitle: "EDSOLAR — your solar partner in Cameroon & Central Africa",
+    aboutDesc: "Based in Tradex Olembe, Yaoundé, we operate across Cameroon and Central Africa. Our mission: make solar energy accessible, reliable, and cost-effective for every home and business, using certified equipment and skilled technicians.",
+    aboutF1: "Qualified engineers and certified technicians",
+    aboutF2: "Tier-1 equipment with manufacturer warranty",
+    aboutF3: "Responsive customer support in Yaoundé",
+    aboutF4: "Financing and installment payment options",
+
+    // Contact
+    contactEyebrow: "Contact",
+    contactTitle: "Let's talk about your solar project",
+    contactDesc: "Fill out the form or give us a call — an expert will respond within 24 hours.",
+    contactHeadquarters: "Headquarters",
+    contactZone: "Service Area",
+    contactPhone: "Phone / WhatsApp",
+    formName: "Full Name",
+    formPhone: "Phone Number",
+    formLocation: "Neighborhood / City",
+    formProjectType: "Project Type",
+    formNeeds: "Specific Needs",
+    formMessage: "Message",
+    formSubmit: "Send on WhatsApp",
+    formSuccess: "Thank you! Your message has been prepared on WhatsApp.",
+
+    // Footer
+    footerNav: "Navigation",
+    footerContact: "Contact",
+    footerRights: "© 2026 Bimedia Connect Agency. All rights reserved.",
+    footerLegal: "Legal Notice",
+    footerPrivacy: "Privacy Policy",
+    footerCookies: "Cookies",
+  }
+};
 
 function Index() {
+  const [lang, setLang] = useState<Lang>("fr");
+  const t = TRANSLATIONS[lang];
+
   return (
     <div className="min-h-screen bg-background text-foreground selection:bg-accent selection:text-accent-foreground">
-      <Header />
-      <Hero />
-      <Services />
-      <Kits />
-      <Calculator />
-      <Products />
-      <WhatsAppChannel />
-      <Trust />
-      <Realisations />
-      <Reviews />
-      <About />
-      <Contact />
-      <Footer />
-      <FloatingWhatsApp />
+      <Header lang={lang} setLang={setLang} t={t} />
+      <Hero t={t} lang={lang} />
+      <Services t={t} lang={lang} />
+      <Kits t={t} lang={lang} />
+      <Calculator t={t} lang={lang} />
+      <Products t={t} lang={lang} />
+      <WhatsAppChannel t={t} />
+      <Trust t={t} />
+      <Realisations t={t} />
+      <Reviews t={t} />
+      <About t={t} />
+      <Contact t={t} lang={lang} />
+      <Footer t={t} />
+      <FloatingWhatsApp lang={lang} />
       <ScrollToTop />
     </div>
   );
 }
 
-/* ---------------- Header Responsive ---------------- */
-function Header() {
+/* ---------------- Header Responsive avec Sélecteur FR / EN ---------------- */
+function Header({ lang, setLang, t }: { lang: Lang; setLang: (l: Lang) => void; t: typeof TRANSLATIONS["fr"] }) {
   const [open, setOpen] = useState(false);
+
+  const navDesktop = [
+    { href: "#services", label: t.navServices },
+    { href: "#kits", label: t.navKits },
+    { href: "#boutique", label: t.navBoutique },
+    { href: "#calculateur", label: t.navSimulator },
+    { href: "#realisations", label: t.navRealisations },
+  ];
+
+  const navMobile = [
+    { href: "#accueil", label: t.navHome },
+    { href: "#services", label: t.navServices },
+    { href: "#kits", label: t.navKits },
+    { href: "#boutique", label: t.navBoutique },
+    { href: "#calculateur", label: t.navSimulator },
+    { href: "#canal", label: t.navWhatsApp },
+    { href: "#realisations", label: t.navRealisations },
+    { href: "#avis", label: t.navReviews },
+    { href: "#contact", label: t.navContact },
+  ];
+
+  const quoteMsg = lang === "fr" 
+    ? "Bonjour EDSOLAR, je souhaite un devis gratuit." 
+    : "Hello EDSOLAR, I would like to get a free quote.";
 
   return (
     <header className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/90 backdrop-blur-md dark:border-slate-800/80 dark:bg-slate-950/90 transition-all">
@@ -100,7 +377,7 @@ function Header() {
 
         {/* NAVIGATION DESKTOP */}
         <nav className="hidden items-center gap-6 xl:gap-8 lg:flex">
-          {NAV_DESKTOP.map((n) => (
+          {navDesktop.map((n) => (
             <a 
               key={n.href} 
               href={n.href} 
@@ -111,34 +388,68 @@ function Header() {
           ))}
         </nav>
 
-        {/* BOUTON CTA DESKTOP */}
+        {/* BOUTONS ACTIONS + SWITCH LANGUE DESKTOP */}
         <div className="hidden items-center gap-3 lg:flex shrink-0">
+          {/* Switch FR / EN */}
+          <div className="flex items-center rounded-full border border-slate-200 bg-slate-100 p-1 dark:border-slate-800 dark:bg-slate-900">
+            <button 
+              onClick={() => setLang("fr")}
+              className={`rounded-full px-2.5 py-1 text-xs font-bold transition-all ${lang === "fr" ? "bg-amber-500 text-slate-950 shadow" : "text-slate-600 dark:text-slate-400"}`}
+            >
+              FR
+            </button>
+            <button 
+              onClick={() => setLang("en")}
+              className={`rounded-full px-2.5 py-1 text-xs font-bold transition-all ${lang === "en" ? "bg-amber-500 text-slate-950 shadow" : "text-slate-600 dark:text-slate-400"}`}
+            >
+              EN
+            </button>
+          </div>
+
           <a 
-            href={waLink("Bonjour EDSOLAR, je souhaite un devis gratuit.")} 
+            href={waLink(quoteMsg)} 
             target="_blank" 
             rel="noreferrer"
             className="inline-flex items-center gap-2 rounded-full bg-amber-500 px-5 py-2.5 text-sm font-bold text-slate-950 shadow-md shadow-amber-500/10 transition-all hover:scale-105 hover:bg-amber-400 whitespace-nowrap"
           >
             <MessageCircle className="h-4 w-4 fill-slate-950" />
-            <span>Devis gratuit</span>
+            <span>{t.btnQuote}</span>
           </a>
         </div>
 
-        {/* HAMBURGER (Mobile & Tablette) */}
-        <button 
-          className="grid h-10 w-10 place-items-center rounded-xl border border-slate-200 bg-slate-50 text-slate-800 transition-colors hover:bg-slate-100 lg:hidden dark:border-slate-800 dark:bg-slate-900 dark:text-slate-100" 
-          onClick={() => setOpen((v) => !v)} 
-          aria-label="Menu"
-        >
-          {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-        </button>
+        {/* HAMBURGER & SWITCH MOBILE */}
+        <div className="flex items-center gap-2 lg:hidden">
+          {/* Switch FR / EN Mobile */}
+          <div className="flex items-center rounded-full border border-slate-200 bg-slate-100 p-1 dark:border-slate-800 dark:bg-slate-900">
+            <button 
+              onClick={() => setLang("fr")}
+              className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${lang === "fr" ? "bg-amber-500 text-slate-950" : "text-slate-600 dark:text-slate-400"}`}
+            >
+              FR
+            </button>
+            <button 
+              onClick={() => setLang("en")}
+              className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${lang === "en" ? "bg-amber-500 text-slate-950" : "text-slate-600 dark:text-slate-400"}`}
+            >
+              EN
+            </button>
+          </div>
+
+          <button 
+            className="grid h-10 w-10 place-items-center rounded-xl border border-slate-200 bg-slate-50 text-slate-800 transition-colors hover:bg-slate-100 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-100" 
+            onClick={() => setOpen((v) => !v)} 
+            aria-label="Menu"
+          >
+            {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </button>
+        </div>
       </div>
 
-      {/* MENU DEROULANT MOBILE & TABLETTE */}
+      {/* MENU DEROULANT MOBILE */}
       {open && (
         <div className="border-t border-slate-200 bg-white/95 px-4 pb-6 pt-3 shadow-2xl backdrop-blur-xl lg:hidden dark:border-slate-800 dark:bg-slate-950/95">
           <div className="mx-auto flex max-w-7xl flex-col gap-1">
-            {NAV_MOBILE.map((n) => (
+            {navMobile.map((n) => (
               <a 
                 key={n.href} 
                 href={n.href} 
@@ -152,14 +463,14 @@ function Header() {
             
             <div className="mt-3 pt-3 border-t border-slate-100 dark:border-slate-900">
               <a 
-                href={waLink("Bonjour EDSOLAR, je souhaite un devis gratuit.")} 
+                href={waLink(quoteMsg)} 
                 target="_blank" 
                 rel="noreferrer"
                 onClick={() => setOpen(false)}
                 className="flex w-full items-center justify-center gap-2 rounded-xl bg-amber-500 py-3.5 text-sm font-bold text-slate-950 shadow-md transition-all active:scale-[0.98]"
               >
                 <MessageCircle className="h-4 w-4 fill-slate-950" />
-                <span>Demander un devis gratuit</span>
+                <span>{t.btnQuote}</span>
               </a>
             </div>
           </div>
@@ -170,7 +481,11 @@ function Header() {
 }
 
 /* ---------------- Hero ---------------- */
-function Hero() {
+function Hero({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
+  const waMsg = lang === "fr" 
+    ? "Bonjour EDSOLAR, je souhaite discuter d'un projet solaire." 
+    : "Hello EDSOLAR, I would like to discuss a solar energy project.";
+
   return (
     <section id="accueil" className="relative isolate overflow-hidden">
       <img src={hero} alt="Installateurs solaires EDSOLAR sur un toit à Yaoundé" width={1920} height={1080}
@@ -179,26 +494,26 @@ function Hero() {
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-20 sm:px-6 md:py-32 lg:grid-cols-[1.15fr_1fr] lg:py-40">
         <div className="text-white">
           <span className="inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-amber-400 backdrop-blur">
-            <Sun className="h-3.5 w-3.5 text-amber-400" /> L'énergie propre pour un avenir durable
+            <Sun className="h-3.5 w-3.5 text-amber-400" /> {t.heroTag}
           </span>
           <h1 className="mt-6 text-3xl font-black leading-[1.1] tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
-            Passez à l'Énergie <span className="text-amber-400">Solaire</span> avec EDSOLAR
+            {t.heroTitle1}<span className="text-amber-400">{t.heroTitle2}</span>{t.heroTitle3}
           </h1>
           <p className="mt-6 max-w-xl text-base leading-relaxed text-slate-300 sm:text-lg">
-            Installation de panneaux solaires, maintenance préventive et vente d'équipements de haute qualité à Yaoundé et dans tout le Cameroun.
+            {t.heroDesc}
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
             <a href="#calculateur" className="inline-flex items-center gap-2 rounded-full bg-amber-500 px-6 py-3.5 text-sm font-bold text-slate-950 shadow-xl shadow-amber-500/20 transition-all hover:scale-105 hover:bg-amber-400">
-              <Zap className="h-4 w-4 fill-slate-950" /> Simuler vos besoins énergétiques
+              <Zap className="h-4 w-4 fill-slate-950" /> {t.heroSimulateBtn}
             </a>
             <a href={`tel:${PHONE}`} className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-6 py-3.5 text-sm font-semibold text-white backdrop-blur transition-colors hover:bg-white/20">
-              <Phone className="h-4 w-4" /> Contacter un expert
+              <Phone className="h-4 w-4" /> {t.heroExpertBtn}
             </a>
           </div>
           <div className="mt-10 flex flex-wrap items-center gap-6 text-sm text-slate-300">
-            <div className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-emerald-400" /> +500 installations</div>
-            <div className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-emerald-400" /> Garantie 25 ans</div>
-            <div className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-emerald-400" /> Cameroun & Afrique Centrale</div>
+            <div className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-emerald-400" /> {t.heroStat1}</div>
+            <div className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-emerald-400" /> {t.heroStat2}</div>
+            <div className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-emerald-400" /> {t.heroStat3}</div>
           </div>
         </div>
         <div className="hidden lg:block">
@@ -206,16 +521,16 @@ function Hero() {
             <div className="flex items-center gap-3">
               <img src={logo} alt="EDSOLAR" className="h-14 w-14 rounded-xl bg-white object-contain p-1" />
               <div>
-                <p className="text-xs uppercase tracking-widest text-slate-400">Contactez-nous</p>
-                <p className="text-lg font-bold">EDSOLAR Yaoundé</p>
+                <p className="text-xs uppercase tracking-widest text-slate-400">{t.heroCardSub}</p>
+                <p className="text-lg font-bold">{t.heroCardTitle}</p>
               </div>
             </div>
             <div className="mt-5 space-y-3 text-sm text-slate-300">
               <div className="flex items-start gap-3"><MapPin className="mt-0.5 h-4 w-4 text-amber-400 shrink-0" /> Tradex Olembe, Yaoundé, Cameroun</div>
-              <div className="flex items-start gap-3"><Leaf className="mt-0.5 h-4 w-4 text-emerald-400 shrink-0" /> Interventions au Cameroun & Afrique Centrale</div>
+              <div className="flex items-start gap-3"><Leaf className="mt-0.5 h-4 w-4 text-emerald-400 shrink-0" /> {t.heroStat3}</div>
               <div className="flex items-start gap-3"><Phone className="mt-0.5 h-4 w-4 text-amber-400 shrink-0" /> +237 650544444</div>
             </div>
-            <a href={waLink("Bonjour EDSOLAR, je souhaite discuter d'un projet solaire.")} target="_blank" rel="noreferrer"
+            <a href={waLink(waMsg)} target="_blank" rel="noreferrer"
                className="mt-5 flex items-center justify-center gap-2 rounded-full bg-emerald-500 px-4 py-3 text-sm font-bold text-slate-950 transition-all hover:bg-emerald-400">
               <MessageCircle className="h-4 w-4 fill-slate-950" /> WhatsApp direct
             </a>
@@ -227,23 +542,18 @@ function Hero() {
 }
 
 /* ---------------- Services ---------------- */
-const SERVICES = [
-  { icon: Sun, title: "Installation Solaire Sur-Mesure",
-    desc: "Systèmes autonomes (Off-Grid), hybrides et raccordés au réseau pour résidences, entreprises et industries." },
-  { icon: Wrench, title: "Maintenance & Dépannage",
-    desc: "Inspection technique, nettoyage de panneaux, maintenance préventive et remplacement d'onduleurs/batteries." },
-  { icon: ShoppingBag, title: "Vente d'Équipements Solaires",
-    desc: "Panneaux photovoltaïques, onduleurs hybrides, batteries Lithium/Gel et régulateurs MPPT." },
-  { icon: ClipboardCheck, title: "Audit & Conseil Énergétique",
-    desc: "Dimensionnement précis par nos ingénieurs qualifiés pour optimiser votre consommation." },
-];
+function Services({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
+  const SERVICES = [
+    { icon: Sun, title: t.s1Title, desc: t.s1Desc },
+    { icon: Wrench, title: t.s2Title, desc: t.s2Desc },
+    { icon: ShoppingBag, title: t.s3Title, desc: t.s3Desc },
+    { icon: ClipboardCheck, title: t.s4Title, desc: t.s4Desc },
+  ];
 
-function Services() {
   return (
     <section id="services" className="bg-slate-100/70 dark:bg-slate-900/50 py-16 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <SectionHeader eyebrow="Nos Services" title="Une expertise complète en énergie solaire"
-          description="De l'audit à la mise en service, EDSOLAR vous accompagne à chaque étape de votre transition énergétique." />
+        <SectionHeader eyebrow={t.servicesEyebrow} title={t.servicesTitle} description={t.servicesDesc} />
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {SERVICES.map((s) => (
             <div key={s.title} className="group rounded-2xl border border-border bg-card p-6 shadow-sm transition-all hover:border-amber-500/40">
@@ -252,9 +562,9 @@ function Services() {
               </div>
               <h3 className="mt-5 text-lg font-bold text-foreground">{s.title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{s.desc}</p>
-              <a href={waLink(`Bonjour EDSOLAR, je suis intéressé par: ${s.title}`)} target="_blank" rel="noreferrer"
+              <a href={waLink(lang === "fr" ? `Bonjour EDSOLAR, je suis intéressé par : ${s.title}` : `Hello EDSOLAR, I am interested in: ${s.title}`)} target="_blank" rel="noreferrer"
                  className="mt-4 inline-flex items-center gap-1 text-sm font-bold text-emerald-600 hover:gap-2 transition-all">
-                En savoir plus <ArrowRight className="h-4 w-4" />
+                {t.learnMore} <ArrowRight className="h-4 w-4" />
               </a>
             </div>
           ))}
@@ -278,7 +588,7 @@ const APPLIANCES: Appliance[] = [
   { id: "pc", name: "Ordinateur", watts: 150, icon: Laptop, hours: 5 },
 ];
 
-function Calculator() {
+function Calculator({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
   const [qty, setQty] = useState<Record<string, number>>({ led: 4, tv: 1, fridge: 1 });
   const set = (id: string, v: number) => setQty((q) => ({ ...q, [id]: Math.max(0, v) }));
 
@@ -324,16 +634,15 @@ function Calculator() {
   }, [qty]);
 
   const priceLabel = priceFcfa > 0 ? `${priceFcfa.toLocaleString("fr-FR")} FCFA` : "—";
-  const msg = `Bonjour EDSOLAR,%0AVoici mon estimation solaire:%0A- Puissance de pointe: ${peakW} W%0A- Consommation journalière: ${dailyWh.toFixed(0)} Wh%0A- Système recommandé: ${systemKva} kVA ${systemVoltage}V%0A- Batteries lithium: ${batteryCount} x ${systemVoltage}V ${batteryUnitAh}Ah%0A- Panneaux solaires: ${panelsCount} x 450W%0A- Budget estimatif: ${priceLabel}%0AMerci de me contacter pour un devis.`;
+  
+  const msg = lang === "fr" 
+    ? `Bonjour EDSOLAR,%0AVoici mon estimation solaire:%0A- Puissance de pointe: ${peakW} W%0A- Consommation journalière: ${dailyWh.toFixed(0)} Wh%0A- Système recommandé: ${systemKva} kVA ${systemVoltage}V%0A- Batteries lithium: ${batteryCount} x ${systemVoltage}V ${batteryUnitAh}Ah%0A- Panneaux solaires: ${panelsCount} x 450W%0A- Budget estimatif: ${priceLabel}`
+    : `Hello EDSOLAR,%0AHere is my solar estimation:%0A- Peak Power: ${peakW} W%0A- Daily Consumption: ${dailyWh.toFixed(0)} Wh%0A- Recommended System: ${systemKva} kVA ${systemVoltage}V%0A- Lithium Batteries: ${batteryCount} x ${systemVoltage}V ${batteryUnitAh}Ah%0A- Solar Panels: ${panelsCount} x 450W%0A- Estimated Budget: ${priceLabel}`;
 
   return (
     <section id="calculateur" className="py-16 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <SectionHeader 
-          eyebrow="Simulateur Devis" 
-          title="Estimez votre installation solaire en 1 minute"
-          description="Sélectionnez vos appareils. Obtenez immédiatement votre puissance recommandée et une estimation budgétaire." 
-        />
+        <SectionHeader eyebrow={t.simEyebrow} title={t.simTitle} description={t.simDesc} />
         <div className="mt-12 grid gap-8 lg:grid-cols-[1.4fr_1fr]">
           <div className="rounded-3xl border border-border bg-card p-5 sm:p-8 shadow-sm">
             <div className="grid gap-3 sm:grid-cols-2">
@@ -348,7 +657,7 @@ function Calculator() {
                       </div>
                       <div className="min-w-0">
                         <p className="truncate text-sm font-semibold">{a.name}</p>
-                        <p className="text-xs text-muted-foreground">{a.watts} W · {a.hours}h/jour</p>
+                        <p className="text-xs text-muted-foreground">{a.watts} W · {a.hours}h/{lang === "fr" ? "jour" : "day"}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-1.5 shrink-0">
@@ -362,21 +671,21 @@ function Calculator() {
             </div>
           </div>
           <div className="rounded-3xl border border-slate-800 bg-slate-950 p-6 text-white shadow-2xl sm:p-8">
-            <p className="text-xs font-bold uppercase tracking-widest text-amber-400">Votre estimation</p>
-            <h3 className="mt-2 text-2xl font-black">Résultats en temps réel</h3>
+            <p className="text-xs font-bold uppercase tracking-widest text-amber-400">{t.simEyebrow}</p>
+            <h3 className="mt-2 text-2xl font-black">{t.simResultTitle}</h3>
             <div className="mt-6 space-y-3.5">
-              <Metric icon={Zap} label="Puissance de pointe" value={`${peakW.toLocaleString()} W`} />
-              <Metric icon={Sun} label="Consommation journalière" value={`${dailyWh.toLocaleString(undefined, { maximumFractionDigits: 0 })} Wh`} />
-              <Metric icon={Cpu} label="Système recommandé" value={`${systemKva} kVA ${systemVoltage}V`} highlight />
-              <Metric icon={Battery} label={`Batteries lithium ${systemVoltage}V`} value={`${batteryCount} × ${batteryUnitAh} Ah`} />
-              <Metric icon={Sun} label="Panneaux solaires 450W" value={`${panelsCount} panneaux`} />
-              <Metric icon={Zap} label="Budget estimatif" value={priceLabel} highlight />
+              <Metric icon={Zap} label={t.simPeakPower} value={`${peakW.toLocaleString()} W`} />
+              <Metric icon={Sun} label={t.simDailyCons} value={`${dailyWh.toLocaleString(undefined, { maximumFractionDigits: 0 })} Wh`} />
+              <Metric icon={Cpu} label={t.simRecSystem} value={`${systemKva} kVA ${systemVoltage}V`} highlight />
+              <Metric icon={Battery} label={`${t.simLithiumBatt} ${systemVoltage}V`} value={`${batteryCount} × ${batteryUnitAh} Ah`} />
+              <Metric icon={Sun} label={t.simPanels} value={`${panelsCount} ${lang === "fr" ? "panneaux" : "panels"}`} />
+              <Metric icon={Zap} label={t.simBudget} value={priceLabel} highlight />
             </div>
             <a href={`${WA}?text=${msg}`} target="_blank" rel="noreferrer"
                className="mt-6 flex items-center justify-center gap-2 rounded-full bg-amber-500 px-5 py-3.5 text-sm font-bold text-slate-950 shadow-lg transition-all hover:scale-105 hover:bg-amber-400">
-              <MessageCircle className="h-4 w-4 fill-slate-950" /> Recevoir l'estimation sur WhatsApp
+              <MessageCircle className="h-4 w-4 fill-slate-950" /> {t.simSendWA}
             </a>
-            <p className="mt-3 text-center text-xs text-slate-400">Estimation indicative — nos ingénieurs valident le dimensionnement final.</p>
+            <p className="mt-3 text-center text-xs text-slate-400">{t.simNote}</p>
           </div>
         </div>
       </div>
@@ -417,7 +726,7 @@ function parseWarranty(p: Product): number {
   return Number.isFinite(n) ? n : 0;
 }
 
-function Products() {
+function Products({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
   const [items, setItems] = useState<Product[]>([]);
   const [cat, setCat] = useState("Tous");
   const [q, setQ] = useState("");
@@ -432,11 +741,11 @@ function Products() {
   const categories = useMemo(() => {
     const s = new Set<string>();
     items.forEach((p) => p.category && s.add(p.category));
-    return ["Tous", ...Array.from(s)];
-  }, [items]);
+    return [lang === "fr" ? "Tous" : "All", ...Array.from(s)];
+  }, [items, lang]);
 
   const list = useMemo(() => {
-    let arr = cat === "Tous" ? [...items] : items.filter((p) => p.category === cat);
+    let arr = (cat === "Tous" || cat === "All") ? [...items] : items.filter((p) => p.category === cat);
     const term = q.trim().toLowerCase();
     if (term) {
       arr = arr.filter((p) =>
@@ -453,40 +762,30 @@ function Products() {
   }, [items, cat, q, sort]);
 
   const buildOrderMsg = (p: Product) => {
-    const lines = [
-      `Bonjour EDSOLAR, je souhaite commander :`,
-      `• Équipement : ${p.name}`,
-      p.category ? `• Catégorie : ${p.category}` : "",
-      p.price ? `• Prix affiché : ${p.price}` : "",
-      p.warranty ? `• Garantie : ${p.warranty}` : "",
-      ``,
-      `Mes informations :`,
-      `• Nom : ${buyer.name || "(à préciser)"}`,
-      `• Téléphone : ${buyer.phone || "(à préciser)"}`,
-    ].filter(Boolean);
-    return lines.join("\n");
+    return lang === "fr" 
+      ? `Bonjour EDSOLAR, je souhaite commander :\n• Équipement : ${p.name}\n• Prix : ${p.price ?? "Sur devis"}\n• Nom : ${buyer.name || "(à préciser)"}`
+      : `Hello EDSOLAR, I want to order:\n• Equipment: ${p.name}\n• Price: ${p.price ?? "Quote"}\n• Name: ${buyer.name || "(to specify)"}`;
   };
 
   return (
     <section id="boutique" className="bg-slate-100/70 dark:bg-slate-900/50 py-16 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <SectionHeader eyebrow="Boutique" title="Équipements solaires de qualité"
-          description="Panneaux, batteries, onduleurs et kits complets — sélectionnés pour leur fiabilité." />
+        <SectionHeader eyebrow={t.shopEyebrow} title={t.shopTitle} description={t.shopDesc} />
 
         <div className="mx-auto mt-8 grid max-w-4xl gap-3 sm:grid-cols-[1fr_auto]">
           <div className="relative">
             <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <input value={q} onChange={(e) => setQ(e.target.value)}
-              placeholder="Rechercher un équipement (onduleur, batterie, panneau…)"
+              placeholder={t.shopSearchPlaceholder}
               className="w-full rounded-full border border-border bg-card py-3 pl-11 pr-4 text-sm outline-none focus:border-amber-500" />
           </div>
           <select value={sort} onChange={(e) => setSort(e.target.value as SortKey)}
             className="rounded-full border border-border bg-card px-4 py-3 text-sm font-semibold outline-none focus:border-amber-500">
-            <option value="featured">Trier : à la une</option>
-            <option value="price_asc">Prix croissant</option>
-            <option value="price_desc">Prix décroissant</option>
-            <option value="popularity">Popularité</option>
-            <option value="warranty">Garantie (longue → courte)</option>
+            <option value="featured">{t.shopSortFeatured}</option>
+            <option value="price_asc">{t.shopSortPriceAsc}</option>
+            <option value="price_desc">{t.shopSortPriceDesc}</option>
+            <option value="popularity">{t.shopSortPopularity}</option>
+            <option value="warranty">{t.shopSortWarranty}</option>
           </select>
         </div>
 
@@ -501,16 +800,16 @@ function Products() {
 
         <div className="mx-auto mt-6 grid max-w-3xl gap-3 rounded-2xl border border-border bg-card p-4 sm:grid-cols-[1fr_1fr_auto] sm:items-end">
           <div>
-            <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Votre nom</label>
+            <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{t.shopNameLabel}</label>
             <input value={buyer.name} onChange={(e) => setBuyer({ ...buyer, name: e.target.value })} placeholder="Ex. Jean Kamga"
               className="mt-1 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm outline-none focus:border-amber-500" />
           </div>
           <div>
-            <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">Votre téléphone</label>
+            <label className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{t.shopPhoneLabel}</label>
             <input value={buyer.phone} onChange={(e) => setBuyer({ ...buyer, phone: e.target.value })} placeholder="+237 6XX XX XX XX"
               className="mt-1 w-full rounded-lg border border-input bg-background px-3 py-2 text-sm outline-none focus:border-amber-500" />
           </div>
-          <p className="text-xs text-muted-foreground sm:text-right">Vos infos préremplissent le message WhatsApp.</p>
+          <p className="text-xs text-muted-foreground sm:text-right">{t.shopInfoNote}</p>
         </div>
 
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -526,18 +825,18 @@ function Products() {
               {p.description && <p className="mt-1 text-xs text-muted-foreground">{p.description}</p>}
               <div className="mt-2 flex flex-wrap gap-1.5 text-[10px] font-semibold">
                 <span className="rounded-full bg-slate-100 dark:bg-slate-800 px-2 py-0.5 text-slate-700 dark:text-slate-300">{p.category}</span>
-                {p.warranty && <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-emerald-600">Garantie {p.warranty}</span>}
+                {p.warranty && <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-emerald-600">{lang === "fr" ? "Garantie" : "Warranty"} {p.warranty}</span>}
               </div>
               <div className="mt-4 flex items-end justify-between gap-2">
                 <span className="text-lg font-black text-amber-600 dark:text-amber-400">{p.price ?? "Sur devis"}</span>
               </div>
               <a href={waLink(buildOrderMsg(p))} target="_blank" rel="noreferrer"
                  className="mt-4 inline-flex items-center justify-center gap-2 rounded-full bg-emerald-600 px-4 py-2.5 text-sm font-bold text-white transition-colors hover:bg-emerald-700">
-                <MessageCircle className="h-4 w-4" /> Commander via WhatsApp
+                <MessageCircle className="h-4 w-4" /> {t.shopOrderWA}
               </a>
             </div>
           ))}
-          {list.length === 0 && <p className="col-span-full text-center text-sm text-muted-foreground">Aucun équipement ne correspond à votre recherche.</p>}
+          {list.length === 0 && <p className="col-span-full text-center text-sm text-muted-foreground">{t.shopNoProduct}</p>}
         </div>
       </div>
     </section>
@@ -545,7 +844,7 @@ function Products() {
 }
 
 /* ---------------- WhatsApp Channel Section ---------------- */
-function WhatsAppChannel() {
+function WhatsAppChannel({ t }: { t: typeof TRANSLATIONS["fr"] }) {
   return (
     <section id="canal" className="relative overflow-hidden bg-slate-950 py-16 text-slate-100 sm:py-28">
       <div className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#25D366]/10 blur-[120px]" />
@@ -553,13 +852,13 @@ function WhatsAppChannel() {
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="mx-auto max-w-3xl text-center">
           <span className="inline-flex items-center gap-2 rounded-full border border-[#25D366]/30 bg-[#25D366]/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-[#25D366]">
-            <Radio className="h-3.5 w-3.5 animate-pulse" /> Direct du terrain
+            <Radio className="h-3.5 w-3.5 animate-pulse" /> {t.channelTag}
           </span>
           <h2 className="mt-4 text-2xl font-black tracking-tight text-white sm:text-4xl md:text-5xl">
-            Rejoignez la Chaîne <span className="text-[#25D366]">WhatsApp EDSOLAR</span>
+            {t.channelTitle1}<span className="text-[#25D366]">{t.channelTitle2}</span>
           </h2>
           <p className="mt-4 text-sm text-slate-400 sm:text-lg">
-            Suivez nos équipes au quotidien : vidéos d'installations, conseils techniques, arrivages de matériel et retours d'expérience.
+            {t.channelDesc}
           </p>
         </div>
 
@@ -568,42 +867,36 @@ function WhatsAppChannel() {
             <div className="grid h-12 w-12 place-items-center rounded-xl bg-[#25D366]/10 text-[#25D366] transition-transform group-hover:scale-110">
               <Video className="h-6 w-6" />
             </div>
-            <h3 className="mt-5 text-lg font-bold text-white">Vidéos d'installations</h3>
-            <p className="mt-2 text-sm leading-relaxed text-slate-400">
-              Découvrez nos chantiers en direct à Yaoundé et dans toutes les régions du Cameroun.
-            </p>
+            <h3 className="mt-5 text-lg font-bold text-white">{t.c1Title}</h3>
+            <p className="mt-2 text-sm leading-relaxed text-slate-400">{t.c1Desc}</p>
           </div>
 
           <div className="group rounded-2xl border border-slate-800 bg-slate-900/60 p-6 backdrop-blur transition-all hover:border-[#25D366]/50 hover:bg-slate-900">
             <div className="grid h-12 w-12 place-items-center rounded-xl bg-[#25D366]/10 text-[#25D366] transition-transform group-hover:scale-110">
               <Camera className="h-6 w-6" />
             </div>
-            <h3 className="mt-5 text-lg font-bold text-white">Photos & Matériel</h3>
-            <p className="mt-2 text-sm leading-relaxed text-slate-400">
-              Présentation détaillée des derniers onduleurs, batteries lithium et panneaux réceptionnés.
-            </p>
+            <h3 className="mt-5 text-lg font-bold text-white">{t.c2Title}</h3>
+            <p className="mt-2 text-sm leading-relaxed text-slate-400">{t.c2Desc}</p>
           </div>
 
           <div className="group rounded-2xl border border-slate-800 bg-slate-900/60 p-6 backdrop-blur transition-all hover:border-[#25D366]/50 hover:bg-slate-900 sm:col-span-2 md:col-span-1">
             <div className="grid h-12 w-12 place-items-center rounded-xl bg-[#25D366]/10 text-[#25D366] transition-transform group-hover:scale-110">
               <Sparkles className="h-6 w-6" />
             </div>
-            <h3 className="mt-5 text-lg font-bold text-white">Offres Exclusives</h3>
-            <p className="mt-2 text-sm leading-relaxed text-slate-400">
-              Recevez les promotions et remises réservées uniquement aux membres de la chaîne.
-            </p>
+            <h3 className="mt-5 text-lg font-bold text-white">{t.c3Title}</h3>
+            <p className="mt-2 text-sm leading-relaxed text-slate-400">{t.c3Desc}</p>
           </div>
         </div>
 
         <div className="mt-10 rounded-3xl border border-slate-800 bg-gradient-to-r from-slate-900 via-slate-900/90 to-slate-900 p-6 shadow-2xl backdrop-blur sm:p-10">
           <div className="mx-auto flex max-w-2xl flex-col items-center gap-6 text-center sm:flex-row sm:justify-between sm:text-left">
             <div>
-              <p className="text-lg sm:text-xl font-bold text-white">Près de 1 000 abonnés nous suivent !</p>
-              <p className="mt-1 text-xs sm:text-sm text-slate-400">Abonnement 100% gratuit, rapide et confidentiel.</p>
+              <p className="text-lg sm:text-xl font-bold text-white">{t.channelSubscribers}</p>
+              <p className="mt-1 text-xs sm:text-sm text-slate-400">{t.channelSubNote}</p>
             </div>
             <a href={WA_CHANNEL_URL} target="_blank" rel="noreferrer"
                className="inline-flex shrink-0 items-center gap-3 rounded-full bg-[#25D366] px-6 py-3.5 sm:px-8 sm:py-4 text-sm sm:text-base font-bold text-slate-950 shadow-lg transition-all hover:scale-105 hover:bg-[#20ba59]">
-              <MessageCircle className="h-5 w-5 fill-slate-950 text-[#25D366]" /> Suivre la Chaîne
+              <MessageCircle className="h-5 w-5 fill-slate-950 text-[#25D366]" /> {t.channelBtn}
             </a>
           </div>
         </div>
@@ -613,19 +906,18 @@ function WhatsAppChannel() {
 }
 
 /* ---------------- Trust ---------------- */
-const STATS = [
-  { icon: Users, value: "+500", label: "Installations réalisées" },
-  { icon: Star, value: "99%", label: "Satisfaction client" },
-  { icon: Clock, value: "24/48h", label: "Intervention à Yaoundé" },
-  { icon: Award, value: "10+", label: "Années d'expertise" },
-];
+function Trust({ t }: { t: typeof TRANSLATIONS["fr"] }) {
+  const STATS = [
+    { icon: Users, value: "+500", label: t.trustStat1 },
+    { icon: Star, value: "99%", label: t.trustStat2 },
+    { icon: Clock, value: "24/48h", label: t.trustStat3 },
+    { icon: Award, value: "10+", label: t.trustStat4 },
+  ];
 
-function Trust() {
   return (
     <section className="py-16 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <SectionHeader eyebrow="Pourquoi nous choisir ?" title="La confiance de centaines de clients"
-          description="Une expertise 100% locale, au service du Cameroun et de toute l'Afrique Centrale 🌍." />
+        <SectionHeader eyebrow={t.trustEyebrow} title={t.trustTitle} description={t.trustDesc} />
         <div className="mt-12 grid gap-4 grid-cols-2 lg:grid-cols-4">
           {STATS.map((s) => (
             <div key={s.label} className="rounded-2xl border border-border bg-card p-5 sm:p-6 text-center shadow-sm transition-transform hover:-translate-y-1">
@@ -657,7 +949,7 @@ const STATIC_GALLERY = [
   { src: gal3, title: "Tableau électrique & protections solaires", loc: "Yaoundé" },
 ];
 
-function Realisations() {
+function Realisations({ t }: { t: typeof TRANSLATIONS["fr"] }) {
   const [extra, setExtra] = useState<{ src: string; title: string; loc: string }[]>([]);
   useEffect(() => {
     supabase.from("gallery_photos").select("url, caption").order("sort_order").order("created_at", { ascending: false })
@@ -667,8 +959,7 @@ function Realisations() {
   return (
     <section id="realisations" className="bg-slate-100/70 dark:bg-slate-900/50 py-16 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <SectionHeader eyebrow="Nos Réalisations" title="Projets récents au Cameroun"
-          description="Découvrez nos installations récentes chez les particuliers et les entreprises." />
+        <SectionHeader eyebrow={t.realEyebrow} title={t.realTitle} description={t.realDesc} />
         <div className="mt-12 grid gap-6 sm:grid-cols-2 md:grid-cols-3">
           {items.map((g, i) => (
             <figure key={`${g.src}-${i}`} className="group overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-transform hover:-translate-y-1">
@@ -696,25 +987,20 @@ function Realisations() {
 }
 
 /* ---------------- About ---------------- */
-function About() {
+function About({ t }: { t: typeof TRANSLATIONS["fr"] }) {
   return (
     <section id="apropos" className="py-16 sm:py-28">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 sm:px-6 lg:grid-cols-2 lg:items-center">
         <div>
-          <span className="text-xs font-bold uppercase tracking-widest text-emerald-600">À propos</span>
+          <span className="text-xs font-bold uppercase tracking-widest text-emerald-600">{t.aboutEyebrow}</span>
           <h2 className="mt-3 text-2xl sm:text-4xl font-black tracking-tight">
-            EDSOLAR — votre partenaire solaire au Cameroun & en Afrique Centrale
+            {t.aboutTitle}
           </h2>
           <p className="mt-4 sm:mt-5 text-sm sm:text-base leading-relaxed text-muted-foreground">
-            Basés à <strong className="text-foreground">Tradex Olembe, Yaoundé</strong>, nous intervenons partout au <strong className="text-foreground">Cameroun</strong> et dans toute l'<strong className="text-foreground">Afrique Centrale</strong>. Notre mission : rendre l'énergie solaire accessible, fiable et rentable pour chaque foyer et chaque entreprise, avec du matériel certifié et une équipe de techniciens qualifiés.
+            {t.aboutDesc}
           </p>
           <ul className="mt-6 space-y-3">
-            {[
-              "Ingénieurs qualifiés et techniciens certifiés",
-              "Matériel Tier 1 avec garantie constructeur",
-              "Service après-vente réactif à Yaoundé",
-              "Financement et options de paiement échelonné",
-            ].map((f) => (
+            {[t.aboutF1, t.aboutF2, t.aboutF3, t.aboutF4].map((f) => (
               <li key={f} className="flex items-start gap-3 text-sm">
                 <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-600" /> {f}
               </li>
@@ -732,25 +1018,28 @@ function About() {
 }
 
 /* ---------------- Contact ---------------- */
-function Contact() {
+function Contact({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
   const [form, setForm] = useState({ name: "", phone: "", location: "", type: "Maison", zone: "Cameroun", needs: "", message: "" });
   const [sent, setSent] = useState(false);
+
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
-    const msg = `Bonjour EDSOLAR,%0ANom: ${form.name}%0ATéléphone: ${form.phone}%0AQuartier: ${form.location}%0AZone d'intervention: ${form.zone}%0AType: ${form.type}%0ABesoins spécifiques: ${form.needs || "Non précisé"}%0AMessage: ${form.message}`;
+    const msg = lang === "fr" 
+      ? `Bonjour EDSOLAR,%0ANom: ${form.name}%0ATéléphone: ${form.phone}%0AQuartier: ${form.location}%0AZone: ${form.zone}%0AType: ${form.type}%0ABesoins: ${form.needs}%0AMessage: ${form.message}`
+      : `Hello EDSOLAR,%0AName: ${form.name}%0APhone: ${form.phone}%0ACity: ${form.location}%0AZone: ${form.zone}%0AType: ${form.type}%0ANeeds: ${form.needs}%0AMessage: ${form.message}`;
     window.open(`${WA}?text=${msg}`, "_blank");
     setSent(true);
   };
+
   return (
     <section id="contact" className="bg-slate-100/70 dark:bg-slate-900/50 py-16 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <SectionHeader eyebrow="Contact" title="Parlons de votre projet solaire"
-          description="Remplissez le formulaire ou appelez-nous — un expert vous répond sous 24h." />
+        <SectionHeader eyebrow={t.contactEyebrow} title={t.contactTitle} description={t.contactDesc} />
         <div className="mt-12 grid gap-6 lg:grid-cols-[1fr_1.2fr]">
           <div className="space-y-4">
-            <ContactCard icon={MapPin} title="Siège social" lines={["Tradex Olembe", "Yaoundé, Cameroun"]} />
-            <ContactCard icon={Leaf} title="Zone d'intervention" lines={["Tout le Cameroun", "& Afrique Centrale"]} />
-            <ContactCard icon={Phone} title="Téléphone / WhatsApp" lines={["+237 650544444"]} href={`tel:${PHONE}`} />
+            <ContactCard icon={MapPin} title={t.contactHeadquarters} lines={["Tradex Olembe", "Yaoundé, Cameroun"]} />
+            <ContactCard icon={Leaf} title={t.contactZone} lines={["Tout le Cameroun", "& Afrique Centrale"]} />
+            <ContactCard icon={Phone} title={t.contactPhone} lines={["+237 650544444"]} href={`tel:${PHONE}`} />
             <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
               <iframe title="EDSOLAR Yaoundé" className="h-56 w-full"
                 src="https://www.google.com/maps?q=Tradex+Olembe+Yaounde&output=embed" loading="lazy" />
@@ -758,41 +1047,37 @@ function Contact() {
           </div>
           <form onSubmit={submit} className="rounded-3xl border border-border bg-card p-5 sm:p-8 shadow-sm">
             <div className="grid gap-4 sm:grid-cols-2">
-              <Field label="Nom complet" value={form.name} onChange={(v) => setForm({ ...form, name: v })} required />
-              <Field label="Téléphone" value={form.phone} onChange={(v) => setForm({ ...form, phone: v })} required type="tel" />
-              <Field label="Quartier / Ville" value={form.location} onChange={(v) => setForm({ ...form, location: v })} placeholder="Ex: Bastos, Yaoundé" />
+              <Field label={t.formName} value={form.name} onChange={(v) => setForm({ ...form, name: v })} required />
+              <Field label={t.formPhone} value={form.phone} onChange={(v) => setForm({ ...form, phone: v })} required type="tel" />
+              <Field label={t.formLocation} value={form.location} onChange={(v) => setForm({ ...form, location: v })} placeholder="Ex: Bastos, Yaoundé" />
               <div>
-                <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">Type de projet</label>
+                <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t.formProjectType}</label>
                 <select value={form.type} onChange={(e) => setForm({ ...form, type: e.target.value })}
                   className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-amber-500">
-                  <option>Maison</option><option>Commerce</option><option>Industrie</option><option>Autre</option>
-                </select>
-              </div>
-              <div>
-                <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">Zone d'intervention</label>
-                <select value={form.zone} onChange={(e) => setForm({ ...form, zone: e.target.value })}
-                  className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-amber-500">
-                  <option>Cameroun</option><option>Afrique centrale</option>
+                  <option>{lang === "fr" ? "Maison" : "Home"}</option>
+                  <option>{lang === "fr" ? "Commerce" : "Business"}</option>
+                  <option>{lang === "fr" ? "Industrie" : "Industry"}</option>
+                  <option>{lang === "fr" ? "Autre" : "Other"}</option>
                 </select>
               </div>
               <div className="sm:col-span-2">
-                <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">Besoins spécifiques</label>
+                <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t.formNeeds}</label>
                 <input type="text" value={form.needs} onChange={(e) => setForm({ ...form, needs: e.target.value })}
-                  placeholder="Ex: pompage, climatisation, bureaux, hangar..."
+                  placeholder={lang === "fr" ? "Ex: pompage, climatisation, bureaux..." : "Ex: pumping, AC, offices..."}
                   className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-amber-500" />
               </div>
               <div className="sm:col-span-2">
-                <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">Message</label>
+                <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t.formMessage}</label>
                 <textarea rows={4} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })}
-                  placeholder="Décrivez brièvement votre besoin..."
+                  placeholder={lang === "fr" ? "Décrivez brièvement votre besoin..." : "Briefly describe your request..."}
                   className="w-full resize-none rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-amber-500" />
               </div>
             </div>
             <button type="submit"
               className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-emerald-600 px-6 py-3.5 text-sm font-bold text-white shadow-lg transition-colors hover:bg-emerald-700 sm:w-auto">
-              <Send className="h-4 w-4" /> Envoyer sur WhatsApp
+              <Send className="h-4 w-4" /> {t.formSubmit}
             </button>
-            {sent && <p className="mt-3 text-sm text-emerald-600 font-semibold">Merci ! Votre message a été préparé sur WhatsApp.</p>}
+            {sent && <p className="mt-3 text-sm text-emerald-600 font-semibold">{t.formSuccess}</p>}
           </form>
         </div>
       </div>
@@ -829,7 +1114,7 @@ function Field({ label, value, onChange, required, type = "text", placeholder }:
 }
 
 /* ---------------- Footer ---------------- */
-function Footer() {
+function Footer({ t }: { t: typeof TRANSLATIONS["fr"] }) {
   return (
     <footer className="border-t border-slate-800 bg-slate-950 text-white">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -842,7 +1127,7 @@ function Footer() {
             </div>
           </a>
           <p className="mt-4 max-w-md text-sm text-slate-400">
-            L'énergie propre pour un avenir durable. Installation, maintenance et vente d'équipements solaires au Cameroun.
+            {t.heroDesc}
           </p>
           <div className="mt-5 flex gap-3">
             {[Facebook, Instagram, Linkedin].map((I, i) => (
@@ -853,13 +1138,17 @@ function Footer() {
           </div>
         </div>
         <div>
-          <p className="text-sm font-bold uppercase tracking-wider text-amber-400">Navigation</p>
+          <p className="text-sm font-bold uppercase tracking-wider text-amber-400">{t.footerNav}</p>
           <ul className="mt-4 space-y-2 text-sm text-slate-300">
-            {NAV_MOBILE.map((n) => <li key={n.href}><a href={n.href} className="hover:text-amber-400 transition-colors">{n.label}</a></li>)}
+            <li><a href="#services" className="hover:text-amber-400 transition-colors">{t.navServices}</a></li>
+            <li><a href="#kits" className="hover:text-amber-400 transition-colors">{t.navKits}</a></li>
+            <li><a href="#boutique" className="hover:text-amber-400 transition-colors">{t.navBoutique}</a></li>
+            <li><a href="#calculateur" className="hover:text-amber-400 transition-colors">{t.navSimulator}</a></li>
+            <li><a href="#realisations" className="hover:text-amber-400 transition-colors">{t.navRealisations}</a></li>
           </ul>
         </div>
         <div>
-          <p className="text-sm font-bold uppercase tracking-wider text-amber-400">Contact</p>
+          <p className="text-sm font-bold uppercase tracking-wider text-amber-400">{t.footerContact}</p>
           <ul className="mt-4 space-y-3 text-sm text-slate-300">
             <li className="flex gap-2"><MapPin className="h-4 w-4 shrink-0 text-amber-400" /> Tradex Olembe, Yaoundé, Cameroun</li>
             <li className="flex gap-2"><Leaf className="h-4 w-4 shrink-0 text-emerald-400" /> Cameroun & Afrique Centrale</li>
@@ -869,11 +1158,11 @@ function Footer() {
       </div>
       <div className="border-t border-slate-900 bg-slate-950">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-4 py-5 text-xs text-slate-500 sm:flex-row sm:px-6">
-          <p>© 2026 Bimedia Connect Agency. Tous droits réservés.</p>
+          <p>{t.footerRights}</p>
           <nav className="flex flex-wrap items-center gap-x-4 gap-y-1">
-            <a href="/mentions-legales" className="hover:text-amber-400">Mentions légales</a>
-            <a href="/confidentialite" className="hover:text-amber-400">Confidentialité</a>
-            <a href="/cookies" className="hover:text-amber-400">Cookies</a>
+            <a href="/mentions-legales" className="hover:text-amber-400">{t.footerLegal}</a>
+            <a href="/confidentialite" className="hover:text-amber-400">{t.footerPrivacy}</a>
+            <a href="/cookies" className="hover:text-amber-400">{t.footerCookies}</a>
           </nav>
         </div>
       </div>
@@ -882,9 +1171,13 @@ function Footer() {
 }
 
 /* ---------------- Floating WhatsApp ---------------- */
-function FloatingWhatsApp() {
+function FloatingWhatsApp({ lang }: { lang: Lang }) {
+  const waMsg = lang === "fr" 
+    ? "Bonjour EDSOLAR, j'aimerais plus d'informations." 
+    : "Hello EDSOLAR, I would like more information.";
+
   return (
-    <a href={waLink("Bonjour EDSOLAR, j'aimerais plus d'informations.")} target="_blank" rel="noreferrer"
+    <a href={waLink(waMsg)} target="_blank" rel="noreferrer"
        className="fixed bottom-5 right-5 z-50 flex items-center gap-2 rounded-full bg-[#25D366] px-4 py-3 sm:px-5 sm:py-3.5 font-bold text-slate-950 shadow-2xl transition-transform hover:scale-105"
        aria-label="Contacter sur WhatsApp">
       <MessageCircle className="h-5 w-5 fill-slate-950" />
@@ -931,18 +1224,18 @@ const DEFAULT_KITS = [
   { id: "d3", slug: "filet-bleu", title: "Kit Filet Bleu", subtitle: "Résidence familiale", description: "Kit résidentiel équilibré : éclairage, télévision, réfrigérateur et petits appareils.", price: "1 000 000 FCFA", image_url: null, features: ["Onduleur hybride 2 kVA", "Batteries lithium 24V 200Ah", "4 panneaux 450W", "Installation en 1 journée", "Suivi maintenance"] },
 ];
 
-function Kits() {
+function Kits({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
   const [items, setItems] = useState<any[]>(DEFAULT_KITS);
   useEffect(() => {
     supabase.from("kits").select("*").order("sort_order").then(({ data }) => {
       if (data && data.length) setItems(data);
     });
   }, []);
+
   return (
     <section id="kits" className="py-16 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <SectionHeader eyebrow="Nos Kits" title="Des solutions solaires prêtes à l'emploi"
-          description="Nos kits phares, sélectionnés pour les besoins réels des foyers et commerces camerounais." />
+        <SectionHeader eyebrow={t.navKits} title={t.simTitle} description={t.servicesDesc} />
         <div className="mt-12 grid gap-6 sm:grid-cols-2 md:grid-cols-3">
           {items.map((k) => (
             <article key={k.id} className="flex flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-sm transition-transform hover:-translate-y-1">
@@ -969,9 +1262,9 @@ function Kits() {
                     <li key={f} className="flex items-start gap-2"><CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" /> {f}</li>
                   ))}
                 </ul>
-                <a href={waLink(`Bonjour EDSOLAR, je suis intéressé par le ${k.title} (${k.price ?? ""}).`)} target="_blank" rel="noreferrer"
+                <a href={waLink(lang === "fr" ? `Bonjour EDSOLAR, je suis intéressé par le ${k.title} (${k.price ?? ""}).` : `Hello EDSOLAR, I am interested in the ${k.title} (${k.price ?? ""}).`)} target="_blank" rel="noreferrer"
                    className="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-amber-500 px-5 py-3 text-sm font-bold text-slate-950 transition-all hover:bg-amber-400">
-                  <MessageCircle className="h-4 w-4 fill-slate-950" /> Demander ce kit
+                  <MessageCircle className="h-4 w-4 fill-slate-950" /> {lang === "fr" ? "Demander ce kit" : "Request this kit"}
                 </a>
               </div>
             </article>
@@ -983,7 +1276,7 @@ function Kits() {
 }
 
 /* ---------------- Reviews ---------------- */
-function Reviews() {
+function Reviews({ t }: { t: typeof TRANSLATIONS["fr"] }) {
   const [items, setItems] = useState<any[]>([]);
   const [form, setForm] = useState({ name: "", rating: 5, comment: "" });
   const [hoverRating, setHoverRating] = useState(0);
@@ -1005,14 +1298,13 @@ function Reviews() {
   return (
     <section id="avis" className="bg-slate-100/70 dark:bg-slate-900/50 py-16 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <SectionHeader eyebrow="Avis clients" title="Partagez votre expérience EDSOLAR"
-          description="Votre satisfaction compte. Laissez un avis — il sera publié après validation de notre équipe." />
+        <SectionHeader eyebrow={t.navReviews} title="Partagez votre expérience EDSOLAR" description="Votre satisfaction compte. Laissez un avis — il sera publié après validation de notre équipe." />
         <div className="mt-12 grid gap-8 lg:grid-cols-[1fr_1.3fr]">
           <form onSubmit={submit} className="h-fit rounded-3xl border border-border bg-card p-5 sm:p-8 shadow-sm">
             <p className="text-sm font-bold">Laisser un avis</p>
             <div className="mt-4 space-y-3">
               <div>
-                <label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Nom</label>
+                <label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t.formName}</label>
                 <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required
                   className="mt-1 w-full rounded-xl border border-input bg-background px-4 py-2.5 text-sm outline-none focus:border-amber-500" />
               </div>
@@ -1024,7 +1316,7 @@ function Reviews() {
                       onClick={() => setForm((f) => ({ ...f, rating: n }))}
                       onMouseEnter={() => setHoverRating(n)}
                       onMouseLeave={() => setHoverRating(0)}
-                      aria-label={`${n} étoile${n > 1 ? "s" : ""}`}
+                      aria-label={`${n} étoile`}
                       className="p-1 transition-transform hover:scale-110">
                       <Star className={`pointer-events-none h-7 w-7 sm:h-8 sm:w-8 ${n <= (hoverRating || form.rating) ? "fill-amber-400 text-amber-400" : "text-muted-foreground/30"}`} />
                     </button>
@@ -1033,7 +1325,7 @@ function Reviews() {
                 </div>
               </div>
               <div>
-                <label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Votre commentaire</label>
+                <label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t.formMessage}</label>
                 <textarea rows={4} value={form.comment} onChange={(e) => setForm({ ...form, comment: e.target.value })} required
                   className="mt-1 w-full resize-none rounded-xl border border-input bg-background px-4 py-2.5 text-sm outline-none focus:border-amber-500" />
               </div>
