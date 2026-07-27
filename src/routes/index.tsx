@@ -1,13 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
-import { useServerFn } from "@tanstack/react-start";
 import {
   Sun, Leaf, Phone, MapPin, MessageCircle, Menu, X, ArrowRight,
   Wrench, ShoppingBag, ClipboardCheck, ShieldCheck, Battery,
   Zap, Cpu, Tv, Refrigerator, Snowflake, Lightbulb, WashingMachine,
   Laptop, Fan, Microwave, CheckCircle2, Star, Award, Clock, Users,
-  Facebook, Instagram, Linkedin, Send, Youtube, PlayCircle, Package,
-  Search, ArrowUp,
+  Facebook, Instagram, Linkedin, Send, Package, Search, ArrowUp,
+  Radio, Camera, Video, Sparkles, Check
 } from "lucide-react";
 import logo from "@/assets/edsolar-logo-new.jpeg";
 import hero from "@/assets/install-panels.jpeg";
@@ -16,7 +15,6 @@ import gal2 from "@/assets/gallery-2.jpg";
 import gal3 from "@/assets/gallery-3.jpg";
 import teamPortrait from "@/assets/team-portrait.jpeg";
 import { supabase } from "@/integrations/supabase/client";
-import { fetchYouTubeVideos } from "@/lib/admin.functions";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -32,6 +30,7 @@ export const Route = createFileRoute("/")({
 
 const PHONE = "+237650544444";
 const WA = `https://wa.me/${PHONE.replace("+", "")}`;
+const WA_CHANNEL_URL = "https://whatsapp.com/channel/0029VauTigF9Gv7cyMQUQH1x";
 const waLink = (msg: string) => `${WA}?text=${encodeURIComponent(msg)}`;
 
 const NAV = [
@@ -40,7 +39,7 @@ const NAV = [
   { href: "#kits", label: "Nos Kits" },
   { href: "#boutique", label: "Équipements" },
   { href: "#calculateur", label: "Calculateur" },
-  { href: "#videos", label: "Vidéos" },
+  { href: "#canal", label: "Chaîne WhatsApp" },
   { href: "#realisations", label: "Réalisations" },
   { href: "#avis", label: "Avis clients" },
   { href: "#contact", label: "Contact" },
@@ -55,7 +54,7 @@ function Index() {
       <Kits />
       <Calculator />
       <Products />
-      <Videos />
+      <WhatsAppChannel />
       <Trust />
       <Realisations />
       <Reviews />
@@ -488,6 +487,72 @@ function Products() {
   );
 }
 
+/* ---------------- WhatsApp Channel Section (Remplace YouTube) ---------------- */
+function WhatsAppChannel() {
+  return (
+    <section id="canal" className="bg-primary-dark py-20 text-primary-foreground sm:py-28">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="mx-auto max-w-3xl text-center">
+          <span className="inline-flex items-center gap-2 rounded-full bg-whatsapp/20 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-[#25D366]">
+            <Radio className="h-4 w-4 animate-pulse" /> Direct du terrain
+          </span>
+          <h2 className="mt-4 text-3xl font-black tracking-tight sm:text-4xl md:text-5xl">
+            Rejoignez notre Chaîne WhatsApp EDSOLAR
+          </h2>
+          <p className="mt-4 text-base text-white/80 sm:text-lg">
+            Suivez nos équipes au quotidien ! Vidéos d'installations, conseils techniques, arrivages de matériel et retours d'expérience en temps réel.
+          </p>
+        </div>
+
+        <div className="mt-12 grid gap-6 md:grid-cols-3">
+          <div className="rounded-2xl border border-white/15 bg-white/5 p-6 backdrop-blur">
+            <div className="grid h-12 w-12 place-items-center rounded-xl bg-[#25D366]/20 text-[#25D366]">
+              <Video className="h-6 w-6" />
+            </div>
+            <h3 className="mt-4 text-lg font-bold">Vidéos d'installations</h3>
+            <p className="mt-2 text-sm text-white/75">
+              Découvrez nos chantiers en direct à Yaoundé et dans toutes les régions du Cameroun.
+            </p>
+          </div>
+
+          <div className="rounded-2xl border border-white/15 bg-white/5 p-6 backdrop-blur">
+            <div className="grid h-12 w-12 place-items-center rounded-xl bg-[#25D366]/20 text-[#25D366]">
+              <Camera className="h-6 w-6" />
+            </div>
+            <h3 className="mt-4 text-lg font-bold">Photos & Matériel</h3>
+            <p className="mt-2 text-sm text-white/75">
+              Présentation détaillée des derniers onduleurs, batteries lithium et panneaux réceptionnés.
+            </p>
+          </div>
+
+          <div className="rounded-2xl border border-white/15 bg-white/5 p-6 backdrop-blur">
+            <div className="grid h-12 w-12 place-items-center rounded-xl bg-[#25D366]/20 text-[#25D366]">
+              <Sparkles className="h-6 w-6" />
+            </div>
+            <h3 className="mt-4 text-lg font-bold">Offres Exclusives</h3>
+            <p className="mt-2 text-sm text-white/75">
+              Recevez les promotions et remises réservées uniquement aux membres de la chaîne.
+            </p>
+          </div>
+        </div>
+
+        <div className="mt-10 rounded-3xl border border-[#25D366]/30 bg-gradient-to-r from-white/10 to-white/5 p-8 text-center shadow-2xl backdrop-blur">
+          <div className="mx-auto flex max-w-xl flex-col items-center gap-4 sm:flex-row sm:justify-between sm:text-left">
+            <div>
+              <p className="text-xl font-black text-white">Près de 1000 abonnés nous suivent déjà !</p>
+              <p className="text-sm text-white/80">Abonnement gratuit et 100% confidentiel.</p>
+            </div>
+            <a href={WA_CHANNEL_URL} target="_blank" rel="noreferrer"
+               className="inline-flex shrink-0 items-center gap-3 rounded-full bg-[#25D366] px-8 py-4 text-base font-bold text-white shadow-xl transition-all hover:scale-105 hover:bg-[#20ba59]">
+              <MessageCircle className="h-5 w-5" /> Suivre la Chaîne
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 /* ---------------- Trust ---------------- */
 const STATS = [
   { icon: Users, value: "+500", label: "Installations réalisées" },
@@ -852,57 +917,6 @@ function Kits() {
               </div>
             </article>
           ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ---------------- Videos (YouTube @EDSOLAR) ---------------- */
-function Videos() {
-  const [videos, setVideos] = useState<{ id: string; title: string; thumbnail: string }[]>([]);
-  const [loading, setLoading] = useState(true);
-  const load = useServerFn(fetchYouTubeVideos);
-  useEffect(() => {
-    load().then((v) => { setVideos(v as any); setLoading(false); }).catch(() => setLoading(false));
-  }, []);
-  return (
-    <section id="videos" className="bg-primary-dark py-20 text-primary-foreground sm:py-28">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="mx-auto max-w-2xl text-center">
-          <span className="text-xs font-bold uppercase tracking-widest text-accent">Vidéos de terrain</span>
-          <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-4xl md:text-5xl">Découvrez nos vidéos de terrain</h2>
-          <p className="mt-4 text-base text-white/80">Retrouvez toutes nos installations et interventions sur notre chaîne YouTube @EDSOLAR.</p>
-        </div>
-        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {loading && Array.from({ length: 6 }).map((_, i) => (
-            <div key={i} className="aspect-video animate-pulse rounded-2xl bg-white/10" />
-          ))}
-          {!loading && videos.length === 0 && (
-            <div className="col-span-full rounded-2xl border border-white/15 bg-white/5 p-6 text-center text-sm text-white/80">
-              Impossible de charger les vidéos pour l'instant. <a className="underline" href="https://www.youtube.com/@EDSOLAR" target="_blank" rel="noreferrer">Voir la chaîne</a>
-            </div>
-          )}
-          {videos.map((v) => (
-            <a key={v.id} href={`https://www.youtube.com/watch?v=${v.id}`} target="_blank" rel="noreferrer"
-               className="group overflow-hidden rounded-2xl border border-white/15 bg-white/5 transition-all hover:border-accent hover:bg-white/10">
-              <div className="relative aspect-video overflow-hidden">
-                <img src={v.thumbnail} alt={v.title} loading="lazy" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
-                <div className="absolute inset-0 grid place-items-center bg-black/25 opacity-0 transition-opacity group-hover:opacity-100">
-                  <PlayCircle className="h-16 w-16 text-white drop-shadow-xl" />
-                </div>
-              </div>
-              <div className="p-4">
-                <p className="line-clamp-2 text-sm font-semibold">{v.title}</p>
-              </div>
-            </a>
-          ))}
-        </div>
-        <div className="mt-10 flex justify-center">
-          <a href="https://www.youtube.com/@EDSOLAR?sub_confirmation=1" target="_blank" rel="noreferrer"
-             className="inline-flex items-center gap-2 rounded-full bg-[#FF0000] px-6 py-3 text-sm font-bold text-white shadow-lg transition-transform hover:scale-105">
-            <Youtube className="h-5 w-5" /> S'abonner à @EDSOLAR
-          </a>
         </div>
       </div>
     </section>
