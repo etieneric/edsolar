@@ -6,7 +6,7 @@ import {
   Zap, Cpu, Tv, Refrigerator, Snowflake, Lightbulb, WashingMachine,
   Laptop, Fan, Microwave, CheckCircle2, Star, Award, Clock, Users,
   Facebook, Instagram, Linkedin, Send, Package, Search, ArrowUp,
-  Radio, Camera, Video, Sparkles, Check
+  Radio, Camera, Video, Sparkles
 } from "lucide-react";
 import logo from "@/assets/edsolar-logo-new.jpeg";
 import hero from "@/assets/install-panels.jpeg";
@@ -487,64 +487,66 @@ function Products() {
   );
 }
 
-/* ---------------- WhatsApp Channel Section (Remplace YouTube) ---------------- */
+/* ---------------- WhatsApp Channel Section (Version Épurée) ---------------- */
 function WhatsAppChannel() {
   return (
-    <section id="canal" className="bg-primary-dark py-20 text-primary-foreground sm:py-28">
+    <section id="canal" className="relative overflow-hidden bg-slate-950 py-20 text-slate-100 sm:py-28">
+      <div className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#25D366]/10 blur-[120px]" />
+
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="mx-auto max-w-3xl text-center">
-          <span className="inline-flex items-center gap-2 rounded-full bg-whatsapp/20 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-[#25D366]">
-            <Radio className="h-4 w-4 animate-pulse" /> Direct du terrain
+          <span className="inline-flex items-center gap-2 rounded-full border border-[#25D366]/30 bg-[#25D366]/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-[#25D366]">
+            <Radio className="h-3.5 w-3.5 animate-pulse" /> Direct du terrain
           </span>
-          <h2 className="mt-4 text-3xl font-black tracking-tight sm:text-4xl md:text-5xl">
-            Rejoignez notre Chaîne WhatsApp EDSOLAR
+          <h2 className="mt-4 text-3xl font-black tracking-tight text-white sm:text-4xl md:text-5xl">
+            Rejoignez la Chaîne <span className="text-[#25D366]">WhatsApp EDSOLAR</span>
           </h2>
-          <p className="mt-4 text-base text-white/80 sm:text-lg">
-            Suivez nos équipes au quotidien ! Vidéos d'installations, conseils techniques, arrivages de matériel et retours d'expérience en temps réel.
+          <p className="mt-4 text-base text-slate-400 sm:text-lg">
+            Suivez nos équipes au quotidien : vidéos d'installations, conseils techniques, arrivages de matériel et retours d'expérience.
           </p>
         </div>
 
         <div className="mt-12 grid gap-6 md:grid-cols-3">
-          <div className="rounded-2xl border border-white/15 bg-white/5 p-6 backdrop-blur">
-            <div className="grid h-12 w-12 place-items-center rounded-xl bg-[#25D366]/20 text-[#25D366]">
+          <div className="group rounded-2xl border border-slate-800 bg-slate-900/60 p-6 backdrop-blur transition-all hover:border-[#25D366]/50 hover:bg-slate-900">
+            <div className="grid h-12 w-12 place-items-center rounded-xl bg-[#25D366]/10 text-[#25D366] transition-transform group-hover:scale-110">
               <Video className="h-6 w-6" />
             </div>
-            <h3 className="mt-4 text-lg font-bold">Vidéos d'installations</h3>
-            <p className="mt-2 text-sm text-white/75">
+            <h3 className="mt-5 text-lg font-bold text-white">Vidéos d'installations</h3>
+            <p className="mt-2 text-sm leading-relaxed text-slate-400">
               Découvrez nos chantiers en direct à Yaoundé et dans toutes les régions du Cameroun.
             </p>
           </div>
 
-          <div className="rounded-2xl border border-white/15 bg-white/5 p-6 backdrop-blur">
-            <div className="grid h-12 w-12 place-items-center rounded-xl bg-[#25D366]/20 text-[#25D366]">
+          <div className="group rounded-2xl border border-slate-800 bg-slate-900/60 p-6 backdrop-blur transition-all hover:border-[#25D366]/50 hover:bg-slate-900">
+            <div className="grid h-12 w-12 place-items-center rounded-xl bg-[#25D366]/10 text-[#25D366] transition-transform group-hover:scale-110">
               <Camera className="h-6 w-6" />
             </div>
-            <h3 className="mt-4 text-lg font-bold">Photos & Matériel</h3>
-            <p className="mt-2 text-sm text-white/75">
+            <h3 className="mt-5 text-lg font-bold text-white">Photos & Matériel</h3>
+            <p className="mt-2 text-sm leading-relaxed text-slate-400">
               Présentation détaillée des derniers onduleurs, batteries lithium et panneaux réceptionnés.
             </p>
           </div>
 
-          <div className="rounded-2xl border border-white/15 bg-white/5 p-6 backdrop-blur">
-            <div className="grid h-12 w-12 place-items-center rounded-xl bg-[#25D366]/20 text-[#25D366]">
+          <div className="group rounded-2xl border border-slate-800 bg-slate-900/60 p-6 backdrop-blur transition-all hover:border-[#25D366]/50 hover:bg-slate-900">
+            <div className="grid h-12 w-12 place-items-center rounded-xl bg-[#25D366]/10 text-[#25D366] transition-transform group-hover:scale-110">
               <Sparkles className="h-6 w-6" />
             </div>
-            <h3 className="mt-4 text-lg font-bold">Offres Exclusives</h3>
-            <p className="mt-2 text-sm text-white/75">
+            <h3 className="mt-5 text-lg font-bold text-white">Offres Exclusives</h3>
+            <p className="mt-2 text-sm leading-relaxed text-slate-400">
               Recevez les promotions et remises réservées uniquement aux membres de la chaîne.
             </p>
           </div>
         </div>
 
-        <div className="mt-10 rounded-3xl border border-[#25D366]/30 bg-gradient-to-r from-white/10 to-white/5 p-8 text-center shadow-2xl backdrop-blur">
-          <div className="mx-auto flex max-w-xl flex-col items-center gap-4 sm:flex-row sm:justify-between sm:text-left">
+        <div className="mt-10 rounded-3xl border border-slate-800 bg-gradient-to-r from-slate-900 via-slate-900/90 to-slate-900 p-8 shadow-2xl backdrop-blur sm:p-10">
+          <div className="mx-auto flex max-w-2xl flex-col items-center gap-6 text-center sm:flex-row sm:justify-between sm:text-left">
             <div>
-              <p className="text-xl font-black text-white">Près de 1000 abonnés nous suivent déjà !</p>
-              <p className="text-sm text-white/80">Abonnement gratuit et 100% confidentiel.</p>
+              <p className="text-xl font-bold text-white">Près de 1 000 abonnés nous suivent !</p>
+              <p className="mt-1 text-sm text-slate-400">Abonnement 100% gratuit, rapide et confidentiel.</p>
             </div>
             <a href={WA_CHANNEL_URL} target="_blank" rel="noreferrer"
-               className="inline-flex shrink-0 items-center gap-3 rounded-full bg-[#25D366] px-8 py-4 text-base font-bold text-white shadow-xl transition-all hover:scale-105 hover:bg-[#20ba59]">
-              <MessageCircle className="h-5 w-5" /> Suivre la Chaîne
+               className="inline-flex shrink-0 items-center gap-3 rounded-full bg-[#25D366] px-8 py-4 text-base font-bold text-slate-950 shadow-lg shadow-[#25D366]/20 transition-all hover:scale-105 hover:bg-[#20ba59]">
+              <MessageCircle className="h-5 w-5 fill-slate-950 text-[#25D366]" /> Suivre la Chaîne
             </a>
           </div>
         </div>
