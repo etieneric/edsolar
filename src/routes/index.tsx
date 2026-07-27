@@ -7,7 +7,7 @@ import {
   Laptop, Fan, Microwave, CheckCircle2, Star, Award, Clock, Users,
   Facebook, Instagram, Linkedin, Send, Package, Search, ArrowUp,
   Radio, Camera, Video, Sparkles, Globe, CreditCard, ShieldAlert,
-  Check, AlertTriangle
+  Check, AlertTriangle, Mail
 } from "lucide-react";
 import logo from "@/assets/edsolar-logo-new.jpeg";
 import hero from "@/assets/install-panels.jpeg";
@@ -21,7 +21,7 @@ export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
       { title: "EDSOLAR Énergie Cameroun — Installation Solaire à Yaoundé & Afrique Centrale" },
-      { name: "description", content: "Solutions anti-délestage Eneo, installation de panneaux solaires, batteries Lithium et matériel certifié à Yaoundé. Devis gratuit sur WhatsApp au +237 650544444." },
+      { name: "description", content: "Solutions anti-délestage Eneo, installation de panneaux solaires, batteries Lithium et matériel certifié à Yaoundé. Devis gratuit sur WhatsApp au +237 650544444 ou par email à edsolarcam@gmail.com." },
       { property: "og:title", content: "EDSOLAR Énergie Cameroun — Installation Solaire & Anti-Délestage" },
       { property: "og:description", content: "Fini les coupures Eneo. Équipements solaires certifiés Tier 1 à Yaoundé et livraison dans toute l'Afrique Centrale." },
     ],
@@ -30,6 +30,7 @@ export const Route = createFileRoute("/")({
 });
 
 const PHONE = "+237650544444";
+const EMAIL = "edsolarcam@gmail.com";
 const WA = `https://wa.me/${PHONE.replace("+", "")}`;
 const WA_CHANNEL_URL = "https://whatsapp.com/channel/0029VauTigF9Gv7cyMQUQH1x";
 const waLink = (msg: string) => `${WA}?text=${encodeURIComponent(msg)}`;
@@ -148,10 +149,11 @@ const TRANSLATIONS = {
 
     contactEyebrow: "Contact",
     contactTitle: "Parlons de votre projet solaire",
-    contactDesc: "Remplissez le formulaire ou appelez-nous — un expert vous répond sous 24h.",
+    contactDesc: "Remplissez le formulaire, écrivez-nous ou appelez-nous — un expert vous répond sous 24h.",
     contactHeadquarters: "Siège social",
     contactZone: "Zone d'intervention",
     contactPhone: "Téléphone / WhatsApp",
+    contactEmail: "Adresse E-mail",
     formName: "Nom complet",
     formPhone: "Téléphone",
     formLocation: "Quartier / Ville",
@@ -279,10 +281,11 @@ const TRANSLATIONS = {
 
     contactEyebrow: "Contact",
     contactTitle: "Let's talk about your solar project",
-    contactDesc: "Fill out the form or give us a call — an expert will respond within 24 hours.",
+    contactDesc: "Fill out the form, send us an email or give us a call — an expert will respond within 24 hours.",
     contactHeadquarters: "Headquarters",
     contactZone: "Service Area",
     contactPhone: "Phone / WhatsApp",
+    contactEmail: "Email Address",
     formName: "Full Name",
     formPhone: "Phone Number",
     formLocation: "Neighborhood / City",
@@ -594,6 +597,7 @@ function Hero({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
               <div className="flex items-start gap-3"><MapPin className="mt-0.5 h-4 w-4 text-amber-400 shrink-0" /> Tradex Olembe, Yaoundé, Cameroun</div>
               <div className="flex items-start gap-3"><Leaf className="mt-0.5 h-4 w-4 text-emerald-400 shrink-0" /> {t.heroStat3}</div>
               <div className="flex items-start gap-3"><Phone className="mt-0.5 h-4 w-4 text-amber-400 shrink-0" /> +237 650544444</div>
+              <div className="flex items-start gap-3"><Mail className="mt-0.5 h-4 w-4 text-amber-400 shrink-0" /> {EMAIL}</div>
             </div>
             <a href={waLink(waMsg)} target="_blank" rel="noreferrer"
                className="mt-5 flex items-center justify-center gap-2 rounded-full bg-emerald-500 px-4 py-3 text-sm font-bold text-slate-950 transition-all hover:bg-emerald-400">
@@ -1011,7 +1015,7 @@ function Products({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
   );
 }
 
-/* ---------------- NOUVELLE SECTION : ANTI-CONTREFAÇON (POURQUOI EDSOLAR) ---------------- */
+/* ---------------- SECTION : ANTI-CONTREFAÇON (POURQUOI EDSOLAR) ---------------- */
 function QualityComparison({ lang }: { lang: Lang }) {
   return (
     <section id="qualite" className="py-16 sm:py-28">
@@ -1080,7 +1084,7 @@ function QualityComparison({ lang }: { lang: Lang }) {
   );
 }
 
-/* ---------------- NOUVELLE SECTION : SPÉCIAL DIASPORA ---------------- */
+/* ---------------- SECTION : SPÉCIAL DIASPORA ---------------- */
 function DiasporaSection({ lang }: { lang: Lang }) {
   const diasporaMsg = lang === "fr"
     ? "Bonjour EDSOLAR, je vis à l'étranger (Diaspora) et je souhaite équiper la maison familiale au pays."
@@ -1330,7 +1334,7 @@ function About({ t }: { t: typeof TRANSLATIONS["fr"] }) {
   );
 }
 
-/* ---------------- Contact ---------------- */
+/* ---------------- Contact (Avec Email edsolarcam@gmail.com) ---------------- */
 function Contact({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
   const [form, setForm] = useState({ name: "", phone: "", location: "", type: "Maison", zone: "Cameroun", needs: "", message: "" });
   const [sent, setSent] = useState(false);
@@ -1353,6 +1357,7 @@ function Contact({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
             <ContactCard icon={MapPin} title={t.contactHeadquarters} lines={["Tradex Olembe", "Yaoundé, Cameroun"]} />
             <ContactCard icon={Leaf} title={t.contactZone} lines={["Tout le Cameroun", "& Afrique Centrale"]} />
             <ContactCard icon={Phone} title={t.contactPhone} lines={["+237 650544444"]} href={`tel:${PHONE}`} />
+            <ContactCard icon={Mail} title={t.contactEmail} lines={[EMAIL]} href={`mailto:${EMAIL}`} />
             <div className="overflow-hidden rounded-2xl border border-border bg-card shadow-sm">
               <iframe title="EDSOLAR Yaoundé" className="h-56 w-full"
                 src="https://www.google.com/maps?q=Tradex+Olembe+Yaounde&output=embed" loading="lazy" />
@@ -1406,7 +1411,7 @@ function ContactCard({ icon: Icon, title, lines, href }: { icon: any; title: str
       </div>
       <div className="min-w-0">
         <p className="text-sm font-bold">{title}</p>
-        {lines.map((l) => <p key={l} className="text-sm text-muted-foreground">{l}</p>)}
+        {lines.map((l) => <p key={l} className="text-sm text-muted-foreground break-all">{l}</p>)}
       </div>
     </div>
   );
@@ -1426,7 +1431,7 @@ function Field({ label, value, onChange, required, type = "text", placeholder }:
   );
 }
 
-/* ---------------- Footer ---------------- */
+/* ---------------- Footer (Avec Email) ---------------- */
 function Footer({ t }: { t: typeof TRANSLATIONS["fr"] }) {
   return (
     <footer className="border-t border-slate-800 bg-slate-950 text-white">
@@ -1466,6 +1471,7 @@ function Footer({ t }: { t: typeof TRANSLATIONS["fr"] }) {
             <li className="flex gap-2"><MapPin className="h-4 w-4 shrink-0 text-amber-400" /> Tradex Olembe, Yaoundé, Cameroun</li>
             <li className="flex gap-2"><Leaf className="h-4 w-4 shrink-0 text-emerald-400" /> Cameroun & Afrique Centrale</li>
             <li className="flex gap-2"><Phone className="h-4 w-4 shrink-0 text-amber-400" /> +237 650544444</li>
+            <li className="flex gap-2"><Mail className="h-4 w-4 shrink-0 text-amber-400" /> edsolarcam@gmail.com</li>
           </ul>
         </div>
       </div>
