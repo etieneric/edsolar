@@ -264,7 +264,7 @@ const TRANSLATIONS = {
 
     reviewsEyebrow: "Customer Reviews",
     reviewsTitle: "Share your EDSOLAR experience",
-    reviewsDesc: "Your feedback matters. Leave a review — it will be published after approval.",
+    reviewsDesc: "Your feedback matters. Leave a review — it will be published after team approval.",
     reviewsLeaveTitle: "Leave a Review",
     reviewsName: "Name",
     reviewsRating: "Rating",
@@ -306,81 +306,65 @@ const TRANSLATIONS = {
   }
 };
 
-/* ---------------- Traduction dynamique globale BDD ---------------- */
+/* ---------------- Traduction dynamique universelle pour la BDD (Supabase) ---------------- */
 function translateDynamicText(text: string | null | undefined, lang: Lang): string {
   if (!text) return "";
   if (lang === "fr") return text;
 
-  const dictionary: Record<string, string> = {
-    // Catégories Boutique
-    "Tous": "All",
-    "Batteries": "Batteries",
-    "Panneaux": "Panels",
-    "Onduleurs": "Inverters",
-    "Accessoires": "Accessories",
+  // Dictionnaire de remplacement ciblé pour la base de données
+  const map: [RegExp | string, string][] = [
+    // Sous-titres & Badges Kits
+    ["CONFORT HAUT DE GAMME POUR VILLAS ET GRANDES RÉSIDENCES", "HIGH-END COMFORT FOR VILLAS & LARGE RESIDENCES"],
+    ["SOLUTION DÉDIÉE AUX COMMERCES ET POISSONNERIES", "SOLUTION FOR SHOPS, BUSINESSES & FISH MARKETS"],
+    ["PROMOTION EXCEPTIONNELLE", "SPECIAL PROMOTION"],
+    
+    // Descriptions Kits & Produits
+    [/Alimentez votre maison avec (.*?) d'énergie propre et durable\./gi, "Power your home with $1 of clean, sustainable energy."],
+    [/Paiement en plusieurs tranches : (.*?) d'avance puis (.*?)\/mois pendant (.*?)\. Installation gratuite offerte\./gi, "Installment payment: $1 upfront then $2/month for $3. Free installation included."],
+    [/Le Kit Prestige (.*?) est la solution idéale pour les foyers souhaitant bénéficier d'une alimentation électrique fiable, économique et écologique\./gi, "The Prestige $1 Kit is the ideal solar solution for households looking for reliable, cost-effective, and eco-friendly power."],
+    [/Conçu pour répondre aux besoins essentiels d'une maison, il vous permet de profiter de l'électricité même en cas de coupure du réseau\./gi, "Designed to meet essential home energy needs, keeping your power on even during grid outages."],
+    [/Paiement comptant (.*?) FCFA ═ Paiement échelonné (.*?) d'avance (.*?)\/mois pendant (.*?)/gi, "Cash payment $1 FCFA ═ Installment payment $2 upfront, $3/month for $4"],
+    [/Kit spécifiquement dimensionné pour maintenir un ou plusieurs congélateurs en fonctionnement continu, idéal pour boutiques, poissonneries et restaurants\./gi, "System specifically sized to keep one or multiple freezers running continuously, ideal for shops, fish markets, and restaurants."],
+    
+    // Éléments des puces techniques (Features)
+    [/(\d+) panneaux solaires de (\d+)Wc?/gi, "$1 x $2W solar panels"],
+    [/(\d+) panneaux (\d+)W/gi, "$1 x $2W solar panels"],
+    [/Onduleur EDSOLAR (.*)/gi, "EDSOLAR Inverter $1"],
+    [/Onduleur (.*)/gi, "Inverter $1"],
+    [/Contrôleur de charges? MPPT (.*)/gi, "MPPT Charge Controller $1"],
+    [/1 contrôleur de charge MPPT (.*)/gi, "1 x MPPT Charge Controller $1"],
+    [/Batterie lithium (.*)/gi, "Lithium Battery $1"],
+    [/1 batterie Lithium (.*)/gi, "1 x Lithium Battery $1"],
+    [/(\d+) ampoules offertes/gi, "$1 x Free LED Light Bulbs"],
+    ["08 ampoules offertes", "8 x Free LED Light Bulbs"],
+    ["Installation gratuite", "Free Installation"],
+    ["Paiement en 4 tranches disponible", "4-time installment payment available"],
+    ["Câbles, connectiques et accessoires d'installation", "Cables, connectors & installation accessories"],
+    ["Installation et mise en service gratuites", "Free installation & commissioning"],
+    ["Autonomie 12h", "12-hour autonomy"],
+    ["Autonomie 24h", "24-hour autonomy"],
+    ["Autonomie 48h", "48-hour autonomy"],
+    ["Protection surtension", "Surge protection"],
 
-    // Subtitles & Badges Kits
-    "CONFORT HAUT DE GAMME POUR VILLAS ET GRANDES RÉSIDENCES": "PREMIUM COMFORT FOR VILLAS & LARGE RESIDENCES",
-    "SOLUTION DÉDIÉE AUX COMMERCES ET POISSONNERIES": "SOLUTION FOR SHOPS & FISH MARKETS",
-    "SOLUTION ÉCONOMIQUE ESSENTIELLE": "ESSENTIAL AFFORDABLE SOLUTION",
-    "IDÉAL POUR PETITES MAISONS & STUDIOS": "IDEAL FOR SMALL HOMES & STUDIOS",
-    "PROMOTION EXCEPTIONNELLE": "EXCLUSIVE PROMOTION",
-    "NOUVEAU": "NEW",
-    "XL AUTONOMIE": "XL AUTONOMY",
-    "TIER 1": "TIER 1",
-
-    // Descriptions Kits
-    "Kit d'entrée de gamme parfait pour l'éclairage, la télévision et la recharge d'appareils dans une petite maison ou un studio.": "Perfect entry-level kit for lighting, TV, and device charging in a small home or studio.",
-    "Kit d'entrée de gamme parfait pour l'éclairage, la télévision, le réfrigérateur et petits appareils. Une solution fiable, économique et durable pour votre confort au quotidien.": "Perfect entry-level kit for lighting, TV, refrigerator, and small appliances. A reliable, cost-effective, and durable solution for daily comfort.",
-    "Kit spécifiquement dimensionné pour maintenir un ou plusieurs congélateurs en fonctionnement continu, idéal pour boutiques, poissonneries et restaurants.": "System specifically sized to keep one or multiple freezers running continuously, ideal for shops, fish markets, and restaurants.",
-
-    // Descriptions Produits Boutique
-    "Panneau photovoltaïque 450W haute performance pour installations résidentielles.": "High-performance 450W photovoltaic solar panel for residential setups.",
-    "Panneau bifacial double verre type N, 600W, jusqu'à +20% de production grâce à la face arrière.": "600W N-Type double glass bifacial panel, up to +20% extra yield from the rear side.",
-    "Lithium Battery 48V 600Ah 30kWh — commerces énergivores, PME.": "48V 600Ah 30kWh Lithium Battery — high energy commercial use, SMEs.",
-    "commerces énergivores, PME.": "energy-intensive shops, SMEs.",
-    "Garantie 5 ANS": "5-YEAR Warranty",
-    "Warranty 5 ANS": "5-YEAR Warranty",
-    "Garantie 25 ANS": "25-YEAR Warranty",
-    "Warranty 25 ANS": "25-YEAR Warranty",
-    "Garantie 30 ANS": "30-YEAR Warranty",
-    "Warranty 30 ANS": "30-YEAR Warranty",
-
-    // Intitulés et Puces Techniques
-    "Paiement comptant 500 000 FCFA ═ Paiement échelonné 350 000 FCFA d'avance 50 000 FCFA/mois pendant 4 mois": "Cash payment 500,000 FCFA ═ Installment: 350,000 FCFA upfront then 50,000 FCFA/month for 4 months",
-    "2 panneaux solaires de 200 Wc": "2 x 200W solar panels",
-    "1 onduleur EDSOLAR 1500W (1.5 kVA)": "1 x EDSOLAR Inverter 1500W (1.5 kVA)",
-    "1 batterie Lithium 12V 100Ah": "1 x Lithium Battery 12V 100Ah",
-    "1 contrôleur de charge MPPT 20A": "1 x MPPT Charge Controller 20A",
-    "08 ampoules LED offertes": "8 x Free LED Light Bulbs",
-    "Câbles, connectiques et accessoires d'installation": "Cables, connectors & installation accessories",
-    "Installation et mise en service gratuites": "Free installation & commissioning",
-    "2 panneaux solaires de 200Wc": "2 x 200W solar panels",
-    "EDSOLAR Inverter 1.5kVA / 1kVA": "EDSOLAR Inverter 1.5kVA / 1kVA",
-    "MPPT Charge Controller 20A": "MPPT Charge Controller 20A",
-    "Lithium Battery 100A": "Lithium Battery 100Ah",
-    "08 x Free LED Light Bulbs": "8 x Free LED Light Bulbs",
-    "Free Installation": "Free Installation",
-    "4-time installment payment available": "4-time installment payment available",
-    "Paiement en 4 tranches disponible": "4-time installment payment available",
-    "Installation gratuite": "Free Installation"
-  };
+    // Boutique & Catégories
+    ["Panneaux solaires", "Solar Panels"],
+    ["Batterie Lithium", "Lithium Battery"],
+    ["Batteries lithium", "Lithium Batteries"],
+    ["Onduleur Hybride", "Hybrid Inverter"],
+    ["Régulateur MPPT", "MPPT Controller"],
+    ["Tableau électrique & protections solaires", "Electrical panel & solar surge protection"],
+    ["Installation onduleur & batterie Lithium", "Inverter & Lithium Battery Installation"],
+    ["Équipe technique EDSOLAR en intervention", "EDSOLAR Technical Team on Site"]
+  ];
 
   let translated = text;
-
-  // Remplace d'abord les termes exacts du dictionnaire
-  Object.keys(dictionary).forEach((key) => {
-    if (translated.includes(key)) {
-      translated = translated.replaceAll(key, dictionary[key]);
+  for (const [pattern, replacement] of map) {
+    if (typeof pattern === "string") {
+      translated = translated.replaceAll(pattern, replacement);
+    } else {
+      translated = translated.replace(pattern, replacement);
     }
-  });
-
-  // Nettoyage / Traduction dynamique générique si restants
-  translated = translated
-    .replace(/Garantie (\d+) ans/gi, "Warranty $1 years")
-    .replace(/Paiement comptant (.*?) FCFA/gi, "Cash payment $1 FCFA")
-    .replace(/Paiement échelonné (.*?) d'avance/gi, "Installment: $1 upfront")
-    .replace(/pendant (\d+) mois/gi, "for $1 months");
+  }
 
   return translated;
 }
@@ -652,7 +636,7 @@ function Services({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
   );
 }
 
-/* ---------------- Kits ---------------- */
+/* ---------------- Kits (Avec Traduction BDD Complète) ---------------- */
 const DEFAULT_KITS = [
   { id: "d1", slug: "prestige", title: "Kit Prestige", subtitle: "CONFORT HAUT DE GAMME POUR VILLAS ET GRANDES RÉSIDENCES", description: "Le Kit Prestige 1500W (1.5 kVA) est la solution idéale pour les foyers souhaitant bénéficier d'une alimentation électrique fiable, économique et écologique.", price: "500 000 FCFA", image_url: null as string | null, features: ["2 panneaux solaires de 200 Wc", "1 onduleur EDSOLAR 1500W (1.5 kVA)", "1 batterie Lithium 12V 100Ah", "1 contrôleur de charge MPPT 20A", "08 ampoules LED offertes", "Installation et mise en service gratuites"] },
   { id: "d2", slug: "congelateur", title: "Kit Congélateur", subtitle: "SOLUTION DÉDIÉE AUX COMMERCES ET POISSONNERIES", description: "Kit spécifiquement dimensionné pour maintenir un ou plusieurs congélateurs en fonctionnement continu, idéal pour boutiques, poissonneries et restaurants.", price: "1 700 000 FCFA", image_url: null, features: ["Onduleur 2 kVA / 24V", "Batterie lithium 25.6V 200Ah", "4 panneaux 450W", "Autonomie 12h", "Protection surtension"] },
@@ -841,7 +825,7 @@ function Metric({ icon: Icon, label, value, highlight }: { icon: any; label: str
   );
 }
 
-/* ---------------- Products (Boutique) ---------------- */
+/* ---------------- Products ---------------- */
 type Product = {
   id: string; name: string; category: string; price: string | null; badge: string | null;
   description: string | null; image_url: string | null;
@@ -877,11 +861,11 @@ function Products({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
   const categories = useMemo(() => {
     const s = new Set<string>();
     items.forEach((p) => p.category && s.add(p.category));
-    return ["Tous", ...Array.from(s)];
-  }, [items]);
+    return [lang === "fr" ? "Tous" : "All", ...Array.from(s)];
+  }, [items, lang]);
 
   const list = useMemo(() => {
-    let arr = (cat === "Tous") ? [...items] : items.filter((p) => p.category === cat);
+    let arr = (cat === "Tous" || cat === "All") ? [...items] : items.filter((p) => p.category === cat);
     const term = q.trim().toLowerCase();
     if (term) {
       arr = arr.filter((p) =>
@@ -955,13 +939,13 @@ function Products({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
                 {p.image_url
                   ? <img src={p.image_url} alt={p.name} loading="lazy" className="h-full w-full object-contain p-3" />
                   : <ShoppingBag className="h-16 w-16 text-slate-400" />}
-                {p.badge && <span className="absolute left-3 top-3 rounded-full bg-amber-500 px-2.5 py-1 text-[10px] font-bold uppercase text-slate-950">{translateDynamicText(p.badge, lang)}</span>}
+                {p.badge && <span className="absolute left-3 top-3 rounded-full bg-amber-500 px-2.5 py-1 text-[10px] font-bold uppercase text-slate-950">{p.badge}</span>}
               </div>
               <h3 className="mt-4 text-base font-bold">{p.name}</h3>
               {p.description && <p className="mt-1 text-xs text-muted-foreground">{translateDynamicText(p.description, lang)}</p>}
               <div className="mt-2 flex flex-wrap gap-1.5 text-[10px] font-semibold">
                 <span className="rounded-full bg-slate-100 dark:bg-slate-800 px-2 py-0.5 text-slate-700 dark:text-slate-300">{translateDynamicText(p.category, lang)}</span>
-                {p.warranty && <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-emerald-600">{translateDynamicText(p.warranty, lang)}</span>}
+                {p.warranty && <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-emerald-600">{lang === "fr" ? "Garantie" : "Warranty"} {p.warranty}</span>}
               </div>
               <div className="mt-4 flex items-end justify-between gap-2">
                 <span className="text-lg font-black text-amber-600 dark:text-amber-400">{p.price ?? "Sur devis"}</span>
