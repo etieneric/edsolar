@@ -33,7 +33,8 @@ const WA = `https://wa.me/${PHONE.replace("+", "")}`;
 const WA_CHANNEL_URL = "https://whatsapp.com/channel/0029VauTigF9Gv7cyMQUQH1x";
 const waLink = (msg: string) => `${WA}?text=${encodeURIComponent(msg)}`;
 
-const NAV = [
+/* Tous les liens pour la version mobile/tablette */
+const NAV_MOBILE = [
   { href: "#accueil", label: "Accueil" },
   { href: "#services", label: "Nos Services" },
   { href: "#kits", label: "Nos Kits" },
@@ -43,6 +44,15 @@ const NAV = [
   { href: "#realisations", label: "Réalisations" },
   { href: "#avis", label: "Avis clients" },
   { href: "#contact", label: "Contact" },
+];
+
+/* Liens essentiels condensés sur 1 seule ligne pour Desktop */
+const NAV_DESKTOP = [
+  { href: "#services", label: "Services" },
+  { href: "#kits", label: "Kits" },
+  { href: "#boutique", label: "Boutique" },
+  { href: "#calculateur", label: "Calculateur" },
+  { href: "#realisations", label: "Réalisations" },
 ];
 
 function Index() {
@@ -67,47 +77,91 @@ function Index() {
   );
 }
 
-/* ---------------- Header ---------------- */
+/* ---------------- Header Responsive ---------------- */
 function Header() {
   const [open, setOpen] = useState(false);
+
   return (
-    <header className="sticky top-0 z-50 border-b border-border/60 bg-background/85 backdrop-blur-xl">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
-        <a href="#accueil" className="flex items-center gap-2 shrink-0">
-          <img src={logo} alt="EDSOLAR Énergie Cameroun" className="h-11 w-11 rounded-xl bg-white object-contain p-0.5 shadow-md" />
+    <header className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/90 backdrop-blur-md dark:border-slate-800/80 dark:bg-slate-950/90 transition-all">
+      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-2.5 sm:px-6">
+        
+        {/* LOGO */}
+        <a href="#accueil" className="flex items-center gap-2.5 shrink-0">
+          <img 
+            src={logo} 
+            alt="EDSOLAR Énergie Cameroun" 
+            className="h-10 w-10 sm:h-11 sm:w-11 rounded-xl bg-white object-contain p-0.5 shadow-sm border border-slate-100" 
+          />
           <span className="flex flex-col leading-tight">
-            <span className="text-lg font-black tracking-tight text-primary">EDSOLAR</span>
-            <span className="text-[10px] font-semibold uppercase tracking-[0.15em] text-emerald-600">Énergie Cameroun</span>
+            <span className="text-base sm:text-lg font-black tracking-tight text-slate-900 dark:text-white">EDSOLAR</span>
+            <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.15em] text-emerald-600">Énergie Cameroun</span>
           </span>
         </a>
-        <nav className="hidden items-center gap-7 lg:flex">
-          {NAV.map((n) => (
-            <a key={n.href} href={n.href} className="text-sm font-medium text-foreground/80 transition-colors hover:text-accent">
+
+        {/* NAVIGATION DESKTOP */}
+        <nav className="hidden items-center gap-6 xl:gap-8 lg:flex">
+          {NAV_DESKTOP.map((n) => (
+            <a 
+              key={n.href} 
+              href={n.href} 
+              className="text-sm font-semibold text-slate-700 transition-colors hover:text-amber-500 dark:text-slate-200 whitespace-nowrap"
+            >
               {n.label}
             </a>
           ))}
         </nav>
-        <div className="hidden items-center gap-3 lg:flex">
-          <a href={waLink("Bonjour EDSOLAR, je souhaite un devis gratuit.")} target="_blank" rel="noreferrer"
-             className="inline-flex items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-sm font-bold text-slate-950 shadow-md shadow-amber-500/10 transition-all hover:scale-105 hover:bg-amber-400">
-            <MessageCircle className="h-4 w-4" /> Devis gratuit
+
+        {/* BOUTON CTA DESKTOP */}
+        <div className="hidden items-center gap-3 lg:flex shrink-0">
+          <a 
+            href={waLink("Bonjour EDSOLAR, je souhaite un devis gratuit.")} 
+            target="_blank" 
+            rel="noreferrer"
+            className="inline-flex items-center gap-2 rounded-full bg-amber-500 px-5 py-2.5 text-sm font-bold text-slate-950 shadow-md shadow-amber-500/10 transition-all hover:scale-105 hover:bg-amber-400 whitespace-nowrap"
+          >
+            <MessageCircle className="h-4 w-4 fill-slate-950" />
+            <span>Devis gratuit</span>
           </a>
         </div>
-        <button className="lg:hidden" onClick={() => setOpen((v) => !v)} aria-label="Menu">
-          {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+
+        {/* HAMBURGER (Mobile / Tablette) */}
+        <button 
+          className="grid h-10 w-10 place-items-center rounded-xl border border-slate-200 bg-slate-50 text-slate-800 transition-colors hover:bg-slate-100 lg:hidden dark:border-slate-800 dark:bg-slate-900 dark:text-slate-100" 
+          onClick={() => setOpen((v) => !v)} 
+          aria-label="Menu"
+        >
+          {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
       </div>
+
+      {/* MENU DEROULANT MOBILE & TABLETTE */}
       {open && (
-        <div className="border-t border-border bg-background lg:hidden">
-          <div className="mx-auto flex max-w-7xl flex-col gap-1 px-4 py-3">
-            {NAV.map((n) => (
-              <a key={n.href} href={n.href} onClick={() => setOpen(false)}
-                 className="rounded-lg px-3 py-2 text-sm font-medium hover:bg-secondary">{n.label}</a>
+        <div className="border-t border-slate-200 bg-white/95 px-4 pb-6 pt-3 shadow-2xl backdrop-blur-xl lg:hidden dark:border-slate-800 dark:bg-slate-950/95">
+          <div className="mx-auto flex max-w-7xl flex-col gap-1">
+            {NAV_MOBILE.map((n) => (
+              <a 
+                key={n.href} 
+                href={n.href} 
+                onClick={() => setOpen(false)}
+                className="flex items-center justify-between rounded-xl px-4 py-3 text-sm font-semibold text-slate-800 transition-colors hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-900"
+              >
+                <span>{n.label}</span>
+                <ArrowRight className="h-4 w-4 text-slate-400" />
+              </a>
             ))}
-            <a href={waLink("Bonjour EDSOLAR, je souhaite un devis gratuit.")} target="_blank" rel="noreferrer"
-               className="mt-2 inline-flex items-center justify-center gap-2 rounded-full bg-accent px-4 py-2.5 text-sm font-bold text-slate-950">
-              <MessageCircle className="h-4 w-4" /> Demander un devis gratuit
-            </a>
+            
+            <div className="mt-3 pt-3 border-t border-slate-100 dark:border-slate-900">
+              <a 
+                href={waLink("Bonjour EDSOLAR, je souhaite un devis gratuit.")} 
+                target="_blank" 
+                rel="noreferrer"
+                onClick={() => setOpen(false)}
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-amber-500 py-3.5 text-sm font-bold text-slate-950 shadow-md transition-all active:scale-[0.98]"
+              >
+                <MessageCircle className="h-4 w-4 fill-slate-950" />
+                <span>Demander un devis gratuit</span>
+              </a>
+            </div>
           </div>
         </div>
       )}
@@ -487,7 +541,7 @@ function Products() {
   );
 }
 
-/* ---------------- WhatsApp Channel Section (Version Épurée) ---------------- */
+/* ---------------- WhatsApp Channel Section ---------------- */
 function WhatsAppChannel() {
   return (
     <section id="canal" className="relative overflow-hidden bg-slate-950 py-20 text-slate-100 sm:py-28">
@@ -798,7 +852,7 @@ function Footer() {
         <div>
           <p className="text-sm font-bold uppercase tracking-wider text-amber-400">Navigation</p>
           <ul className="mt-4 space-y-2 text-sm text-slate-300">
-            {NAV.map((n) => <li key={n.href}><a href={n.href} className="hover:text-amber-400 transition-colors">{n.label}</a></li>)}
+            {NAV_MOBILE.map((n) => <li key={n.href}><a href={n.href} className="hover:text-amber-400 transition-colors">{n.label}</a></li>)}
           </ul>
         </div>
         <div>
