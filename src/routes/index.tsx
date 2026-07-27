@@ -306,42 +306,65 @@ const TRANSLATIONS = {
   }
 };
 
-/* ---------------- Traduction dynamique pour le contenu Supabase ---------------- */
-function translateText(text: string | null | undefined, lang: Lang): string {
+/* ---------------- Traduction dynamique universelle pour la BDD (Supabase) ---------------- */
+function translateDynamicText(text: string | null | undefined, lang: Lang): string {
   if (!text) return "";
   if (lang === "fr") return text;
 
-  // Mappings automatiques des descriptions de BDD
-  const dictionary: Record<string, string> = {
-    "Villa haut standing": "Luxury Villa",
-    "Système solaire complet pour villa avec climatisation, électroménager et confort total.": "Complete solar power system for luxury villa with AC, home appliances, and full comfort.",
-    "Commerce & alimentation": "Business & Food Retail",
-    "Solution dédiée aux commerçants pour maintenir congélateurs et réfrigérateurs 24h/24.": "Dedicated solution for shop owners to keep freezers and refrigerators running 24/7.",
-    "Résidence familiale": "Family Home",
-    "Kit résidentiel équilibré : éclairage, télévision, réfrigérateur et petits appareils.": "Balanced residential kit: lighting, TV, refrigerator, and essential devices.",
-    "Onduleur hybride": "Hybrid Inverter",
-    "Batteries lithium": "Lithium Batteries",
-    "Installation clé en main": "Turnkey Installation",
-    "Garantie 25 ans panneaux": "25-year panel warranty",
-    "Autonomie 48h": "48h autonomy",
-    "Support technique 7j/7": "7/7 Technical Support",
-    "Installation en 1 journée": "Same-day installation",
-    "Suivi maintenance": "Maintenance follow-up",
-    "Panneaux solaires": "Solar Panels",
-    "Batterie Lithium": "Lithium Battery",
-    "Onduleur Hybride": "Hybrid Inverter",
-    "Régulateur MPPT": "MPPT Controller",
-    "Tableau électrique & protections solaires": "Electrical panel & solar surge protection",
-    "Installation onduleur & batterie Lithium": "Inverter & Lithium Battery Installation",
-    "Équipe technique EDSOLAR en intervention": "EDSOLAR Technical Team on Site"
-  };
+  // Dictionnaire de remplacement ciblé pour la base de données
+  const map: [RegExp | string, string][] = [
+    // Sous-titres & Badges Kits
+    ["CONFORT HAUT DE GAMME POUR VILLAS ET GRANDES RÉSIDENCES", "HIGH-END COMFORT FOR VILLAS & LARGE RESIDENCES"],
+    ["SOLUTION DÉDIÉE AUX COMMERCES ET POISSONNERIES", "SOLUTION FOR SHOPS, BUSINESSES & FISH MARKETS"],
+    ["PROMOTION EXCEPTIONNELLE", "SPECIAL PROMOTION"],
+    
+    // Descriptions Kits & Produits
+    [/Alimentez votre maison avec (.*?) d'énergie propre et durable\./gi, "Power your home with $1 of clean, sustainable energy."],
+    [/Paiement en plusieurs tranches : (.*?) d'avance puis (.*?)\/mois pendant (.*?)\. Installation gratuite offerte\./gi, "Installment payment: $1 upfront then $2/month for $3. Free installation included."],
+    [/Le Kit Prestige (.*?) est la solution idéale pour les foyers souhaitant bénéficier d'une alimentation électrique fiable, économique et écologique\./gi, "The Prestige $1 Kit is the ideal solar solution for households looking for reliable, cost-effective, and eco-friendly power."],
+    [/Conçu pour répondre aux besoins essentiels d'une maison, il vous permet de profiter de l'électricité même en cas de coupure du réseau\./gi, "Designed to meet essential home energy needs, keeping your power on even during grid outages."],
+    [/Paiement comptant (.*?) FCFA ═ Paiement échelonné (.*?) d'avance (.*?)\/mois pendant (.*?)/gi, "Cash payment $1 FCFA ═ Installment payment $2 upfront, $3/month for $4"],
+    [/Kit spécifiquement dimensionné pour maintenir un ou plusieurs congélateurs en fonctionnement continu, idéal pour boutiques, poissonneries et restaurants\./gi, "System specifically sized to keep one or multiple freezers running continuously, ideal for shops, fish markets, and restaurants."],
+    
+    // Éléments des puces techniques (Features)
+    [/(\d+) panneaux solaires de (\d+)Wc?/gi, "$1 x $2W solar panels"],
+    [/(\d+) panneaux (\d+)W/gi, "$1 x $2W solar panels"],
+    [/Onduleur EDSOLAR (.*)/gi, "EDSOLAR Inverter $1"],
+    [/Onduleur (.*)/gi, "Inverter $1"],
+    [/Contrôleur de charges? MPPT (.*)/gi, "MPPT Charge Controller $1"],
+    [/1 contrôleur de charge MPPT (.*)/gi, "1 x MPPT Charge Controller $1"],
+    [/Batterie lithium (.*)/gi, "Lithium Battery $1"],
+    [/1 batterie Lithium (.*)/gi, "1 x Lithium Battery $1"],
+    [/(\d+) ampoules offertes/gi, "$1 x Free LED Light Bulbs"],
+    ["08 ampoules offertes", "8 x Free LED Light Bulbs"],
+    ["Installation gratuite", "Free Installation"],
+    ["Paiement en 4 tranches disponible", "4-time installment payment available"],
+    ["Câbles, connectiques et accessoires d'installation", "Cables, connectors & installation accessories"],
+    ["Installation et mise en service gratuites", "Free installation & commissioning"],
+    ["Autonomie 12h", "12-hour autonomy"],
+    ["Autonomie 24h", "24-hour autonomy"],
+    ["Autonomie 48h", "48-hour autonomy"],
+    ["Protection surtension", "Surge protection"],
+
+    // Boutique & Catégories
+    ["Panneaux solaires", "Solar Panels"],
+    ["Batterie Lithium", "Lithium Battery"],
+    ["Batteries lithium", "Lithium Batteries"],
+    ["Onduleur Hybride", "Hybrid Inverter"],
+    ["Régulateur MPPT", "MPPT Controller"],
+    ["Tableau électrique & protections solaires", "Electrical panel & solar surge protection"],
+    ["Installation onduleur & batterie Lithium", "Inverter & Lithium Battery Installation"],
+    ["Équipe technique EDSOLAR en intervention", "EDSOLAR Technical Team on Site"]
+  ];
 
   let translated = text;
-  Object.keys(dictionary).forEach((key) => {
-    if (translated.includes(key)) {
-      translated = translated.replaceAll(key, dictionary[key]);
+  for (const [pattern, replacement] of map) {
+    if (typeof pattern === "string") {
+      translated = translated.replaceAll(pattern, replacement);
+    } else {
+      translated = translated.replace(pattern, replacement);
     }
-  });
+  }
 
   return translated;
 }
@@ -431,7 +454,6 @@ function Header({ lang, setLang, t }: { lang: Lang; setLang: (l: Lang) => void; 
 
         {/* BOUTONS ACTIONS + SWITCH LANGUE DESKTOP */}
         <div className="hidden items-center gap-3 lg:flex shrink-0">
-          {/* Switch FR / EN */}
           <div className="flex items-center rounded-full border border-slate-200 bg-slate-100 p-1 dark:border-slate-800 dark:bg-slate-900">
             <button 
               onClick={() => setLang("fr")}
@@ -614,11 +636,10 @@ function Services({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
   );
 }
 
-/* ---------------- Kits (Avec traduction dynamique) ---------------- */
+/* ---------------- Kits (Avec Traduction BDD Complète) ---------------- */
 const DEFAULT_KITS = [
-  { id: "d1", slug: "prestige", title: "Kit Prestige", subtitle: "Villa haut standing", description: "Système solaire complet pour villa avec climatisation, électroménager et confort total.", price: "3 000 000 FCFA", image_url: null as string | null, features: ["Onduleur hybride 12 kVA", "Batteries lithium 48V 300Ah", "12 panneaux 550W", "Installation clé en main", "Garantie 25 ans panneaux"] },
-  { id: "d2", slug: "congelateur", title: "Kit Congélateur", subtitle: "Commerce & alimentation", description: "Solution dédiée aux commerçants pour maintenir congélateurs et réfrigérateurs 24h/24.", price: "1 700 000 FCFA", image_url: null, features: ["Onduleur hybride 4 kVA", "Batteries lithium 24V 200Ah", "6 panneaux 450W", "Autonomie 48h", "Support technique 7j/7"] },
-  { id: "d3", slug: "filet-bleu", title: "Kit Filet Bleu", subtitle: "Résidence familiale", description: "Kit résidentiel équilibré : éclairage, télévision, réfrigérateur et petits appareils.", price: "1 000 000 FCFA", image_url: null, features: ["Onduleur hybride 2 kVA", "Batteries lithium 24V 200Ah", "4 panneaux 450W", "Installation en 1 journée", "Suivi maintenance"] },
+  { id: "d1", slug: "prestige", title: "Kit Prestige", subtitle: "CONFORT HAUT DE GAMME POUR VILLAS ET GRANDES RÉSIDENCES", description: "Le Kit Prestige 1500W (1.5 kVA) est la solution idéale pour les foyers souhaitant bénéficier d'une alimentation électrique fiable, économique et écologique.", price: "500 000 FCFA", image_url: null as string | null, features: ["2 panneaux solaires de 200 Wc", "1 onduleur EDSOLAR 1500W (1.5 kVA)", "1 batterie Lithium 12V 100Ah", "1 contrôleur de charge MPPT 20A", "08 ampoules LED offertes", "Installation et mise en service gratuites"] },
+  { id: "d2", slug: "congelateur", title: "Kit Congélateur", subtitle: "SOLUTION DÉDIÉE AUX COMMERCES ET POISSONNERIES", description: "Kit spécifiquement dimensionné pour maintenir un ou plusieurs congélateurs en fonctionnement continu, idéal pour boutiques, poissonneries et restaurants.", price: "1 700 000 FCFA", image_url: null, features: ["Onduleur 2 kVA / 24V", "Batterie lithium 25.6V 200Ah", "4 panneaux 450W", "Autonomie 12h", "Protection surtension"] },
 ];
 
 function Kits({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
@@ -652,12 +673,12 @@ function Kits({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
                 )}
               </div>
               <div className="flex flex-1 flex-col p-6">
-                <p className="text-xs font-bold uppercase tracking-widest text-emerald-600">{translateText(k.subtitle, lang)}</p>
-                <h3 className="mt-1 text-xl font-black">{k.title}</h3>
-                <p className="mt-2 text-sm text-muted-foreground">{translateText(k.description, lang)}</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-emerald-600">{translateDynamicText(k.subtitle, lang)}</p>
+                <h3 className="mt-1 text-xl font-black">{translateDynamicText(k.title, lang)}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{translateDynamicText(k.description, lang)}</p>
                 <ul className="mt-4 space-y-2 text-sm">
                   {(k.features ?? []).map((f: string) => (
-                    <li key={f} className="flex items-start gap-2"><CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" /> {translateText(f, lang)}</li>
+                    <li key={f} className="flex items-start gap-2"><CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" /> {translateDynamicText(f, lang)}</li>
                   ))}
                 </ul>
                 <a href={waLink(lang === "fr" ? `Bonjour EDSOLAR, je suis intéressé par le ${k.title} (${k.price ?? ""}).` : `Hello EDSOLAR, I am interested in the ${k.title} (${k.price ?? ""}).`)} target="_blank" rel="noreferrer"
@@ -804,7 +825,7 @@ function Metric({ icon: Icon, label, value, highlight }: { icon: any; label: str
   );
 }
 
-/* ---------------- Products (Avec traduction BDD dynamique) ---------------- */
+/* ---------------- Products ---------------- */
 type Product = {
   id: string; name: string; category: string; price: string | null; badge: string | null;
   description: string | null; image_url: string | null;
@@ -892,7 +913,7 @@ function Products({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
           {categories.map((c) => (
             <button key={c} onClick={() => setCat(c)}
               className={`rounded-full px-5 py-2 text-sm font-semibold transition-all ${cat === c ? "bg-slate-900 text-white shadow-md dark:bg-amber-500 dark:text-slate-950" : "border border-border bg-card text-foreground hover:border-amber-500"}`}>
-              {translateText(c, lang)}
+              {translateDynamicText(c, lang)}
             </button>
           ))}
         </div>
@@ -921,9 +942,9 @@ function Products({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
                 {p.badge && <span className="absolute left-3 top-3 rounded-full bg-amber-500 px-2.5 py-1 text-[10px] font-bold uppercase text-slate-950">{p.badge}</span>}
               </div>
               <h3 className="mt-4 text-base font-bold">{p.name}</h3>
-              {p.description && <p className="mt-1 text-xs text-muted-foreground">{translateText(p.description, lang)}</p>}
+              {p.description && <p className="mt-1 text-xs text-muted-foreground">{translateDynamicText(p.description, lang)}</p>}
               <div className="mt-2 flex flex-wrap gap-1.5 text-[10px] font-semibold">
-                <span className="rounded-full bg-slate-100 dark:bg-slate-800 px-2 py-0.5 text-slate-700 dark:text-slate-300">{translateText(p.category, lang)}</span>
+                <span className="rounded-full bg-slate-100 dark:bg-slate-800 px-2 py-0.5 text-slate-700 dark:text-slate-300">{translateDynamicText(p.category, lang)}</span>
                 {p.warranty && <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-emerald-600">{lang === "fr" ? "Garantie" : "Warranty"} {p.warranty}</span>}
               </div>
               <div className="mt-4 flex items-end justify-between gap-2">
@@ -1072,7 +1093,7 @@ function Realisations({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang })
               </div>
               <figcaption className="flex items-center justify-between p-4">
                 <div>
-                  <p className="text-sm font-bold">{translateText(g.title, lang)}</p>
+                  <p className="text-sm font-bold">{translateDynamicText(g.title, lang)}</p>
                   <p className="text-xs text-muted-foreground">{g.loc}</p>
                 </div>
                 <ArrowRight className="h-4 w-4 text-amber-500 shrink-0" />
