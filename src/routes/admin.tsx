@@ -14,6 +14,7 @@ import {
   adminUpsertProduct, adminDeleteProduct,
   adminCreateUploadUrl,
 } from "@/lib/admin.functions";
+import { compressImage } from "@/lib/compress-image";
 
 export const Route = createFileRoute("/admin")({
   ssr: false,
@@ -120,6 +121,21 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
 }
 
 /* ---------- Image uploader corrigé ---------- */
+async function uploadCompressed(
+  createUploadUrl: (a: { data: { folder: "photos" | "kits" | "products"; filename: string } }) => Promise<any>,
+  folder: "photos" | "kits" | "products",
+  file: File,
+) {
+  const { blob, filename, contentType } = await compressImage(file);
+  const { signedUrl, publicUrl } = await createUploadUrl({ data: { folder, filename } });
+  const put = await fetch(signedUrl, { method: "PUT", headers: { "Content-Type": contentType }, body: blob });
+  if (!put.ok) {
+    const t = await put.text().catch(() => "");
+    throw new Error(`Upload échoué (${put.status}) ${t}`.trim());
+  }
+  return publicUrl as string;
+}
+
 function ImageUploader({
   folder, value, onChange,
 }: { folder: "photos" | "kits" | "products"; value: string; onChange: (url: string) => void }) {
@@ -137,19 +153,10 @@ function ImageUploader({
   const pickFile = async (file: File) => {
     setErr(null);
     if (!file.type.startsWith("image/")) { setErr("Fichier non image"); return; }
-    if (file.size > 15 * 1024 * 1024) { setErr("Image trop lourde (max 15 Mo)"); return; }
+    if (file.size > 25 * 1024 * 1024) { setErr("Image trop lourde (max 25 Mo)"); return; }
     setBusy(true);
     try {
-      const { signedUrl, publicUrl } = await createUploadUrl({ data: { folder, filename: file.name } });
-      const put = await fetch(signedUrl, {
-        method: "PUT",
-        headers: { "Content-Type": file.type || "image/jpeg" },
-        body: file,
-      });
-      if (!put.ok) {
-        const t = await put.text().catch(() => "");
-        throw new Error(`Upload échoué (${put.status}) ${t}`.trim());
-      }
+      const publicUrl = await uploadCompressed(createUploadUrl, folder, file);
       onChange(publicUrl);
     } catch (e: any) {
       setErr(e?.message || "Échec de l'envoi");
@@ -216,6 +223,67 @@ function ImageUploader({
   );
 }
 
+/* -------- Envoi multiple de photos (galerie) -------- */
+function BulkPhotoUpload({ onDone }: { onDone: () => void | Promise<void> }) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [progress, setProgress] = useState<{ done: number; total: number } | null>(null);
+  const [err, setErr] = useState<string | null>(null);
+  const createUploadUrl = useServerFn(adminCreateUploadUrl);
+  const add = useServerFn(adminAddPhoto);
+
+  const run = async (files: File[]) => {
+    setErr(null);
+    setProgress({ done: 0, total: files.length });
+    let done = 0;
+    for (const f of files) {
+      try {
+        if (!f.type.startsWith("image/")) continue;
+        const url = await uploadCompressed(createUploadUrl, "photos", f);
+        await add({ data: { url, caption: "" } });
+      } catch (e: any) {
+        setErr(`${f.name} : ${e?.message || "échec"}`);
+      }
+      done += 1;
+      setProgress({ done, total: files.length });
+    }
+    await onDone();
+    setProgress(null);
+  };
+
+  return (
+    <div className="rounded-2xl border border-dashed border-border bg-card p-5 space-y-3">
+      <div>
+        <p className="text-sm font-bold">Envoi groupé</p>
+        <p className="mt-1 text-xs text-muted-foreground">
+          Sélectionnez plusieurs photos d'un coup — elles sont compressées automatiquement (WebP, max 1000px) avant l'envoi.
+        </p>
+      </div>
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/*"
+        multiple
+        style={{ display: "none" }}
+        onChange={(e) => {
+          const fs = Array.from(e.target.files ?? []);
+          e.target.value = "";
+          if (fs.length) run(fs);
+        }}
+      />
+      <button
+        type="button"
+        disabled={!!progress}
+        onClick={() => inputRef.current?.click()}
+        className="inline-flex items-center gap-2 rounded-full bg-emerald-700 hover:bg-emerald-800 px-4 py-2 text-sm font-bold text-white disabled:opacity-60"
+      >
+        {progress ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
+        {progress ? `Envoi ${progress.done}/${progress.total}…` : "Téléverser plusieurs photos"}
+      </button>
+      {err && <p className="text-xs text-destructive">{err}</p>}
+    </div>
+  );
+}
+
 /* ---------------- Photos ---------------- */
 function PhotosPanel() {
   const [items, setItems] = useState<any[]>([]);
@@ -253,10 +321,11 @@ function PhotosPanel() {
           <Plus className="h-4 w-4" /> Ajouter à la galerie
         </button>
       </form>
+      <BulkPhotoUpload onDone={load} />
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {items.map((p) => (
           <div key={p.id} className="overflow-hidden rounded-2xl border border-border bg-card">
-            <img src={p.url} alt={p.caption ?? ""} className="aspect-[4/3] w-full object-cover" />
+            <img src={p.url} alt={p.caption ?? ""} loading="lazy" decoding="async" className="aspect-[4/3] w-full object-cover" />
             <div className="flex items-center justify-between gap-2 p-3">
               <p className="truncate text-sm">{p.caption || <span className="text-muted-foreground">Sans légende</span>}</p>
               <button onClick={async () => { if (confirm("Supprimer ?")) { await del({ data: { id: p.id } }); await load(); } }}

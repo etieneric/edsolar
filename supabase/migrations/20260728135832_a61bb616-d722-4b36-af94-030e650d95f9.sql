@@ -1,0 +1,3 @@
+UPDATE public.products SET image_url = regexp_replace(image_url, '\.(png|jpg|jpeg|PNG|JPG|JPEG)$', '.webp') WHERE image_url LIKE '/api/public/media/%';
+UPDATE public.kits SET image_url = regexp_replace(image_url, '\.(png|jpg|jpeg|PNG|JPG|JPEG)$', '.webp') WHERE image_url LIKE '/api/public/media/%';
+UPDATE public.gallery_photos SET url = regexp_replace(url, '\.(png|jpg|jpeg|PNG|JPG|JPEG)$', '.webp') WHERE url LIKE '/api/public/media/%';
