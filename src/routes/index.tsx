@@ -154,7 +154,7 @@ const TRANSLATIONS = {
 
     channelTag: "Vidéos du terrain",
     channelTitle1: "Rejoignez la Chaîne ",
-    channelTitle2: "YouTube EDSOLAR",
+    channelTitle2: "YouTube EDSOLAR : @EDSOLAR237",
     channelDesc: "Abonnez-vous à notre chaîne officielle pour découvrir nos réalisations en vidéo, tutoriels d'utilisation et démonstrations du matériel.",
     channelSubscribers: "Suivez nos vidéos exclusives sur YouTube !",
     channelSubNote: "Abonnez-vous gratuitement à la chaîne @EDSOLAR237",
@@ -287,7 +287,7 @@ const TRANSLATIONS = {
 
     channelTag: "Field Videos",
     channelTitle1: "Join the ",
-    channelTitle2: "YouTube Channel",
+    channelTitle2: "YouTube Channel: @EDSOLAR237",
     channelDesc: "Subscribe to our official channel to watch video project walk-throughs, tutorials, and equipment demos.",
     channelSubscribers: "Watch our exclusive videos on YouTube!",
     channelSubNote: "Subscribe for free to @EDSOLAR237",
@@ -449,7 +449,7 @@ function Header({ lang, setLang, t }: { lang: Lang; setLang: (l: Lang) => void; 
     { href: "#boutique", label: t.navBoutique },
     { href: "#calculateur", label: t.navSimulator },
     { href: "#realisations", label: t.navRealisations },
-    { href: "#youtube", label: t.navYouTube },
+    { href: "#videos", label: t.navYouTube },
     { href: "#apropos", label: "Vision" },
   ];
 
@@ -462,7 +462,7 @@ function Header({ lang, setLang, t }: { lang: Lang; setLang: (l: Lang) => void; 
     { href: "#calculateur", label: t.navSimulator },
     { href: "#qualite", label: lang === "fr" ? "Anti-Contrefaçon" : "Quality vs Fakes" },
     { href: "#diaspora", label: "Diaspora" },
-    { href: "#youtube", label: t.navYouTube },
+    { href: "#videos", label: t.navYouTube },
     { href: "#realisations", label: t.navRealisations },
     { href: "#apropos", label: "Vision & Mission" },
     { href: "#avis", label: t.navReviews },
@@ -1322,7 +1322,7 @@ function YouTubeSection({ t }: { t: typeof TRANSLATIONS["fr"] }) {
   }, []);
 
   return (
-    <section id="youtube" className="relative overflow-hidden bg-[#234d20] py-16 text-slate-100 sm:py-28 border-t border-emerald-900/30">
+    <section id="videos" className="relative overflow-hidden bg-[#234d20] py-16 text-slate-100 sm:py-28 border-t border-emerald-900/30">
       <div className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#386b34]/20 blur-[120px]" />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
@@ -1785,7 +1785,7 @@ function Footer({ t }: { t: typeof TRANSLATIONS["fr"] }) {
             <li><a href="#kits" className="hover:text-emerald-300 transition-colors">{t.navKits}</a></li>
             <li><a href="#boutique" className="hover:text-emerald-300 transition-colors">{t.navBoutique}</a></li>
             <li><a href="#calculateur" className="hover:text-emerald-300 transition-colors">{t.navSimulator}</a></li>
-            <li><a href="#youtube" className="hover:text-emerald-300 transition-colors">{t.navYouTube}</a></li>
+            <li><a href="#videos" className="hover:text-emerald-300 transition-colors">{t.navYouTube}</a></li>
             <li><a href="#apropos" className="hover:text-emerald-300 transition-colors">Vision & Valeurs</a></li>
           </ul>
         </div>
