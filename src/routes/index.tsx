@@ -6,7 +6,7 @@ import {
   Zap, Cpu, Tv, Refrigerator, Snowflake, Lightbulb, WashingMachine,
   Laptop, Fan, Microwave, CheckCircle2, Star, Award, Clock, Users,
   Facebook, Instagram, Linkedin, Send, Package, Search, ArrowUp,
-  Radio, Camera, Video, Sparkles, Globe,
+  Radio, Camera, Video, Sparkles, Globe, ZoomIn,
   Check, AlertTriangle, Mail, Handshake, Heart, Smile, Utensils, Stethoscope, Car, Home,
   Compass, Play, Youtube
 } from "lucide-react";
@@ -1470,9 +1470,10 @@ function Trust({ t }: { t: typeof TRANSLATIONS["fr"] }) {
   );
 }
 
-/* ---------------- Realisations (Entièrement dynamique via Supabase) ---------------- */
+/* ---------------- Realisations (Galerie interactive avec Agrandissement HD) ---------------- */
 function Realisations({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
   const [items, setItems] = useState<{ src: string; title: string; loc: string }[]>([]);
+  const [selectedPhoto, setSelectedPhoto] = useState<{ src: string; title: string } | null>(null);
 
   useEffect(() => {
     supabase
@@ -1498,11 +1499,29 @@ function Realisations({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang })
         
         <div className="mt-12 grid gap-6 sm:grid-cols-2 md:grid-cols-3">
           {items.map((g, i) => (
-            <figure key={`${g.src}-${i}`} className="group overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-transform hover:-translate-y-1">
-              <div className="aspect-[4/3] overflow-hidden bg-muted">
+            <figure 
+              key={`${g.src}-${i}`} 
+              onClick={() => setSelectedPhoto({ src: g.src, title: translateDynamicText(g.title, lang) })}
+              className="group cursor-pointer overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg"
+            >
+              <div className="relative aspect-[4/3] overflow-hidden bg-muted">
                 {g.src ? (
-                  <img src={g.src} alt={g.title} width={1200} height={800} loading="lazy" decoding="async"
-                       className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                  <>
+                    <img 
+                      src={g.src} 
+                      alt={g.title} 
+                      width={1200} 
+                      height={800} 
+                      loading="lazy" 
+                      decoding="async"
+                      className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" 
+                    />
+                    <div className="absolute inset-0 bg-slate-950/30 opacity-0 transition-opacity group-hover:opacity-100 flex items-center justify-center">
+                      <div className="grid h-12 w-12 place-items-center rounded-full bg-[#386b34] text-white shadow-xl transition-transform group-hover:scale-110">
+                        <ZoomIn className="h-6 w-6" />
+                      </div>
+                    </div>
+                  </>
                 ) : (
                   <div className="grid h-full w-full place-items-center text-xs text-muted-foreground">Photo indisponible</div>
                 )}
@@ -1524,12 +1543,46 @@ function Realisations({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang })
           </p>
         )}
       </div>
+
+      {/* LIGHTBOX MODAL - NOS RÉALISATIONS */}
+      {selectedPhoto && (
+        <div 
+          className="fixed inset-0 z-50 grid place-items-center bg-slate-950/90 p-4 backdrop-blur-md transition-all"
+          onClick={() => setSelectedPhoto(null)}
+        >
+          <div 
+            className="relative flex max-h-[90vh] max-w-5xl flex-col items-center justify-center overflow-hidden rounded-3xl bg-slate-900 border border-emerald-900/40 shadow-2xl p-2 sm:p-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button 
+              onClick={() => setSelectedPhoto(null)}
+              className="absolute right-4 top-4 z-10 grid h-10 w-10 place-items-center rounded-full bg-slate-950/80 text-white hover:bg-[#386b34] transition-colors"
+              aria-label="Fermer"
+            >
+              <X className="h-5 w-5" />
+            </button>
+            
+            <img 
+              src={selectedPhoto.src} 
+              alt={selectedPhoto.title} 
+              className="max-h-[75vh] w-auto max-w-full rounded-2xl object-contain"
+            />
+            
+            <div className="mt-3 text-center px-4 py-2">
+              <p className="text-base sm:text-lg font-bold text-white">{selectedPhoto.title}</p>
+              <p className="text-xs text-emerald-400 mt-0.5">EDSOLAR Cameroun — Photo de réalisation</p>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
 
-/* ---------------- About (Vision, 4 Grands Piliers, Presence depuis 2017 & Galerie de 9 Photos terrain) ---------------- */
+/* ---------------- About (Vision, 4 Grands Piliers & Galerie du Terrain Agrandissable) ---------------- */
 function About({ t }: { t: typeof TRANSLATIONS["fr"] }) {
+  const [selectedPhoto, setSelectedPhoto] = useState<{ src: string; caption: string } | null>(null);
+
   const PILLARS = [
     { name: "Gratitude", icon: Smile, desc: "Reconnaissance sincère envers la nature et chaque client" },
     { name: "Abondance", icon: Sparkles, desc: "Accès universel à une énergie propre et illimitée" },
@@ -1617,15 +1670,31 @@ function About({ t }: { t: typeof TRANSLATIONS["fr"] }) {
               </p>
             </div>
 
-            {/* GALERIE COMPLETE ET OPTIMISÉE DES 9 PHOTOS DU TERRAIN */}
+            {/* GALERIE EN DIRECT DU TERRAIN AVEC CLIC / LIGHTBOX */}
             <div>
-              <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3">En direct du terrain — Nos équipes à l'œuvre</h3>
+              <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3 flex items-center gap-1.5">
+                <span>En direct du terrain — Nos équipes à l'œuvre</span>
+                <span className="text-[10px] font-normal text-[#386b34]">(Cliquez pour agrandir)</span>
+              </h3>
               <div className="grid grid-cols-3 gap-2.5 sm:gap-3">
                 {FIELD_IMAGES.map((img, idx) => (
-                  <div key={idx} className="group relative aspect-square overflow-hidden rounded-2xl border border-border bg-slate-100 shadow-sm">
-                    <img src={img.src} alt={img.caption} loading="lazy" decoding="async" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/20 to-transparent opacity-0 transition-opacity group-hover:opacity-100 flex items-end p-2 sm:p-2.5">
-                      <p className="text-[9px] sm:text-[10px] font-bold text-white leading-tight">{img.caption}</p>
+                  <div 
+                    key={idx} 
+                    onClick={() => setSelectedPhoto({ src: img.src, caption: img.caption })}
+                    className="group relative aspect-square cursor-pointer overflow-hidden rounded-2xl border border-border bg-slate-100 shadow-sm transition-all hover:scale-[1.02] hover:shadow-md"
+                  >
+                    <img 
+                      src={img.src} 
+                      alt={img.caption} 
+                      loading="lazy" 
+                      decoding="async" 
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" 
+                    />
+                    <div className="absolute inset-0 bg-slate-950/40 opacity-0 transition-opacity group-hover:opacity-100 flex flex-col justify-between p-2">
+                      <div className="ml-auto grid h-7 w-7 place-items-center rounded-full bg-[#386b34] text-white shadow-md">
+                        <ZoomIn className="h-3.5 w-3.5" />
+                      </div>
+                      <p className="text-[9px] sm:text-[10px] font-bold text-white leading-tight line-clamp-2">{img.caption}</p>
                     </div>
                   </div>
                 ))}
@@ -1635,6 +1704,38 @@ function About({ t }: { t: typeof TRANSLATIONS["fr"] }) {
           </div>
         </div>
       </div>
+
+      {/* LIGHTBOX MODAL - EN DIRECT DU TERRAIN */}
+      {selectedPhoto && (
+        <div 
+          className="fixed inset-0 z-50 grid place-items-center bg-slate-950/90 p-4 backdrop-blur-md transition-all"
+          onClick={() => setSelectedPhoto(null)}
+        >
+          <div 
+            className="relative flex max-h-[90vh] max-w-5xl flex-col items-center justify-center overflow-hidden rounded-3xl bg-slate-900 border border-emerald-900/40 shadow-2xl p-2 sm:p-4"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button 
+              onClick={() => setSelectedPhoto(null)}
+              className="absolute right-4 top-4 z-10 grid h-10 w-10 place-items-center rounded-full bg-slate-950/80 text-white hover:bg-[#386b34] transition-colors"
+              aria-label="Fermer"
+            >
+              <X className="h-5 w-5" />
+            </button>
+            
+            <img 
+              src={selectedPhoto.src} 
+              alt={selectedPhoto.caption} 
+              className="max-h-[75vh] w-auto max-w-full rounded-2xl object-contain"
+            />
+            
+            <div className="mt-3 text-center px-4 py-2">
+              <p className="text-base sm:text-lg font-bold text-white">{selectedPhoto.caption}</p>
+              <p className="text-xs text-emerald-400 mt-0.5">EDSOLAR — En direct du terrain</p>
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
