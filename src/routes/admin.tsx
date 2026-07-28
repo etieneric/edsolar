@@ -168,7 +168,6 @@ function ImageUploader({
   return (
     <div className="space-y-2">
       <label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Photo</label>
-      
       <input
         ref={inputRef}
         type="file"
@@ -180,7 +179,6 @@ function ImageUploader({
           e.target.value = "";
         }}
       />
-
       <div className="flex items-center gap-3">
         <div className="grid h-20 w-20 shrink-0 place-items-center overflow-hidden rounded-xl border border-border bg-secondary">
           {value ? <img src={value} alt="" className="h-full w-full object-contain" /> : <ImageIcon className="h-8 w-8 text-muted-foreground" />}
@@ -196,7 +194,6 @@ function ImageUploader({
               {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
               {busy ? "Envoi…" : value ? "Remplacer la photo" : "Téléverser une image"}
             </button>
-            
             {value && (
               <button
                 type="button"
@@ -207,7 +204,6 @@ function ImageUploader({
               </button>
             )}
           </div>
-
           <input
             type="text"
             value={value}
@@ -222,8 +218,8 @@ function ImageUploader({
   );
 }
 
-/* -------- Envoi multiple de photos (galerie) -------- */
-function BulkPhotoUpload({ onDone }: { onDone: () => void | Promise<void> }) {
+/* -------- Envoi multiple de photos -------- */
+function BulkPhotoUpload({ category, onDone }: { category: string; onDone: () => void | Promise<void> }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [progress, setProgress] = useState<{ done: number; total: number } | null>(null);
   const [err, setErr] = useState<string | null>(null);
@@ -238,7 +234,7 @@ function BulkPhotoUpload({ onDone }: { onDone: () => void | Promise<void> }) {
       try {
         if (!f.type.startsWith("image/")) continue;
         const url = await uploadCompressed(createUploadUrl, "photos", f);
-        await add({ data: { url, caption: "", location: "Cameroun" } });
+        await add({ data: { url, caption: "", location: "Cameroun", category } });
       } catch (e: any) {
         setErr(`${f.name} : ${e?.message || "échec"}`);
       }
@@ -252,9 +248,9 @@ function BulkPhotoUpload({ onDone }: { onDone: () => void | Promise<void> }) {
   return (
     <div className="rounded-2xl border border-dashed border-border bg-card p-5 space-y-3">
       <div>
-        <p className="text-sm font-bold">Envoi groupé</p>
+        <p className="text-sm font-bold">Envoi groupé pour : {category === "terrain" ? "En direct du terrain" : "Nos Réalisations"}</p>
         <p className="mt-1 text-xs text-muted-foreground">
-          Sélectionnez plusieurs photos d'un coup — elles sont compressées automatiquement (WebP, max 1000px) avant l'envoi.
+          Sélectionnez plusieurs photos d'un coup — elles sont compressées automatiquement avant l'envoi.
         </p>
       </div>
       <input
@@ -283,17 +279,18 @@ function BulkPhotoUpload({ onDone }: { onDone: () => void | Promise<void> }) {
   );
 }
 
-/* ---------------- Photos (PhotosPanel avec enregistrement sécurisé au serveur) ---------------- */
+/* ---------------- PhotosPanel (Avec gestion 'realisations' et 'terrain') ---------------- */
 function PhotosPanel() {
   const [items, setItems] = useState<any[]>([]);
   const [editingId, setEditingId] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<"realisations" | "terrain">("realisations");
   
   const [url, setUrl] = useState("");
   const [caption, setCaption] = useState("");
   const [location, setLocation] = useState("");
+  const [category, setCategory] = useState<"realisations" | "terrain">("realisations");
   
   const [busy, setBusy] = useState(false);
-  
   const add = useServerFn(adminAddPhoto);
   const updatePhoto = useServerFn(adminUpdatePhoto);
   const del = useServerFn(adminDeletePhoto);
@@ -314,6 +311,7 @@ function PhotosPanel() {
     setUrl("");
     setCaption("");
     setLocation("");
+    setCategory(activeTab);
   };
 
   const startEdit = (p: any) => {
@@ -321,6 +319,7 @@ function PhotosPanel() {
     setUrl(p.url);
     setCaption(p.caption ?? "");
     setLocation(p.location ?? "");
+    setCategory(p.category ?? "realisations");
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
@@ -330,62 +329,81 @@ function PhotosPanel() {
     setBusy(true);
     try {
       if (editingId) {
-        // Exécution sécurisée côté serveur pour enregistrer les modifications
         await updatePhoto({
-          data: {
-            id: editingId,
-            url,
-            caption,
-            location: location || "Cameroun",
-          },
+          data: { id: editingId, url, caption, location: location || "Cameroun", category },
         });
       } else {
-        // Ajout d'une nouvelle photo
-        await add({ data: { url, caption, location: location || "Cameroun" } });
+        await add({ data: { url, caption, location: location || "Cameroun", category } });
       }
       resetForm();
       await load();
-    } catch (err) {
-      console.error("Erreur lors de l'enregistrement :", err);
     } finally {
       setBusy(false);
     }
   };
 
+  const filteredItems = items.filter((p) => (p.category ?? "realisations") === activeTab);
+
   return (
     <section className="space-y-6">
+      {/* Onglets de sélection de section */}
+      <div className="flex gap-2 border-b border-border pb-3">
+        <button
+          type="button"
+          onClick={() => { setActiveTab("realisations"); setCategory("realisations"); }}
+          className={`rounded-full px-4 py-2 text-xs font-bold transition-all ${
+            activeTab === "realisations" ? "bg-primary text-primary-foreground" : "border border-border bg-card hover:bg-secondary"
+          }`}
+        >
+          Nos Réalisations ({items.filter(i => (i.category ?? "realisations") === "realisations").length})
+        </button>
+        <button
+          type="button"
+          onClick={() => { setActiveTab("terrain"); setCategory("terrain"); }}
+          className={`rounded-full px-4 py-2 text-xs font-bold transition-all ${
+            activeTab === "terrain" ? "bg-primary text-primary-foreground" : "border border-border bg-card hover:bg-secondary"
+          }`}
+        >
+          En direct du terrain ({items.filter(i => i.category === "terrain").length})
+        </button>
+      </div>
+
       <form onSubmit={submit} className="rounded-2xl border border-border bg-card p-5 space-y-4">
         <div>
           <p className="text-sm font-bold">
-            {editingId ? "Éditer la photo de la galerie" : "Ajouter une photo à la galerie"}
-          </p>
-          <p className="mt-1 text-xs text-muted-foreground">
-            Téléversez une image et indiquez la légende et la ville/lieu de réalisation.
+            {editingId ? "Éditer la photo" : `Ajouter une photo dans "${activeTab === "terrain" ? "En direct du terrain" : "Nos Réalisations"}"`}
           </p>
         </div>
         
         <ImageUploader folder="photos" value={url} onChange={setUrl} />
         
-        <div className="grid gap-3 sm:grid-cols-2">
+        <div className="grid gap-3 sm:grid-cols-3">
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-1">
-              Légende (optionnelle)
-            </label>
+            <label className="block text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-1">Section</label>
+            <select
+              value={category}
+              onChange={(e) => setCategory(e.target.value as any)}
+              className="w-full rounded-xl border border-input bg-background px-4 py-2.5 text-sm outline-none focus:border-primary"
+            >
+              <option value="realisations">Nos Réalisations</option>
+              <option value="terrain">En direct du terrain — Nos équipes à l'œuvre</option>
+            </select>
+          </div>
+          <div>
+            <label className="block text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-1">Légende</label>
             <input 
               value={caption} 
               onChange={(e) => setCaption(e.target.value)} 
-              placeholder="Ex: Installation Solaire Hybride 5 kVA"
+              placeholder="Ex: Déplacement en pirogue..."
               className="w-full rounded-xl border border-input bg-background px-4 py-2.5 text-sm outline-none focus:border-primary" 
             />
           </div>
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-1">
-              Lieu / Ville (optionnel)
-            </label>
+            <label className="block text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-1">Lieu / Ville</label>
             <input 
               value={location} 
               onChange={(e) => setLocation(e.target.value)} 
-              placeholder="Ex: Yaoundé, Bastos / Menganga..."
+              placeholder="Ex: Yaoundé, Bastos"
               className="w-full rounded-xl border border-input bg-background px-4 py-2.5 text-sm outline-none focus:border-primary" 
             />
           </div>
@@ -394,7 +412,7 @@ function PhotosPanel() {
         <div className="flex gap-2">
           <button disabled={busy || !url} className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground disabled:opacity-60">
             {editingId ? <Save className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
-            {editingId ? "Enregistrer les modifications" : "Ajouter à la galerie"}
+            {editingId ? "Enregistrer" : "Ajouter la photo"}
           </button>
           {editingId && (
             <button type="button" onClick={resetForm} className="rounded-full border border-border px-4 py-2.5 text-sm font-semibold">
@@ -404,10 +422,10 @@ function PhotosPanel() {
         </div>
       </form>
 
-      {!editingId && <BulkPhotoUpload onDone={load} />}
+      {!editingId && <BulkPhotoUpload category={activeTab} onDone={load} />}
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {items.map((p) => (
+        {filteredItems.map((p) => (
           <div key={p.id} className="overflow-hidden rounded-2xl border border-border bg-card">
             <img src={p.url} alt={p.caption ?? ""} loading="lazy" decoding="async" className="aspect-[4/3] w-full object-cover" />
             <div className="flex items-center justify-between gap-2 p-3">
@@ -416,25 +434,13 @@ function PhotosPanel() {
                 <p className="truncate text-xs font-semibold text-emerald-600">{p.location || "Cameroun"}</p>
               </div>
               <div className="flex items-center gap-1 shrink-0">
-                <button 
-                  onClick={() => startEdit(p)}
-                  className="grid h-8 w-8 place-items-center rounded-full text-slate-700 dark:text-slate-300 hover:bg-secondary"
-                  title="Éditer la photo"
-                >
-                  <Edit2 className="h-4 w-4" />
-                </button>
-                <button 
-                  onClick={async () => { if (confirm("Supprimer cette photo ?")) { await del({ data: { id: p.id } }); await load(); } }}
-                  className="grid h-8 w-8 place-items-center rounded-full text-destructive hover:bg-destructive/10"
-                  title="Supprimer la photo"
-                >
-                  <Trash2 className="h-4 w-4" />
-                </button>
+                <button onClick={() => startEdit(p)} className="grid h-8 w-8 place-items-center rounded-full hover:bg-secondary"><Edit2 className="h-4 w-4" /></button>
+                <button onClick={async () => { if (confirm("Supprimer cette photo ?")) { await del({ data: { id: p.id } }); await load(); } }} className="grid h-8 w-8 place-items-center rounded-full text-destructive hover:bg-destructive/10"><Trash2 className="h-4 w-4" /></button>
               </div>
             </div>
           </div>
         ))}
-        {items.length === 0 && <p className="text-sm text-muted-foreground">Aucune photo pour l'instant.</p>}
+        {filteredItems.length === 0 && <p className="text-sm text-muted-foreground">Aucune photo dans cette section.</p>}
       </div>
     </section>
   );
@@ -579,7 +585,7 @@ function ReviewsPanel() {
   );
 }
 
-/* ---------------- Products (Boutique) ---------------- */
+/* ---------------- Products ---------------- */
 type ProdForm = {
   id?: string; name: string; category: string; price: string; badge: string;
   description: string; image_url: string; sort_order: number;
@@ -669,11 +675,11 @@ function ProductsPanel() {
               {categories.map((c) => <option key={c} value={c} />)}
             </datalist>
           </div>
-          <TxtField label="Prix (affiché)" v={form.price} onC={(v) => setForm({ ...form, price: v })} placeholder="125 000 FCFA" />
-          <TxtField label="Prix (montant chiffré, pour tri)" v={form.price_amount} onC={(v) => setForm({ ...form, price_amount: v.replace(/\D/g, "") })} placeholder="125000" />
+          <TxtField label="Prix (affiché - ex: 580 000 FCFA)" v={form.price} onC={(v) => setForm({ ...form, price: v })} placeholder="580 000 FCFA" />
+          <TxtField label="Prix (montant chiffré, pour tri)" v={form.price_amount} onC={(v) => setForm({ ...form, price_amount: v.replace(/\D/g, "") })} placeholder="580000" />
           <TxtField label="Badge (ex : Best-seller)" v={form.badge} onC={(v) => setForm({ ...form, badge: v })} />
           <TxtField label="Garantie (ex : 25 ans)" v={form.warranty} onC={(v) => setForm({ ...form, warranty: v })} />
-          <TxtField label="Popularité (0-100, pour tri)" v={String(form.popularity)} onC={(v) => setForm({ ...form, popularity: Number(v.replace(/\D/g, "")) || 0 })} placeholder="0" />
+          <TxtField label="Popularité (0-100)" v={String(form.popularity)} onC={(v) => setForm({ ...form, popularity: Number(v.replace(/\D/g, "")) || 0 })} placeholder="0" />
           <div>
             <label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Description</label>
             <textarea value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} rows={3}
