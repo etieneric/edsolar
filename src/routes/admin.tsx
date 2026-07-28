@@ -14,6 +14,7 @@ import {
   adminUpsertProduct, adminDeleteProduct,
   adminCreateUploadUrl,
 } from "@/lib/admin.functions";
+import { compressImage } from "@/lib/compress-image";
 
 export const Route = createFileRoute("/admin")({
   ssr: false,
