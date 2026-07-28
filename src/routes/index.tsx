@@ -54,6 +54,9 @@ const PHONE = "+237650544444";
 const EMAIL = "edsolarcam@gmail.com";
 const WA = `https://wa.me/${PHONE.replace("+", "")}`;
 const YOUTUBE_CHANNEL_URL = "https://www.youtube.com/@EDSOLAR237";
+const YOUTUBE_CHANNEL_ID = "UCCfnDu6TV2B-_NO6E_tWm7Q";
+const YOUTUBE_UPLOADS_PLAYLIST = "UUCfnDu6TV2B-_NO6E_tWm7Q";
+
 const waLink = (msg: string) => `${WA}?text=${encodeURIComponent(msg)}`;
 
 type Lang = "fr" | "en";
@@ -78,31 +81,6 @@ const FIELD_IMAGES = [
   { src: field3, caption: "Mission technique d'installation en région" },
   { src: field5, caption: "Équipe de techniciens qualifiés prêts pour l'intervention" },
   { src: field6, caption: "Vérification et raccordement des panneaux solaires" },
-];
-
-// Vidéos YouTube en miniatures
-const YOUTUBE_VIDEOS = [
-  {
-    id: "v1",
-    title: "Chantier d'installation solaire à Yaoundé",
-    youtubeId: "dQw4w9WgXcQ", // Remplacer par l'ID réel de la vidéo YouTube si nécessaire
-    thumbnail: field7,
-    duration: "03:45"
-  },
-  {
-    id: "v2",
-    title: "Présentation des batteries Lithium & Onduleurs SAKO",
-    youtubeId: "dQw4w9WgXcQ", 
-    thumbnail: field1,
-    duration: "02:20"
-  },
-  {
-    id: "v3",
-    title: "Intervention technique EDSOLAR en zone isolée",
-    youtubeId: "dQw4w9WgXcQ", 
-    thumbnail: field9,
-    duration: "05:10"
-  }
 ];
 
 const TRANSLATIONS = {
@@ -176,7 +154,7 @@ const TRANSLATIONS = {
 
     channelTag: "Vidéos du terrain",
     channelTitle1: "Rejoignez la Chaîne ",
-    channelTitle2: "YouTube EDSOLAR : @EDSOLAR237",
+    channelTitle2: "YouTube EDSOLAR",
     channelDesc: "Abonnez-vous à notre chaîne officielle pour découvrir nos réalisations en vidéo, tutoriels d'utilisation et démonstrations du matériel.",
     channelSubscribers: "Suivez nos vidéos exclusives sur YouTube !",
     channelSubNote: "Abonnez-vous gratuitement à la chaîne @EDSOLAR237",
@@ -1289,7 +1267,7 @@ function DiasporaSection({ lang }: { lang: Lang }) {
                 <span className="text-slate-500 text-[10px] mt-1.5 font-medium">{lang === "fr" ? "Règlement local rapide" : "Fast local payment"}</span>
               </div>
 
-              <div className="flex flex-col justify-between rounded-2xl border border-slate-200 bg-white p-3.5 text-slate-900 shadow-md">
+              <div className="flex flex-col justify-between rounded-2xl border border-slate-[#386b34] bg-white p-3.5 text-slate-900 shadow-md">
                 <div className="flex items-center gap-2">
                   <img src={orangeMoneyLogo} alt="Orange Money" className="h-5 w-auto object-contain shrink-0" decoding="async" />
                 </div>
@@ -1313,59 +1291,101 @@ function DiasporaSection({ lang }: { lang: Lang }) {
   );
 }
 
-/* ---------------- SECTION CHAÎNE YOUTUBE (@EDSOLAR237) & MINIATURES ---------------- */
+/* ---------------- SECTION CHAÎNE YOUTUBE (@EDSOLAR237) — CHARTE VERT ÉCOLOGIQUE ---------------- */
 function YouTubeSection({ t }: { t: typeof TRANSLATIONS["fr"] }) {
   const [activeVideo, setActiveVideo] = useState<string | null>(null);
+  const [videos, setVideos] = useState<Array<{ id: string; title: string; youtubeId: string; thumbnail: string; date?: string }>>([]);
+
+  useEffect(() => {
+    // Récupération dynamique des vraies vidéos publiées sur la chaîne EDSOLAR237
+    const rssUrl = encodeURIComponent(`https://www.youtube.com/feeds/videos.xml?channel_id=${YOUTUBE_CHANNEL_ID}`);
+    fetch(`https://api.rss2json.com/v1/api.json?rss_url=${rssUrl}`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data && data.items && data.items.length > 0) {
+          const parsed = data.items.map((item: any) => {
+            const videoId = item.guid ? item.guid.replace("yt:video:", "") : (item.link?.split("v=")[1] || "");
+            return {
+              id: videoId || item.link,
+              title: item.title,
+              youtubeId: videoId,
+              thumbnail: item.thumbnail || `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`,
+              date: item.pubDate ? new Date(item.pubDate).toLocaleDateString("fr-FR") : "",
+            };
+          }).filter((v: any) => v.youtubeId);
+          setVideos(parsed);
+        }
+      })
+      .catch(() => {
+        // En cas d'attente de réponse
+      });
+  }, []);
 
   return (
     <section id="youtube" className="relative overflow-hidden bg-[#234d20] py-16 text-slate-100 sm:py-28 border-t border-emerald-900/30">
-      <div className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-red-600/10 blur-[120px]" />
+      <div className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#386b34]/20 blur-[120px]" />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="mx-auto max-w-3xl text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border border-red-500/30 bg-red-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-red-400">
-            <Youtube className="h-4 w-4 fill-red-500 text-red-500" /> {t.channelTag}
+          <span className="inline-flex items-center gap-2 rounded-full border border-emerald-300/30 bg-[#386b34]/30 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-emerald-200 backdrop-blur">
+            <Youtube className="h-4 w-4 text-emerald-300" /> {t.channelTag}
           </span>
           <h2 className="mt-4 text-2xl font-black tracking-tight text-white sm:text-4xl md:text-5xl">
-            {t.channelTitle1}<span className="text-red-500">{t.channelTitle2}</span>
+            {t.channelTitle1}<span className="text-emerald-300">{t.channelTitle2}</span>
           </h2>
           <p className="mt-4 text-sm text-emerald-100/80 sm:text-lg">
             {t.channelDesc}
           </p>
         </div>
 
-        {/* Grille des miniatures vidéos */}
+        {/* Grille des miniatures vidéos dynamiques */}
         <div className="mt-12 grid gap-6 sm:grid-cols-2 md:grid-cols-3">
-          {YOUTUBE_VIDEOS.map((v) => (
-            <div 
-              key={v.id} 
-              onClick={() => setActiveVideo(v.youtubeId)}
-              className="group relative cursor-pointer overflow-hidden rounded-3xl border border-emerald-800/40 bg-[#1a3818]/80 shadow-lg transition-all hover:-translate-y-1 hover:border-red-500/50"
-            >
-              <div className="relative aspect-video w-full overflow-hidden bg-slate-900">
-                <img 
-                  src={v.thumbnail} 
-                  alt={v.title} 
-                  loading="lazy" 
-                  decoding="async" 
-                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" 
-                />
-                <div className="absolute inset-0 bg-slate-950/40 group-hover:bg-slate-950/20 transition-colors flex items-center justify-center">
-                  <div className="grid h-12 w-12 place-items-center rounded-full bg-red-600 text-white shadow-xl group-hover:scale-110 transition-transform">
-                    <Play className="h-5 w-5 fill-white ml-0.5" />
+          {videos.length > 0 ? (
+            videos.map((v) => (
+              <div 
+                key={v.id} 
+                onClick={() => setActiveVideo(v.youtubeId)}
+                className="group relative cursor-pointer overflow-hidden rounded-3xl border border-emerald-800/40 bg-[#1a3818]/80 shadow-lg transition-all hover:-translate-y-1 hover:border-emerald-400/50"
+              >
+                <div className="relative aspect-video w-full overflow-hidden bg-slate-900">
+                  <img 
+                    src={v.thumbnail} 
+                    alt={v.title} 
+                    loading="lazy" 
+                    decoding="async" 
+                    className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" 
+                  />
+                  <div className="absolute inset-0 bg-slate-950/40 group-hover:bg-slate-950/20 transition-colors flex items-center justify-center">
+                    <div className="grid h-12 w-12 place-items-center rounded-full bg-[#386b34] text-white shadow-xl group-hover:scale-110 transition-transform">
+                      <Play className="h-5 w-5 fill-white ml-0.5" />
+                    </div>
                   </div>
+                  {v.date && (
+                    <span className="absolute bottom-3 right-3 rounded-lg bg-slate-950/80 px-2 py-1 text-[10px] font-bold text-white backdrop-blur">
+                      {v.date}
+                    </span>
+                  )}
                 </div>
-                <span className="absolute bottom-3 right-3 rounded-lg bg-slate-950/80 px-2 py-1 text-[10px] font-bold text-white backdrop-blur">
-                  {v.duration}
-                </span>
+                <div className="p-4">
+                  <h3 className="text-sm font-bold text-white line-clamp-2 leading-snug group-hover:text-emerald-300 transition-colors">
+                    {v.title}
+                  </h3>
+                </div>
               </div>
-              <div className="p-4">
-                <h3 className="text-sm font-bold text-white line-clamp-2 leading-snug group-hover:text-emerald-300 transition-colors">
-                  {v.title}
-                </h3>
+            ))
+          ) : (
+            /* Carte directe vers les dernières vidéos de la chaîne EDSOLAR237 */
+            <div 
+              onClick={() => setActiveVideo(`playlist:${YOUTUBE_UPLOADS_PLAYLIST}`)}
+              className="col-span-full mx-auto max-w-lg cursor-pointer overflow-hidden rounded-3xl border border-emerald-800/40 bg-[#1a3818]/80 p-8 text-center shadow-lg transition-all hover:border-emerald-400/50"
+            >
+              <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-[#386b34] text-white shadow-xl">
+                <Play className="h-7 w-7 fill-white ml-1" />
               </div>
+              <h3 className="mt-4 text-base font-bold text-white">Vidéos de la chaîne @EDSOLAR237</h3>
+              <p className="mt-1 text-xs text-emerald-200/70">Cliquez pour lire directement la chaîne officielle sur le site</p>
             </div>
-          ))}
+          )}
         </div>
 
         {/* Bandeau d'abonnement au canal */}
@@ -1376,27 +1396,31 @@ function YouTubeSection({ t }: { t: typeof TRANSLATIONS["fr"] }) {
               <p className="mt-1 text-xs sm:text-sm text-emerald-200/70">{t.channelSubNote}</p>
             </div>
             <a href={YOUTUBE_CHANNEL_URL} target="_blank" rel="noreferrer"
-               className="inline-flex shrink-0 items-center gap-2.5 rounded-full bg-red-600 px-6 py-3.5 text-sm sm:text-base font-bold text-white shadow-lg transition-all hover:scale-105 hover:bg-red-700">
-              <Youtube className="h-5 w-5 fill-white" /> {t.channelBtn}
+               className="inline-flex shrink-0 items-center gap-2.5 rounded-full bg-[#386b34] px-6 py-3.5 text-sm sm:text-base font-bold text-white shadow-lg transition-all hover:scale-105 hover:bg-[#4a8344]">
+              <Youtube className="h-5 w-5 text-white" /> {t.channelBtn}
             </a>
           </div>
         </div>
       </div>
 
-      {/* Lecteur Modale Pop-up si l'utilisateur clique sur une vidéo */}
+      {/* Lecteur Modale Pop-up si l'utilisateur clique sur une vidéo de votre chaîne */}
       {activeVideo && (
         <div className="fixed inset-0 z-50 grid place-items-center bg-slate-950/80 p-4 backdrop-blur-md" onClick={() => setActiveVideo(null)}>
           <div className="relative w-full max-w-4xl overflow-hidden rounded-3xl bg-slate-900 shadow-2xl" onClick={(e) => e.stopPropagation()}>
             <button 
               onClick={() => setActiveVideo(null)}
-              className="absolute right-4 top-4 z-10 grid h-10 w-10 place-items-center rounded-full bg-slate-950/80 text-white hover:bg-red-600 transition-colors"
+              className="absolute right-4 top-4 z-10 grid h-10 w-10 place-items-center rounded-full bg-slate-950/80 text-white hover:bg-[#386b34] transition-colors"
             >
               <X className="h-5 w-5" />
             </button>
             <div className="relative aspect-video w-full">
               <iframe 
-                src={`https://www.youtube.com/embed/${activeVideo}?autoplay=1`} 
-                title="YouTube Video Player"
+                src={
+                  activeVideo.startsWith("playlist:")
+                    ? `https://www.youtube.com/embed/videoseries?list=${activeVideo.replace("playlist:", "")}&autoplay=1`
+                    : `https://www.youtube.com/embed/${activeVideo}?autoplay=1`
+                } 
+                title="EDSOLAR YouTube Player"
                 className="h-full w-full border-0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
