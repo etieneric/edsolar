@@ -46,7 +46,7 @@ export const adminCheck = createServerFn({ method: "GET" }).handler(async () => 
   return { unlocked: !!s.data.unlocked };
 });
 
-// ---- Image upload : URL d'upload signée (Photos, Kits, Boutique) ----
+// ---- Image upload ----
 export const adminCreateUploadUrl = createServerFn({ method: "POST" })
   .inputValidator((d: { folder: "photos" | "kits" | "products"; filename: string }) => d)
   .handler(async ({ data }) => {
@@ -58,13 +58,11 @@ export const adminCreateUploadUrl = createServerFn({ method: "POST" })
     const { data: signed, error } = await supabaseAdmin.storage.from("media").createSignedUploadUrl(path);
     if (error || !signed) throw new Error(error?.message || "Impossible de créer l'URL d'upload");
     
-    // Récupération de la vraie URL publique Supabase
     const { data: pub } = supabaseAdmin.storage.from("media").getPublicUrl(path);
 
     return { path, signedUrl: signed.signedUrl, token: signed.token, publicUrl: pub.publicUrl };
   });
 
-// Upload direct en Base64 vers Supabase Storage
 export const adminUploadImage = createServerFn({ method: "POST" })
   .inputValidator((d: {
     folder: "photos" | "kits" | "products";
@@ -78,10 +76,8 @@ export const adminUploadImage = createServerFn({ method: "POST" })
     const ext = (data.filename.split(".").pop() || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "");
     const safePath = `${data.folder}/${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
     
-    // Conversion Base64 -> Buffer
     const buffer = Buffer.from(data.dataBase64, "base64");
     
-    // Upload dans le bucket Supabase 'media'
     const { error } = await supabaseAdmin.storage.from("media").upload(safePath, buffer, {
       contentType: data.contentType || "image/jpeg",
       upsert: false,
@@ -89,25 +85,47 @@ export const adminUploadImage = createServerFn({ method: "POST" })
 
     if (error) throw new Error(`Erreur Supabase Storage: ${error.message}`);
 
-    // Obtenir l'URL publique générée par Supabase
     const { data: pub } = supabaseAdmin.storage.from("media").getPublicUrl(safePath);
 
     return { url: pub.publicUrl, path: safePath };
   });
 
-// ---- Gallery photos ----
+// ---- Gallery photos (Corrigé pour ajouter et modifier la localisation) ----
 export const adminAddPhoto = createServerFn({ method: "POST" })
-  .inputValidator((d: { url: string; caption?: string; sort_order?: number }) => d)
+  .inputValidator((d: { url: string; caption?: string; location?: string; sort_order?: number }) => d)
   .handler(async ({ data }) => {
     await requireAdmin();
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { error, data: row } = await supabaseAdmin
       .from("gallery_photos")
-      .insert({ url: data.url, caption: data.caption ?? null, sort_order: data.sort_order ?? 0 })
+      .insert({
+        url: data.url,
+        caption: data.caption ?? null,
+        location: data.location || "Cameroun",
+        sort_order: data.sort_order ?? 0,
+      })
       .select()
       .single();
     if (error) throw new Error(error.message);
     return row;
+  });
+
+export const adminUpdatePhoto = createServerFn({ method: "POST" })
+  .inputValidator((d: { id: string; url?: string; caption?: string; location?: string }) => d)
+  .handler(async ({ data }) => {
+    await requireAdmin();
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { error } = await supabaseAdmin
+      .from("gallery_photos")
+      .update({
+        ...(data.url !== undefined && { url: data.url }),
+        caption: data.caption ?? null,
+        location: data.location || "Cameroun",
+      })
+      .eq("id", data.id);
+
+    if (error) throw new Error(error.message);
+    return { ok: true };
   });
 
 export const adminDeletePhoto = createServerFn({ method: "POST" })
@@ -116,7 +134,6 @@ export const adminDeletePhoto = createServerFn({ method: "POST" })
     await requireAdmin();
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
 
-    // Optionnel : Récupérer la photo pour supprimer aussi le fichier dans Storage
     const { data: photo } = await supabaseAdmin.from("gallery_photos").select("url").eq("id", data.id).single();
     if (photo?.url && photo.url.includes("/storage/v1/object/public/media/")) {
       const filePath = photo.url.split("/storage/v1/object/public/media/")[1];
@@ -193,7 +210,7 @@ export const adminDeleteReview = createServerFn({ method: "POST" })
     return { ok: true };
   });
 
-// ---- Products (Boutique) ----
+// ---- Products ----
 export const adminUpsertProduct = createServerFn({ method: "POST" })
   .inputValidator((d: {
     id?: string; name: string; category: string; price?: string; badge?: string;
@@ -230,38 +247,3 @@ export const adminDeleteProduct = createServerFn({ method: "POST" })
     if (error) throw new Error(error.message);
     return { ok: true };
   });
-
-// ---- YouTube videos ----
-type YtVideo = { id: string; title: string; published: string; thumbnail: string };
-let ytCache: { at: number; videos: YtVideo[] } | null = null;
-
-export const fetchYouTubeVideos = createServerFn({ method: "GET" }).handler(async () => {
-  if (ytCache && Date.now() - ytCache.at < 1000 * 60 * 30) return ytCache.videos;
-  
-  const handleRaw = process.env.YOUTUBE_CHANNEL_HANDLE || "EDSOLAR";
-  const handle = handleRaw.replace(/^@/, "");
-  
-  try {
-    const pageRes = await fetch(`https://www.youtube.com/@${handle}`, {
-      headers: { "user-agent": "Mozilla/5.0" },
-    });
-    const html = await pageRes.text();
-    const match = html.match(/"channelId":"(UC[\w-]{22})"/);
-    if (!match) return [];
-    const channelId = match[1];
-    const rssRes = await fetch(`https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`);
-    const xml = await rssRes.text();
-    const entries = xml.split("<entry>").slice(1);
-    const videos: YtVideo[] = entries.slice(0, 12).map((entry) => {
-      const id = entry.match(/<yt:videoId>([^<]+)<\/yt:videoId>/)?.[1] ?? "";
-      const title = entry.match(/<title>([^<]+)<\/title>/)?.[1] ?? "";
-      const published = entry.match(/<published>([^<]+)<\/published>/)?.[1] ?? "";
-      return { id, title, published, thumbnail: `https://i.ytimg.com/vi/${id}/hqdefault.jpg` };
-    }).filter((v) => v.id);
-    ytCache = { at: Date.now(), videos };
-    return videos;
-  } catch (e) {
-    console.error("YouTube fetch failed", e);
-    return [];
-  }
-});
