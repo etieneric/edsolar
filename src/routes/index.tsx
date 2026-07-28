@@ -8,7 +8,7 @@ import {
   Facebook, Instagram, Linkedin, Send, Package, Search, ArrowUp,
   Radio, Camera, Video, Sparkles, Globe, CreditCard, ShieldAlert,
   Check, AlertTriangle, Mail, Handshake, Heart, Smile, Utensils, Stethoscope, Car, Home,
-  Calendar, Compass
+  Compass
 } from "lucide-react";
 
 import logo from "@/assets/edsolar-logo-new.jpeg";
@@ -18,7 +18,7 @@ import gal2 from "@/assets/gallery-2.jpg";
 import gal3 from "@/assets/gallery-3.jpg";
 import teamPortrait from "@/assets/team-portrait.jpeg";
 
-// Imports des images de terrain (Historique 2017 à aujourd'hui)
+// Imports de TOUTES les images du terrain
 import field1 from "@/assets/FB_IMG_1785237119977.jpeg";
 import field2 from "@/assets/FB_IMG_1785237146000.jpeg";
 import field3 from "@/assets/FB_IMG_1785237208608.jpeg";
@@ -71,13 +71,17 @@ const PARTNERS_DATA = [
   { name: "LONGi Solar", logo: longiLogo, desc: "Panneaux Photovoltaïques", badge: "World Leader" },
 ];
 
+// Ensemble complet des 9 photos de terrain
 const FIELD_IMAGES = [
-  { src: field2, caption: "Équipe EDSOLAR en mission sur le terrain" },
-  { src: field9, caption: "Déplacement sur le fleuve pour installation en zone isolée" },
-  { src: field1, caption: "Installation technique d'un coffret & onduleur" },
-  { src: field7, caption: "Pose de panneaux photovoltaïques sur toiture" },
-  { src: field4, caption: "Moments de synergie et travail d'équipe" },
-  { src: field8, caption: "Projet historique de recherche & développement" },
+  { src: field2, caption: "Équipe EDSOLAR en rassemblement sur le terrain" },
+  { src: field9, caption: "Déplacement en pirogue pour installation en zone enclavée" },
+  { src: field1, caption: "Installation & câblage technique du coffret solaire" },
+  { src: field7, caption: "Fixation et pose de panneaux solaires sur toiture" },
+  { src: field4, caption: "Moments d'enthousiasme et de cohésion d'équipe" },
+  { src: field8, caption: "Recherche & développement de solutions énergétiques" },
+  { src: field3, caption: "Mission technique d'installation en région" },
+  { src: field5, caption: "Équipe de techniciens qualifiés prêts pour l'intervention" },
+  { src: field6, caption: "Vérification et raccordement des panneaux solaires" },
 ];
 
 const TRANSLATIONS = {
@@ -633,13 +637,13 @@ function Hero({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
           <div className="mt-6 flex flex-wrap items-center gap-3 rounded-2xl border border-white/15 bg-white/10 p-3 backdrop-blur text-xs text-slate-200">
             <span className="font-bold text-emerald-300">{lang === "fr" ? "Paiement flexible :" : "Flexible payment:"}</span>
             <div className="flex items-center gap-2">
-              <span className="flex items-center gap-1.5 rounded-xl bg-white/90 px-2.5 py-1 text-slate-900 font-extrabold shadow-sm">
-                <img src={momoLogo} alt="MTN MoMo" className="h-4 w-auto object-contain" />
-                MTN MoMo
+              <span className="flex items-center gap-1.5 rounded-xl bg-white px-3 py-1 text-slate-900 font-extrabold shadow-sm">
+                <img src={momoLogo} alt="" className="h-4 w-auto object-contain shrink-0" />
+                <span>MTN MoMo</span>
               </span>
-              <span className="flex items-center gap-1.5 rounded-xl bg-white/90 px-2.5 py-1 text-slate-900 font-extrabold shadow-sm">
-                <img src={orangeMoneyLogo} alt="Orange Money" className="h-4 w-auto object-contain" />
-                Orange Money
+              <span className="flex items-center gap-1.5 rounded-xl bg-white px-3 py-1 text-slate-900 font-extrabold shadow-sm">
+                <img src={orangeMoneyLogo} alt="" className="h-4 w-auto object-contain shrink-0" />
+                <span>Orange Money</span>
               </span>
             </div>
             <span className="rounded-xl bg-[#386b34]/60 border border-emerald-400/30 px-2.5 py-1 text-emerald-100 font-semibold">{lang === "fr" ? "Traites échelonnées" : "Installments"}</span>
@@ -1246,28 +1250,28 @@ function DiasporaSection({ lang }: { lang: Lang }) {
             <p className="mt-1 text-xs text-emerald-200/70">{lang === "fr" ? "Pour vos proches au pays ou depuis l'étranger :" : "For local relatives or from abroad:"}</p>
 
             <div className="mt-6 grid grid-cols-2 gap-3 text-xs">
-              <div className="flex flex-col justify-between rounded-2xl border border-emerald-800/60 bg-white/95 p-3 text-slate-900 shadow">
+              <div className="flex flex-col justify-between rounded-2xl border border-slate-200 bg-white p-3.5 text-slate-900 shadow-md">
                 <div className="flex items-center gap-2">
-                  <img src={momoLogo} alt="MTN MoMo" className="h-5 w-auto object-contain" />
-                  <span className="font-extrabold text-xs">MTN MoMo</span>
+                  <img src={momoLogo} alt="" className="h-5 w-auto object-contain shrink-0" />
+                  <span className="font-extrabold text-xs text-slate-900">MTN MoMo</span>
                 </div>
-                <span className="text-slate-600 text-[10px] mt-1">{lang === "fr" ? "Règlement local rapide" : "Fast local payment"}</span>
+                <span className="text-slate-500 text-[10px] mt-1.5 font-medium">{lang === "fr" ? "Règlement local rapide" : "Fast local payment"}</span>
               </div>
 
-              <div className="flex flex-col justify-between rounded-2xl border border-emerald-800/60 bg-white/95 p-3 text-slate-900 shadow">
+              <div className="flex flex-col justify-between rounded-2xl border border-slate-200 bg-white p-3.5 text-slate-900 shadow-md">
                 <div className="flex items-center gap-2">
-                  <img src={orangeMoneyLogo} alt="Orange Money" className="h-5 w-auto object-contain" />
-                  <span className="font-extrabold text-xs">Orange Money</span>
+                  <img src={orangeMoneyLogo} alt="" className="h-5 w-auto object-contain shrink-0" />
+                  <span className="font-extrabold text-xs text-slate-900">Orange Money</span>
                 </div>
-                <span className="text-slate-600 text-[10px] mt-1">{lang === "fr" ? "Règlement local rapide" : "Fast local payment"}</span>
+                <span className="text-slate-500 text-[10px] mt-1.5 font-medium">{lang === "fr" ? "Règlement local rapide" : "Fast local payment"}</span>
               </div>
 
-              <div className="rounded-2xl border border-emerald-800/60 bg-[#122910]/80 p-3">
+              <div className="rounded-2xl border border-emerald-800/60 bg-[#122910]/80 p-3.5">
                 <span className="font-bold text-white block">Carte Visa / Mastercard</span>
                 <span className="text-emerald-200/60 text-[10px]">{lang === "fr" ? "Paiement en ligne sécurisé" : "Secure online payment"}</span>
               </div>
 
-              <div className="rounded-2xl border border-emerald-800/60 bg-[#122910]/80 p-3">
+              <div className="rounded-2xl border border-emerald-800/60 bg-[#122910]/80 p-3.5">
                 <span className="font-bold text-white block">Virement & Agence</span>
                 <span className="text-emerald-200/60 text-[10px]">{lang === "fr" ? "SEPA / Swift / Ria / WU" : "SEPA / Swift / Ria / WU"}</span>
               </div>
@@ -1422,7 +1426,7 @@ function Realisations({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang })
   );
 }
 
-/* ---------------- About (Mise à jour : Vision, 4 Grands Piliers, Presence depuis 2017 & Photos terrain) ---------------- */
+/* ---------------- About (Mise à jour : Vision, 4 Grands Piliers, Presence depuis 2017 & Galerie de 9 Photos terrain) ---------------- */
 function About({ t }: { t: typeof TRANSLATIONS["fr"] }) {
   const PILLARS = [
     { name: "Gratitude", icon: Smile, desc: "Reconnaissance sincère envers la nature et chaque client" },
@@ -1511,14 +1515,14 @@ function About({ t }: { t: typeof TRANSLATIONS["fr"] }) {
               </p>
             </div>
 
-            {/* GALERIE D'IMAGES TERRAIN DANS LA SECTION VISION */}
+            {/* GALERIE COMPLETE DES 9 PHOTOS DU TERRAIN */}
             <div>
-              <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3">En direct du terrain — Nos équipes à l'œuvre</p>
-              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3">En direct du terrain — Nos équipes à l'œuvre</h3>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                 {FIELD_IMAGES.map((img, idx) => (
-                  <div key={idx} className="group relative aspect-square overflow-hidden rounded-2xl border border-border bg-slate-100">
-                    <img src={img.src} alt={img.caption} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-0 transition-opacity group-hover:opacity-100 flex items-end p-2">
+                  <div key={idx} className="group relative aspect-square overflow-hidden rounded-2xl border border-border bg-slate-100 shadow-sm">
+                    <img src={img.src} alt="" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-950/20 to-transparent opacity-0 transition-opacity group-hover:opacity-100 flex items-end p-2.5">
                       <p className="text-[10px] font-bold text-white leading-tight">{img.caption}</p>
                     </div>
                   </div>
