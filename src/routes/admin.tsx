@@ -223,6 +223,67 @@ function ImageUploader({
   );
 }
 
+/* -------- Envoi multiple de photos (galerie) -------- */
+function BulkPhotoUpload({ onDone }: { onDone: () => void | Promise<void> }) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [progress, setProgress] = useState<{ done: number; total: number } | null>(null);
+  const [err, setErr] = useState<string | null>(null);
+  const createUploadUrl = useServerFn(adminCreateUploadUrl);
+  const add = useServerFn(adminAddPhoto);
+
+  const run = async (files: File[]) => {
+    setErr(null);
+    setProgress({ done: 0, total: files.length });
+    let done = 0;
+    for (const f of files) {
+      try {
+        if (!f.type.startsWith("image/")) continue;
+        const url = await uploadCompressed(createUploadUrl, "photos", f);
+        await add({ data: { url, caption: "" } });
+      } catch (e: any) {
+        setErr(`${f.name} : ${e?.message || "échec"}`);
+      }
+      done += 1;
+      setProgress({ done, total: files.length });
+    }
+    await onDone();
+    setProgress(null);
+  };
+
+  return (
+    <div className="rounded-2xl border border-dashed border-border bg-card p-5 space-y-3">
+      <div>
+        <p className="text-sm font-bold">Envoi groupé</p>
+        <p className="mt-1 text-xs text-muted-foreground">
+          Sélectionnez plusieurs photos d'un coup — elles sont compressées automatiquement (WebP, max 1000px) avant l'envoi.
+        </p>
+      </div>
+      <input
+        ref={inputRef}
+        type="file"
+        accept="image/*"
+        multiple
+        style={{ display: "none" }}
+        onChange={(e) => {
+          const fs = Array.from(e.target.files ?? []);
+          e.target.value = "";
+          if (fs.length) run(fs);
+        }}
+      />
+      <button
+        type="button"
+        disabled={!!progress}
+        onClick={() => inputRef.current?.click()}
+        className="inline-flex items-center gap-2 rounded-full bg-emerald-700 hover:bg-emerald-800 px-4 py-2 text-sm font-bold text-white disabled:opacity-60"
+      >
+        {progress ? <Loader2 className="h-4 w-4 animate-spin" /> : <Upload className="h-4 w-4" />}
+        {progress ? `Envoi ${progress.done}/${progress.total}…` : "Téléverser plusieurs photos"}
+      </button>
+      {err && <p className="text-xs text-destructive">{err}</p>}
+    </div>
+  );
+}
+
 /* ---------------- Photos ---------------- */
 function PhotosPanel() {
   const [items, setItems] = useState<any[]>([]);
