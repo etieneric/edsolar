@@ -9,12 +9,21 @@ import {
   Radio, Camera, Video, Sparkles, Globe, CreditCard, ShieldAlert,
   Check, AlertTriangle, Mail, Handshake
 } from "lucide-react";
+
 import logo from "@/assets/edsolar-logo-new.jpeg";
 import hero from "@/assets/install-panels.jpeg";
 import gal1 from "@/assets/gallery-1.jpg";
 import gal2 from "@/assets/gallery-2.jpg";
 import gal3 from "@/assets/gallery-3.jpg";
 import teamPortrait from "@/assets/team-portrait.jpeg";
+
+// Imports des logos partenaires depuis assets/
+import sakoLogo from "@/assets/SAKO.png";
+import felicityLogo from "@/assets/Felicity.png";
+import cworthLogo from "@/assets/Cworth.png";
+import growattLogo from "@/assets/Growarth.png";
+import longiLogo from "@/assets/Longi.png";
+
 import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/")({
@@ -36,6 +45,15 @@ const WA_CHANNEL_URL = "https://whatsapp.com/channel/0029VauTigF9Gv7cyMQUQH1x";
 const waLink = (msg: string) => `${WA}?text=${encodeURIComponent(msg)}`;
 
 type Lang = "fr" | "en";
+
+// Données Partenaires
+const PARTNERS_DATA = [
+  { name: "SAKO", logo: sakoLogo, desc: "Onduleurs & Systèmes Solaires", badge: "Tier 1 Certified" },
+  { name: "Felicity Solar", logo: felicityLogo, desc: "Batteries Lithium & Onduleurs", badge: "LiFePO4 Pro" },
+  { name: "Cworth Energy", logo: cworthLogo, desc: "Composants & Protections", badge: "IEC Standard" },
+  { name: "Growatt", logo: growattLogo, desc: "Onduleurs Hybrides Intelligents", badge: "Smart Energy" },
+  { name: "LONGi Solar", logo: longiLogo, desc: "Panneaux Photovoltaïques", badge: "World Leader" },
+];
 
 const TRANSLATIONS = {
   fr: {
@@ -65,9 +83,9 @@ const TRANSLATIONS = {
     heroCardSub: "Contact direct",
 
     partnersEyebrow: "Confiance & Qualité",
-    partnersTitle: "Nos Marque & Partenaires Officiels",
+    partnersTitle: "Nos Marques & Partenaires Officiels",
     partnersDesc: "Nous collaborons directement avec les leaders mondiaux de la technologie photovoltaïque pour vous garantir du matériel certifié Tier 1.",
-    
+
     servicesEyebrow: "Nos Services",
     servicesTitle: "Une expertise complète en énergie solaire",
     servicesDesc: "De l'audit à la mise en service, EDSOLAR vous accompagne à chaque étape de votre transition énergétique.",
@@ -170,6 +188,7 @@ const TRANSLATIONS = {
 
     footerNav: "Navigation",
     footerContact: "Contact",
+    footerPartners: "Partenaires Certifiés",
     footerRights: "© 2026 Bimedia Connect Agency. Tous droits réservés.",
     footerLegal: "Mentions légales",
     footerPrivacy: "Confidentialité",
@@ -204,7 +223,7 @@ const TRANSLATIONS = {
     partnersEyebrow: "Trust & Quality",
     partnersTitle: "Our Official Brands & Partners",
     partnersDesc: "We partner directly with global leaders in photovoltaic technology to provide you Tier-1 certified equipment.",
-    
+
     servicesEyebrow: "Our Services",
     servicesTitle: "Comprehensive expertise in solar energy",
     servicesDesc: "From audit to commissioning, EDSOLAR guides you through every step of your energy transition.",
@@ -307,6 +326,7 @@ const TRANSLATIONS = {
 
     footerNav: "Navigation",
     footerContact: "Contact",
+    footerPartners: "Certified Partners",
     footerRights: "© 2026 Bimedia Connect Agency. All rights reserved.",
     footerLegal: "Legal Notice",
     footerPrivacy: "Privacy Policy",
@@ -400,7 +420,7 @@ function Index() {
   );
 }
 
-/* ---------------- Header Responsive avec Switch FR / EN ---------------- */
+/* ---------------- Header Responsive ---------------- */
 function Header({ lang, setLang, t }: { lang: Lang; setLang: (l: Lang) => void; t: typeof TRANSLATIONS["fr"] }) {
   const [open, setOpen] = useState(false);
 
@@ -433,7 +453,7 @@ function Header({ lang, setLang, t }: { lang: Lang; setLang: (l: Lang) => void; 
     : "Hello EDSOLAR, I would like to request a free quote.";
 
   return (
-    <header className="sticky top-0 z-50 border-b border-slate-200/80 bg-white/90 backdrop-blur-md dark:border-slate-800/80 dark:bg-slate-950/90 transition-all">
+    <header className="sticky top-0 z-50 border-b border-emerald-900/10 bg-white/90 backdrop-blur-md dark:border-emerald-900/30 dark:bg-emerald-950/90 transition-all">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-2.5 sm:px-6">
         
         {/* LOGO */}
@@ -567,7 +587,7 @@ function Hero({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
     <section id="accueil" className="relative isolate overflow-hidden">
       <img src={hero} alt="Installateurs solaires EDSOLAR sur un toit à Yaoundé" width={1920} height={1080}
            className="absolute inset-0 -z-10 h-full w-full object-cover" />
-      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-slate-950/90 via-slate-900/80 to-slate-950/60" />
+      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-[#022c22]/95 via-[#011a14]/90 to-[#022c22]/80" />
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-20 sm:px-6 md:py-32 lg:grid-cols-[1.15fr_1fr] lg:py-40">
         <div className="text-white">
           <span className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-emerald-400 backdrop-blur">
@@ -576,7 +596,7 @@ function Hero({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
           <h1 className="mt-6 text-3xl font-black leading-[1.1] tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
             {t.heroTitle1}<span className="text-emerald-400">{t.heroTitle2}</span>{t.heroTitle3}
           </h1>
-          <p className="mt-6 max-w-xl text-base leading-relaxed text-slate-300 sm:text-lg">
+          <p className="mt-6 max-w-xl text-base leading-relaxed text-emerald-100/80 sm:text-lg">
             {t.heroDesc}
           </p>
 
@@ -585,7 +605,7 @@ function Hero({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
             <span className="font-bold text-emerald-400">{lang === "fr" ? "Paiement flexible :" : "Flexible payment:"}</span>
             <span className="rounded-md bg-emerald-500/20 px-2 py-0.5 text-emerald-300 font-semibold">MTN MoMo</span>
             <span className="rounded-md bg-emerald-500/20 px-2 py-0.5 text-emerald-300 font-semibold">Orange Money</span>
-            <span className="rounded-md bg-blue-500/20 px-2 py-0.5 text-blue-300 font-semibold">{lang === "fr" ? "Traites échelonnées" : "Installment payments"}</span>
+            <span className="rounded-md bg-emerald-500/20 px-2 py-0.5 text-emerald-300 font-semibold">{lang === "fr" ? "Traites échelonnées" : "Installment payments"}</span>
           </div>
 
           <div className="mt-8 flex flex-wrap gap-3">
@@ -596,22 +616,22 @@ function Hero({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
               <Phone className="h-4 w-4" /> {t.heroExpertBtn}
             </a>
           </div>
-          <div className="mt-10 flex flex-wrap items-center gap-6 text-sm text-slate-300">
+          <div className="mt-10 flex flex-wrap items-center gap-6 text-sm text-emerald-100/80">
             <div className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-emerald-400" /> {t.heroStat1}</div>
             <div className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-emerald-400" /> {t.heroStat2}</div>
             <div className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-emerald-400" /> {t.heroStat3}</div>
           </div>
         </div>
         <div className="hidden lg:block">
-          <div className="ml-auto max-w-sm rounded-3xl border border-white/15 bg-slate-900/60 p-6 text-white shadow-2xl backdrop-blur-xl">
+          <div className="ml-auto max-w-sm rounded-3xl border border-emerald-500/20 bg-[#011a14]/80 p-6 text-white shadow-2xl backdrop-blur-xl">
             <div className="flex items-center gap-3">
               <img src={logo} alt="EDSOLAR" className="h-14 w-14 rounded-xl bg-white object-contain p-1" />
               <div>
-                <p className="text-xs uppercase tracking-widest text-slate-400">{t.heroCardSub}</p>
+                <p className="text-xs uppercase tracking-widest text-emerald-300/70">{t.heroCardSub}</p>
                 <p className="text-lg font-bold">{t.heroCardTitle}</p>
               </div>
             </div>
-            <div className="mt-5 space-y-3 text-sm text-slate-300">
+            <div className="mt-5 space-y-3 text-sm text-emerald-100/80">
               <div className="flex items-start gap-3"><MapPin className="mt-0.5 h-4 w-4 text-emerald-400 shrink-0" /> Tradex Olembe, Yaoundé, Cameroun</div>
               <div className="flex items-start gap-3"><Leaf className="mt-0.5 h-4 w-4 text-emerald-400 shrink-0" /> {t.heroStat3}</div>
               <div className="flex items-start gap-3"><Phone className="mt-0.5 h-4 w-4 text-emerald-400 shrink-0" /> +237 650544444</div>
@@ -628,18 +648,10 @@ function Hero({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
   );
 }
 
-/* ---------------- PARTENAIRES (SAKO, Felicity, Cworth, Growatt, Longi) ---------------- */
+/* ---------------- PARTENAIRES SECTION (Avec vrais logos) ---------------- */
 function Partners({ t }: { t: typeof TRANSLATIONS["fr"] }) {
-  const PARTNERS_LIST = [
-    { name: "SAKO", desc: "Onduleurs & Systèmes Solaires", badge: "Tier 1 Certified" },
-    { name: "Felicity Solar", desc: "Batteries Lithium & Onduleurs", badge: "LiFePO4 Pro" },
-    { name: "Cworth", desc: "Composants & Protections", badge: "IEC Standard" },
-    { name: "Growatt", desc: "Onduleurs Hybrides Intelligents", badge: "Smart Energy" },
-    { name: "LONGi Solar", desc: "Panneaux Photovoltaïques High-Yield", badge: "World Leader" },
-  ];
-
   return (
-    <section id="partenaires" className="border-y border-border bg-card py-12 sm:py-16">
+    <section id="partenaires" className="border-y border-emerald-900/10 bg-card py-12 sm:py-16">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="text-center max-w-2xl mx-auto mb-10">
           <span className="text-xs font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400 flex items-center justify-center gap-1.5">
@@ -650,15 +662,15 @@ function Partners({ t }: { t: typeof TRANSLATIONS["fr"] }) {
         </div>
 
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
-          {PARTNERS_LIST.map((partner) => (
+          {PARTNERS_DATA.map((partner) => (
             <div 
               key={partner.name} 
-              className="group flex flex-col items-center justify-center rounded-2xl border border-border bg-background p-5 text-center transition-all hover:border-emerald-500/50 hover:shadow-md"
+              className="group flex flex-col items-center justify-center rounded-2xl border border-border bg-white p-5 text-center shadow-sm transition-all hover:border-emerald-500/50 hover:shadow-md dark:bg-slate-900/80"
             >
-              <div className="grid h-12 w-12 place-items-center rounded-xl bg-emerald-500/10 text-emerald-600 font-black text-xl group-hover:scale-110 transition-transform">
-                {partner.name.charAt(0)}
+              <div className="flex h-16 w-full items-center justify-center p-2 rounded-xl bg-white">
+                <img src={partner.logo} alt={`Logo ${partner.name}`} className="max-h-full max-w-full object-contain transition-transform group-hover:scale-105" />
               </div>
-              <h3 className="mt-3 text-base font-extrabold text-foreground tracking-tight">{partner.name}</h3>
+              <h3 className="mt-3 text-sm font-extrabold text-foreground">{partner.name}</h3>
               <p className="mt-1 text-[11px] text-muted-foreground leading-tight">{partner.desc}</p>
               <span className="mt-3 inline-block rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-[9px] font-bold text-emerald-600 dark:text-emerald-400">
                 {partner.badge}
@@ -858,7 +870,7 @@ function Calculator({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
               })}
             </div>
           </div>
-          <div className="rounded-3xl border border-slate-800 bg-slate-950 p-6 text-white shadow-2xl sm:p-8">
+          <div className="rounded-3xl border border-emerald-900/40 bg-[#022c22] p-6 text-white shadow-2xl sm:p-8">
             <p className="text-xs font-bold uppercase tracking-widest text-emerald-400">{t.simEyebrow}</p>
             <h3 className="mt-2 text-2xl font-black">{t.simResultTitle}</h3>
             <div className="mt-6 space-y-3.5">
@@ -873,7 +885,7 @@ function Calculator({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
                className="mt-6 flex items-center justify-center gap-2 rounded-full bg-emerald-500 px-5 py-3.5 text-sm font-bold text-slate-950 shadow-lg transition-all hover:scale-105 hover:bg-emerald-400">
               <MessageCircle className="h-4 w-4 fill-slate-950" /> {t.simSendWA}
             </a>
-            <p className="mt-3 text-center text-xs text-slate-400">{t.simNote}</p>
+            <p className="mt-3 text-center text-xs text-emerald-200/60">{t.simNote}</p>
           </div>
         </div>
       </div>
@@ -883,10 +895,10 @@ function Calculator({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
 
 function Metric({ icon: Icon, label, value, highlight }: { icon: any; label: string; value: string; highlight?: boolean }) {
   return (
-    <div className={`flex items-center justify-between rounded-2xl border border-slate-800 ${highlight ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-400" : "bg-slate-900/60"} px-4 py-3`}>
+    <div className={`flex items-center justify-between rounded-2xl border ${highlight ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-400" : "bg-emerald-950/60 border-emerald-900/40"} px-4 py-3`}>
       <div className="flex items-center gap-2.5">
-        <Icon className={`h-4 w-4 ${highlight ? "text-emerald-400" : "text-slate-400"}`} />
-        <span className="text-xs sm:text-sm text-slate-300">{label}</span>
+        <Icon className={`h-4 w-4 ${highlight ? "text-emerald-400" : "text-emerald-300/70"}`} />
+        <span className="text-xs sm:text-sm text-emerald-100/90">{label}</span>
       </div>
       <span className="text-base sm:text-lg font-black tabular-nums">{value}</span>
     </div>
@@ -985,13 +997,13 @@ function Products({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           {categories.map((c) => (
             <button key={c} onClick={() => setCat(c)}
-              className={`rounded-full px-5 py-2 text-sm font-semibold transition-all ${cat === c ? "bg-slate-900 text-white shadow-md dark:bg-emerald-600 dark:text-white" : "border border-border bg-card text-foreground hover:border-emerald-600"}`}>
+              className={`rounded-full px-5 py-2 text-sm font-semibold transition-all ${cat === c ? "bg-emerald-600 text-white shadow-md" : "border border-border bg-card text-foreground hover:border-emerald-600"}`}>
               {c === "Tous" ? (lang === "fr" ? "Tous" : "All") : translateDynamicText(c, lang)}
             </button>
           ))}
         </div>
 
-        {/* BANDEAU COMBINÉ : PILIERS RÉASSURANCE + CONSEIL TECHNIQUE WHATSAPP */}
+        {/* BANDEAU COMBINÉ : PILIERS RÉASSURANCE + CONSEIL TECHNIQUE */}
         <div className="mx-auto mt-8 max-w-5xl overflow-hidden rounded-3xl border border-emerald-500/20 bg-card p-6 shadow-sm">
           <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
             
@@ -1018,7 +1030,7 @@ function Products({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
               </div>
 
               <div className="flex items-center gap-3">
-                <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-blue-500/10 text-blue-600">
+                <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-emerald-500/10 text-emerald-600">
                   <Wrench className="h-5 w-5" />
                 </div>
                 <div>
@@ -1028,7 +1040,7 @@ function Products({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
               </div>
             </div>
 
-            {/* Bouton d'Aide & Conseil WhatsApp Direct */}
+            {/* Bouton d'Aide WhatsApp */}
             <div className="flex flex-col sm:flex-row items-center justify-between lg:justify-end gap-3 pt-4 border-t border-border lg:border-t-0 lg:border-l lg:pt-0 lg:pl-6">
               <div className="text-center sm:text-left lg:text-right">
                 <p className="text-xs font-bold text-foreground">{lang === "fr" ? "Besoin d'aide pour choisir ?" : "Need help choosing?"}</p>
@@ -1145,39 +1157,39 @@ function QualityComparison({ lang }: { lang: Lang }) {
   );
 }
 
-/* ---------------- SECTION : SPÉCIAL DIASPORA ---------------- */
+/* ---------------- SECTION : SPÉCIAL DIASPORA (FONDS VERT SOMBRE) ---------------- */
 function DiasporaSection({ lang }: { lang: Lang }) {
   const diasporaMsg = lang === "fr"
     ? "Bonjour EDSOLAR, je vis à l'étranger (Diaspora) et je souhaite équiper la maison familiale au pays."
     : "Hello EDSOLAR, I live abroad (Diaspora) and want to equip my family home back in Cameroon.";
 
   return (
-    <section id="diaspora" className="bg-slate-950 py-16 text-white sm:py-28">
+    <section id="diaspora" className="bg-[#022c22] py-16 text-white sm:py-28 border-t border-emerald-900/30">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
           <div>
-            <span className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-emerald-400">
+            <span className="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-emerald-400">
               <Globe className="h-3.5 w-3.5 text-emerald-400" /> {lang === "fr" ? "Offre Diaspora Camerounaise" : "Cameroonian Diaspora Offer"}
             </span>
-            <h2 className="mt-4 text-2xl font-black sm:text-4xl">
+            <h2 className="mt-4 text-2xl font-black sm:text-4xl text-white">
               {lang === "fr" ? "Équipez la maison familiale au pays en toute tranquillité" : "Equip your family home back home with total peace of mind"}
             </h2>
-            <p className="mt-4 text-sm leading-relaxed text-slate-300 sm:text-base">
+            <p className="mt-4 text-sm leading-relaxed text-emerald-100/80 sm:text-base">
               {lang === "fr"
                 ? "Vous vivez en France, au Canada, aux USA ou en Europe ? Offrez le confort solaire à vos parents et vos proches au Cameroun sans stress. Nous gérons tout de A à Z avec un suivi photos/vidéos en direct."
                 : "Living in France, Canada, USA, or Europe? Provide solar comfort to your family in Cameroon stress-free. We manage everything from A to Z with live photo/video updates."}
             </p>
 
             <div className="mt-6 space-y-3">
-              <div className="flex items-start gap-3 text-sm text-slate-200">
+              <div className="flex items-start gap-3 text-sm text-emerald-100/90">
                 <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-400" />
                 <span>{lang === "fr" ? "Paiement sécurisé à distance (CB Internationale, Virement, Ria/Western Union)." : "Secure remote payment (International Card, Wire transfer, Ria/Western Union)."}</span>
               </div>
-              <div className="flex items-start gap-3 text-sm text-slate-200">
+              <div className="flex items-start gap-3 text-sm text-emerald-100/90">
                 <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-400" />
                 <span>{lang === "fr" ? "Compte-rendu vidéo WhatsApp direct à chaque étape du chantier." : "Direct WhatsApp video reports at every stage of the installation."}</span>
               </div>
-              <div className="flex items-start gap-3 text-sm text-slate-200">
+              <div className="flex items-start gap-3 text-sm text-emerald-100/90">
                 <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-400" />
                 <span>{lang === "fr" ? "Visite technique gratuite du logement à Yaoundé, Douala ou en région." : "Free home technical survey in Yaoundé, Douala, or other regions."}</span>
               </div>
@@ -1192,26 +1204,26 @@ function DiasporaSection({ lang }: { lang: Lang }) {
             </div>
           </div>
 
-          <div className="relative rounded-3xl border border-slate-800 bg-slate-900/60 p-6 sm:p-8 backdrop-blur">
+          <div className="relative rounded-3xl border border-emerald-800/50 bg-[#011a14]/90 p-6 sm:p-8 backdrop-blur shadow-2xl">
             <h3 className="text-lg font-bold text-emerald-400">{lang === "fr" ? "Modes de Règlement Acceptés" : "Accepted Payment Methods"}</h3>
-            <p className="mt-1 text-xs text-slate-400">{lang === "fr" ? "Pour vos proches au pays ou depuis l'étranger :" : "For local relatives or from abroad:"}</p>
+            <p className="mt-1 text-xs text-emerald-200/60">{lang === "fr" ? "Pour vos proches au pays ou depuis l'étranger :" : "For local relatives or from abroad:"}</p>
 
             <div className="mt-6 grid grid-cols-2 gap-3 text-xs">
-              <div className="rounded-xl border border-slate-800 bg-slate-950/80 p-3">
+              <div className="rounded-xl border border-emerald-900/60 bg-emerald-950/60 p-3">
                 <span className="font-bold text-white block">MTN Mobile Money</span>
-                <span className="text-slate-400 text-[10px]">{lang === "fr" ? "Règlement local rapide" : "Fast local payment"}</span>
+                <span className="text-emerald-300/60 text-[10px]">{lang === "fr" ? "Règlement local rapide" : "Fast local payment"}</span>
               </div>
-              <div className="rounded-xl border border-slate-800 bg-slate-950/80 p-3">
+              <div className="rounded-xl border border-emerald-900/60 bg-emerald-950/60 p-3">
                 <span className="font-bold text-white block">Orange Money</span>
-                <span className="text-slate-400 text-[10px]">{lang === "fr" ? "Règlement local rapide" : "Fast local payment"}</span>
+                <span className="text-emerald-300/60 text-[10px]">{lang === "fr" ? "Règlement local rapide" : "Fast local payment"}</span>
               </div>
-              <div className="rounded-xl border border-slate-800 bg-slate-950/80 p-3">
+              <div className="rounded-xl border border-emerald-900/60 bg-emerald-950/60 p-3">
                 <span className="font-bold text-white block">Carte Visa / Mastercard</span>
-                <span className="text-slate-400 text-[10px]">{lang === "fr" ? "Paiement en ligne sécurisé" : "Secure online payment"}</span>
+                <span className="text-emerald-300/60 text-[10px]">{lang === "fr" ? "Paiement en ligne sécurisé" : "Secure online payment"}</span>
               </div>
-              <div className="rounded-xl border border-slate-800 bg-slate-950/80 p-3">
+              <div className="rounded-xl border border-emerald-900/60 bg-emerald-950/60 p-3">
                 <span className="font-bold text-white block">Virement & Agence</span>
-                <span className="text-slate-400 text-[10px]">{lang === "fr" ? "SEPA / Swift / Ria / WU" : "SEPA / Swift / Ria / WU"}</span>
+                <span className="text-emerald-300/60 text-[10px]">{lang === "fr" ? "SEPA / Swift / Ria / WU" : "SEPA / Swift / Ria / WU"}</span>
               </div>
             </div>
           </div>
@@ -1224,7 +1236,7 @@ function DiasporaSection({ lang }: { lang: Lang }) {
 /* ---------------- WhatsApp Channel Section ---------------- */
 function WhatsAppChannel({ t }: { t: typeof TRANSLATIONS["fr"] }) {
   return (
-    <section id="canal" className="relative overflow-hidden bg-slate-950 py-16 text-slate-100 sm:py-28">
+    <section id="canal" className="relative overflow-hidden bg-[#022c22] py-16 text-slate-100 sm:py-28 border-t border-emerald-900/30">
       <div className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#25D366]/10 blur-[120px]" />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
@@ -1235,45 +1247,45 @@ function WhatsAppChannel({ t }: { t: typeof TRANSLATIONS["fr"] }) {
           <h2 className="mt-4 text-2xl font-black tracking-tight text-white sm:text-4xl md:text-5xl">
             {t.channelTitle1}<span className="text-[#25D366]">{t.channelTitle2}</span>
           </h2>
-          <p className="mt-4 text-sm text-slate-400 sm:text-lg">
+          <p className="mt-4 text-sm text-emerald-100/70 sm:text-lg">
             {t.channelDesc}
           </p>
         </div>
 
         <div className="mt-12 grid gap-6 sm:grid-cols-2 md:grid-cols-3">
-          <div className="group rounded-2xl border border-slate-800 bg-slate-900/60 p-6 backdrop-blur transition-all hover:border-[#25D366]/50 hover:bg-slate-900">
-            <div className="grid h-12 w-12 place-items-center rounded-xl bg-[#25D366]/10 text-[#25D366] transition-transform group-hover:scale-110">
+          <div className="group rounded-2xl border border-emerald-800/30 bg-[#011a14]/60 p-6 backdrop-blur transition-all hover:border-[#25D366]/50">
+            <div className="grid h-12 w-12 place-items-center rounded-xl bg-[#25D366]/10 text-[#25D366]">
               <Video className="h-6 w-6" />
             </div>
             <h3 className="mt-5 text-lg font-bold text-white">{t.c1Title}</h3>
-            <p className="mt-2 text-sm leading-relaxed text-slate-400">{t.c1Desc}</p>
+            <p className="mt-2 text-sm leading-relaxed text-emerald-200/60">{t.c1Desc}</p>
           </div>
 
-          <div className="group rounded-2xl border border-slate-800 bg-slate-900/60 p-6 backdrop-blur transition-all hover:border-[#25D366]/50 hover:bg-slate-900">
-            <div className="grid h-12 w-12 place-items-center rounded-xl bg-[#25D366]/10 text-[#25D366] transition-transform group-hover:scale-110">
+          <div className="group rounded-2xl border border-emerald-800/30 bg-[#011a14]/60 p-6 backdrop-blur transition-all hover:border-[#25D366]/50">
+            <div className="grid h-12 w-12 place-items-center rounded-xl bg-[#25D366]/10 text-[#25D366]">
               <Camera className="h-6 w-6" />
             </div>
             <h3 className="mt-5 text-lg font-bold text-white">{t.c2Title}</h3>
-            <p className="mt-2 text-sm leading-relaxed text-slate-400">{t.c2Desc}</p>
+            <p className="mt-2 text-sm leading-relaxed text-emerald-200/60">{t.c2Desc}</p>
           </div>
 
-          <div className="group rounded-2xl border border-slate-800 bg-slate-900/60 p-6 backdrop-blur transition-all hover:border-[#25D366]/50 hover:bg-slate-900 sm:col-span-2 md:col-span-1">
-            <div className="grid h-12 w-12 place-items-center rounded-xl bg-[#25D366]/10 text-[#25D366] transition-transform group-hover:scale-110">
+          <div className="group rounded-2xl border border-emerald-800/30 bg-[#011a14]/60 p-6 backdrop-blur transition-all hover:border-[#25D366]/50 sm:col-span-2 md:col-span-1">
+            <div className="grid h-12 w-12 place-items-center rounded-xl bg-[#25D366]/10 text-[#25D366]">
               <Sparkles className="h-6 w-6" />
             </div>
             <h3 className="mt-5 text-lg font-bold text-white">{t.c3Title}</h3>
-            <p className="mt-2 text-sm leading-relaxed text-slate-400">{t.c3Desc}</p>
+            <p className="mt-2 text-sm leading-relaxed text-emerald-200/60">{t.c3Desc}</p>
           </div>
         </div>
 
-        <div className="mt-10 rounded-3xl border border-slate-800 bg-gradient-to-r from-slate-900 via-slate-900/90 to-slate-900 p-6 shadow-2xl backdrop-blur sm:p-10">
+        <div className="mt-10 rounded-3xl border border-emerald-800/50 bg-[#011a14] p-6 shadow-2xl backdrop-blur sm:p-10">
           <div className="mx-auto flex max-w-2xl flex-col items-center gap-6 text-center sm:flex-row sm:justify-between sm:text-left">
             <div>
               <p className="text-lg sm:text-xl font-bold text-white">{t.channelSubscribers}</p>
-              <p className="mt-1 text-xs sm:text-sm text-slate-400">{t.channelSubNote}</p>
+              <p className="mt-1 text-xs sm:text-sm text-emerald-200/60">{t.channelSubNote}</p>
             </div>
             <a href={WA_CHANNEL_URL} target="_blank" rel="noreferrer"
-               className="inline-flex shrink-0 items-center gap-3 rounded-full bg-[#25D366] px-6 py-3.5 sm:px-8 sm:py-4 text-sm sm:text-base font-bold text-slate-950 shadow-lg transition-all hover:scale-105 hover:bg-[#20ba59]">
+               className="inline-flex shrink-0 items-center gap-3 rounded-full bg-[#25D366] px-6 py-3.5 text-sm sm:text-base font-bold text-slate-950 shadow-lg transition-all hover:scale-105 hover:bg-[#20ba59]">
               <MessageCircle className="h-5 w-5 fill-slate-950 text-[#25D366]" /> {t.channelBtn}
             </a>
           </div>
@@ -1395,7 +1407,7 @@ function About({ t }: { t: typeof TRANSLATIONS["fr"] }) {
   );
 }
 
-/* ---------------- Contact (Structure Optimisée sans chevauchement) ---------------- */
+/* ---------------- Contact ---------------- */
 function Contact({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
   const [form, setForm] = useState({ name: "", phone: "", location: "", type: "Maison", zone: "Cameroun", needs: "", message: "" });
   const [sent, setSent] = useState(false);
@@ -1416,10 +1428,7 @@ function Contact({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
         
         <div className="mt-12 grid gap-8 lg:grid-cols-[1.1fr_1.2fr] items-start">
           
-          {/* BLOC INFOS CONTACT & CARTE MAPS */}
           <div className="flex flex-col gap-6">
-            
-            {/* Grille 2x2 propre pour les 4 cartes d'information */}
             <div className="grid gap-4 sm:grid-cols-2">
               <ContactCard icon={MapPin} title={t.contactHeadquarters} lines={["Tradex Olembe", "Yaoundé, Cameroun"]} />
               <ContactCard icon={Leaf} title={t.contactZone} lines={["Tout le Cameroun", "& Afrique Centrale"]} />
@@ -1427,7 +1436,6 @@ function Contact({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
               <ContactCard icon={Mail} title={t.contactEmail} lines={[EMAIL]} href={`mailto:${EMAIL}`} />
             </div>
 
-            {/* Carte Google Maps isolée */}
             <div className="overflow-hidden rounded-3xl border border-border bg-card shadow-sm h-64 sm:h-72 w-full">
               <iframe 
                 title="EDSOLAR Yaoundé" 
@@ -1438,7 +1446,6 @@ function Contact({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
             </div>
           </div>
 
-          {/* FORMULAIRE DE CONTACT */}
           <form onSubmit={submit} className="rounded-3xl border border-border bg-card p-6 sm:p-8 shadow-sm">
             <div className="grid gap-4 sm:grid-cols-2">
               <Field label={t.formName} value={form.name} onChange={(v) => setForm({ ...form, name: v })} required />
@@ -1510,33 +1517,37 @@ function Field({ label, value, onChange, required, type = "text", placeholder }:
   );
 }
 
-/* ---------------- Footer ---------------- */
+/* ---------------- FOOTER AVEC LOGOS PARTENAIRES VISIBLES ---------------- */
 function Footer({ t }: { t: typeof TRANSLATIONS["fr"] }) {
   return (
-    <footer className="border-t border-slate-800 bg-slate-950 text-white">
+    <footer className="border-t border-emerald-900/40 bg-[#011a14] text-white">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 sm:grid-cols-2 lg:grid-cols-4">
-        <div className="sm:col-span-2 lg:col-span-2">
-          <a href="/" className="inline-flex items-center gap-3 transition-opacity hover:opacity-90" aria-label="Retour à l'accueil">
+        
+        {/* COLONNE 1 : LOGO & INFOS */}
+        <div>
+          <a href="/" className="inline-flex items-center gap-3" aria-label="Retour à l'accueil">
             <img src={logo} alt="EDSOLAR Énergie Cameroun" className="h-12 w-12 rounded-xl bg-white object-contain p-1 shadow-md" />
             <div>
               <p className="text-lg font-black text-white">EDSOLAR</p>
               <p className="text-[10px] uppercase tracking-[0.15em] text-emerald-400 font-bold">Énergie Cameroun</p>
             </div>
           </a>
-          <p className="mt-4 max-w-md text-sm text-slate-400">
-            {t.heroDesc}
+          <p className="mt-4 text-xs leading-relaxed text-emerald-100/60">
+            Solutions solaires photovoltaïques haute performance et certifiées Tier 1 au Cameroun et en Afrique Centrale.
           </p>
           <div className="mt-5 flex gap-3">
             {[Facebook, Instagram, Linkedin].map((I, i) => (
-              <a key={i} href="#" className="grid h-10 w-10 place-items-center rounded-full bg-slate-900 text-slate-300 transition-colors hover:bg-emerald-600 hover:text-white">
+              <a key={i} href="#" className="grid h-10 w-10 place-items-center rounded-full bg-emerald-950 text-emerald-200 transition-colors hover:bg-emerald-600 hover:text-white border border-emerald-900/50">
                 <I className="h-4 w-4" />
               </a>
             ))}
           </div>
         </div>
+
+        {/* COLONNE 2 : NAVIGATION */}
         <div>
           <p className="text-sm font-bold uppercase tracking-wider text-emerald-400">{t.footerNav}</p>
-          <ul className="mt-4 space-y-2 text-sm text-slate-300">
+          <ul className="mt-4 space-y-2 text-xs text-emerald-100/70">
             <li><a href="#partenaires" className="hover:text-emerald-400 transition-colors">{t.navPartners}</a></li>
             <li><a href="#services" className="hover:text-emerald-400 transition-colors">{t.navServices}</a></li>
             <li><a href="#kits" className="hover:text-emerald-400 transition-colors">{t.navKits}</a></li>
@@ -1545,18 +1556,34 @@ function Footer({ t }: { t: typeof TRANSLATIONS["fr"] }) {
             <li><a href="#realisations" className="hover:text-emerald-400 transition-colors">{t.navRealisations}</a></li>
           </ul>
         </div>
+
+        {/* COLONNE 3 : CONTACT */}
         <div>
           <p className="text-sm font-bold uppercase tracking-wider text-emerald-400">{t.footerContact}</p>
-          <ul className="mt-4 space-y-3 text-sm text-slate-300">
-            <li className="flex gap-2"><MapPin className="h-4 w-4 shrink-0 text-emerald-400" /> Tradex Olembe, Yaoundé, Cameroun</li>
+          <ul className="mt-4 space-y-2.5 text-xs text-emerald-100/70">
+            <li className="flex gap-2"><MapPin className="h-4 w-4 shrink-0 text-emerald-400" /> Tradex Olembe, Yaoundé</li>
             <li className="flex gap-2"><Leaf className="h-4 w-4 shrink-0 text-emerald-400" /> Cameroun & Afrique Centrale</li>
             <li className="flex gap-2"><Phone className="h-4 w-4 shrink-0 text-emerald-400" /> +237 650544444</li>
             <li className="flex gap-2"><Mail className="h-4 w-4 shrink-0 text-emerald-400" /> edsolarcam@gmail.com</li>
           </ul>
         </div>
+
+        {/* COLONNE 4 : PARTENAIRES AVEC LOGOS VISIBLES */}
+        <div>
+          <p className="text-sm font-bold uppercase tracking-wider text-emerald-400">{t.footerPartners}</p>
+          <div className="mt-4 grid grid-cols-3 gap-2">
+            {PARTNERS_DATA.map((p) => (
+              <div key={p.name} className="flex items-center justify-center rounded-lg bg-white p-1.5 shadow-sm border border-emerald-950 h-10">
+                <img src={p.logo} alt={p.name} className="max-h-full max-w-full object-contain" />
+              </div>
+            ))}
+          </div>
+        </div>
+
       </div>
-      <div className="border-t border-slate-900 bg-slate-950">
-        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-4 py-5 text-xs text-slate-500 sm:flex-row sm:px-6">
+
+      <div className="border-t border-emerald-900/30 bg-[#01120e]">
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-4 py-5 text-xs text-emerald-100/50 sm:flex-row sm:px-6">
           <p>{t.footerRights}</p>
           <nav className="flex flex-wrap items-center gap-x-4 gap-y-1">
             <a href="/mentions-legales" className="hover:text-emerald-400">{t.footerLegal}</a>
