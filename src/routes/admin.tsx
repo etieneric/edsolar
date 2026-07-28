@@ -120,6 +120,21 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
 }
 
 /* ---------- Image uploader corrigé ---------- */
+async function uploadCompressed(
+  createUploadUrl: (a: { data: { folder: "photos" | "kits" | "products"; filename: string } }) => Promise<any>,
+  folder: "photos" | "kits" | "products",
+  file: File,
+) {
+  const { blob, filename, contentType } = await compressImage(file);
+  const { signedUrl, publicUrl } = await createUploadUrl({ data: { folder, filename } });
+  const put = await fetch(signedUrl, { method: "PUT", headers: { "Content-Type": contentType }, body: blob });
+  if (!put.ok) {
+    const t = await put.text().catch(() => "");
+    throw new Error(`Upload échoué (${put.status}) ${t}`.trim());
+  }
+  return publicUrl as string;
+}
+
 function ImageUploader({
   folder, value, onChange,
 }: { folder: "photos" | "kits" | "products"; value: string; onChange: (url: string) => void }) {
