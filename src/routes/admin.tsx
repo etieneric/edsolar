@@ -8,7 +8,7 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 import {
   adminLogin, adminLogout, adminCheck,
-  adminAddPhoto, adminDeletePhoto,
+  adminAddPhoto, adminUpdatePhoto, adminDeletePhoto,
   adminUpsertKit, adminDeleteKit,
   adminListReviews, adminSetReviewApproved, adminDeleteReview,
   adminUpsertProduct, adminDeleteProduct,
@@ -283,18 +283,19 @@ function BulkPhotoUpload({ onDone }: { onDone: () => void | Promise<void> }) {
   );
 }
 
-/* ---------------- Photos (Avec Ajout & Édition du Lieu) ---------------- */
+/* ---------------- Photos (PhotosPanel avec enregistrement sécurisé au serveur) ---------------- */
 function PhotosPanel() {
   const [items, setItems] = useState<any[]>([]);
   const [editingId, setEditingId] = useState<string | null>(null);
   
-  // Champs Formulaire (Ajout ou Édition)
   const [url, setUrl] = useState("");
   const [caption, setCaption] = useState("");
   const [location, setLocation] = useState("");
   
   const [busy, setBusy] = useState(false);
+  
   const add = useServerFn(adminAddPhoto);
+  const updatePhoto = useServerFn(adminUpdatePhoto);
   const del = useServerFn(adminDeletePhoto);
 
   const load = async () => {
@@ -329,21 +330,23 @@ function PhotosPanel() {
     setBusy(true);
     try {
       if (editingId) {
-        // Enregistrement de l'édition dans Supabase
-        await supabase
-          .from("gallery_photos")
-          .update({
+        // Exécution sécurisée côté serveur pour enregistrer les modifications
+        await updatePhoto({
+          data: {
+            id: editingId,
             url,
-            caption: caption || null,
+            caption,
             location: location || "Cameroun",
-          })
-          .eq("id", editingId);
+          },
+        });
       } else {
-        // Nouvel ajout
+        // Ajout d'une nouvelle photo
         await add({ data: { url, caption, location: location || "Cameroun" } });
       }
       resetForm();
       await load();
+    } catch (err) {
+      console.error("Erreur lors de l'enregistrement :", err);
     } finally {
       setBusy(false);
     }
@@ -382,7 +385,7 @@ function PhotosPanel() {
             <input 
               value={location} 
               onChange={(e) => setLocation(e.target.value)} 
-              placeholder="Ex: Yaoundé, Bastos / Douala..."
+              placeholder="Ex: Yaoundé, Bastos / Menganga..."
               className="w-full rounded-xl border border-input bg-background px-4 py-2.5 text-sm outline-none focus:border-primary" 
             />
           </div>
@@ -561,7 +564,7 @@ function ReviewsPanel() {
           <p className="mt-2 text-sm">{r.comment}</p>
           <div className="mt-3 flex gap-2">
             <button onClick={async () => { await setApp({ data: { id: r.id, approved: !r.approved } }); await load(); }}
-              className="inline-flex items-center gap-1 rounded-full bg-primary px-3 py-1.5 text-xs font-bold text-primary-foreground">
+              className="inline-flex items-center gap-1 rounded-full bg-[#386b34] px-3 py-1.5 text-xs font-bold text-white">
               {r.approved ? <><X className="h-3 w-3" /> Retirer</> : <><Check className="h-3 w-3" /> Approuver</>}
             </button>
             <button onClick={async () => { if (confirm("Supprimer cet avis ?")) { await del({ data: { id: r.id } }); await load(); } }}
@@ -634,7 +637,6 @@ function ProductsPanel() {
 
   return (
     <section className="space-y-6">
-      {/* Category filter chips */}
       <div className="rounded-2xl border border-border bg-card p-4">
         <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Catégories</p>
         <div className="mt-2 flex flex-wrap gap-2">
