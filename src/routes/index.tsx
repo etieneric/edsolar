@@ -36,9 +36,9 @@ import cworthLogo from "@/assets/Cworth.png";
 import growattLogo from "@/assets/Growarth.png";
 import longiLogo from "@/assets/Longi.png";
 
-// Imports des logos de paiement Mobile Money (Encodage propre de l'espace)
+// Imports des logos de paiement Mobile Money (Fichier renommé propre OrangeMoney.png)
 import momoLogo from "@/assets/momo.png";
-import orangeMoneyLogo from "@/assets/Orange%20Money.png";
+import orangeMoneyLogo from "@/assets/OrangeMoney.png";
 
 import { supabase } from "@/integrations/supabase/client";
 
@@ -911,7 +911,7 @@ function Calculator({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
             </div>
           </div>
           <div className="rounded-3xl border border-emerald-900/40 bg-[#234d20] p-6 text-white shadow-2xl sm:p-8">
-            <p className="text-xs font-bold uppercase tracking-widest text-emerald-300">{t.simEyebrow}</p>
+            <p className="text-xs font-bold uppercase tracking-widest text-[#25D366]">{t.simEyebrow}</p>
             <h3 className="mt-2 text-2xl font-black">{t.simResultTitle}</h3>
             <div className="mt-6 space-y-3.5">
               <Metric icon={Zap} label={t.simPeakPower} value={`${peakW.toLocaleString()} W`} />
