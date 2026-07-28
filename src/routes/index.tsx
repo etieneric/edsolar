@@ -6,7 +6,7 @@ import {
   Zap, Cpu, Tv, Refrigerator, Snowflake, Lightbulb, WashingMachine,
   Laptop, Fan, Microwave, CheckCircle2, Star, Award, Clock, Users,
   Facebook, Instagram, Linkedin, Send, Package, Search, ArrowUp,
-  Radio, Camera, Video, Sparkles, Globe, ZoomIn,
+  Radio, Camera, Video, Sparkles, Globe, ZoomIn, Edit2, Save,
   Check, AlertTriangle, Mail, Handshake, Heart, Smile, Utensils, Stethoscope, Car, Home,
   Compass, Play, Youtube
 } from "lucide-react";
@@ -70,17 +70,17 @@ const PARTNERS_DATA = [
   { name: "LONGi Solar", logo: longiLogo, desc: "Panneaux Photovoltaïques", badge: "World Leader" },
 ];
 
-// Galerie complète des 9 photos du terrain
-const FIELD_IMAGES = [
-  { src: field2, caption: "Équipe EDSOLAR en rassemblement sur le terrain" },
-  { src: field9, caption: "Déplacement en pirogue pour installation en zone enclavée" },
-  { src: field1, caption: "Installation & câblage technique du coffret solaire" },
-  { src: field7, caption: "Fixation et pose de panneaux solaires sur toiture" },
-  { src: field4, caption: "Moments d'enthousiasme et de cohésion d'équipe" },
-  { src: field8, caption: "Recherche & développement de solutions énergétiques" },
-  { src: field3, caption: "Mission technique d'installation en région" },
-  { src: field5, caption: "Équipe de techniciens qualifiés prêts pour l'intervention" },
-  { src: field6, caption: "Vérification et raccordement des panneaux solaires" },
+// Galerie par défaut des 9 photos du terrain
+const INITIAL_FIELD_IMAGES = [
+  { src: field2, caption: "Équipe EDSOLAR en rassemblement sur le terrain", location: "Yaoundé, Cameroun" },
+  { src: field9, caption: "Déplacement en pirogue pour installation en zone enclavée", location: "Nyong-et-So'o, Cameroun" },
+  { src: field1, caption: "Installation & câblage technique du coffret solaire", location: "Olembe, Yaoundé" },
+  { src: field7, caption: "Fixation et pose de panneaux solaires sur toiture", location: "Bastos, Yaoundé" },
+  { src: field4, caption: "Moments d'enthousiasme et de cohésion d'équipe", location: "Siège EDSOLAR, Yaoundé" },
+  { src: field8, caption: "Recherche & développement de solutions énergétiques", location: "Atelier EDSOLAR" },
+  { src: field3, caption: "Mission technique d'installation en région", location: "Ebolowa, Cameroun" },
+  { src: field5, caption: "Équipe de techniciens qualifiés prêts pour l'intervention", location: "Douala, Cameroun" },
+  { src: field6, caption: "Vérification et raccordement des panneaux solaires", location: "Kribi, Cameroun" },
 ];
 
 const TRANSLATIONS = {
@@ -215,139 +215,6 @@ const TRANSLATIONS = {
     footerRights: "© 2026 Bimedia Connect Agency. Tous droits réservés.",
     footerLegal: "Mentions légales",
     footerPrivacy: "Confidentialité",
-    footerCookies: "Cookies",
-  },
-  en: {
-    navServices: "Services",
-    navPartners: "Partners",
-    navKits: "Kits",
-    navBoutique: "Shop",
-    navSimulator: "Quote Simulator",
-    navRealisations: "Projects",
-    navHome: "Home",
-    navYouTube: "Videos",
-    navReviews: "Customer Reviews",
-    navContact: "Contact",
-    btnQuote: "Free Quote",
-    
-    heroTag: "No more unexpected power outages",
-    heroTitle1: "Autonomous & Eco-friendly ",
-    heroTitle2: "Solar Energy",
-    heroTitle3: " for Your Comfort",
-    heroDesc: "Ensure 24/7 power at home and office. Tier-1 certified equipment, guaranteed installations, and responsive support in Yaoundé and Central Africa.",
-    heroSimulateBtn: "Simulate your energy needs",
-    heroExpertBtn: "Talk to an expert",
-    heroStat1: "+500 successful setups",
-    heroStat2: "25-year manufacturer warranty",
-    heroStat3: "Cameroon & Central Africa",
-    heroCardTitle: "EDSOLAR Yaoundé",
-    heroCardSub: "Direct Contact",
-
-    partnersEyebrow: "Trust & Quality",
-    partnersTitle: "Our Official Brands & Partners",
-    partnersDesc: "We partner directly with global leaders in photovoltaic technology to provide you Tier-1 certified equipment.",
-
-    servicesEyebrow: "Our Services",
-    servicesTitle: "Comprehensive expertise in solar energy",
-    servicesDesc: "From audit to commissioning, EDSOLAR guides you through every step of your energy transition.",
-    s1Title: "Custom Solar Installation",
-    s1Desc: "Off-grid, hybrid, and grid-tied systems for residences, businesses, and industrial facilities.",
-    s2Title: "Maintenance & Repair",
-    s2Desc: "Technical inspection, panel cleaning, preventive maintenance, and inverter/battery replacement.",
-    s3Title: "Solar Equipment Sales",
-    s3Desc: "Photovoltaic panels, hybrid inverters, Lithium/Gel batteries, and MPPT charge controllers.",
-    s4Title: "Energy Audit & Consulting",
-    s4Desc: "Precise sizing by our qualified engineers to optimize your power consumption.",
-    learnMore: "Learn more",
-
-    simEyebrow: "Quote Simulator",
-    simTitle: "Estimate your solar installation in 1 minute",
-    simDesc: "Select your home appliances. Get your recommended power system and budget estimate instantly.",
-    simResultTitle: "Real-time Results",
-    simPeakPower: "Peak Power",
-    simDailyCons: "Daily Consumption",
-    simRecSystem: "Recommended System",
-    simLithiumBatt: "Lithium Batteries",
-    simPanels: "450W Solar Panels",
-    simBudget: "Estimated Budget",
-    simSendWA: "Get estimate on WhatsApp",
-    simNote: "Indicative estimate — final sizing validated by our engineers.",
-
-    shopEyebrow: "Shop",
-    shopTitle: "Factory certified solar equipment",
-    shopDesc: "Panels, Lithium batteries, inverters, and complete kits — zero counterfeit.",
-    shopSearchPlaceholder: "Search equipment (inverter, battery, panel...)",
-    shopSortFeatured: "Sort: Featured",
-    shopSortPriceAsc: "Price low to high",
-    shopSortPriceDesc: "Price high to low",
-    shopSortPopularity: "Popularity",
-    shopSortWarranty: "Warranty (long → short)",
-    shopOrderWA: "Order via WhatsApp",
-    shopNoProduct: "No equipment matches your search.",
-
-    channelTag: "Field Videos",
-    channelTitle1: "Join the ",
-    channelTitle2: "YouTube Channel",
-    channelDesc: "Subscribe to our official channel to watch video project walk-throughs, tutorials, and equipment demos.",
-    channelSubscribers: "Watch our exclusive videos on YouTube!",
-    channelSubNote: "Subscribe for free to @EDSOLAR237",
-    channelBtn: "Subscribe on YouTube",
-
-    trustEyebrow: "Why Choose Us?",
-    trustTitle: "Trusted by hundreds of customers",
-    trustDesc: "100% local expertise serving Cameroon and the entire Central African region 🌍.",
-    trustStat1: "Completed installations",
-    trustStat2: "Customer satisfaction",
-    trustStat3: "Intervention in Yaoundé",
-    trustStat4: "Years of expertise",
-
-    realEyebrow: "Our Projects",
-    realTitle: "Recent projects in Cameroon",
-    realDesc: "Explore our latest solar installations for homes and businesses.",
-
-    reviewsEyebrow: "Customer Reviews",
-    reviewsTitle: "Share your EDSOLAR experience",
-    reviewsDesc: "Your feedback matters. Leave a review — it will be published after team approval.",
-    reviewsLeaveTitle: "Leave a Review",
-    reviewsName: "Name",
-    reviewsRating: "Rating",
-    reviewsComment: "Your Comment",
-    reviewsSubmit: "Post my review",
-    reviewsSending: "Sending...",
-    reviewsSuccess: "Thank you! Your review will be published after approval.",
-    reviewsEmpty: "Be the first to share your experience!",
-
-    aboutEyebrow: "Our Vision & Mission",
-    aboutTitle: "EDSOLAR — A commitment to sustainable well-being",
-    aboutPillarsText: "EDSOLAR is built on four core Great Pillars: Gratitude, Abundance, Love, and Compassion.",
-    aboutMissionText: "Our mission is to help people access affordable solar energy.",
-    aboutVisionText: "Our vision is to build a future where every family, business, and community benefits from clean, reliable, and accessible energy: a world without power cuts, with less pollution, better environmental protection, lower energy costs, and true energy independence.",
-    aboutPresenceText: "Since 2017, we have been carrying out our operations across the entire Cameroonian territory.",
-    aboutEcosystemTitle: "This vision will progressively expand to other key areas of daily life:",
-    aboutConclusion: "EDSOLAR is not just a business. It is a vision, a commitment, and a movement dedicated to the total well-being of present and future generations.",
-
-    contactEyebrow: "Contact",
-    contactTitle: "Let's talk about your solar project",
-    contactDesc: "Fill out the form, send us an email or give us a call — an expert will respond within 24 hours.",
-    contactHeadquarters: "Headquarters",
-    contactZone: "Service Area",
-    contactPhone: "Phone / WhatsApp",
-    contactEmail: "Email Address",
-    formName: "Full Name",
-    formPhone: "Phone Number",
-    formLocation: "Neighborhood / City",
-    formProjectType: "Project Type",
-    formNeeds: "Specific Needs",
-    formMessage: "Message",
-    formSubmit: "Send on WhatsApp",
-    formSuccess: "Thank you! Your message has been prepared on WhatsApp.",
-
-    footerNav: "Navigation",
-    footerContact: "Contact",
-    footerPartners: "Certified Partners",
-    footerRights: "© 2026 Bimedia Connect Agency. All rights reserved.",
-    footerLegal: "Legal Notice",
-    footerPrivacy: "Privacy Policy",
     footerCookies: "Cookies",
   }
 };
@@ -744,7 +611,7 @@ function Services({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
   );
 }
 
-/* ---------------- Kits ---------------- */
+/* ---------------- Kits (Avec Agrandissement Modale) ---------------- */
 const DEFAULT_KITS = [
   { id: "d1", slug: "prestige", title: "Kit Prestige", subtitle: "CONFORT HAUT DE GAMME POUR VILLAS ET GRANDES RÉSIDENCES", description: "Le Kit Prestige 1500W (1.5 kVA) est la solution idéale pour les foyers souhaitant bénéficier d'une alimentation électrique fiable, écologique et sans coupures.", price: "500 000 FCFA", image_url: null as string | null, features: ["2 panneaux solaires de 200 Wc", "1 onduleur EDSOLAR 1500W (1.5 kVA)", "1 batterie Lithium 12V 100Ah", "1 contrôleur de charge MPPT 20A", "08 ampoules LED offertes", "Installation et mise en service gratuites"] },
   { id: "d2", slug: "congelateur", title: "Kit Congélateur", subtitle: "SOLUTION DÉDIÉE AUX COMMERCES ET POISSONNERIES", description: "Kit spécifiquement dimensionné pour maintenir un ou plusieurs congélateurs en fonctionnement continu, idéal pour boutiques, poissonneries et restaurants.", price: "1 700 000 FCFA", image_url: null, features: ["Onduleur 2 kVA / 24V", "Batterie lithium 25.6V 200Ah", "4 panneaux 450W", "Autonomie 12h", "Protection surtension"] },
@@ -752,6 +619,7 @@ const DEFAULT_KITS = [
 
 function Kits({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
   const [items, setItems] = useState<any[]>(DEFAULT_KITS);
+  const [selectedKit, setSelectedKit] = useState<any | null>(null);
 
   useEffect(() => {
     supabase.from("kits").select("*").order("sort_order").then(({ data }) => {
@@ -764,49 +632,95 @@ function Kits({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <SectionHeader eyebrow={t.navKits} title={lang === "fr" ? "Des solutions solaires prêtes à l'emploi" : "Ready-to-use solar solutions"} description={t.servicesDesc} />
         <div className="mt-12 grid gap-6 sm:grid-cols-2 md:grid-cols-3">
-          {items.map((k) => (
-            <article key={k.id} className="flex flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-sm transition-transform hover:-translate-y-1">
-              <div className="relative aspect-[16/10] overflow-hidden bg-slate-100 dark:bg-slate-800">
-                {k.image_url ? (
-                  <img 
-                    src={k.image_url.startsWith("http") ? k.image_url : `/assets/${k.image_url}`} 
-                    alt={k.title} 
-                    className="h-full w-full object-cover" 
-                    loading="lazy" 
-                    decoding="async" 
-                    onError={(e) => {
-                      (e.target as HTMLElement).style.display = 'none';
-                      (e.target as HTMLElement).nextElementSibling?.classList.remove('hidden');
-                    }}
-                  />
-                ) : null}
-                <div className={`grid h-full w-full place-items-center ${k.image_url ? 'hidden' : ''}`}>
-                  <Package className="h-16 w-16 text-slate-400" />
+          {items.map((k) => {
+            const kitImgSrc = k.image_url ? (k.image_url.startsWith("http") ? k.image_url : `/assets/${k.image_url}`) : null;
+            return (
+              <article key={k.id} className="flex flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-sm transition-transform hover:-translate-y-1">
+                <div 
+                  onClick={() => kitImgSrc && setSelectedKit(k)}
+                  className={`relative aspect-[16/10] overflow-hidden bg-slate-100 dark:bg-slate-800 ${kitImgSrc ? "cursor-pointer group" : ""}`}
+                >
+                  {kitImgSrc ? (
+                    <>
+                      <img 
+                        src={kitImgSrc} 
+                        alt={k.title} 
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" 
+                        loading="lazy" 
+                        decoding="async" 
+                        onError={(e) => {
+                          (e.target as HTMLElement).style.display = 'none';
+                          (e.target as HTMLElement).nextElementSibling?.classList.remove('hidden');
+                        }}
+                      />
+                      <div className="absolute inset-0 bg-slate-950/30 opacity-0 transition-opacity group-hover:opacity-100 flex items-center justify-center">
+                        <div className="grid h-10 w-10 place-items-center rounded-full bg-[#386b34] text-white shadow-xl">
+                          <ZoomIn className="h-5 w-5" />
+                        </div>
+                      </div>
+                    </>
+                  ) : null}
+                  <div className={`grid h-full w-full place-items-center ${kitImgSrc ? 'hidden' : ''}`}>
+                    <Package className="h-16 w-16 text-slate-400" />
+                  </div>
+                  {k.price && (
+                    <span className="absolute right-3 top-3 rounded-full bg-slate-900 px-3 py-1 text-xs font-bold text-white shadow z-10">
+                      {k.price}
+                    </span>
+                  )}
                 </div>
-                {k.price && (
-                  <span className="absolute right-3 top-3 rounded-full bg-slate-900 px-3 py-1 text-xs font-bold text-white shadow">
-                    {k.price}
-                  </span>
-                )}
-              </div>
-              <div className="flex flex-1 flex-col p-6">
-                <p className="text-xs font-bold uppercase tracking-widest text-[#386b34]">{translateDynamicText(k.subtitle, lang)}</p>
-                <h3 className="mt-1 text-xl font-black">{translateDynamicText(k.title, lang)}</h3>
-                <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{translateDynamicText(k.description, lang)}</p>
-                <ul className="mt-4 space-y-2 text-sm">
-                  {(k.features ?? []).map((f: string) => (
-                    <li key={f} className="flex items-start gap-2"><CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#386b34]" /> {translateDynamicText(f, lang)}</li>
-                  ))}
-                </ul>
-                <a href={waLink(lang === "fr" ? `Bonjour EDSOLAR, je suis intéressé par le ${k.title} (${k.price ?? ""}).` : `Hello EDSOLAR, I am interested in the ${k.title} (${k.price ?? ""}).`)} target="_blank" rel="noreferrer"
-                   className="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-[#386b34] px-5 py-3 text-sm font-bold text-white transition-all hover:bg-[#2e582b] shadow-md">
-                  <MessageCircle className="h-4 w-4 fill-white" /> {lang === "fr" ? "Demander ce kit" : "Request this kit"}
-                </a>
-              </div>
-            </article>
-          ))}
+                <div className="flex flex-1 flex-col p-6">
+                  <p className="text-xs font-bold uppercase tracking-widest text-[#386b34]">{translateDynamicText(k.subtitle, lang)}</p>
+                  <h3 className="mt-1 text-xl font-black">{translateDynamicText(k.title, lang)}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{translateDynamicText(k.description, lang)}</p>
+                  <ul className="mt-4 space-y-2 text-sm">
+                    {(k.features ?? []).map((f: string) => (
+                      <li key={f} className="flex items-start gap-2"><CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#386b34]" /> {translateDynamicText(f, lang)}</li>
+                    ))}
+                  </ul>
+                  <a href={waLink(lang === "fr" ? `Bonjour EDSOLAR, je suis intéressé par le ${k.title} (${k.price ?? ""}).` : `Hello EDSOLAR, I am interested in the ${k.title} (${k.price ?? ""}).`)} target="_blank" rel="noreferrer"
+                     className="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-[#386b34] px-5 py-3 text-sm font-bold text-white transition-all hover:bg-[#2e582b] shadow-md">
+                    <MessageCircle className="h-4 w-4 fill-white" /> {lang === "fr" ? "Demander ce kit" : "Request this kit"}
+                  </a>
+                </div>
+              </article>
+            );
+          })}
         </div>
       </div>
+
+      {/* LIGHTBOX MODAL - ZOOM SUR UN KIT */}
+      {selectedKit && (
+        <div 
+          className="fixed inset-0 z-50 grid place-items-center bg-slate-950/90 p-4 backdrop-blur-md transition-all"
+          onClick={() => setSelectedKit(null)}
+        >
+          <div 
+            className="relative flex max-h-[90vh] max-w-4xl flex-col items-center justify-center overflow-hidden rounded-3xl bg-slate-900 border border-emerald-900/40 shadow-2xl p-4 w-full"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button 
+              onClick={() => setSelectedKit(null)}
+              className="absolute right-4 top-4 z-10 grid h-10 w-10 place-items-center rounded-full bg-slate-950/80 text-white hover:bg-[#386b34] transition-colors"
+              aria-label="Fermer"
+            >
+              <X className="h-5 w-5" />
+            </button>
+            
+            <img 
+              src={selectedKit.image_url.startsWith("http") ? selectedKit.image_url : `/assets/${selectedKit.image_url}`} 
+              alt={selectedKit.title} 
+              className="max-h-[60vh] w-auto max-w-full rounded-2xl object-contain"
+            />
+            
+            <div className="mt-4 w-full text-center px-4">
+              <p className="text-xs font-bold uppercase tracking-widest text-emerald-400">{translateDynamicText(selectedKit.subtitle, lang)}</p>
+              <p className="text-lg sm:text-2xl font-black text-white mt-1">{translateDynamicText(selectedKit.title, lang)}</p>
+              {selectedKit.price && <p className="text-base sm:text-lg font-extrabold text-[#386b34] dark:text-emerald-400 mt-1">{selectedKit.price}</p>}
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
@@ -942,7 +856,7 @@ function Metric({ icon: Icon, label, value, highlight }: { icon: any; label: str
   );
 }
 
-/* ---------------- Products (Boutique) ---------------- */
+/* ---------------- Products / Boutique (Avec Agrandissement Modale) ---------------- */
 type Product = {
   id: string; name: string; category: string; price: string | null; badge: string | null;
   description: string | null; image_url: string | null;
@@ -968,6 +882,7 @@ function Products({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
   const [cat, setCat] = useState("Tous");
   const [q, setQ] = useState("");
   const [sort, setSort] = useState<SortKey>("featured");
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   useEffect(() => {
     supabase.from("products").select("*").order("sort_order").order("created_at", { ascending: false })
@@ -1095,45 +1010,91 @@ function Products({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
 
         {/* GRILLE DE PRODUITS */}
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-          {list.map((p) => (
-            <div key={p.id} className="flex flex-col rounded-2xl border border-border bg-card p-5 shadow-sm transition-transform hover:-translate-y-1">
-              <div className="relative grid aspect-square place-items-center overflow-hidden rounded-xl bg-slate-100 dark:bg-slate-800">
-                {p.image_url ? (
-                  <img 
-                    src={p.image_url.startsWith("http") ? p.image_url : `/assets/${p.image_url}`} 
-                    alt={p.name} 
-                    loading="lazy" 
-                    decoding="async" 
-                    className="h-full w-full object-contain p-3"
-                    onError={(e) => {
-                      (e.target as HTMLElement).style.display = 'none';
-                      (e.target as HTMLElement).nextElementSibling?.classList.remove('hidden');
-                    }}
-                  />
-                ) : null}
-                <div className={`grid h-full w-full place-items-center ${p.image_url ? 'hidden' : ''}`}>
-                  <ShoppingBag className="h-16 w-16 text-slate-400" />
+          {list.map((p) => {
+            const prodImgSrc = p.image_url ? (p.image_url.startsWith("http") ? p.image_url : `/assets/${p.image_url}`) : null;
+            return (
+              <div key={p.id} className="flex flex-col rounded-2xl border border-border bg-card p-5 shadow-sm transition-transform hover:-translate-y-1">
+                <div 
+                  onClick={() => prodImgSrc && setSelectedProduct(p)}
+                  className={`relative grid aspect-square place-items-center overflow-hidden rounded-xl bg-slate-100 dark:bg-slate-800 ${prodImgSrc ? "cursor-pointer group" : ""}`}
+                >
+                  {prodImgSrc ? (
+                    <>
+                      <img 
+                        src={prodImgSrc} 
+                        alt={p.name} 
+                        loading="lazy" 
+                        decoding="async" 
+                        className="h-full w-full object-contain p-3 transition-transform duration-500 group-hover:scale-105"
+                        onError={(e) => {
+                          (e.target as HTMLElement).style.display = 'none';
+                          (e.target as HTMLElement).nextElementSibling?.classList.remove('hidden');
+                        }}
+                      />
+                      <div className="absolute inset-0 bg-slate-950/20 opacity-0 transition-opacity group-hover:opacity-100 flex items-center justify-center">
+                        <div className="grid h-10 w-10 place-items-center rounded-full bg-[#386b34] text-white shadow-xl">
+                          <ZoomIn className="h-5 w-5" />
+                        </div>
+                      </div>
+                    </>
+                  ) : null}
+                  <div className={`grid h-full w-full place-items-center ${prodImgSrc ? 'hidden' : ''}`}>
+                    <ShoppingBag className="h-16 w-16 text-slate-400" />
+                  </div>
+                  {p.badge && <span className="absolute left-3 top-3 rounded-full bg-[#386b34] px-2.5 py-1 text-[10px] font-bold uppercase text-white z-10">{translateDynamicText(p.badge, lang)}</span>}
                 </div>
-                {p.badge && <span className="absolute left-3 top-3 rounded-full bg-[#386b34] px-2.5 py-1 text-[10px] font-bold uppercase text-white">{translateDynamicText(p.badge, lang)}</span>}
+                <h3 className="mt-4 text-base font-bold">{p.name}</h3>
+                {p.description && <p className="mt-1 text-xs text-muted-foreground">{translateDynamicText(p.description, lang)}</p>}
+                <div className="mt-2 flex flex-wrap gap-1.5 text-[10px] font-semibold">
+                  <span className="rounded-full bg-slate-100 dark:bg-slate-800 px-2 py-0.5 text-slate-700 dark:text-slate-300">{translateDynamicText(p.category, lang)}</span>
+                  {p.warranty && <span className="rounded-full bg-[#386b34]/10 px-2 py-0.5 text-[#386b34]">{translateDynamicText(p.warranty, lang)}</span>}
+                </div>
+                <div className="mt-4 flex items-end justify-between gap-2">
+                  <span className="text-lg font-black text-[#386b34] dark:text-emerald-400">{p.price ?? (lang === "fr" ? "Sur devis" : "On request")}</span>
+                </div>
+                <a href={waLink(buildOrderMsg(p))} target="_blank" rel="noreferrer"
+                   className="mt-4 inline-flex items-center justify-center gap-2 rounded-full bg-[#386b34] px-4 py-2.5 text-sm font-bold text-white transition-colors hover:bg-[#2e582b]">
+                  <MessageCircle className="h-4 w-4" /> {t.shopOrderWA}
+                </a>
               </div>
-              <h3 className="mt-4 text-base font-bold">{p.name}</h3>
-              {p.description && <p className="mt-1 text-xs text-muted-foreground">{translateDynamicText(p.description, lang)}</p>}
-              <div className="mt-2 flex flex-wrap gap-1.5 text-[10px] font-semibold">
-                <span className="rounded-full bg-slate-100 dark:bg-slate-800 px-2 py-0.5 text-slate-700 dark:text-slate-300">{translateDynamicText(p.category, lang)}</span>
-                {p.warranty && <span className="rounded-full bg-[#386b34]/10 px-2 py-0.5 text-[#386b34]">{translateDynamicText(p.warranty, lang)}</span>}
-              </div>
-              <div className="mt-4 flex items-end justify-between gap-2">
-                <span className="text-lg font-black text-[#386b34] dark:text-emerald-400">{p.price ?? (lang === "fr" ? "Sur devis" : "On request")}</span>
-              </div>
-              <a href={waLink(buildOrderMsg(p))} target="_blank" rel="noreferrer"
-                 className="mt-4 inline-flex items-center justify-center gap-2 rounded-full bg-[#386b34] px-4 py-2.5 text-sm font-bold text-white transition-colors hover:bg-[#2e582b]">
-                <MessageCircle className="h-4 w-4" /> {t.shopOrderWA}
-              </a>
-            </div>
-          ))}
+            );
+          })}
           {list.length === 0 && <p className="col-span-full text-center text-sm text-muted-foreground">{t.shopNoProduct}</p>}
         </div>
       </div>
+
+      {/* LIGHTBOX MODAL - ZOOM SUR UN PRODUIT DE LA BOUTIQUE */}
+      {selectedProduct && (
+        <div 
+          className="fixed inset-0 z-50 grid place-items-center bg-slate-950/90 p-4 backdrop-blur-md transition-all"
+          onClick={() => setSelectedProduct(null)}
+        >
+          <div 
+            className="relative flex max-h-[90vh] max-w-4xl flex-col items-center justify-center overflow-hidden rounded-3xl bg-slate-900 border border-emerald-900/40 shadow-2xl p-4 w-full"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button 
+              onClick={() => setSelectedProduct(null)}
+              className="absolute right-4 top-4 z-10 grid h-10 w-10 place-items-center rounded-full bg-slate-950/80 text-white hover:bg-[#386b34] transition-colors"
+              aria-label="Fermer"
+            >
+              <X className="h-5 w-5" />
+            </button>
+            
+            <img 
+              src={selectedProduct.image_url?.startsWith("http") ? selectedProduct.image_url : `/assets/${selectedProduct.image_url}`} 
+              alt={selectedProduct.name} 
+              className="max-h-[60vh] w-auto max-w-full rounded-2xl object-contain bg-white p-4"
+            />
+            
+            <div className="mt-4 w-full text-center px-4">
+              <p className="text-lg sm:text-2xl font-black text-white">{selectedProduct.name}</p>
+              {selectedProduct.description && <p className="text-xs sm:text-sm text-emerald-200/80 mt-1 max-w-xl mx-auto">{translateDynamicText(selectedProduct.description, lang)}</p>}
+              {selectedProduct.price && <p className="text-base sm:text-lg font-extrabold text-[#386b34] dark:text-emerald-400 mt-2">{selectedProduct.price}</p>}
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
@@ -1470,27 +1431,64 @@ function Trust({ t }: { t: typeof TRANSLATIONS["fr"] }) {
   );
 }
 
-/* ---------------- Realisations (Galerie interactive avec Agrandissement HD) ---------------- */
+/* ---------------- Realisations (Galerie interactive / Édition réservée Admin) ---------------- */
 function Realisations({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
-  const [items, setItems] = useState<{ src: string; title: string; loc: string }[]>([]);
-  const [selectedPhoto, setSelectedPhoto] = useState<{ src: string; title: string } | null>(null);
+  const [items, setItems] = useState<{ id?: string; src: string; title: string; loc: string }[]>([]);
+  const [selectedPhoto, setSelectedPhoto] = useState<{ index: number; src: string; title: string; loc: string } | null>(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editTitle, setEditTitle] = useState("");
+  const [editLoc, setEditLoc] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
 
+  // Vérification de la session admin au chargement
   useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) setIsAdmin(true);
+    });
+
     supabase
       .from("gallery_photos")
-      .select("url, caption")
+      .select("id, url, caption, location")
       .order("sort_order")
       .order("created_at", { ascending: false })
       .then(({ data }) =>
         setItems(
-          (data ?? []).map((p) => ({
+          (data ?? []).map((p: any) => ({
+            id: p.id,
             src: p.url,
             title: p.caption ?? "Réalisation EDSOLAR",
-            loc: "Cameroun",
+            loc: p.location ?? "Cameroun",
           }))
         )
       );
   }, []);
+
+  const openPhoto = (index: number, item: { src: string; title: string; loc: string }) => {
+    const title = translateDynamicText(item.title, lang);
+    setSelectedPhoto({ index, src: item.src, title, loc: item.loc });
+    setEditTitle(title);
+    setEditLoc(item.loc);
+    setIsEditing(false);
+  };
+
+  const handleSave = async () => {
+    if (selectedPhoto === null) return;
+    const updated = [...items];
+    updated[selectedPhoto.index] = {
+      ...updated[selectedPhoto.index],
+      title: editTitle,
+      loc: editLoc,
+    };
+    setItems(updated);
+    setSelectedPhoto({ ...selectedPhoto, title: editTitle, loc: editLoc });
+    setIsEditing(false);
+
+    // Enregistrement dans Supabase
+    const target = updated[selectedPhoto.index];
+    if (target.id) {
+      await supabase.from("gallery_photos").update({ caption: editTitle, location: editLoc }).eq("id", target.id);
+    }
+  };
 
   return (
     <section id="realisations" className="bg-slate-100/70 dark:bg-slate-900/50 py-16 sm:py-28">
@@ -1501,7 +1499,7 @@ function Realisations({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang })
           {items.map((g, i) => (
             <figure 
               key={`${g.src}-${i}`} 
-              onClick={() => setSelectedPhoto({ src: g.src, title: translateDynamicText(g.title, lang) })}
+              onClick={() => openPhoto(i, g)}
               className="group cursor-pointer overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-all hover:-translate-y-1 hover:shadow-lg"
             >
               <div className="relative aspect-[4/3] overflow-hidden bg-muted">
@@ -1529,7 +1527,9 @@ function Realisations({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang })
               <figcaption className="flex items-center justify-between p-4">
                 <div>
                   <p className="text-sm font-bold">{translateDynamicText(g.title, lang)}</p>
-                  <p className="text-xs text-muted-foreground">{g.loc}</p>
+                  <p className="text-xs text-muted-foreground flex items-center gap-1 mt-0.5">
+                    <MapPin className="h-3 w-3 text-[#386b34]" /> {g.loc}
+                  </p>
                 </div>
                 <ArrowRight className="h-4 w-4 text-[#386b34] shrink-0" />
               </figcaption>
@@ -1551,7 +1551,7 @@ function Realisations({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang })
           onClick={() => setSelectedPhoto(null)}
         >
           <div 
-            className="relative flex max-h-[90vh] max-w-5xl flex-col items-center justify-center overflow-hidden rounded-3xl bg-slate-900 border border-emerald-900/40 shadow-2xl p-2 sm:p-4"
+            className="relative flex max-h-[90vh] max-w-5xl flex-col items-center justify-center overflow-hidden rounded-3xl bg-slate-900 border border-emerald-900/40 shadow-2xl p-4 w-full"
             onClick={(e) => e.stopPropagation()}
           >
             <button 
@@ -1565,12 +1565,63 @@ function Realisations({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang })
             <img 
               src={selectedPhoto.src} 
               alt={selectedPhoto.title} 
-              className="max-h-[75vh] w-auto max-w-full rounded-2xl object-contain"
+              className="max-h-[65vh] w-auto max-w-full rounded-2xl object-contain"
             />
             
-            <div className="mt-3 text-center px-4 py-2">
-              <p className="text-base sm:text-lg font-bold text-white">{selectedPhoto.title}</p>
-              <p className="text-xs text-emerald-400 mt-0.5">EDSOLAR Cameroun — Photo de réalisation</p>
+            <div className="mt-4 w-full max-w-2xl text-center px-4">
+              {!isEditing ? (
+                <div className="flex flex-col items-center gap-2">
+                  <p className="text-base sm:text-xl font-black text-white">{selectedPhoto.title}</p>
+                  <p className="text-xs sm:text-sm text-emerald-400 font-bold flex items-center justify-center gap-1.5">
+                    <MapPin className="h-4 w-4 text-emerald-400" /> {selectedPhoto.loc}
+                  </p>
+                  {/* Bouton disponible uniquement en session admin */}
+                  {isAdmin && (
+                    <button 
+                      onClick={() => setIsEditing(true)}
+                      className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-[#386b34] px-4 py-1.5 text-xs font-bold text-white hover:bg-[#4a8344] transition-all shadow-md"
+                    >
+                      <Edit2 className="h-3.5 w-3.5" /> Éditer la légende & le lieu
+                    </button>
+                  )}
+                </div>
+              ) : (
+                <div className="flex flex-col gap-3 bg-slate-950/80 p-4 rounded-2xl border border-emerald-800/50">
+                  <div>
+                    <label className="block text-[11px] font-bold text-emerald-400 uppercase text-left mb-1">Légende de la photo</label>
+                    <input 
+                      type="text" 
+                      value={editTitle} 
+                      onChange={(e) => setEditTitle(e.target.value)}
+                      className="w-full rounded-xl bg-slate-800 border border-slate-700 px-3 py-2 text-sm text-white outline-none focus:border-[#386b34]"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-bold text-emerald-400 uppercase text-left mb-1">Lieu / Ville au choix</label>
+                    <input 
+                      type="text" 
+                      value={editLoc} 
+                      placeholder="Ex: Douala, Bonanjo"
+                      onChange={(e) => setEditLoc(e.target.value)}
+                      className="w-full rounded-xl bg-slate-800 border border-slate-700 px-3 py-2 text-sm text-white outline-none focus:border-[#386b34]"
+                    />
+                  </div>
+                  <div className="flex items-center justify-end gap-2 mt-1">
+                    <button 
+                      onClick={() => setIsEditing(false)}
+                      className="rounded-full bg-slate-800 px-4 py-1.5 text-xs font-bold text-slate-300 hover:bg-slate-700"
+                    >
+                      Annuler
+                    </button>
+                    <button 
+                      onClick={handleSave}
+                      className="inline-flex items-center gap-1.5 rounded-full bg-[#386b34] px-4 py-1.5 text-xs font-bold text-white hover:bg-[#4a8344]"
+                    >
+                      <Save className="h-3.5 w-3.5" /> Enregistrer dans la base
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -1579,9 +1630,40 @@ function Realisations({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang })
   );
 }
 
-/* ---------------- About (Vision, 4 Grands Piliers & Galerie du Terrain Agrandissable) ---------------- */
+/* ---------------- About (Vision, 4 Grands Piliers & Galerie du Terrain Éditable) ---------------- */
 function About({ t }: { t: typeof TRANSLATIONS["fr"] }) {
-  const [selectedPhoto, setSelectedPhoto] = useState<{ src: string; caption: string } | null>(null);
+  const [fieldPhotos, setFieldPhotos] = useState(INITIAL_FIELD_IMAGES);
+  const [selectedPhoto, setSelectedPhoto] = useState<{ index: number; src: string; caption: string; location: string } | null>(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [editCaption, setEditCaption] = useState("");
+  const [editLocation, setEditLocation] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  useEffect(() => {
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session?.user) setIsAdmin(true);
+    });
+  }, []);
+
+  const openPhoto = (index: number, img: { src: string; caption: string; location: string }) => {
+    setSelectedPhoto({ index, ...img });
+    setEditCaption(img.caption);
+    setEditLocation(img.location);
+    setIsEditing(false);
+  };
+
+  const handleSave = () => {
+    if (selectedPhoto === null) return;
+    const updated = [...fieldPhotos];
+    updated[selectedPhoto.index] = {
+      ...updated[selectedPhoto.index],
+      caption: editCaption,
+      location: editLocation,
+    };
+    setFieldPhotos(updated);
+    setSelectedPhoto({ ...selectedPhoto, caption: editCaption, location: editLocation });
+    setIsEditing(false);
+  };
 
   const PILLARS = [
     { name: "Gratitude", icon: Smile, desc: "Reconnaissance sincère envers la nature et chaque client" },
@@ -1670,17 +1752,17 @@ function About({ t }: { t: typeof TRANSLATIONS["fr"] }) {
               </p>
             </div>
 
-            {/* GALERIE EN DIRECT DU TERRAIN AVEC CLIC / LIGHTBOX */}
+            {/* GALERIE EN DIRECT DU TERRAIN AVEC LIEU */}
             <div>
-              <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3 flex items-center gap-1.5">
+              <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3 flex items-center justify-between">
                 <span>En direct du terrain — Nos équipes à l'œuvre</span>
                 <span className="text-[10px] font-normal text-[#386b34]">(Cliquez pour agrandir)</span>
               </h3>
               <div className="grid grid-cols-3 gap-2.5 sm:gap-3">
-                {FIELD_IMAGES.map((img, idx) => (
+                {fieldPhotos.map((img, idx) => (
                   <div 
                     key={idx} 
-                    onClick={() => setSelectedPhoto({ src: img.src, caption: img.caption })}
+                    onClick={() => openPhoto(idx, img)}
                     className="group relative aspect-square cursor-pointer overflow-hidden rounded-2xl border border-border bg-slate-100 shadow-sm transition-all hover:scale-[1.02] hover:shadow-md"
                   >
                     <img 
@@ -1690,11 +1772,16 @@ function About({ t }: { t: typeof TRANSLATIONS["fr"] }) {
                       decoding="async" 
                       className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" 
                     />
-                    <div className="absolute inset-0 bg-slate-950/40 opacity-0 transition-opacity group-hover:opacity-100 flex flex-col justify-between p-2">
+                    <div className="absolute inset-0 bg-slate-950/50 opacity-0 transition-opacity group-hover:opacity-100 flex flex-col justify-between p-2">
                       <div className="ml-auto grid h-7 w-7 place-items-center rounded-full bg-[#386b34] text-white shadow-md">
                         <ZoomIn className="h-3.5 w-3.5" />
                       </div>
-                      <p className="text-[9px] sm:text-[10px] font-bold text-white leading-tight line-clamp-2">{img.caption}</p>
+                      <div>
+                        <p className="text-[9px] sm:text-[10px] font-bold text-white leading-tight line-clamp-1">{img.caption}</p>
+                        <p className="text-[8px] sm:text-[9px] font-semibold text-emerald-300 flex items-center gap-0.5 mt-0.5">
+                          <MapPin className="h-2.5 w-2.5" /> {img.location}
+                        </p>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -1712,7 +1799,7 @@ function About({ t }: { t: typeof TRANSLATIONS["fr"] }) {
           onClick={() => setSelectedPhoto(null)}
         >
           <div 
-            className="relative flex max-h-[90vh] max-w-5xl flex-col items-center justify-center overflow-hidden rounded-3xl bg-slate-900 border border-emerald-900/40 shadow-2xl p-2 sm:p-4"
+            className="relative flex max-h-[90vh] max-w-5xl flex-col items-center justify-center overflow-hidden rounded-3xl bg-slate-900 border border-emerald-900/40 shadow-2xl p-4 w-full"
             onClick={(e) => e.stopPropagation()}
           >
             <button 
@@ -1726,12 +1813,62 @@ function About({ t }: { t: typeof TRANSLATIONS["fr"] }) {
             <img 
               src={selectedPhoto.src} 
               alt={selectedPhoto.caption} 
-              className="max-h-[75vh] w-auto max-w-full rounded-2xl object-contain"
+              className="max-h-[65vh] w-auto max-w-full rounded-2xl object-contain"
             />
             
-            <div className="mt-3 text-center px-4 py-2">
-              <p className="text-base sm:text-lg font-bold text-white">{selectedPhoto.caption}</p>
-              <p className="text-xs text-emerald-400 mt-0.5">EDSOLAR — En direct du terrain</p>
+            <div className="mt-4 w-full max-w-2xl text-center px-4">
+              {!isEditing ? (
+                <div className="flex flex-col items-center gap-2">
+                  <p className="text-base sm:text-xl font-bold text-white">{selectedPhoto.caption}</p>
+                  <p className="text-xs sm:text-sm text-emerald-400 font-bold flex items-center justify-center gap-1.5">
+                    <MapPin className="h-4 w-4 text-emerald-400" /> {selectedPhoto.location}
+                  </p>
+                  {isAdmin && (
+                    <button 
+                      onClick={() => setIsEditing(true)}
+                      className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-[#386b34] px-4 py-1.5 text-xs font-bold text-white hover:bg-[#4a8344] transition-all shadow-md"
+                    >
+                      <Edit2 className="h-3.5 w-3.5" /> Éditer la légende & le lieu
+                    </button>
+                  )}
+                </div>
+              ) : (
+                <div className="flex flex-col gap-3 bg-slate-950/80 p-4 rounded-2xl border border-emerald-800/50">
+                  <div>
+                    <label className="block text-[11px] font-bold text-emerald-400 uppercase text-left mb-1">Légende de la photo</label>
+                    <input 
+                      type="text" 
+                      value={editCaption} 
+                      onChange={(e) => setEditCaption(e.target.value)}
+                      className="w-full rounded-xl bg-slate-800 border border-slate-700 px-3 py-2 text-sm text-white outline-none focus:border-[#386b34]"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-[11px] font-bold text-emerald-400 uppercase text-left mb-1">Lieu / Ville d'intervention</label>
+                    <input 
+                      type="text" 
+                      value={editLocation} 
+                      placeholder="Ex: Yaoundé, Bastos"
+                      onChange={(e) => setEditLocation(e.target.value)}
+                      className="w-full rounded-xl bg-slate-800 border border-slate-700 px-3 py-2 text-sm text-white outline-none focus:border-[#386b34]"
+                    />
+                  </div>
+                  <div className="flex items-center justify-end gap-2 mt-1">
+                    <button 
+                      onClick={() => setIsEditing(false)}
+                      className="rounded-full bg-slate-800 px-4 py-1.5 text-xs font-bold text-slate-300 hover:bg-slate-700"
+                    >
+                      Annuler
+                    </button>
+                    <button 
+                      onClick={handleSave}
+                      className="inline-flex items-center gap-1.5 rounded-full bg-[#386b34] px-4 py-1.5 text-xs font-bold text-white hover:bg-[#4a8344]"
+                    >
+                      <Save className="h-3.5 w-3.5" /> Enregistrer
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
