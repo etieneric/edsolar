@@ -352,10 +352,14 @@ function Kits({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
         <div className="mt-12 grid gap-6 sm:grid-cols-2 md:grid-cols-3">
           {items.map((k) => (
             <div key={k.id} className="flex flex-col rounded-3xl border border-border bg-card p-6 shadow-sm">
+              {k.image_url && <img src={k.image_url} alt={k.title} className="h-44 w-full object-contain mb-4 rounded-xl bg-slate-50" />}
               <h3 className="text-xl font-black">{k.title}</h3>
               <p className="mt-1 text-xs font-bold text-[#386b34] uppercase">{k.subtitle}</p>
               <p className="mt-3 text-sm text-muted-foreground">{k.description}</p>
               <div className="mt-4 text-2xl font-black text-[#386b34]">{k.price}</div>
+              <a href={waLink(`Bonjour EDSOLAR, je suis intéressé par le ${k.title}`)} target="_blank" rel="noreferrer" className="mt-5 flex items-center justify-center gap-2 rounded-full bg-[#386b34] px-4 py-2.5 text-xs font-bold text-white hover:bg-[#2e582b]">
+                <MessageCircle className="h-4 w-4" /> Commander ce kit
+              </a>
             </div>
           ))}
         </div>
@@ -375,11 +379,15 @@ function Calculator({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
   );
 }
 
-/* ---------------- Products / Boutique avec Sélecteur de Variantes Interactivités ---------------- */
+/* ---------------- Products / Boutique avec Sélecteur de Variantes ---------------- */
 type VariantOption = { label: string; price: number };
 
+function parsePriceNumber(str: string): number {
+  const n = Number(str.replace(/\D/g, ""));
+  return Number.isFinite(n) ? n : 0;
+}
+
 function ProductCard({ p, lang, t }: { p: any; lang: Lang; t: typeof TRANSLATIONS["fr"] }) {
-  // Décomposition dynamique des variantes si le champ price contient des tirets (ex: "580000 - 880000 - 1350000")
   const variants: VariantOption[] = useMemo(() => {
     if (!p.price) return [{ label: "Standard", price: p.price_amount || 0 }];
     const rawParts = p.price.split("-").map((s: string) => s.trim());
@@ -387,8 +395,7 @@ function ProductCard({ p, lang, t }: { p: any; lang: Lang; t: typeof TRANSLATION
       return [{ label: "Standard", price: p.price_amount || parsePriceNumber(p.price) }];
     }
     
-    // Détection automatique des labels selon le nom/description du produit
-    const labels = p.name.includes("25.6V") 
+    const labels = p.name.includes("25.6V") || p.name.includes("Li-SUN") 
       ? ["100Ah (2.56kWh)", "200Ah (5.12kWh)", "300Ah (7.68kWh)"]
       : rawParts.map((_, idx) => `Option ${idx + 1}`);
 
@@ -432,7 +439,7 @@ function ProductCard({ p, lang, t }: { p: any; lang: Lang; t: typeof TRANSLATION
           {p.warranty && <span className="rounded-md bg-emerald-50 dark:bg-emerald-950/50 px-2 py-0.5 text-[#386b34]">{p.warranty}</span>}
         </div>
 
-        {/* Puces de Variantes (Si plusieurs prix existent) */}
+        {/* Puces de Variantes */}
         {variants.length > 1 && (
           <div className="mt-4 pt-3 border-t border-border">
             <p className="mb-1.5 text-[10px] font-bold uppercase tracking-wider text-muted-foreground">Sélectionner la capacité :</p>
@@ -474,11 +481,6 @@ function ProductCard({ p, lang, t }: { p: any; lang: Lang; t: typeof TRANSLATION
       </div>
     </div>
   );
-}
-
-function parsePriceNumber(str: string): number {
-  const n = Number(str.replace(/\D/g, ""));
-  return Number.isFinite(n) ? n : 0;
 }
 
 function Products({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
@@ -572,16 +574,117 @@ function About({ t }: { t: typeof TRANSLATIONS["fr"] }) {
   );
 }
 
-/* ---------------- Shared / Extras ---------------- */
-function QualityComparison({ lang }: { lang: Lang }) { return null; }
-function DiasporaSection({ lang }: { lang: Lang }) { return null; }
-function YouTubeSection({ t }: { t: typeof TRANSLATIONS["fr"] }) { return null; }
-function Trust({ t }: { t: typeof TRANSLATIONS["fr"] }) { return null; }
-function Reviews({ t }: { t: typeof TRANSLATIONS["fr"] }) { return null; }
-function Contact({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) { return null; }
-function Footer({ t }: { t: typeof TRANSLATIONS["fr"] }) { return null; }
-function FloatingWhatsApp({ lang }: { lang: Lang }) { return null; }
-function ScrollToTop() { return null; }
+/* ---------------- Quality Comparison ---------------- */
+function QualityComparison({ lang }: { lang: Lang }) {
+  return (
+    <section id="qualite" className="py-16 bg-slate-50 dark:bg-slate-900/30">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <SectionHeader eyebrow="Sécurité & Transparence" title="Pourquoi choisir EDSOLAR ?" description="Matériel certifié Tier 1 vs produits contrefaits." />
+      </div>
+    </section>
+  );
+}
+
+/* ---------------- Diaspora ---------------- */
+function DiasporaSection({ lang }: { lang: Lang }) {
+  return (
+    <section id="diaspora" className="bg-[#234d20] py-16 text-white">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <h2 className="text-2xl font-black">Offre Diaspora Camerounaise</h2>
+        <p className="mt-2 text-sm text-emerald-100">Équipez vos proches au pays avec paiement sécurisé à distance.</p>
+      </div>
+    </section>
+  );
+}
+
+/* ---------------- YouTube ---------------- */
+function YouTubeSection({ t }: { t: typeof TRANSLATIONS["fr"] }) {
+  return (
+    <section id="videos" className="bg-[#1a3818] py-16 text-white">
+      <div className="mx-auto max-w-7xl px-4 text-center">
+        <Youtube className="mx-auto h-10 w-10 text-emerald-400" />
+        <h2 className="mt-2 text-2xl font-black">{t.channelTitle1} {t.channelTitle2}</h2>
+        <a href={YOUTUBE_CHANNEL_URL} target="_blank" rel="noreferrer" className="mt-4 inline-flex items-center gap-2 rounded-full bg-[#386b34] px-5 py-2.5 text-xs font-bold text-white">
+          <Youtube className="h-4 w-4" /> {t.channelBtn}
+        </a>
+      </div>
+    </section>
+  );
+}
+
+/* ---------------- Trust ---------------- */
+function Trust({ t }: { t: typeof TRANSLATIONS["fr"] }) {
+  return (
+    <section className="py-12 border-y border-border">
+      <div className="mx-auto max-w-7xl px-4 text-center">
+        <p className="text-xs font-bold uppercase tracking-widest text-[#386b34]">{t.trustEyebrow}</p>
+        <h2 className="mt-1 text-2xl font-black">{t.trustTitle}</h2>
+      </div>
+    </section>
+  );
+}
+
+/* ---------------- Reviews ---------------- */
+function Reviews({ t }: { t: typeof TRANSLATIONS["fr"] }) {
+  return (
+    <section id="avis" className="py-16 bg-slate-50 dark:bg-slate-900/30">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <SectionHeader eyebrow={t.reviewsEyebrow} title={t.reviewsTitle} description={t.reviewsDesc} />
+      </div>
+    </section>
+  );
+}
+
+/* ---------------- Contact ---------------- */
+function Contact({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
+  return (
+    <section id="contact" className="py-16 sm:py-28 bg-card border-t border-border">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <SectionHeader eyebrow={t.contactEyebrow} title={t.contactTitle} description={t.contactDesc} />
+        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4 text-center">
+          <div className="p-4 rounded-2xl border border-border"><MapPin className="mx-auto h-6 w-6 text-[#386b34]" /><p className="mt-2 text-xs font-bold">Yaoundé, Cameroun</p></div>
+          <div className="p-4 rounded-2xl border border-border"><Phone className="mx-auto h-6 w-6 text-[#386b34]" /><p className="mt-2 text-xs font-bold">+237 650544444</p></div>
+          <div className="p-4 rounded-2xl border border-border"><Mail className="mx-auto h-6 w-6 text-[#386b34]" /><p className="mt-2 text-xs font-bold">{EMAIL}</p></div>
+          <div className="p-4 rounded-2xl border border-border"><Leaf className="mx-auto h-6 w-6 text-[#386b34]" /><p className="mt-2 text-xs font-bold">Afrique Centrale</p></div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---------------- Footer ---------------- */
+function Footer({ t }: { t: typeof TRANSLATIONS["fr"] }) {
+  return (
+    <footer className="border-t border-emerald-900/40 bg-[#1d3d19] text-white py-12">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-6">
+        <div className="flex items-center gap-3">
+          <img src={logo} alt="EDSOLAR" className="h-10 w-10 rounded-xl bg-white p-1" />
+          <span className="font-bold text-sm">EDSOLAR Énergie Cameroun</span>
+        </div>
+        <p className="text-xs text-emerald-200/70">{t.footerRights}</p>
+      </div>
+    </footer>
+  );
+}
+
+/* ---------------- Floating WhatsApp & ScrollToTop ---------------- */
+function FloatingWhatsApp({ lang }: { lang: Lang }) {
+  return (
+    <a href={waLink("Bonjour EDSOLAR, j'aimerais plus d'informations.")} target="_blank" rel="noreferrer" className="fixed bottom-5 right-5 z-50 flex items-center gap-2 rounded-full bg-[#25D366] px-4 py-3 font-bold text-slate-950 shadow-2xl">
+      <MessageCircle className="h-5 w-5 fill-slate-950" />
+      <span className="text-sm">Chat WhatsApp</span>
+    </a>
+  );
+}
+
+function ScrollToTop() {
+  return (
+    <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} className="fixed bottom-20 right-5 z-50 grid h-10 w-10 place-items-center rounded-full border border-border bg-card text-foreground shadow-xl">
+      <ArrowUp className="h-5 w-5" />
+    </button>
+  );
+}
+
 function SectionHeader({ eyebrow, title, description }: { eyebrow: string; title: string; description: string }) {
   return (
     <div className="mx-auto max-w-2xl text-center">
