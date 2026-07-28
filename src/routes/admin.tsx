@@ -137,19 +137,10 @@ function ImageUploader({
   const pickFile = async (file: File) => {
     setErr(null);
     if (!file.type.startsWith("image/")) { setErr("Fichier non image"); return; }
-    if (file.size > 15 * 1024 * 1024) { setErr("Image trop lourde (max 15 Mo)"); return; }
+    if (file.size > 25 * 1024 * 1024) { setErr("Image trop lourde (max 25 Mo)"); return; }
     setBusy(true);
     try {
-      const { signedUrl, publicUrl } = await createUploadUrl({ data: { folder, filename: file.name } });
-      const put = await fetch(signedUrl, {
-        method: "PUT",
-        headers: { "Content-Type": file.type || "image/jpeg" },
-        body: file,
-      });
-      if (!put.ok) {
-        const t = await put.text().catch(() => "");
-        throw new Error(`Upload échoué (${put.status}) ${t}`.trim());
-      }
+      const publicUrl = await uploadCompressed(createUploadUrl, folder, file);
       onChange(publicUrl);
     } catch (e: any) {
       setErr(e?.message || "Échec de l'envoi");
