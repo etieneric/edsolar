@@ -6,17 +6,13 @@ import {
   Zap, Cpu, Tv, Refrigerator, Snowflake, Lightbulb, WashingMachine,
   Laptop, Fan, Microwave, CheckCircle2, Star, Award, Clock, Users,
   Facebook, Instagram, Linkedin, Send, Package, Search, ArrowUp,
-  Radio, Camera, Video, Sparkles, Globe, CreditCard, ShieldAlert,
+  Radio, Camera, Video, Sparkles, Globe,
   Check, AlertTriangle, Mail, Handshake, Heart, Smile, Utensils, Stethoscope, Car, Home,
-  Compass
+  Compass, Play, Youtube
 } from "lucide-react";
 
 import logo from "@/assets/edsolar-logo-new.jpeg";
 import hero from "@/assets/install-panels.jpeg";
-import gal1 from "@/assets/gallery-1.jpg";
-import gal2 from "@/assets/gallery-2.jpg";
-import gal3 from "@/assets/gallery-3.jpg";
-import teamPortrait from "@/assets/team-portrait.jpeg";
 
 // Imports des 9 images de terrain
 import field1 from "@/assets/FB_IMG_1785237119977.jpeg";
@@ -36,7 +32,7 @@ import cworthLogo from "@/assets/Cworth.png";
 import growattLogo from "@/assets/Growarth.png";
 import longiLogo from "@/assets/Longi.png";
 
-// Imports des logos de paiement Mobile Money (Fichier renommé propre OrangeMoney.png)
+// Imports des logos de paiement Mobile Money
 import momoLogo from "@/assets/momo.png";
 import orangeMoneyLogo from "@/assets/OrangeMoney.png";
 
@@ -57,7 +53,7 @@ export const Route = createFileRoute("/")({
 const PHONE = "+237650544444";
 const EMAIL = "edsolarcam@gmail.com";
 const WA = `https://wa.me/${PHONE.replace("+", "")}`;
-const WA_CHANNEL_URL = "https://whatsapp.com/channel/0029VauTigF9Gv7cyMQUQH1x";
+const YOUTUBE_CHANNEL_URL = "https://www.youtube.com/@EDSOLAR237";
 const waLink = (msg: string) => `${WA}?text=${encodeURIComponent(msg)}`;
 
 type Lang = "fr" | "en";
@@ -84,6 +80,31 @@ const FIELD_IMAGES = [
   { src: field6, caption: "Vérification et raccordement des panneaux solaires" },
 ];
 
+// Vidéos YouTube en miniatures
+const YOUTUBE_VIDEOS = [
+  {
+    id: "v1",
+    title: "Chantier d'installation solaire à Yaoundé",
+    youtubeId: "dQw4w9WgXcQ", // Remplacer par l'ID réel de la vidéo YouTube si nécessaire
+    thumbnail: field7,
+    duration: "03:45"
+  },
+  {
+    id: "v2",
+    title: "Présentation des batteries Lithium & Onduleurs SAKO",
+    youtubeId: "dQw4w9WgXcQ", 
+    thumbnail: field1,
+    duration: "02:20"
+  },
+  {
+    id: "v3",
+    title: "Intervention technique EDSOLAR en zone isolée",
+    youtubeId: "dQw4w9WgXcQ", 
+    thumbnail: field9,
+    duration: "05:10"
+  }
+];
+
 const TRANSLATIONS = {
   fr: {
     navServices: "Services",
@@ -93,7 +114,7 @@ const TRANSLATIONS = {
     navSimulator: "Simulateur Devis",
     navRealisations: "Réalisations",
     navHome: "Accueil",
-    navWhatsApp: "Chaîne WhatsApp",
+    navYouTube: "Chaîne YouTube",
     navReviews: "Avis clients",
     navContact: "Contact",
     btnQuote: "Devis gratuit",
@@ -153,19 +174,13 @@ const TRANSLATIONS = {
     shopOrderWA: "Commander via WhatsApp",
     shopNoProduct: "Aucun équipement ne correspond à votre recherche.",
 
-    channelTag: "Direct du terrain",
+    channelTag: "Vidéos du terrain",
     channelTitle1: "Rejoignez la Chaîne ",
-    channelTitle2: "WhatsApp EDSOLAR",
-    channelDesc: "Suivez nos équipes au quotidien : vidéos d'installations, conseils techniques, arrivages de matériel et retours d'expérience.",
-    c1Title: "Vidéos d'installations",
-    c1Desc: "Découvrez nos chantiers en direct à Yaoundé et dans toutes les régions du Cameroun.",
-    c2Title: "Photos & Matériel",
-    c2Desc: "Présentation détaillée des derniers onduleurs, batteries lithium et panneaux réceptionnés.",
-    c3Title: "Offres Exclusives",
-    c3Desc: "Recevez les promotions et remises réservées uniquement aux membres de la chaîne.",
-    channelSubscribers: "Près de 1 000 abonnés nous suivent !",
-    channelSubNote: "Abonnement 100% gratuit, rapide et confidentiel.",
-    channelBtn: "Suivre la Chaîne",
+    channelTitle2: "YouTube EDSOLAR : @EDSOLAR237",
+    channelDesc: "Abonnez-vous à notre chaîne officielle pour découvrir nos réalisations en vidéo, tutoriels d'utilisation et démonstrations du matériel.",
+    channelSubscribers: "Suivez nos vidéos exclusives sur YouTube !",
+    channelSubNote: "Abonnez-vous gratuitement à la chaîne @EDSOLAR237",
+    channelBtn: "S'abonner sur YouTube",
 
     trustEyebrow: "Pourquoi nous choisir ?",
     trustTitle: "La confiance de centaines de clients",
@@ -232,7 +247,7 @@ const TRANSLATIONS = {
     navSimulator: "Quote Simulator",
     navRealisations: "Projects",
     navHome: "Home",
-    navWhatsApp: "WhatsApp Channel",
+    navYouTube: "YouTube Channel",
     navReviews: "Customer Reviews",
     navContact: "Contact",
     btnQuote: "Free Quote",
@@ -292,19 +307,13 @@ const TRANSLATIONS = {
     shopOrderWA: "Order via WhatsApp",
     shopNoProduct: "No equipment matches your search.",
 
-    channelTag: "Direct from the field",
+    channelTag: "Field Videos",
     channelTitle1: "Join the ",
-    channelTitle2: "EDSOLAR WhatsApp Channel",
-    channelDesc: "Follow our team daily: installation videos, technical advice, stock arrivals, and customer feedback.",
-    c1Title: "Installation Videos",
-    c1Desc: "Watch our live job sites in Yaoundé and across all regions of Cameroon.",
-    c2Title: "Photos & Equipment",
-    c2Desc: "In-depth overview of the latest inverters, lithium batteries, and solar panels received.",
-    c3Title: "Exclusive Deals",
-    c3Desc: "Receive special discounts and promotions reserved exclusively for channel members.",
-    channelSubscribers: "Nearly 1,000 subscribers follow us!",
-    channelSubNote: "100% free, fast, and confidential subscription.",
-    channelBtn: "Follow the Channel",
+    channelTitle2: "YouTube Channel: @EDSOLAR237",
+    channelDesc: "Subscribe to our official channel to watch video project walk-throughs, tutorials, and equipment demos.",
+    channelSubscribers: "Watch our exclusive videos on YouTube!",
+    channelSubNote: "Subscribe for free to @EDSOLAR237",
+    channelBtn: "Subscribe on YouTube",
 
     trustEyebrow: "Why Choose Us?",
     trustTitle: "Trusted by hundreds of customers",
@@ -438,7 +447,7 @@ function Index() {
       <Products t={t} lang={lang} />
       <QualityComparison lang={lang} />
       <DiasporaSection lang={lang} />
-      <WhatsAppChannel t={t} />
+      <YouTubeSection t={t} />
       <Trust t={t} />
       <Realisations t={t} lang={lang} />
       <Reviews t={t} />
@@ -462,6 +471,7 @@ function Header({ lang, setLang, t }: { lang: Lang; setLang: (l: Lang) => void; 
     { href: "#boutique", label: t.navBoutique },
     { href: "#calculateur", label: t.navSimulator },
     { href: "#realisations", label: t.navRealisations },
+    { href: "#youtube", label: "YouTube" },
     { href: "#apropos", label: "Vision" },
   ];
 
@@ -474,7 +484,7 @@ function Header({ lang, setLang, t }: { lang: Lang; setLang: (l: Lang) => void; 
     { href: "#calculateur", label: t.navSimulator },
     { href: "#qualite", label: lang === "fr" ? "Anti-Contrefaçon" : "Quality vs Fakes" },
     { href: "#diaspora", label: "Diaspora" },
-    { href: "#canal", label: t.navWhatsApp },
+    { href: "#youtube", label: t.navYouTube },
     { href: "#realisations", label: t.navRealisations },
     { href: "#apropos", label: "Vision & Mission" },
     { href: "#avis", label: t.navReviews },
@@ -688,7 +698,7 @@ function Hero({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
   );
 }
 
-/* ---------------- PARTENAIRES SECTION (Avec vrais logos) ---------------- */
+/* ---------------- PARTENAIRES SECTION ---------------- */
 function Partners({ t }: { t: typeof TRANSLATIONS["fr"] }) {
   return (
     <section id="partenaires" className="border-y border-emerald-900/10 bg-card py-12 sm:py-16">
@@ -780,12 +790,21 @@ function Kits({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
             <article key={k.id} className="flex flex-col overflow-hidden rounded-3xl border border-border bg-card shadow-sm transition-transform hover:-translate-y-1">
               <div className="relative aspect-[16/10] overflow-hidden bg-slate-100 dark:bg-slate-800">
                 {k.image_url ? (
-                  <img src={k.image_url} alt={k.title} className="h-full w-full object-cover" loading="lazy" decoding="async" />
-                ) : (
-                  <div className="grid h-full w-full place-items-center">
-                    <Package className="h-16 w-16 text-slate-400" />
-                  </div>
-                )}
+                  <img 
+                    src={k.image_url.startsWith("http") ? k.image_url : `/assets/${k.image_url}`} 
+                    alt={k.title} 
+                    className="h-full w-full object-cover" 
+                    loading="lazy" 
+                    decoding="async" 
+                    onError={(e) => {
+                      (e.target as HTMLElement).style.display = 'none';
+                      (e.target as HTMLElement).nextElementSibling?.classList.remove('hidden');
+                    }}
+                  />
+                ) : null}
+                <div className={`grid h-full w-full place-items-center ${k.image_url ? 'hidden' : ''}`}>
+                  <Package className="h-16 w-16 text-slate-400" />
+                </div>
                 {k.price && (
                   <span className="absolute right-3 top-3 rounded-full bg-slate-900 px-3 py-1 text-xs font-bold text-white shadow">
                     {k.price}
@@ -1101,9 +1120,22 @@ function Products({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
           {list.map((p) => (
             <div key={p.id} className="flex flex-col rounded-2xl border border-border bg-card p-5 shadow-sm transition-transform hover:-translate-y-1">
               <div className="relative grid aspect-square place-items-center overflow-hidden rounded-xl bg-slate-100 dark:bg-slate-800">
-                {p.image_url
-                  ? <img src={p.image_url} alt={p.name} loading="lazy" decoding="async" className="h-full w-full object-contain p-3" />
-                  : <ShoppingBag className="h-16 w-16 text-slate-400" />}
+                {p.image_url ? (
+                  <img 
+                    src={p.image_url.startsWith("http") ? p.image_url : `/assets/${p.image_url}`} 
+                    alt={p.name} 
+                    loading="lazy" 
+                    decoding="async" 
+                    className="h-full w-full object-contain p-3"
+                    onError={(e) => {
+                      (e.target as HTMLElement).style.display = 'none';
+                      (e.target as HTMLElement).nextElementSibling?.classList.remove('hidden');
+                    }}
+                  />
+                ) : null}
+                <div className={`grid h-full w-full place-items-center ${p.image_url ? 'hidden' : ''}`}>
+                  <ShoppingBag className="h-16 w-16 text-slate-400" />
+                </div>
                 {p.badge && <span className="absolute left-3 top-3 rounded-full bg-[#386b34] px-2.5 py-1 text-[10px] font-bold uppercase text-white">{translateDynamicText(p.badge, lang)}</span>}
               </div>
               <h3 className="mt-4 text-base font-bold">{p.name}</h3>
@@ -1281,64 +1313,98 @@ function DiasporaSection({ lang }: { lang: Lang }) {
   );
 }
 
-/* ---------------- WhatsApp Channel Section ---------------- */
-function WhatsAppChannel({ t }: { t: typeof TRANSLATIONS["fr"] }) {
+/* ---------------- SECTION CHAÎNE YOUTUBE (@EDSOLAR237) & MINIATURES ---------------- */
+function YouTubeSection({ t }: { t: typeof TRANSLATIONS["fr"] }) {
+  const [activeVideo, setActiveVideo] = useState<string | null>(null);
+
   return (
-    <section id="canal" className="relative overflow-hidden bg-[#234d20] py-16 text-slate-100 sm:py-28 border-t border-emerald-900/30">
-      <div className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#25D366]/10 blur-[120px]" />
+    <section id="youtube" className="relative overflow-hidden bg-[#234d20] py-16 text-slate-100 sm:py-28 border-t border-emerald-900/30">
+      <div className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-red-600/10 blur-[120px]" />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="mx-auto max-w-3xl text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border border-[#25D366]/30 bg-[#25D366]/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-[#25D366]">
-            <Radio className="h-3.5 w-3.5 animate-pulse" /> {t.channelTag}
+          <span className="inline-flex items-center gap-2 rounded-full border border-red-500/30 bg-red-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-red-400">
+            <Youtube className="h-4 w-4 fill-red-500 text-red-500" /> {t.channelTag}
           </span>
           <h2 className="mt-4 text-2xl font-black tracking-tight text-white sm:text-4xl md:text-5xl">
-            {t.channelTitle1}<span className="text-[#25D366]">{t.channelTitle2}</span>
+            {t.channelTitle1}<span className="text-red-500">{t.channelTitle2}</span>
           </h2>
-          <p className="mt-4 text-sm text-emerald-100/70 sm:text-lg">
+          <p className="mt-4 text-sm text-emerald-100/80 sm:text-lg">
             {t.channelDesc}
           </p>
         </div>
 
+        {/* Grille des miniatures vidéos */}
         <div className="mt-12 grid gap-6 sm:grid-cols-2 md:grid-cols-3">
-          <div className="group rounded-2xl border border-emerald-800/30 bg-[#1a3818]/60 p-6 backdrop-blur transition-all hover:border-[#25D366]/50">
-            <div className="grid h-12 w-12 place-items-center rounded-xl bg-[#25D366]/10 text-[#25D366]">
-              <Video className="h-6 w-6" />
+          {YOUTUBE_VIDEOS.map((v) => (
+            <div 
+              key={v.id} 
+              onClick={() => setActiveVideo(v.youtubeId)}
+              className="group relative cursor-pointer overflow-hidden rounded-3xl border border-emerald-800/40 bg-[#1a3818]/80 shadow-lg transition-all hover:-translate-y-1 hover:border-red-500/50"
+            >
+              <div className="relative aspect-video w-full overflow-hidden bg-slate-900">
+                <img 
+                  src={v.thumbnail} 
+                  alt={v.title} 
+                  loading="lazy" 
+                  decoding="async" 
+                  className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" 
+                />
+                <div className="absolute inset-0 bg-slate-950/40 group-hover:bg-slate-950/20 transition-colors flex items-center justify-center">
+                  <div className="grid h-12 w-12 place-items-center rounded-full bg-red-600 text-white shadow-xl group-hover:scale-110 transition-transform">
+                    <Play className="h-5 w-5 fill-white ml-0.5" />
+                  </div>
+                </div>
+                <span className="absolute bottom-3 right-3 rounded-lg bg-slate-950/80 px-2 py-1 text-[10px] font-bold text-white backdrop-blur">
+                  {v.duration}
+                </span>
+              </div>
+              <div className="p-4">
+                <h3 className="text-sm font-bold text-white line-clamp-2 leading-snug group-hover:text-emerald-300 transition-colors">
+                  {v.title}
+                </h3>
+              </div>
             </div>
-            <h3 className="mt-5 text-lg font-bold text-white">{t.c1Title}</h3>
-            <p className="mt-2 text-sm leading-relaxed text-emerald-200/60">{t.c1Desc}</p>
-          </div>
-
-          <div className="group rounded-2xl border border-emerald-800/30 bg-[#1a3818]/60 p-6 backdrop-blur transition-all hover:border-[#25D366]/50">
-            <div className="grid h-12 w-12 place-items-center rounded-xl bg-[#25D366]/10 text-[#25D366]">
-              <Camera className="h-6 w-6" />
-            </div>
-            <h3 className="mt-5 text-lg font-bold text-white">{t.c2Title}</h3>
-            <p className="mt-2 text-sm leading-relaxed text-emerald-200/60">{t.c2Desc}</p>
-          </div>
-
-          <div className="group rounded-2xl border border-emerald-800/30 bg-[#1a3818]/60 p-6 backdrop-blur transition-all hover:border-[#25D366]/50 sm:col-span-2 md:col-span-1">
-            <div className="grid h-12 w-12 place-items-center rounded-xl bg-[#25D366]/10 text-[#25D366]">
-              <Sparkles className="h-6 w-6" />
-            </div>
-            <h3 className="mt-5 text-lg font-bold text-white">{t.c3Title}</h3>
-            <p className="mt-2 text-sm leading-relaxed text-emerald-200/60">{t.c3Desc}</p>
-          </div>
+          ))}
         </div>
 
-        <div className="mt-10 rounded-3xl border border-emerald-800/50 bg-[#1a3818] p-6 shadow-2xl backdrop-blur sm:p-10">
+        {/* Bandeau d'abonnement au canal */}
+        <div className="mt-12 rounded-3xl border border-emerald-800/50 bg-[#1a3818] p-6 shadow-2xl backdrop-blur sm:p-10">
           <div className="mx-auto flex max-w-2xl flex-col items-center gap-6 text-center sm:flex-row sm:justify-between sm:text-left">
             <div>
               <p className="text-lg sm:text-xl font-bold text-white">{t.channelSubscribers}</p>
-              <p className="mt-1 text-xs sm:text-sm text-emerald-200/60">{t.channelSubNote}</p>
+              <p className="mt-1 text-xs sm:text-sm text-emerald-200/70">{t.channelSubNote}</p>
             </div>
-            <a href={WA_CHANNEL_URL} target="_blank" rel="noreferrer"
-               className="inline-flex shrink-0 items-center gap-3 rounded-full bg-[#25D366] px-6 py-3.5 text-sm sm:text-base font-bold text-slate-950 shadow-lg transition-all hover:scale-105 hover:bg-[#20ba59]">
-              <MessageCircle className="h-5 w-5 fill-slate-950 text-[#25D366]" /> {t.channelBtn}
+            <a href={YOUTUBE_CHANNEL_URL} target="_blank" rel="noreferrer"
+               className="inline-flex shrink-0 items-center gap-2.5 rounded-full bg-red-600 px-6 py-3.5 text-sm sm:text-base font-bold text-white shadow-lg transition-all hover:scale-105 hover:bg-red-700">
+              <Youtube className="h-5 w-5 fill-white" /> {t.channelBtn}
             </a>
           </div>
         </div>
       </div>
+
+      {/* Lecteur Modale Pop-up si l'utilisateur clique sur une vidéo */}
+      {activeVideo && (
+        <div className="fixed inset-0 z-50 grid place-items-center bg-slate-950/80 p-4 backdrop-blur-md" onClick={() => setActiveVideo(null)}>
+          <div className="relative w-full max-w-4xl overflow-hidden rounded-3xl bg-slate-900 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+            <button 
+              onClick={() => setActiveVideo(null)}
+              className="absolute right-4 top-4 z-10 grid h-10 w-10 place-items-center rounded-full bg-slate-950/80 text-white hover:bg-red-600 transition-colors"
+            >
+              <X className="h-5 w-5" />
+            </button>
+            <div className="relative aspect-video w-full">
+              <iframe 
+                src={`https://www.youtube.com/embed/${activeVideo}?autoplay=1`} 
+                title="YouTube Video Player"
+                className="h-full w-full border-0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
@@ -1380,24 +1446,32 @@ function Trust({ t }: { t: typeof TRANSLATIONS["fr"] }) {
   );
 }
 
-/* ---------------- Realisations ---------------- */
-const STATIC_GALLERY = [
-  { src: gal1, title: "Installation onduleur & batterie Lithium", loc: "Yaoundé" },
-  { src: gal2, title: "Équipe technique EDSOLAR en intervention", loc: "Tradex Olembe" },
-  { src: gal3, title: "Tableau électrique & protections solaires", loc: "Yaoundé" },
-];
-
+/* ---------------- Realisations (Entièrement dynamique via Supabase) ---------------- */
 function Realisations({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
-  const [extra, setExtra] = useState<{ src: string; title: string; loc: string }[]>([]);
+  const [items, setItems] = useState<{ src: string; title: string; loc: string }[]>([]);
+
   useEffect(() => {
-    supabase.from("gallery_photos").select("url, caption").order("sort_order").order("created_at", { ascending: false })
-      .then(({ data }) => setExtra((data ?? []).map((p) => ({ src: p.url, title: p.caption ?? "Réalisation EDSOLAR", loc: "Cameroun" }))));
+    supabase
+      .from("gallery_photos")
+      .select("url, caption")
+      .order("sort_order")
+      .order("created_at", { ascending: false })
+      .then(({ data }) =>
+        setItems(
+          (data ?? []).map((p) => ({
+            src: p.url,
+            title: p.caption ?? "Réalisation EDSOLAR",
+            loc: "Cameroun",
+          }))
+        )
+      );
   }, []);
-  const items = [...extra, ...STATIC_GALLERY];
+
   return (
     <section id="realisations" className="bg-slate-100/70 dark:bg-slate-900/50 py-16 sm:py-28">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <SectionHeader eyebrow={t.realEyebrow} title={t.realTitle} description={t.realDesc} />
+        
         <div className="mt-12 grid gap-6 sm:grid-cols-2 md:grid-cols-3">
           {items.map((g, i) => (
             <figure key={`${g.src}-${i}`} className="group overflow-hidden rounded-2xl border border-border bg-card shadow-sm transition-transform hover:-translate-y-1">
@@ -1419,6 +1493,12 @@ function Realisations({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang })
             </figure>
           ))}
         </div>
+
+        {items.length === 0 && (
+          <p className="text-center text-sm text-muted-foreground mt-8">
+            {lang === "fr" ? "Aucune réalisation à afficher pour le moment." : "No projects to display at the moment."}
+          </p>
+        )}
       </div>
     </section>
   );
@@ -1681,6 +1761,7 @@ function Footer({ t }: { t: typeof TRANSLATIONS["fr"] }) {
             <li><a href="#kits" className="hover:text-emerald-300 transition-colors">{t.navKits}</a></li>
             <li><a href="#boutique" className="hover:text-emerald-300 transition-colors">{t.navBoutique}</a></li>
             <li><a href="#calculateur" className="hover:text-emerald-300 transition-colors">{t.navSimulator}</a></li>
+            <li><a href="#youtube" className="hover:text-emerald-300 transition-colors">{t.navYouTube}</a></li>
             <li><a href="#apropos" className="hover:text-emerald-300 transition-colors">Vision & Valeurs</a></li>
           </ul>
         </div>
