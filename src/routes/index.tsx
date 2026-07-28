@@ -848,6 +848,45 @@ function Metric({ icon: Icon, label, value, highlight }: { icon: any; label: str
   );
 }
 
+/* ---------------- Helper Parser de Variantes ---------------- */
+type VariantItem = { label: string; priceDisplay: string };
+
+function parseProductVariants(priceRaw: string | null | undefined, name: string): VariantItem[] {
+  if (!priceRaw) return [];
+
+  // Découpage par tiret (dash)
+  const rawParts = priceRaw.split("-").map((s) => s.trim()).filter(Boolean);
+  if (rawParts.length === 0) return [];
+
+  // Chercher des mentions de capacités dans le nom du produit (ex: "100AH/200AH/300AH")
+  const ahMatches = name.match(/(\d+\s*AH)/gi);
+  
+  // Détection par défaut pour batteries
+  const defaultCapacityLabels = ["100Ah", "200Ah", "300Ah", "400Ah", "500Ah"];
+  const isBattery = /li-sun|25\.6v|51\.2v|batterie/i.test(name);
+
+  return rawParts.map((part, idx) => {
+    // Extrait uniquement les chiffres du prix
+    const numeric = Number(part.replace(/\D/g, ""));
+    const formattedPrice = numeric > 0 
+      ? `${new Intl.NumberFormat("fr-FR").format(numeric)} FCFA`
+      : part;
+
+    let label = formattedPrice;
+    if (rawParts.length > 1) {
+      if (ahMatches && ahMatches[idx]) {
+        label = ahMatches[idx].toUpperCase();
+      } else if (isBattery && defaultCapacityLabels[idx]) {
+        label = defaultCapacityLabels[idx];
+      } else {
+        label = `Option ${idx + 1}`;
+      }
+    }
+
+    return { label, priceDisplay: formattedPrice };
+  });
+}
+
 /* ---------------- Products / Boutique (Avec Variantes de Prix & Lightbox) ---------------- */
 type Product = {
   id: string; name: string; category: string; price: string | null; badge: string | null;
@@ -870,22 +909,16 @@ function parseWarranty(p: Product): number {
 }
 
 function ProductCard({ p, lang, t, onSelectImage }: { p: Product; lang: Lang; t: typeof TRANSLATIONS["fr"]; onSelectImage: (p: Product) => void }) {
-  const priceParts = useMemo(() => {
-    if (!p.price) return [];
-    if (p.price.includes("-")) {
-      return p.price.split("-").map((s) => s.trim()).filter(Boolean);
-    }
-    return [p.price];
-  }, [p.price]);
-
+  const variants = useMemo(() => parseProductVariants(p.price, p.name), [p.price, p.name]);
   const [selectedIndex, setSelectedIndex] = useState(0);
 
-  const activePrice = priceParts.length > 0 ? priceParts[selectedIndex] || priceParts[0] : (lang === "fr" ? "Sur devis" : "On request");
+  const activeVariant = variants[selectedIndex] || variants[0];
+  const activePrice = activeVariant ? activeVariant.priceDisplay : (p.price || (lang === "fr" ? "Sur devis" : "On request"));
 
   const buildOrderMsg = () => {
-    const variantInfo = priceParts.length > 1 ? `\n• Déclinaison : ${activePrice}` : "";
+    const variantInfo = variants.length > 1 ? `\n• Capacité/Option : ${activeVariant?.label}` : "";
     return lang === "fr" 
-      ? `Bonjour EDSOLAR, je souhaite commander :\n• Produit : ${p.name}${variantInfo}\n• Prix : ${activePrice}\n\nMerci de me donner la disponibilité.`
+      ? `Bonjour EDSOLAR, je souhaite commander :\n• Produit : ${p.name}${variantInfo}\n• Prix : ${activePrice}\n\nMerci de me confirmer la disponibilité.`
       : `Hello EDSOLAR, I would like to order:\n• Product: ${p.name}${variantInfo}\n• Price: ${activePrice}\n\nPlease confirm availability.`;
   };
 
@@ -932,23 +965,23 @@ function ProductCard({ p, lang, t, onSelectImage }: { p: Product; lang: Lang; t:
           {p.warranty && <span className="rounded-full bg-[#386b34]/10 px-2 py-0.5 text-[#386b34]">{translateDynamicText(p.warranty, lang)}</span>}
         </div>
 
-        {/* Variantes de prix sous forme de puces s'il y a plusieurs options */}
-        {priceParts.length > 1 && (
-          <div className="mt-3 pt-2 border-t border-border">
-            <p className="text-[10px] font-bold uppercase text-muted-foreground mb-1.5">Capacités & Prix :</p>
+        {/* Variantes sous forme de boutons de choix */}
+        {variants.length > 1 && (
+          <div className="mt-4 pt-3 border-t border-border">
+            <p className="text-[10px] font-bold uppercase text-muted-foreground mb-2">Choisir la capacité :</p>
             <div className="flex flex-wrap gap-1.5">
-              {priceParts.map((pr, idx) => (
+              {variants.map((v, idx) => (
                 <button
                   key={idx}
                   type="button"
                   onClick={() => setSelectedIndex(idx)}
-                  className={`rounded-lg px-2 py-1 text-[11px] font-bold transition-all ${
+                  className={`rounded-xl px-3 py-1.5 text-xs font-bold transition-all ${
                     selectedIndex === idx
-                      ? "bg-[#386b34] text-white shadow-sm"
+                      ? "bg-[#386b34] text-white shadow-md ring-2 ring-[#386b34]/30"
                       : "border border-border bg-background text-foreground hover:bg-secondary"
                   }`}
                 >
-                  {pr}
+                  {v.label}
                 </button>
               ))}
             </div>
@@ -956,16 +989,14 @@ function ProductCard({ p, lang, t, onSelectImage }: { p: Product; lang: Lang; t:
         )}
       </div>
 
-      <div className="mt-4 pt-3 border-t border-border">
-        <div className="flex items-end justify-between gap-2">
-          <div>
-            <p className="text-[10px] font-bold uppercase text-muted-foreground">Prix sélectionné</p>
-            <span className="text-lg font-black text-[#386b34] dark:text-emerald-400">{activePrice}</span>
-          </div>
+      <div className="mt-5 pt-3 border-t border-border">
+        <div className="flex items-baseline justify-between gap-2 mb-3">
+          <span className="text-[11px] font-bold uppercase text-muted-foreground">Prix :</span>
+          <span className="text-xl font-black text-[#386b34] dark:text-emerald-400">{activePrice}</span>
         </div>
 
         <a href={waLink(buildOrderMsg())} target="_blank" rel="noreferrer"
-           className="mt-3 inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#386b34] px-4 py-2.5 text-sm font-bold text-white transition-colors hover:bg-[#2e582b]">
+           className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#386b34] px-4 py-2.5 text-sm font-bold text-white shadow transition-all hover:bg-[#2e582b] hover:scale-[1.02]">
           <MessageCircle className="h-4 w-4" /> {t.shopOrderWA}
         </a>
       </div>
@@ -1754,7 +1785,6 @@ function About({ t }: { t: typeof TRANSLATIONS["fr"] }) {
   const [selectedPhoto, setSelectedPhoto] = useState<{ index: number; src: string; caption: string; location: string } | null>(null);
 
   useEffect(() => {
-    // Récupération dynamique depuis Supabase si des photos avec category='terrain' existent
     supabase
       .from("gallery_photos")
       .select("*")
