@@ -92,7 +92,7 @@ const TRANSLATIONS = {
     navSimulator: "Simulateur Devis",
     navRealisations: "Réalisations",
     navHome: "Accueil",
-    navYouTube: "Chaîne YouTube",
+    navYouTube: "Vidéos",
     navReviews: "Avis clients",
     navContact: "Contact",
     btnQuote: "Devis gratuit",
@@ -154,7 +154,7 @@ const TRANSLATIONS = {
 
     channelTag: "Vidéos du terrain",
     channelTitle1: "Rejoignez la Chaîne ",
-    channelTitle2: "YouTube EDSOLAR",
+    channelTitle2: "YouTube EDSOLAR : @EDSOLAR237",
     channelDesc: "Abonnez-vous à notre chaîne officielle pour découvrir nos réalisations en vidéo, tutoriels d'utilisation et démonstrations du matériel.",
     channelSubscribers: "Suivez nos vidéos exclusives sur YouTube !",
     channelSubNote: "Abonnez-vous gratuitement à la chaîne @EDSOLAR237",
@@ -225,7 +225,7 @@ const TRANSLATIONS = {
     navSimulator: "Quote Simulator",
     navRealisations: "Projects",
     navHome: "Home",
-    navYouTube: "YouTube Channel",
+    navYouTube: "Videos",
     navReviews: "Customer Reviews",
     navContact: "Contact",
     btnQuote: "Free Quote",
@@ -449,7 +449,7 @@ function Header({ lang, setLang, t }: { lang: Lang; setLang: (l: Lang) => void; 
     { href: "#boutique", label: t.navBoutique },
     { href: "#calculateur", label: t.navSimulator },
     { href: "#realisations", label: t.navRealisations },
-    { href: "#youtube", label: "YouTube" },
+    { href: "#youtube", label: t.navYouTube },
     { href: "#apropos", label: "Vision" },
   ];
 
@@ -908,7 +908,7 @@ function Calculator({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
             </div>
           </div>
           <div className="rounded-3xl border border-emerald-900/40 bg-[#234d20] p-6 text-white shadow-2xl sm:p-8">
-            <p className="text-xs font-bold uppercase tracking-widest text-[#25D366]">{t.simEyebrow}</p>
+            <p className="text-xs font-bold uppercase tracking-widest text-emerald-300">{t.simEyebrow}</p>
             <h3 className="mt-2 text-2xl font-black">{t.simResultTitle}</h3>
             <div className="mt-6 space-y-3.5">
               <Metric icon={Zap} label={t.simPeakPower} value={`${peakW.toLocaleString()} W`} />
@@ -1267,7 +1267,7 @@ function DiasporaSection({ lang }: { lang: Lang }) {
                 <span className="text-slate-500 text-[10px] mt-1.5 font-medium">{lang === "fr" ? "Règlement local rapide" : "Fast local payment"}</span>
               </div>
 
-              <div className="flex flex-col justify-between rounded-2xl border border-slate-[#386b34] bg-white p-3.5 text-slate-900 shadow-md">
+              <div className="flex flex-col justify-between rounded-2xl border border-slate-200 bg-white p-3.5 text-slate-900 shadow-md">
                 <div className="flex items-center gap-2">
                   <img src={orangeMoneyLogo} alt="Orange Money" className="h-5 w-auto object-contain shrink-0" decoding="async" />
                 </div>
