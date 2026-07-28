@@ -265,10 +265,6 @@ function PhotosPanel() {
         {items.map((p) => (
           <div key={p.id} className="overflow-hidden rounded-2xl border border-border bg-card">
             <img src={p.url} alt={p.caption ?? ""} loading="lazy" decoding="async" className="aspect-[4/3] w-full object-cover" />
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {items.map((p) => (
-          <div key={p.id} className="overflow-hidden rounded-2xl border border-border bg-card">
-            <img src={p.url} alt={p.caption ?? ""} className="aspect-[4/3] w-full object-cover" />
             <div className="flex items-center justify-between gap-2 p-3">
               <p className="truncate text-sm">{p.caption || <span className="text-muted-foreground">Sans légende</span>}</p>
               <button onClick={async () => { if (confirm("Supprimer ?")) { await del({ data: { id: p.id } }); await load(); } }}
