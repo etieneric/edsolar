@@ -154,7 +154,7 @@ const TRANSLATIONS = {
 
     channelTag: "Vidéos du terrain",
     channelTitle1: "Rejoignez la Chaîne ",
-    channelTitle2: "YouTube EDSOLAR : @EDSOLAR237",
+    channelTitle2: "YouTube EDSOLAR",
     channelDesc: "Abonnez-vous à notre chaîne officielle pour découvrir nos réalisations en vidéo, tutoriels d'utilisation et démonstrations du matériel.",
     channelSubscribers: "Suivez nos vidéos exclusives sur YouTube !",
     channelSubNote: "Abonnez-vous gratuitement à la chaîne @EDSOLAR237",
