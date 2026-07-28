@@ -287,7 +287,7 @@ const TRANSLATIONS = {
 
     channelTag: "Field Videos",
     channelTitle1: "Join the ",
-    channelTitle2: "YouTube Channel: @EDSOLAR237",
+    channelTitle2: "YouTube Channel",
     channelDesc: "Subscribe to our official channel to watch video project walk-throughs, tutorials, and equipment demos.",
     channelSubscribers: "Watch our exclusive videos on YouTube!",
     channelSubNote: "Subscribe for free to @EDSOLAR237",
