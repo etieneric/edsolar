@@ -3,7 +3,7 @@ import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useRef, useState } from "react";
 import {
   Lock, LogOut, Plus, Trash2, Check, X, Image as ImageIcon, Package,
-  MessageSquare, ShoppingBag, Home, Upload, Loader2,
+  MessageSquare, ShoppingBag, Home, Upload, Loader2, Edit2, Save
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import {
@@ -120,7 +120,7 @@ function Dashboard({ onLogout }: { onLogout: () => void }) {
   );
 }
 
-/* ---------- Image uploader corrigé ---------- */
+/* ---------- Image uploader ---------- */
 async function uploadCompressed(
   createUploadUrl: (a: { data: { folder: "photos" | "kits" | "products"; filename: string } }) => Promise<any>,
   folder: "photos" | "kits" | "products",
@@ -169,7 +169,6 @@ function ImageUploader({
     <div className="space-y-2">
       <label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Photo</label>
       
-      {/* Input de fichier caché natif */}
       <input
         ref={inputRef}
         type="file"
@@ -239,7 +238,7 @@ function BulkPhotoUpload({ onDone }: { onDone: () => void | Promise<void> }) {
       try {
         if (!f.type.startsWith("image/")) continue;
         const url = await uploadCompressed(createUploadUrl, "photos", f);
-        await add({ data: { url, caption: "" } });
+        await add({ data: { url, caption: "", location: "Cameroun" } });
       } catch (e: any) {
         setErr(`${f.name} : ${e?.message || "échec"}`);
       }
@@ -284,54 +283,151 @@ function BulkPhotoUpload({ onDone }: { onDone: () => void | Promise<void> }) {
   );
 }
 
-/* ---------------- Photos ---------------- */
+/* ---------------- Photos (Avec Ajout & Édition du Lieu) ---------------- */
 function PhotosPanel() {
   const [items, setItems] = useState<any[]>([]);
+  const [editingId, setEditingId] = useState<string | null>(null);
+  
+  // Champs Formulaire (Ajout ou Édition)
   const [url, setUrl] = useState("");
   const [caption, setCaption] = useState("");
+  const [location, setLocation] = useState("");
+  
   const [busy, setBusy] = useState(false);
   const add = useServerFn(adminAddPhoto);
   const del = useServerFn(adminDeletePhoto);
 
   const load = async () => {
-    const { data } = await supabase.from("gallery_photos").select("*").order("sort_order").order("created_at", { ascending: false });
+    const { data } = await supabase
+      .from("gallery_photos")
+      .select("*")
+      .order("sort_order")
+      .order("created_at", { ascending: false });
     setItems(data ?? []);
   };
+  
   useEffect(() => { load(); }, []);
+
+  const resetForm = () => {
+    setEditingId(null);
+    setUrl("");
+    setCaption("");
+    setLocation("");
+  };
+
+  const startEdit = (p: any) => {
+    setEditingId(p.id);
+    setUrl(p.url);
+    setCaption(p.caption ?? "");
+    setLocation(p.location ?? "");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!url) return;
     setBusy(true);
-    try { await add({ data: { url, caption } }); setUrl(""); setCaption(""); await load(); }
-    finally { setBusy(false); }
+    try {
+      if (editingId) {
+        // Enregistrement de l'édition dans Supabase
+        await supabase
+          .from("gallery_photos")
+          .update({
+            url,
+            caption: caption || null,
+            location: location || "Cameroun",
+          })
+          .eq("id", editingId);
+      } else {
+        // Nouvel ajout
+        await add({ data: { url, caption, location: location || "Cameroun" } });
+      }
+      resetForm();
+      await load();
+    } finally {
+      setBusy(false);
+    }
   };
 
   return (
     <section className="space-y-6">
       <form onSubmit={submit} className="rounded-2xl border border-border bg-card p-5 space-y-4">
         <div>
-          <p className="text-sm font-bold">Ajouter une photo à la galerie</p>
-          <p className="mt-1 text-xs text-muted-foreground">Téléversez une image depuis votre appareil (ordinateur, téléphone, tablette).</p>
+          <p className="text-sm font-bold">
+            {editingId ? "Éditer la photo de la galerie" : "Ajouter une photo à la galerie"}
+          </p>
+          <p className="mt-1 text-xs text-muted-foreground">
+            Téléversez une image et indiquez la légende et la ville/lieu de réalisation.
+          </p>
         </div>
+        
         <ImageUploader folder="photos" value={url} onChange={setUrl} />
-        <input value={caption} onChange={(e) => setCaption(e.target.value)} placeholder="Légende (optionnelle)"
-          className="w-full rounded-xl border border-input bg-background px-4 py-2.5 text-sm outline-none focus:border-primary" />
-        <button disabled={busy || !url} className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground disabled:opacity-60">
-          <Plus className="h-4 w-4" /> Ajouter à la galerie
-        </button>
+        
+        <div className="grid gap-3 sm:grid-cols-2">
+          <div>
+            <label className="block text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-1">
+              Légende (optionnelle)
+            </label>
+            <input 
+              value={caption} 
+              onChange={(e) => setCaption(e.target.value)} 
+              placeholder="Ex: Installation Solaire Hybride 5 kVA"
+              className="w-full rounded-xl border border-input bg-background px-4 py-2.5 text-sm outline-none focus:border-primary" 
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-1">
+              Lieu / Ville (optionnel)
+            </label>
+            <input 
+              value={location} 
+              onChange={(e) => setLocation(e.target.value)} 
+              placeholder="Ex: Yaoundé, Bastos / Douala..."
+              className="w-full rounded-xl border border-input bg-background px-4 py-2.5 text-sm outline-none focus:border-primary" 
+            />
+          </div>
+        </div>
+
+        <div className="flex gap-2">
+          <button disabled={busy || !url} className="inline-flex items-center justify-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-bold text-primary-foreground disabled:opacity-60">
+            {editingId ? <Save className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
+            {editingId ? "Enregistrer les modifications" : "Ajouter à la galerie"}
+          </button>
+          {editingId && (
+            <button type="button" onClick={resetForm} className="rounded-full border border-border px-4 py-2.5 text-sm font-semibold">
+              Annuler
+            </button>
+          )}
+        </div>
       </form>
-      <BulkPhotoUpload onDone={load} />
+
+      {!editingId && <BulkPhotoUpload onDone={load} />}
+
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {items.map((p) => (
           <div key={p.id} className="overflow-hidden rounded-2xl border border-border bg-card">
             <img src={p.url} alt={p.caption ?? ""} loading="lazy" decoding="async" className="aspect-[4/3] w-full object-cover" />
             <div className="flex items-center justify-between gap-2 p-3">
-              <p className="truncate text-sm">{p.caption || <span className="text-muted-foreground">Sans légende</span>}</p>
-              <button onClick={async () => { if (confirm("Supprimer ?")) { await del({ data: { id: p.id } }); await load(); } }}
-                className="grid h-8 w-8 place-items-center rounded-full text-destructive hover:bg-destructive/10">
-                <Trash2 className="h-4 w-4" />
-              </button>
+              <div className="min-w-0">
+                <p className="truncate text-sm font-bold">{p.caption || <span className="text-muted-foreground">Sans légende</span>}</p>
+                <p className="truncate text-xs font-semibold text-emerald-600">{p.location || "Cameroun"}</p>
+              </div>
+              <div className="flex items-center gap-1 shrink-0">
+                <button 
+                  onClick={() => startEdit(p)}
+                  className="grid h-8 w-8 place-items-center rounded-full text-slate-700 dark:text-slate-300 hover:bg-secondary"
+                  title="Éditer la photo"
+                >
+                  <Edit2 className="h-4 w-4" />
+                </button>
+                <button 
+                  onClick={async () => { if (confirm("Supprimer cette photo ?")) { await del({ data: { id: p.id } }); await load(); } }}
+                  className="grid h-8 w-8 place-items-center rounded-full text-destructive hover:bg-destructive/10"
+                  title="Supprimer la photo"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </button>
+              </div>
             </div>
           </div>
         ))}
