@@ -7,7 +7,8 @@ import {
   Laptop, Fan, Microwave, CheckCircle2, Star, Award, Clock, Users,
   Facebook, Instagram, Linkedin, Send, Package, Search, ArrowUp,
   Radio, Camera, Video, Sparkles, Globe, CreditCard, ShieldAlert,
-  Check, AlertTriangle, Mail, Handshake, Heart, Smile, Sparkle, Utensils, Stethoscope, Car, Home
+  Check, AlertTriangle, Mail, Handshake, Heart, Smile, Utensils, Stethoscope, Car, Home,
+  Calendar, Compass
 } from "lucide-react";
 
 import logo from "@/assets/edsolar-logo-new.jpeg";
@@ -17,12 +18,27 @@ import gal2 from "@/assets/gallery-2.jpg";
 import gal3 from "@/assets/gallery-3.jpg";
 import teamPortrait from "@/assets/team-portrait.jpeg";
 
+// Imports des images de terrain (Historique 2017 à aujourd'hui)
+import field1 from "@/assets/FB_IMG_1785237119977.jpeg";
+import field2 from "@/assets/FB_IMG_1785237146000.jpeg";
+import field3 from "@/assets/FB_IMG_1785237208608.jpeg";
+import field4 from "@/assets/FB_IMG_1785237208736.jpeg";
+import field5 from "@/assets/FB_IMG_1785237236998.jpeg";
+import field6 from "@/assets/FB_IMG_1785237261058.jpeg";
+import field7 from "@/assets/FB_IMG_1785237273893.jpeg";
+import field8 from "@/assets/FB_IMG_1785237328858.jpeg";
+import field9 from "@/assets/FB_IMG_1785237355589.jpeg";
+
 // Imports des logos partenaires depuis assets/
 import sakoLogo from "@/assets/SAKO.png";
 import felicityLogo from "@/assets/Felicity.png";
 import cworthLogo from "@/assets/Cworth.png";
 import growattLogo from "@/assets/Growarth.png";
 import longiLogo from "@/assets/Longi.png";
+
+// Imports des logos de paiement Mobile Money
+import momoLogo from "@/assets/momo.png";
+import orangeMoneyLogo from "@/assets/Orange Money.png";
 
 import { supabase } from "@/integrations/supabase/client";
 
@@ -53,6 +69,15 @@ const PARTNERS_DATA = [
   { name: "Cworth Energy", logo: cworthLogo, desc: "Composants & Protections", badge: "IEC Standard" },
   { name: "Growatt", logo: growattLogo, desc: "Onduleurs Hybrides Intelligents", badge: "Smart Energy" },
   { name: "LONGi Solar", logo: longiLogo, desc: "Panneaux Photovoltaïques", badge: "World Leader" },
+];
+
+const FIELD_IMAGES = [
+  { src: field2, caption: "Équipe EDSOLAR en mission sur le terrain" },
+  { src: field9, caption: "Déplacement sur le fleuve pour installation en zone isolée" },
+  { src: field1, caption: "Installation technique d'un coffret & onduleur" },
+  { src: field7, caption: "Pose de panneaux photovoltaïques sur toiture" },
+  { src: field4, caption: "Moments de synergie et travail d'équipe" },
+  { src: field8, caption: "Projet historique de recherche & développement" },
 ];
 
 const TRANSLATIONS = {
@@ -163,10 +188,12 @@ const TRANSLATIONS = {
     reviewsEmpty: "Soyez le premier à partager votre expérience !",
 
     aboutEyebrow: "Notre Vision & Mission",
-    aboutTitle: "EDSOLAR — Plus qu'une entreprise, un mouvement pour l'avenir",
-    aboutDesc: "EDSOLAR repose sur quatre valeurs fondamentales : la Gratitude, l'Abondance, l'Amour et la Compassion.",
-    aboutMission: "Notre mission dépasse la simple fourniture d'énergie solaire. Nous voulons bâtir un avenir où chaque famille, chaque entreprise et chaque communauté bénéficie d'une énergie propre, fiable et accessible : un monde sans délestage, avec moins de pollution, un environnement mieux protégé, des coûts énergétiques réduits et une véritable indépendance énergétique.",
-    aboutEcosystemTitle: "Un écosystème global au service du quotidien :",
+    aboutTitle: "EDSOLAR — Un engagement fort pour le bien-être durable",
+    aboutPillarsText: "EDSOLAR repose sur quatre Grands Piliers fondamentaux : la Gratitude, l'Abondance, l'Amour et la Compassion.",
+    aboutMissionText: "Notre mission est d'aider les gens à accéder à l'énergie solaire à moindre coût.",
+    aboutVisionText: "Notre vision est de bâtir un avenir où chaque famille, chaque entreprise et chaque communauté bénéficie d'une énergie propre, fiable et accessible : un monde sans délestage, avec moins de pollution, un environnement mieux protégé, des coûts énergétiques réduits et une véritable indépendance énergétique.",
+    aboutPresenceText: "Depuis 2017, nous déployons nos activités et notre savoir-faire sur l'ensemble du territoire camerounais.",
+    aboutEcosystemTitle: "Cette vision s'étendra progressivement à d'autres domaines essentiels du quotidien :",
     aboutConclusion: "EDSOLAR, ce n'est pas seulement une entreprise. C'est une vision, un engagement et un mouvement au service du bien-être total des générations d'aujourd'hui et de demain.",
 
     contactEyebrow: "Contact",
@@ -300,10 +327,12 @@ const TRANSLATIONS = {
     reviewsEmpty: "Be the first to share your experience!",
 
     aboutEyebrow: "Our Vision & Mission",
-    aboutTitle: "EDSOLAR — More than a company, a movement for the future",
-    aboutDesc: "EDSOLAR is built on four core values: Gratitude, Abundance, Love, and Compassion.",
-    aboutMission: "Our mission goes beyond simply providing solar energy. We want to build a future where every family, business, and community enjoys clean, reliable, and accessible power: a world without power cuts, with less pollution, better environmental protection, lower energy costs, and true energy independence.",
-    aboutEcosystemTitle: "A global ecosystem improving everyday life:",
+    aboutTitle: "EDSOLAR — A commitment to sustainable well-being",
+    aboutPillarsText: "EDSOLAR is built on four core Great Pillars: Gratitude, Abundance, Love, and Compassion.",
+    aboutMissionText: "Our mission is to help people access affordable solar energy.",
+    aboutVisionText: "Our vision is to build a future where every family, business, and community benefits from clean, reliable, and accessible energy: a world without power cuts, with less pollution, better environmental protection, lower energy costs, and true energy independence.",
+    aboutPresenceText: "Since 2017, we have been carrying out our operations across the entire Cameroonian territory.",
+    aboutEcosystemTitle: "This vision will progressively expand to other key areas of daily life:",
     aboutConclusion: "EDSOLAR is not just a business. It is a vision, a commitment, and a movement dedicated to the total well-being of present and future generations.",
 
     contactEyebrow: "Contact",
@@ -395,7 +424,7 @@ function Index() {
   const t = TRANSLATIONS[lang];
 
   return (
-    <div className="min-h-screen bg-background text-foreground selection:bg-[#005a0b] selection:text-white">
+    <div className="min-h-screen bg-background text-foreground selection:bg-[#386b34] selection:text-white">
       <Header lang={lang} setLang={setLang} t={t} />
       <Hero t={t} lang={lang} />
       <Partners t={t} />
@@ -453,7 +482,7 @@ function Header({ lang, setLang, t }: { lang: Lang; setLang: (l: Lang) => void; 
     : "Hello EDSOLAR, I would like to request a free quote.";
 
   return (
-    <header className="sticky top-0 z-50 border-b border-emerald-900/10 bg-white/90 backdrop-blur-md dark:border-emerald-900/30 dark:bg-[#002f06]/90 transition-all">
+    <header className="sticky top-0 z-50 border-b border-emerald-900/10 bg-white/90 backdrop-blur-md dark:border-emerald-900/30 dark:bg-[#20401d]/90 transition-all">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-2.5 sm:px-6">
         
         {/* LOGO */}
@@ -465,7 +494,7 @@ function Header({ lang, setLang, t }: { lang: Lang; setLang: (l: Lang) => void; 
           />
           <span className="flex flex-col leading-tight">
             <span className="text-base sm:text-lg font-black tracking-tight text-slate-900 dark:text-white">EDSOLAR</span>
-            <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.15em] text-[#005a0b]">Énergie Cameroun</span>
+            <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.15em] text-[#386b34]">Énergie Cameroun</span>
           </span>
         </a>
 
@@ -475,7 +504,7 @@ function Header({ lang, setLang, t }: { lang: Lang; setLang: (l: Lang) => void; 
             <a 
               key={n.href} 
               href={n.href} 
-              className="text-sm font-semibold text-slate-700 transition-colors hover:text-[#005a0b] dark:text-slate-200 whitespace-nowrap"
+              className="text-sm font-semibold text-slate-700 transition-colors hover:text-[#386b34] dark:text-slate-200 whitespace-nowrap"
             >
               {n.label}
             </a>
@@ -488,14 +517,14 @@ function Header({ lang, setLang, t }: { lang: Lang; setLang: (l: Lang) => void; 
             <button 
               type="button"
               onClick={() => setLang("fr")}
-              className={`rounded-full px-2.5 py-1 text-xs font-bold transition-all ${lang === "fr" ? "bg-[#005a0b] text-white shadow" : "text-slate-600 dark:text-slate-400 hover:text-foreground"}`}
+              className={`rounded-full px-2.5 py-1 text-xs font-bold transition-all ${lang === "fr" ? "bg-[#386b34] text-white shadow" : "text-slate-600 dark:text-slate-400 hover:text-foreground"}`}
             >
               FR
             </button>
             <button 
               type="button"
               onClick={() => setLang("en")}
-              className={`rounded-full px-2.5 py-1 text-xs font-bold transition-all ${lang === "en" ? "bg-[#005a0b] text-white shadow" : "text-slate-600 dark:text-slate-400 hover:text-foreground"}`}
+              className={`rounded-full px-2.5 py-1 text-xs font-bold transition-all ${lang === "en" ? "bg-[#386b34] text-white shadow" : "text-slate-600 dark:text-slate-400 hover:text-foreground"}`}
             >
               EN
             </button>
@@ -505,7 +534,7 @@ function Header({ lang, setLang, t }: { lang: Lang; setLang: (l: Lang) => void; 
             href={waLink(quoteMsg)} 
             target="_blank" 
             rel="noreferrer"
-            className="inline-flex items-center gap-2 rounded-full bg-[#005a0b] px-5 py-2.5 text-sm font-bold text-white shadow-md shadow-[#005a0b]/20 transition-all hover:scale-105 hover:bg-[#00480a] whitespace-nowrap"
+            className="inline-flex items-center gap-2 rounded-full bg-[#386b34] px-5 py-2.5 text-sm font-bold text-white shadow-md shadow-[#386b34]/20 transition-all hover:scale-105 hover:bg-[#2e582b] whitespace-nowrap"
           >
             <MessageCircle className="h-4 w-4 fill-white" />
             <span>{t.btnQuote}</span>
@@ -518,14 +547,14 @@ function Header({ lang, setLang, t }: { lang: Lang; setLang: (l: Lang) => void; 
             <button 
               type="button"
               onClick={() => setLang("fr")}
-              className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${lang === "fr" ? "bg-[#005a0b] text-white" : "text-slate-600 dark:text-slate-400"}`}
+              className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${lang === "fr" ? "bg-[#386b34] text-white" : "text-slate-600 dark:text-slate-400"}`}
             >
               FR
             </button>
             <button 
               type="button"
               onClick={() => setLang("en")}
-              className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${lang === "en" ? "bg-[#005a0b] text-white" : "text-slate-600 dark:text-slate-400"}`}
+              className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${lang === "en" ? "bg-[#386b34] text-white" : "text-slate-600 dark:text-slate-400"}`}
             >
               EN
             </button>
@@ -564,7 +593,7 @@ function Header({ lang, setLang, t }: { lang: Lang; setLang: (l: Lang) => void; 
                 target="_blank" 
                 rel="noreferrer"
                 onClick={() => setOpen(false)}
-                className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#005a0b] py-3.5 text-sm font-bold text-white shadow-md transition-all active:scale-[0.98]"
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#386b34] py-3.5 text-sm font-bold text-white shadow-md transition-all active:scale-[0.98]"
               >
                 <MessageCircle className="h-4 w-4 fill-white" />
                 <span>{t.btnQuote}</span>
@@ -587,58 +616,66 @@ function Hero({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
     <section id="accueil" className="relative isolate overflow-hidden">
       <img src={hero} alt="Installateurs solaires EDSOLAR sur un toit à Yaoundé" width={1920} height={1080}
            className="absolute inset-0 -z-10 h-full w-full object-cover" />
-      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-[#003807]/95 via-[#002705]/90 to-[#003807]/80" />
+      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-[#234d20]/95 via-[#1a3818]/90 to-[#234d20]/80" />
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-20 sm:px-6 md:py-32 lg:grid-cols-[1.15fr_1fr] lg:py-40">
         <div className="text-white">
-          <span className="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-[#005a0b]/20 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-emerald-300 backdrop-blur">
+          <span className="inline-flex items-center gap-2 rounded-full border border-emerald-300/30 bg-[#386b34]/30 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-emerald-200 backdrop-blur">
             <Zap className="h-3.5 w-3.5 text-emerald-300 fill-emerald-300" /> {t.heroTag}
           </span>
           <h1 className="mt-6 text-3xl font-black leading-[1.1] tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
-            {t.heroTitle1}<span className="text-emerald-400">{t.heroTitle2}</span>{t.heroTitle3}
+            {t.heroTitle1}<span className="text-emerald-300">{t.heroTitle2}</span>{t.heroTitle3}
           </h1>
-          <p className="mt-6 max-w-xl text-base leading-relaxed text-emerald-100/80 sm:text-lg">
+          <p className="mt-6 max-w-xl text-base leading-relaxed text-emerald-100/90 sm:text-lg">
             {t.heroDesc}
           </p>
 
-          {/* BANDEAU PAIEMENT FLEXIBLE */}
-          <div className="mt-6 flex flex-wrap items-center gap-2 rounded-2xl border border-white/10 bg-white/5 p-3 backdrop-blur text-xs text-slate-300">
-            <span className="font-bold text-emerald-400">{lang === "fr" ? "Paiement flexible :" : "Flexible payment:"}</span>
-            <span className="rounded-md bg-[#005a0b]/40 px-2 py-0.5 text-emerald-200 font-semibold">MTN MoMo</span>
-            <span className="rounded-md bg-[#005a0b]/40 px-2 py-0.5 text-emerald-200 font-semibold">Orange Money</span>
-            <span className="rounded-md bg-[#005a0b]/40 px-2 py-0.5 text-emerald-200 font-semibold">{lang === "fr" ? "Traites échelonnées" : "Installment payments"}</span>
+          {/* BANDEAU PAIEMENT FLEXIBLE AVEC LOGOS OFFICIELS */}
+          <div className="mt-6 flex flex-wrap items-center gap-3 rounded-2xl border border-white/15 bg-white/10 p-3 backdrop-blur text-xs text-slate-200">
+            <span className="font-bold text-emerald-300">{lang === "fr" ? "Paiement flexible :" : "Flexible payment:"}</span>
+            <div className="flex items-center gap-2">
+              <span className="flex items-center gap-1.5 rounded-xl bg-white/90 px-2.5 py-1 text-slate-900 font-extrabold shadow-sm">
+                <img src={momoLogo} alt="MTN MoMo" className="h-4 w-auto object-contain" />
+                MTN MoMo
+              </span>
+              <span className="flex items-center gap-1.5 rounded-xl bg-white/90 px-2.5 py-1 text-slate-900 font-extrabold shadow-sm">
+                <img src={orangeMoneyLogo} alt="Orange Money" className="h-4 w-auto object-contain" />
+                Orange Money
+              </span>
+            </div>
+            <span className="rounded-xl bg-[#386b34]/60 border border-emerald-400/30 px-2.5 py-1 text-emerald-100 font-semibold">{lang === "fr" ? "Traites échelonnées" : "Installments"}</span>
           </div>
 
           <div className="mt-8 flex flex-wrap gap-3">
-            <a href="#calculateur" className="inline-flex items-center gap-2 rounded-full bg-[#005a0b] px-6 py-3.5 text-sm font-bold text-white shadow-xl shadow-[#005a0b]/30 transition-all hover:scale-105 hover:bg-[#00730d]">
+            <a href="#calculateur" className="inline-flex items-center gap-2 rounded-full bg-[#386b34] px-6 py-3.5 text-sm font-bold text-white shadow-xl shadow-[#386b34]/30 transition-all hover:scale-105 hover:bg-[#4a8344]">
               <Zap className="h-4 w-4 fill-white" /> {t.heroSimulateBtn}
             </a>
             <a href={`tel:${PHONE}`} className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-6 py-3.5 text-sm font-semibold text-white backdrop-blur transition-colors hover:bg-white/20">
               <Phone className="h-4 w-4" /> {t.heroExpertBtn}
             </a>
           </div>
-          <div className="mt-10 flex flex-wrap items-center gap-6 text-sm text-emerald-100/80">
-            <div className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-emerald-400" /> {t.heroStat1}</div>
-            <div className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-emerald-400" /> {t.heroStat2}</div>
-            <div className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-emerald-400" /> {t.heroStat3}</div>
+          <div className="mt-10 flex flex-wrap items-center gap-6 text-sm text-emerald-100/90">
+            <div className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-emerald-300" /> {t.heroStat1}</div>
+            <div className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-emerald-300" /> {t.heroStat2}</div>
+            <div className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-emerald-300" /> {t.heroStat3}</div>
           </div>
         </div>
         <div className="hidden lg:block">
-          <div className="ml-auto max-w-sm rounded-3xl border border-emerald-500/20 bg-[#002705]/85 p-6 text-white shadow-2xl backdrop-blur-xl">
+          <div className="ml-auto max-w-sm rounded-3xl border border-emerald-400/20 bg-[#1a3818]/85 p-6 text-white shadow-2xl backdrop-blur-xl">
             <div className="flex items-center gap-3">
               <img src={logo} alt="EDSOLAR" className="h-14 w-14 rounded-xl bg-white object-contain p-1" />
               <div>
-                <p className="text-xs uppercase tracking-widest text-emerald-300/70">{t.heroCardSub}</p>
+                <p className="text-xs uppercase tracking-widest text-emerald-200/70">{t.heroCardSub}</p>
                 <p className="text-lg font-bold">{t.heroCardTitle}</p>
               </div>
             </div>
-            <div className="mt-5 space-y-3 text-sm text-emerald-100/80">
-              <div className="flex items-start gap-3"><MapPin className="mt-0.5 h-4 w-4 text-emerald-400 shrink-0" /> Tradex Olembe, Yaoundé, Cameroun</div>
-              <div className="flex items-start gap-3"><Leaf className="mt-0.5 h-4 w-4 text-emerald-400 shrink-0" /> {t.heroStat3}</div>
-              <div className="flex items-start gap-3"><Phone className="mt-0.5 h-4 w-4 text-emerald-400 shrink-0" /> +237 650544444</div>
-              <div className="flex items-start gap-3"><Mail className="mt-0.5 h-4 w-4 text-emerald-400 shrink-0" /> {EMAIL}</div>
+            <div className="mt-5 space-y-3 text-sm text-emerald-100/90">
+              <div className="flex items-start gap-3"><MapPin className="mt-0.5 h-4 w-4 text-emerald-300 shrink-0" /> Tradex Olembe, Yaoundé, Cameroun</div>
+              <div className="flex items-start gap-3"><Leaf className="mt-0.5 h-4 w-4 text-emerald-300 shrink-0" /> {t.heroStat3}</div>
+              <div className="flex items-start gap-3"><Phone className="mt-0.5 h-4 w-4 text-emerald-300 shrink-0" /> +237 650544444</div>
+              <div className="flex items-start gap-3"><Mail className="mt-0.5 h-4 w-4 text-emerald-300 shrink-0" /> {EMAIL}</div>
             </div>
             <a href={waLink(waMsg)} target="_blank" rel="noreferrer"
-               className="mt-5 flex items-center justify-center gap-2 rounded-full bg-[#005a0b] px-4 py-3 text-sm font-bold text-white transition-all hover:bg-[#00730d]">
+               className="mt-5 flex items-center justify-center gap-2 rounded-full bg-[#386b34] px-4 py-3 text-sm font-bold text-white transition-all hover:bg-[#4a8344]">
               <MessageCircle className="h-4 w-4 fill-white" /> WhatsApp direct
             </a>
           </div>
@@ -654,7 +691,7 @@ function Partners({ t }: { t: typeof TRANSLATIONS["fr"] }) {
     <section id="partenaires" className="border-y border-emerald-900/10 bg-card py-12 sm:py-16">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="text-center max-w-2xl mx-auto mb-10">
-          <span className="text-xs font-bold uppercase tracking-widest text-[#005a0b] dark:text-emerald-400 flex items-center justify-center gap-1.5">
+          <span className="text-xs font-bold uppercase tracking-widest text-[#386b34] dark:text-emerald-400 flex items-center justify-center gap-1.5">
             <Handshake className="h-4 w-4" /> {t.partnersEyebrow}
           </span>
           <h2 className="mt-2 text-2xl font-black text-foreground sm:text-3xl">{t.partnersTitle}</h2>
@@ -665,14 +702,14 @@ function Partners({ t }: { t: typeof TRANSLATIONS["fr"] }) {
           {PARTNERS_DATA.map((partner) => (
             <div 
               key={partner.name} 
-              className="group flex flex-col items-center justify-center rounded-2xl border border-border bg-white p-5 text-center shadow-sm transition-all hover:border-[#005a0b]/50 hover:shadow-md dark:bg-slate-900/80"
+              className="group flex flex-col items-center justify-center rounded-2xl border border-border bg-white p-5 text-center shadow-sm transition-all hover:border-[#386b34]/50 hover:shadow-md dark:bg-slate-900/80"
             >
               <div className="flex h-16 w-full items-center justify-center p-2 rounded-xl bg-white">
                 <img src={partner.logo} alt={`Logo ${partner.name}`} className="max-h-full max-w-full object-contain transition-transform group-hover:scale-105" />
               </div>
               <h3 className="mt-3 text-sm font-extrabold text-foreground">{partner.name}</h3>
               <p className="mt-1 text-[11px] text-muted-foreground leading-tight">{partner.desc}</p>
-              <span className="mt-3 inline-block rounded-full bg-[#005a0b]/10 px-2.5 py-0.5 text-[9px] font-bold text-[#005a0b] dark:text-emerald-400">
+              <span className="mt-3 inline-block rounded-full bg-[#386b34]/10 px-2.5 py-0.5 text-[9px] font-bold text-[#386b34] dark:text-emerald-400">
                 {partner.badge}
               </span>
             </div>
@@ -698,14 +735,14 @@ function Services({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
         <SectionHeader eyebrow={t.servicesEyebrow} title={t.servicesTitle} description={t.servicesDesc} />
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {SERVICES.map((s) => (
-            <div key={s.title} className="group rounded-2xl border border-border bg-card p-6 shadow-sm transition-all hover:border-[#005a0b]/40">
-              <div className="grid h-12 w-12 place-items-center rounded-xl bg-[#005a0b]/10 text-[#005a0b] transition-colors group-hover:bg-[#005a0b] group-hover:text-white">
+            <div key={s.title} className="group rounded-2xl border border-border bg-card p-6 shadow-sm transition-all hover:border-[#386b34]/40">
+              <div className="grid h-12 w-12 place-items-center rounded-xl bg-[#386b34]/10 text-[#386b34] transition-colors group-hover:bg-[#386b34] group-hover:text-white">
                 <s.icon className="h-6 w-6" />
               </div>
               <h3 className="mt-5 text-lg font-bold text-foreground">{s.title}</h3>
               <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{s.desc}</p>
               <a href={waLink(lang === "fr" ? `Bonjour EDSOLAR, je suis intéressé par: ${s.title}` : `Hello EDSOLAR, I am interested in: ${s.title}`)} target="_blank" rel="noreferrer"
-                 className="mt-4 inline-flex items-center gap-1 text-sm font-bold text-[#005a0b] hover:gap-2 transition-all">
+                 className="mt-4 inline-flex items-center gap-1 text-sm font-bold text-[#386b34] hover:gap-2 transition-all">
                 {t.learnMore} <ArrowRight className="h-4 w-4" />
               </a>
             </div>
@@ -753,16 +790,16 @@ function Kits({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
                 )}
               </div>
               <div className="flex flex-1 flex-col p-6">
-                <p className="text-xs font-bold uppercase tracking-widest text-[#005a0b]">{translateDynamicText(k.subtitle, lang)}</p>
+                <p className="text-xs font-bold uppercase tracking-widest text-[#386b34]">{translateDynamicText(k.subtitle, lang)}</p>
                 <h3 className="mt-1 text-xl font-black">{translateDynamicText(k.title, lang)}</h3>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{translateDynamicText(k.description, lang)}</p>
                 <ul className="mt-4 space-y-2 text-sm">
                   {(k.features ?? []).map((f: string) => (
-                    <li key={f} className="flex items-start gap-2"><CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#005a0b]" /> {translateDynamicText(f, lang)}</li>
+                    <li key={f} className="flex items-start gap-2"><CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#386b34]" /> {translateDynamicText(f, lang)}</li>
                   ))}
                 </ul>
                 <a href={waLink(lang === "fr" ? `Bonjour EDSOLAR, je suis intéressé par le ${k.title} (${k.price ?? ""}).` : `Hello EDSOLAR, I am interested in the ${k.title} (${k.price ?? ""}).`)} target="_blank" rel="noreferrer"
-                   className="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-[#005a0b] px-5 py-3 text-sm font-bold text-white transition-all hover:bg-[#00730d] shadow-md">
+                   className="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-[#386b34] px-5 py-3 text-sm font-bold text-white transition-all hover:bg-[#2e582b] shadow-md">
                   <MessageCircle className="h-4 w-4 fill-white" /> {lang === "fr" ? "Demander ce kit" : "Request this kit"}
                 </a>
               </div>
@@ -850,9 +887,9 @@ function Calculator({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
                 const n = qty[a.id] ?? 0;
                 const active = n > 0;
                 return (
-                  <div key={a.id} className={`flex items-center justify-between gap-3 rounded-2xl border p-3.5 transition-all ${active ? "border-[#005a0b]/50 bg-[#005a0b]/5" : "border-border bg-background"}`}>
+                  <div key={a.id} className={`flex items-center justify-between gap-3 rounded-2xl border p-3.5 transition-all ${active ? "border-[#386b34]/50 bg-[#386b34]/5" : "border-border bg-background"}`}>
                     <div className="flex min-w-0 items-center gap-3">
-                      <div className={`grid h-10 w-10 shrink-0 place-items-center rounded-xl ${active ? "bg-[#005a0b] text-white" : "bg-slate-200 dark:bg-slate-800 text-foreground"}`}>
+                      <div className={`grid h-10 w-10 shrink-0 place-items-center rounded-xl ${active ? "bg-[#386b34] text-white" : "bg-slate-200 dark:bg-slate-800 text-foreground"}`}>
                         <a.icon className="h-5 w-5" />
                       </div>
                       <div className="min-w-0">
@@ -870,8 +907,8 @@ function Calculator({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
               })}
             </div>
           </div>
-          <div className="rounded-3xl border border-emerald-900/40 bg-[#003807] p-6 text-white shadow-2xl sm:p-8">
-            <p className="text-xs font-bold uppercase tracking-widest text-emerald-400">{t.simEyebrow}</p>
+          <div className="rounded-3xl border border-emerald-900/40 bg-[#234d20] p-6 text-white shadow-2xl sm:p-8">
+            <p className="text-xs font-bold uppercase tracking-widest text-emerald-300">{t.simEyebrow}</p>
             <h3 className="mt-2 text-2xl font-black">{t.simResultTitle}</h3>
             <div className="mt-6 space-y-3.5">
               <Metric icon={Zap} label={t.simPeakPower} value={`${peakW.toLocaleString()} W`} />
@@ -882,10 +919,10 @@ function Calculator({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
               <Metric icon={Zap} label={t.simBudget} value={priceLabel} highlight />
             </div>
             <a href={`${WA}?text=${msg}`} target="_blank" rel="noreferrer"
-               className="mt-6 flex items-center justify-center gap-2 rounded-full bg-[#005a0b] px-5 py-3.5 text-sm font-bold text-white shadow-lg transition-all hover:scale-105 hover:bg-[#00730d]">
+               className="mt-6 flex items-center justify-center gap-2 rounded-full bg-[#386b34] px-5 py-3.5 text-sm font-bold text-white shadow-lg transition-all hover:scale-105 hover:bg-[#2e582b]">
               <MessageCircle className="h-4 w-4 fill-white" /> {t.simSendWA}
             </a>
-            <p className="mt-3 text-center text-xs text-emerald-200/60">{t.simNote}</p>
+            <p className="mt-3 text-center text-xs text-emerald-100/70">{t.simNote}</p>
           </div>
         </div>
       </div>
@@ -895,9 +932,9 @@ function Calculator({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
 
 function Metric({ icon: Icon, label, value, highlight }: { icon: any; label: string; value: string; highlight?: boolean }) {
   return (
-    <div className={`flex items-center justify-between rounded-2xl border ${highlight ? "bg-[#005a0b]/20 border-emerald-500/40 text-emerald-300" : "bg-[#002705]/70 border-emerald-900/40"} px-4 py-3`}>
+    <div className={`flex items-center justify-between rounded-2xl border ${highlight ? "bg-[#386b34]/30 border-emerald-400/40 text-emerald-200" : "bg-[#1a3818]/70 border-emerald-900/40"} px-4 py-3`}>
       <div className="flex items-center gap-2.5">
-        <Icon className={`h-4 w-4 ${highlight ? "text-emerald-400" : "text-emerald-300/70"}`} />
+        <Icon className={`h-4 w-4 ${highlight ? "text-emerald-300" : "text-emerald-200/70"}`} />
         <span className="text-xs sm:text-sm text-emerald-100/90">{label}</span>
       </div>
       <span className="text-base sm:text-lg font-black tabular-nums">{value}</span>
@@ -981,10 +1018,10 @@ function Products({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
             <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <input value={q} onChange={(e) => setQ(e.target.value)}
               placeholder={t.shopSearchPlaceholder}
-              className="w-full rounded-full border border-border bg-card py-3 pl-11 pr-4 text-sm outline-none focus:border-[#005a0b] shadow-sm" />
+              className="w-full rounded-full border border-border bg-card py-3 pl-11 pr-4 text-sm outline-none focus:border-[#386b34] shadow-sm" />
           </div>
           <select value={sort} onChange={(e) => setSort(e.target.value as SortKey)}
-            className="rounded-full border border-border bg-card px-4 py-3 text-sm font-semibold outline-none focus:border-[#005a0b] shadow-sm">
+            className="rounded-full border border-border bg-card px-4 py-3 text-sm font-semibold outline-none focus:border-[#386b34] shadow-sm">
             <option value="featured">{t.shopSortFeatured}</option>
             <option value="price_asc">{t.shopSortPriceAsc}</option>
             <option value="price_desc">{t.shopSortPriceDesc}</option>
@@ -997,20 +1034,20 @@ function Products({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           {categories.map((c) => (
             <button key={c} onClick={() => setCat(c)}
-              className={`rounded-full px-5 py-2 text-sm font-semibold transition-all ${cat === c ? "bg-[#005a0b] text-white shadow-md" : "border border-border bg-card text-foreground hover:border-[#005a0b]"}`}>
+              className={`rounded-full px-5 py-2 text-sm font-semibold transition-all ${cat === c ? "bg-[#386b34] text-white shadow-md" : "border border-border bg-card text-foreground hover:border-[#386b34]"}`}>
               {c === "Tous" ? (lang === "fr" ? "Tous" : "All") : translateDynamicText(c, lang)}
             </button>
           ))}
         </div>
 
         {/* BANDEAU COMBINÉ : PILIERS RÉASSURANCE + CONSEIL TECHNIQUE */}
-        <div className="mx-auto mt-8 max-w-5xl overflow-hidden rounded-3xl border border-[#005a0b]/20 bg-card p-6 shadow-sm">
+        <div className="mx-auto mt-8 max-w-5xl overflow-hidden rounded-3xl border border-[#386b34]/20 bg-card p-6 shadow-sm">
           <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
             
             {/* Les 3 Piliers de Réassurance */}
             <div className="grid gap-4 sm:grid-cols-3">
               <div className="flex items-center gap-3">
-                <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[#005a0b]/10 text-[#005a0b]">
+                <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[#386b34]/10 text-[#386b34]">
                   <ShieldCheck className="h-5 w-5" />
                 </div>
                 <div>
@@ -1020,7 +1057,7 @@ function Products({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
               </div>
 
               <div className="flex items-center gap-3">
-                <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[#005a0b]/10 text-[#005a0b]">
+                <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[#386b34]/10 text-[#386b34]">
                   <Package className="h-5 w-5" />
                 </div>
                 <div>
@@ -1030,7 +1067,7 @@ function Products({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
               </div>
 
               <div className="flex items-center gap-3">
-                <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[#005a0b]/10 text-[#005a0b]">
+                <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[#386b34]/10 text-[#386b34]">
                   <Wrench className="h-5 w-5" />
                 </div>
                 <div>
@@ -1047,7 +1084,7 @@ function Products({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
                 <p className="text-[11px] text-muted-foreground">{lang === "fr" ? "Parlez à un ingénieur" : "Talk to a solar engineer"}</p>
               </div>
               <a href={waLink(adviceMsg)} target="_blank" rel="noreferrer"
-                 className="inline-flex shrink-0 items-center gap-2 rounded-full bg-[#005a0b] px-4 py-2.5 text-xs font-bold text-white shadow-md transition-all hover:scale-105 hover:bg-[#00730d]">
+                 className="inline-flex shrink-0 items-center gap-2 rounded-full bg-[#386b34] px-4 py-2.5 text-xs font-bold text-white shadow-md transition-all hover:scale-105 hover:bg-[#2e582b]">
                 <MessageCircle className="h-4 w-4" />
                 <span>{lang === "fr" ? "Conseil WhatsApp" : "WhatsApp Advice"}</span>
               </a>
@@ -1064,19 +1101,19 @@ function Products({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
                 {p.image_url
                   ? <img src={p.image_url} alt={p.name} loading="lazy" className="h-full w-full object-contain p-3" />
                   : <ShoppingBag className="h-16 w-16 text-slate-400" />}
-                {p.badge && <span className="absolute left-3 top-3 rounded-full bg-[#005a0b] px-2.5 py-1 text-[10px] font-bold uppercase text-white">{translateDynamicText(p.badge, lang)}</span>}
+                {p.badge && <span className="absolute left-3 top-3 rounded-full bg-[#386b34] px-2.5 py-1 text-[10px] font-bold uppercase text-white">{translateDynamicText(p.badge, lang)}</span>}
               </div>
               <h3 className="mt-4 text-base font-bold">{p.name}</h3>
               {p.description && <p className="mt-1 text-xs text-muted-foreground">{translateDynamicText(p.description, lang)}</p>}
               <div className="mt-2 flex flex-wrap gap-1.5 text-[10px] font-semibold">
                 <span className="rounded-full bg-slate-100 dark:bg-slate-800 px-2 py-0.5 text-slate-700 dark:text-slate-300">{translateDynamicText(p.category, lang)}</span>
-                {p.warranty && <span className="rounded-full bg-[#005a0b]/10 px-2 py-0.5 text-[#005a0b]">{translateDynamicText(p.warranty, lang)}</span>}
+                {p.warranty && <span className="rounded-full bg-[#386b34]/10 px-2 py-0.5 text-[#386b34]">{translateDynamicText(p.warranty, lang)}</span>}
               </div>
               <div className="mt-4 flex items-end justify-between gap-2">
-                <span className="text-lg font-black text-[#005a0b] dark:text-emerald-400">{p.price ?? (lang === "fr" ? "Sur devis" : "On request")}</span>
+                <span className="text-lg font-black text-[#386b34] dark:text-emerald-400">{p.price ?? (lang === "fr" ? "Sur devis" : "On request")}</span>
               </div>
               <a href={waLink(buildOrderMsg(p))} target="_blank" rel="noreferrer"
-                 className="mt-4 inline-flex items-center justify-center gap-2 rounded-full bg-[#005a0b] px-4 py-2.5 text-sm font-bold text-white transition-colors hover:bg-[#00730d]">
+                 className="mt-4 inline-flex items-center justify-center gap-2 rounded-full bg-[#386b34] px-4 py-2.5 text-sm font-bold text-white transition-colors hover:bg-[#2e582b]">
                 <MessageCircle className="h-4 w-4" /> {t.shopOrderWA}
               </a>
             </div>
@@ -1127,26 +1164,26 @@ function QualityComparison({ lang }: { lang: Lang }) {
           </div>
 
           {/* Qualité EDSOLAR */}
-          <div className="rounded-3xl border border-[#005a0b]/30 bg-[#005a0b]/5 p-6 sm:p-8 shadow-md">
-            <div className="flex items-center gap-3 text-[#005a0b] dark:text-emerald-400">
+          <div className="rounded-3xl border border-[#386b34]/30 bg-[#386b34]/5 p-6 sm:p-8 shadow-md">
+            <div className="flex items-center gap-3 text-[#386b34] dark:text-emerald-400">
               <ShieldCheck className="h-6 w-6 shrink-0" />
               <h3 className="text-lg font-bold">{lang === "fr" ? "Engagement & Qualité EDSOLAR" : "EDSOLAR Commitment & Quality"}</h3>
             </div>
             <ul className="mt-6 space-y-3.5 text-sm text-foreground">
               <li className="flex items-start gap-3">
-                <Check className="mt-0.5 h-5 w-5 shrink-0 text-[#005a0b]" />
+                <Check className="mt-0.5 h-5 w-5 shrink-0 text-[#386b34]" />
                 <span><strong>{lang === "fr" ? "Batteries Lithium LiFePO4 :" : "Lithium LiFePO4 Batteries:"}</strong> {lang === "fr" ? "Durée de vie +10 ans, tolérance aux fortes chaleurs." : "+10 year lifespan, heat tolerant."}</span>
               </li>
               <li className="flex items-start gap-3">
-                <Check className="mt-0.5 h-5 w-5 shrink-0 text-[#005a0b]" />
+                <Check className="mt-0.5 h-5 w-5 shrink-0 text-[#386b34]" />
                 <span><strong>{lang === "fr" ? "Onduleurs Hybrides Certifiés :" : "Certified Hybrid Inverters:"}</strong> {lang === "fr" ? "Protections intégrées contre les coupures brutales." : "Built-in protection against brutal outages."}</span>
               </li>
               <li className="flex items-start gap-3">
-                <Check className="mt-0.5 h-5 w-5 shrink-0 text-[#005a0b]" />
+                <Check className="mt-0.5 h-5 w-5 shrink-0 text-[#386b34]" />
                 <span><strong>{lang === "fr" ? "Panneaux Tier 1 :" : "Tier-1 Panels:"}</strong> {lang === "fr" ? "Production optimale même par temps nuageux, garantie 25 ans." : "Optimal yield even on cloudy days, 25yr warranty."}</span>
               </li>
               <li className="flex items-start gap-3">
-                <Check className="mt-0.5 h-5 w-5 shrink-0 text-[#005a0b]" />
+                <Check className="mt-0.5 h-5 w-5 shrink-0 text-[#386b34]" />
                 <span><strong>{lang === "fr" ? "Équipe sur place à Yaoundé :" : "On-site Team in Yaoundé:"}</strong> {lang === "fr" ? "Intervention garantie et suivi personnalisé." : "Guaranteed intervention and personal follow-up."}</span>
               </li>
             </ul>
@@ -1157,24 +1194,24 @@ function QualityComparison({ lang }: { lang: Lang }) {
   );
 }
 
-/* ---------------- SECTION : SPÉCIAL DIASPORA (VERT VERT FEUILLE) ---------------- */
+/* ---------------- SECTION : SPÉCIAL DIASPORA ---------------- */
 function DiasporaSection({ lang }: { lang: Lang }) {
   const diasporaMsg = lang === "fr"
     ? "Bonjour EDSOLAR, je vis à l'étranger (Diaspora) et je souhaite équiper la maison familiale au pays."
     : "Hello EDSOLAR, I live abroad (Diaspora) and want to equip my family home back in Cameroon.";
 
   return (
-    <section id="diaspora" className="bg-[#003807] py-16 text-white sm:py-28 border-t border-emerald-900/30">
+    <section id="diaspora" className="bg-[#234d20] py-16 text-white sm:py-28 border-t border-emerald-900/30">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
           <div>
-            <span className="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-emerald-300">
+            <span className="inline-flex items-center gap-2 rounded-full border border-emerald-300/30 bg-emerald-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-emerald-300">
               <Globe className="h-3.5 w-3.5 text-emerald-300" /> {lang === "fr" ? "Offre Diaspora Camerounaise" : "Cameroonian Diaspora Offer"}
             </span>
             <h2 className="mt-4 text-2xl font-black sm:text-4xl text-white">
               {lang === "fr" ? "Équipez la maison familiale au pays en toute tranquillité" : "Equip your family home back home with total peace of mind"}
             </h2>
-            <p className="mt-4 text-sm leading-relaxed text-emerald-100/80 sm:text-base">
+            <p className="mt-4 text-sm leading-relaxed text-emerald-100/90 sm:text-base">
               {lang === "fr"
                 ? "Vous vivez en France, au Canada, aux USA ou en Europe ? Offrez le confort solaire à vos parents et vos proches au Cameroun sans stress. Nous gérons tout de A à Z avec un suivi photos/vidéos en direct."
                 : "Living in France, Canada, USA, or Europe? Provide solar comfort to your family in Cameroon stress-free. We manage everything from A to Z with live photo/video updates."}
@@ -1182,48 +1219,57 @@ function DiasporaSection({ lang }: { lang: Lang }) {
 
             <div className="mt-6 space-y-3">
               <div className="flex items-start gap-3 text-sm text-emerald-100/90">
-                <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-400" />
+                <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-300" />
                 <span>{lang === "fr" ? "Paiement sécurisé à distance (CB Internationale, Virement, Ria/Western Union)." : "Secure remote payment (International Card, Wire transfer, Ria/Western Union)."}</span>
               </div>
               <div className="flex items-start gap-3 text-sm text-emerald-100/90">
-                <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-400" />
+                <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-300" />
                 <span>{lang === "fr" ? "Compte-rendu vidéo WhatsApp direct à chaque étape du chantier." : "Direct WhatsApp video reports at every stage of the installation."}</span>
               </div>
               <div className="flex items-start gap-3 text-sm text-emerald-100/90">
-                <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-400" />
+                <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-300" />
                 <span>{lang === "fr" ? "Visite technique gratuite du logement à Yaoundé, Douala ou en région." : "Free home technical survey in Yaoundé, Douala, or other regions."}</span>
               </div>
             </div>
 
             <div className="mt-8">
               <a href={waLink(diasporaMsg)} target="_blank" rel="noreferrer"
-                 className="inline-flex items-center gap-2 rounded-full bg-[#005a0b] px-6 py-3.5 text-sm font-bold text-white transition-transform hover:scale-105 hover:bg-[#00730d]">
+                 className="inline-flex items-center gap-2 rounded-full bg-[#386b34] px-6 py-3.5 text-sm font-bold text-white transition-transform hover:scale-105 hover:bg-[#2e582b]">
                 <MessageCircle className="h-4 w-4 fill-white" />
                 <span>{lang === "fr" ? "Lancer un projet à distance" : "Start a project from abroad"}</span>
               </a>
             </div>
           </div>
 
-          <div className="relative rounded-3xl border border-emerald-800/50 bg-[#002705]/90 p-6 sm:p-8 backdrop-blur shadow-2xl">
+          <div className="relative rounded-3xl border border-emerald-700/40 bg-[#1a3818]/90 p-6 sm:p-8 backdrop-blur shadow-2xl">
             <h3 className="text-lg font-bold text-emerald-300">{lang === "fr" ? "Modes de Règlement Acceptés" : "Accepted Payment Methods"}</h3>
-            <p className="mt-1 text-xs text-emerald-200/60">{lang === "fr" ? "Pour vos proches au pays ou depuis l'étranger :" : "For local relatives or from abroad:"}</p>
+            <p className="mt-1 text-xs text-emerald-200/70">{lang === "fr" ? "Pour vos proches au pays ou depuis l'étranger :" : "For local relatives or from abroad:"}</p>
 
             <div className="mt-6 grid grid-cols-2 gap-3 text-xs">
-              <div className="rounded-xl border border-emerald-900/60 bg-[#001c03]/60 p-3">
-                <span className="font-bold text-white block">MTN Mobile Money</span>
-                <span className="text-emerald-300/60 text-[10px]">{lang === "fr" ? "Règlement local rapide" : "Fast local payment"}</span>
+              <div className="flex flex-col justify-between rounded-2xl border border-emerald-800/60 bg-white/95 p-3 text-slate-900 shadow">
+                <div className="flex items-center gap-2">
+                  <img src={momoLogo} alt="MTN MoMo" className="h-5 w-auto object-contain" />
+                  <span className="font-extrabold text-xs">MTN MoMo</span>
+                </div>
+                <span className="text-slate-600 text-[10px] mt-1">{lang === "fr" ? "Règlement local rapide" : "Fast local payment"}</span>
               </div>
-              <div className="rounded-xl border border-emerald-900/60 bg-[#001c03]/60 p-3">
-                <span className="font-bold text-white block">Orange Money</span>
-                <span className="text-emerald-300/60 text-[10px]">{lang === "fr" ? "Règlement local rapide" : "Fast local payment"}</span>
+
+              <div className="flex flex-col justify-between rounded-2xl border border-emerald-800/60 bg-white/95 p-3 text-slate-900 shadow">
+                <div className="flex items-center gap-2">
+                  <img src={orangeMoneyLogo} alt="Orange Money" className="h-5 w-auto object-contain" />
+                  <span className="font-extrabold text-xs">Orange Money</span>
+                </div>
+                <span className="text-slate-600 text-[10px] mt-1">{lang === "fr" ? "Règlement local rapide" : "Fast local payment"}</span>
               </div>
-              <div className="rounded-xl border border-emerald-900/60 bg-[#001c03]/60 p-3">
+
+              <div className="rounded-2xl border border-emerald-800/60 bg-[#122910]/80 p-3">
                 <span className="font-bold text-white block">Carte Visa / Mastercard</span>
-                <span className="text-emerald-300/60 text-[10px]">{lang === "fr" ? "Paiement en ligne sécurisé" : "Secure online payment"}</span>
+                <span className="text-emerald-200/60 text-[10px]">{lang === "fr" ? "Paiement en ligne sécurisé" : "Secure online payment"}</span>
               </div>
-              <div className="rounded-xl border border-emerald-900/60 bg-[#001c03]/60 p-3">
+
+              <div className="rounded-2xl border border-emerald-800/60 bg-[#122910]/80 p-3">
                 <span className="font-bold text-white block">Virement & Agence</span>
-                <span className="text-emerald-300/60 text-[10px]">{lang === "fr" ? "SEPA / Swift / Ria / WU" : "SEPA / Swift / Ria / WU"}</span>
+                <span className="text-emerald-200/60 text-[10px]">{lang === "fr" ? "SEPA / Swift / Ria / WU" : "SEPA / Swift / Ria / WU"}</span>
               </div>
             </div>
           </div>
@@ -1236,7 +1282,7 @@ function DiasporaSection({ lang }: { lang: Lang }) {
 /* ---------------- WhatsApp Channel Section ---------------- */
 function WhatsAppChannel({ t }: { t: typeof TRANSLATIONS["fr"] }) {
   return (
-    <section id="canal" className="relative overflow-hidden bg-[#003807] py-16 text-slate-100 sm:py-28 border-t border-emerald-900/30">
+    <section id="canal" className="relative overflow-hidden bg-[#234d20] py-16 text-slate-100 sm:py-28 border-t border-emerald-900/30">
       <div className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#25D366]/10 blur-[120px]" />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
@@ -1253,7 +1299,7 @@ function WhatsAppChannel({ t }: { t: typeof TRANSLATIONS["fr"] }) {
         </div>
 
         <div className="mt-12 grid gap-6 sm:grid-cols-2 md:grid-cols-3">
-          <div className="group rounded-2xl border border-emerald-800/30 bg-[#002705]/60 p-6 backdrop-blur transition-all hover:border-[#25D366]/50">
+          <div className="group rounded-2xl border border-emerald-800/30 bg-[#1a3818]/60 p-6 backdrop-blur transition-all hover:border-[#25D366]/50">
             <div className="grid h-12 w-12 place-items-center rounded-xl bg-[#25D366]/10 text-[#25D366]">
               <Video className="h-6 w-6" />
             </div>
@@ -1261,7 +1307,7 @@ function WhatsAppChannel({ t }: { t: typeof TRANSLATIONS["fr"] }) {
             <p className="mt-2 text-sm leading-relaxed text-emerald-200/60">{t.c1Desc}</p>
           </div>
 
-          <div className="group rounded-2xl border border-emerald-800/30 bg-[#002705]/60 p-6 backdrop-blur transition-all hover:border-[#25D366]/50">
+          <div className="group rounded-2xl border border-emerald-800/30 bg-[#1a3818]/60 p-6 backdrop-blur transition-all hover:border-[#25D366]/50">
             <div className="grid h-12 w-12 place-items-center rounded-xl bg-[#25D366]/10 text-[#25D366]">
               <Camera className="h-6 w-6" />
             </div>
@@ -1269,7 +1315,7 @@ function WhatsAppChannel({ t }: { t: typeof TRANSLATIONS["fr"] }) {
             <p className="mt-2 text-sm leading-relaxed text-emerald-200/60">{t.c2Desc}</p>
           </div>
 
-          <div className="group rounded-2xl border border-emerald-800/30 bg-[#002705]/60 p-6 backdrop-blur transition-all hover:border-[#25D366]/50 sm:col-span-2 md:col-span-1">
+          <div className="group rounded-2xl border border-emerald-800/30 bg-[#1a3818]/60 p-6 backdrop-blur transition-all hover:border-[#25D366]/50 sm:col-span-2 md:col-span-1">
             <div className="grid h-12 w-12 place-items-center rounded-xl bg-[#25D366]/10 text-[#25D366]">
               <Sparkles className="h-6 w-6" />
             </div>
@@ -1278,7 +1324,7 @@ function WhatsAppChannel({ t }: { t: typeof TRANSLATIONS["fr"] }) {
           </div>
         </div>
 
-        <div className="mt-10 rounded-3xl border border-emerald-800/50 bg-[#002705] p-6 shadow-2xl backdrop-blur sm:p-10">
+        <div className="mt-10 rounded-3xl border border-emerald-800/50 bg-[#1a3818] p-6 shadow-2xl backdrop-blur sm:p-10">
           <div className="mx-auto flex max-w-2xl flex-col items-center gap-6 text-center sm:flex-row sm:justify-between sm:text-left">
             <div>
               <p className="text-lg sm:text-xl font-bold text-white">{t.channelSubscribers}</p>
@@ -1311,7 +1357,7 @@ function Trust({ t }: { t: typeof TRANSLATIONS["fr"] }) {
         <div className="mt-12 grid gap-4 grid-cols-2 lg:grid-cols-4">
           {STATS.map((s) => (
             <div key={s.label} className="rounded-2xl border border-border bg-card p-5 sm:p-6 text-center shadow-sm transition-transform hover:-translate-y-1">
-              <div className="mx-auto grid h-12 w-12 sm:h-14 sm:w-14 place-items-center rounded-2xl bg-[#005a0b]/10 text-[#005a0b]">
+              <div className="mx-auto grid h-12 w-12 sm:h-14 sm:w-14 place-items-center rounded-2xl bg-[#386b34]/10 text-[#386b34]">
                 <s.icon className="h-6 w-6 sm:h-7 sm:w-7" />
               </div>
               <div className="mt-3 sm:mt-4 text-2xl sm:text-4xl font-black text-slate-900 dark:text-white">{s.value}</div>
@@ -1322,8 +1368,8 @@ function Trust({ t }: { t: typeof TRANSLATIONS["fr"] }) {
 
         <div className="mt-10 sm:mt-14 flex flex-wrap items-center justify-center gap-2.5 sm:gap-4">
           {["Normes IEC 61215", "ISO 9001", "Garantie 25 ans", "Ingénieurs certifiés", "Support 7j/7"].map((b) => (
-            <span key={b} className="inline-flex items-center gap-1.5 sm:gap-2 rounded-full border border-[#005a0b]/20 bg-[#005a0b]/10 px-3.5 py-1.5 text-[11px] sm:text-xs font-semibold text-[#005a0b] dark:text-emerald-400">
-              <ShieldCheck className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-[#005a0b]" /> {b}
+            <span key={b} className="inline-flex items-center gap-1.5 sm:gap-2 rounded-full border border-[#386b34]/20 bg-[#386b34]/10 px-3.5 py-1.5 text-[11px] sm:text-xs font-semibold text-[#386b34] dark:text-emerald-400">
+              <ShieldCheck className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-[#386b34]" /> {b}
             </span>
           ))}
         </div>
@@ -1366,7 +1412,7 @@ function Realisations({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang })
                   <p className="text-sm font-bold">{translateDynamicText(g.title, lang)}</p>
                   <p className="text-xs text-muted-foreground">{g.loc}</p>
                 </div>
-                <ArrowRight className="h-4 w-4 text-[#005a0b] shrink-0" />
+                <ArrowRight className="h-4 w-4 text-[#386b34] shrink-0" />
               </figcaption>
             </figure>
           ))}
@@ -1376,41 +1422,42 @@ function Realisations({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang })
   );
 }
 
-/* ---------------- About (Mise à jour : Vision, 4 Valeurs & Écosystème) ---------------- */
+/* ---------------- About (Mise à jour : Vision, 4 Grands Piliers, Presence depuis 2017 & Photos terrain) ---------------- */
 function About({ t }: { t: typeof TRANSLATIONS["fr"] }) {
-  const VALUES = [
-    { name: "Gratitude", icon: Smile, desc: "Reconnaissance envers la nature et nos clients" },
-    { name: "Abondance", icon: Sparkles, desc: "L'énergie propre, illimitée et accessible pour tous" },
-    { name: "Amour", icon: Heart, desc: "Engagement passionné pour le bien-être humain" },
-    { name: "Compassion", icon: ShieldCheck, desc: "Soutien sincère face aux défis énergétiques" },
+  const PILLARS = [
+    { name: "Gratitude", icon: Smile, desc: "Reconnaissance sincère envers la nature et chaque client" },
+    { name: "Abondance", icon: Sparkles, desc: "Accès universel à une énergie propre et illimitée" },
+    { name: "Amour", icon: Heart, desc: "Passion au service de l'humain et du bien-être général" },
+    { name: "Compassion", icon: ShieldCheck, desc: "Bienveillance et soutien actif face aux défis quotidiens" },
   ];
 
   const ECOSYSTEM = [
     { name: "EDSHOP", tag: "Commerce & Distribution", icon: ShoppingBag },
     { name: "EDFOOD", tag: "Alimentation & Nutrition", icon: Utensils },
     { name: "EDCARE", tag: "Santé & Services Médicaux", icon: Stethoscope },
-    { name: "EDSERVICE", tag: "Services à domicile", icon: Home },
-    { name: "EDAUTO", tag: "Mobilité Électrique & Durable", icon: Car },
+    { name: "EDSERVICE", tag: "Services à domicile (nettoyage, garde, etc.)", icon: Home },
+    { name: "EDAUTO", tag: "Véhicule écologique", icon: Car },
   ];
 
   return (
     <section id="apropos" className="py-16 sm:py-28 bg-card border-t border-border">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="grid gap-12 lg:grid-cols-2 lg:items-center">
+        <div className="grid gap-12 lg:grid-cols-2 lg:items-start">
           <div>
-            <span className="text-xs font-bold uppercase tracking-widest text-[#005a0b]">{t.aboutEyebrow}</span>
+            <span className="text-xs font-bold uppercase tracking-widest text-[#386b34]">{t.aboutEyebrow}</span>
             <h2 className="mt-3 text-2xl sm:text-4xl font-black tracking-tight leading-tight">
               {t.aboutTitle}
             </h2>
-            <p className="mt-4 text-base font-medium text-foreground leading-relaxed">
-              {t.aboutDesc}
+            
+            <p className="mt-4 text-base font-semibold text-foreground leading-relaxed">
+              {t.aboutPillarsText}
             </p>
 
-            {/* 4 Valeurs fondamentales */}
-            <div className="mt-6 grid grid-cols-2 gap-3">
-              {VALUES.map((v) => (
-                <div key={v.name} className="flex items-start gap-3 rounded-2xl border border-[#005a0b]/20 bg-[#005a0b]/5 p-3.5">
-                  <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-[#005a0b] text-white">
+            {/* 4 Grands Piliers fondamentaux */}
+            <div className="mt-5 grid grid-cols-2 gap-3">
+              {PILLARS.map((v) => (
+                <div key={v.name} className="flex items-start gap-3 rounded-2xl border border-[#386b34]/20 bg-[#386b34]/5 p-3.5">
+                  <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-[#386b34] text-white">
                     <v.icon className="h-4 w-4" />
                   </div>
                   <div>
@@ -1421,24 +1468,37 @@ function About({ t }: { t: typeof TRANSLATIONS["fr"] }) {
               ))}
             </div>
 
-            <p className="mt-6 text-sm text-muted-foreground leading-relaxed">
-              {t.aboutMission}
-            </p>
+            <div className="mt-6 space-y-3.5 text-sm text-muted-foreground leading-relaxed">
+              <p className="border-l-4 border-[#386b34] pl-3 py-1 bg-emerald-500/5 rounded-r-xl">
+                <strong className="text-foreground">Notre mission :</strong> {t.aboutMissionText}
+              </p>
+              <p className="border-l-4 border-[#386b34] pl-3 py-1 bg-emerald-500/5 rounded-r-xl">
+                <strong className="text-foreground">Notre vision :</strong> {t.aboutVisionText}
+              </p>
+            </div>
+
+            {/* PRÉCISION HISTORIQUE DEPUIS 2017 */}
+            <div className="mt-6 flex items-start gap-3 rounded-2xl border border-[#386b34]/30 bg-[#386b34]/10 p-4">
+              <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[#386b34] text-white">
+                <Compass className="h-5 w-5" />
+              </div>
+              <div>
+                <span className="text-xs font-bold uppercase tracking-wider text-[#386b34]">Présence sur le terrain</span>
+                <p className="mt-0.5 text-sm font-bold text-foreground leading-snug">
+                  {t.aboutPresenceText}
+                </p>
+              </div>
+            </div>
           </div>
 
           <div className="flex flex-col gap-6">
-            {/* Portrait & Photos */}
-            <div className="grid grid-cols-2 gap-3 sm:gap-4">
-              <img src={teamPortrait} alt="Vision EDSOLAR" className="col-span-2 max-h-[320px] w-full rounded-3xl object-cover shadow-md" loading="lazy" />
-            </div>
-
             {/* Carte Écosystème Futur */}
-            <div className="rounded-3xl border border-emerald-900/30 bg-[#003807] p-6 text-white shadow-xl">
+            <div className="rounded-3xl border border-emerald-900/30 bg-[#234d20] p-6 text-white shadow-xl">
               <h3 className="text-base font-extrabold text-emerald-300">{t.aboutEcosystemTitle}</h3>
               <div className="mt-4 grid grid-cols-1 gap-2.5 sm:grid-cols-2">
                 {ECOSYSTEM.map((e) => (
-                  <div key={e.name} className="flex items-center gap-2.5 rounded-xl bg-[#002705]/80 p-2.5 border border-emerald-800/40">
-                    <e.icon className="h-4 w-4 text-emerald-400 shrink-0" />
+                  <div key={e.name} className="flex items-center gap-2.5 rounded-xl bg-[#1a3818]/80 p-2.5 border border-emerald-800/40">
+                    <e.icon className="h-4 w-4 text-emerald-300 shrink-0" />
                     <div>
                       <span className="text-xs font-black text-white block">{e.name}</span>
                       <span className="text-[10px] text-emerald-200/70 block leading-tight">{e.tag}</span>
@@ -1446,10 +1506,26 @@ function About({ t }: { t: typeof TRANSLATIONS["fr"] }) {
                   </div>
                 ))}
               </div>
-              <p className="mt-5 text-xs text-emerald-100/80 italic leading-relaxed border-t border-emerald-800/50 pt-4">
+              <p className="mt-5 text-xs text-emerald-100/90 italic leading-relaxed border-t border-emerald-800/50 pt-4">
                 "{t.aboutConclusion}"
               </p>
             </div>
+
+            {/* GALERIE D'IMAGES TERRAIN DANS LA SECTION VISION */}
+            <div>
+              <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3">En direct du terrain — Nos équipes à l'œuvre</p>
+              <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
+                {FIELD_IMAGES.map((img, idx) => (
+                  <div key={idx} className="group relative aspect-square overflow-hidden rounded-2xl border border-border bg-slate-100">
+                    <img src={img.src} alt={img.caption} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-0 transition-opacity group-hover:opacity-100 flex items-end p-2">
+                      <p className="text-[10px] font-bold text-white leading-tight">{img.caption}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
@@ -1504,7 +1580,7 @@ function Contact({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
               <div>
                 <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t.formProjectType}</label>
                 <select value={form.type} onChange={(e) => setForm({ ...form, type: e.target.value })}
-                  className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-[#005a0b]">
+                  className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-[#386b34]">
                   <option>{lang === "fr" ? "Maison" : "Home"}</option>
                   <option>{lang === "fr" ? "Commerce" : "Business"}</option>
                   <option>{lang === "fr" ? "Industrie" : "Industry"}</option>
@@ -1515,20 +1591,20 @@ function Contact({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
                 <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t.formNeeds}</label>
                 <input type="text" value={form.needs} onChange={(e) => setForm({ ...form, needs: e.target.value })}
                   placeholder={lang === "fr" ? "Ex: pompage, climatisation, bureaux..." : "Ex: pumping, AC, offices..."}
-                  className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-[#005a0b]" />
+                  className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-[#386b34]" />
               </div>
               <div className="sm:col-span-2">
                 <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t.formMessage}</label>
                 <textarea rows={4} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })}
                   placeholder={lang === "fr" ? "Décrivez brièvement votre besoin..." : "Briefly describe your request..."}
-                  className="w-full resize-none rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-[#005a0b]" />
+                  className="w-full resize-none rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-[#386b34]" />
               </div>
             </div>
             <button type="submit"
-              className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#005a0b] px-6 py-3.5 text-sm font-bold text-white shadow-lg transition-colors hover:bg-[#00730d] sm:w-auto">
+              className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#386b34] px-6 py-3.5 text-sm font-bold text-white shadow-lg transition-colors hover:bg-[#2e582b] sm:w-auto">
               <Send className="h-4 w-4" /> {t.formSubmit}
             </button>
-            {sent && <p className="mt-3 text-sm text-[#005a0b] font-semibold">{t.formSuccess}</p>}
+            {sent && <p className="mt-3 text-sm text-[#386b34] font-semibold">{t.formSuccess}</p>}
           </form>
 
         </div>
@@ -1540,7 +1616,7 @@ function Contact({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
 function ContactCard({ icon: Icon, title, lines, href }: { icon: any; title: string; lines: string[]; href?: string }) {
   const inner = (
     <div className="flex items-start gap-3.5 rounded-2xl border border-border bg-card p-4 sm:p-5 shadow-sm transition-transform hover:-translate-y-1 h-full">
-      <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[#005a0b]/10 text-[#005a0b]">
+      <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[#386b34]/10 text-[#386b34]">
         <Icon className="h-5 w-5" />
       </div>
       <div className="min-w-0 flex-1">
@@ -1562,7 +1638,7 @@ function Field({ label, value, onChange, required, type = "text", placeholder }:
       <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">{label}</label>
       <input type={type} required={required} value={value} placeholder={placeholder}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-[#005a0b]" />
+        className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-[#386b34]" />
     </div>
   );
 }
@@ -1570,7 +1646,7 @@ function Field({ label, value, onChange, required, type = "text", placeholder }:
 /* ---------------- FOOTER AVEC LOGOS PARTENAIRES VISIBLES ---------------- */
 function Footer({ t }: { t: typeof TRANSLATIONS["fr"] }) {
   return (
-    <footer className="border-t border-emerald-900/40 bg-[#002705] text-white">
+    <footer className="border-t border-emerald-900/40 bg-[#1d3d19] text-white">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 sm:grid-cols-2 lg:grid-cols-4">
         
         {/* COLONNE 1 : LOGO & INFOS */}
@@ -1579,7 +1655,7 @@ function Footer({ t }: { t: typeof TRANSLATIONS["fr"] }) {
             <img src={logo} alt="EDSOLAR Énergie Cameroun" className="h-12 w-12 rounded-xl bg-white object-contain p-1 shadow-md" />
             <div>
               <p className="text-lg font-black text-white">EDSOLAR</p>
-              <p className="text-[10px] uppercase tracking-[0.15em] text-emerald-400 font-bold">Énergie Cameroun</p>
+              <p className="text-[10px] uppercase tracking-[0.15em] text-emerald-300 font-bold">Énergie Cameroun</p>
             </div>
           </a>
           <p className="mt-4 text-xs leading-relaxed text-emerald-100/70">
@@ -1587,7 +1663,7 @@ function Footer({ t }: { t: typeof TRANSLATIONS["fr"] }) {
           </p>
           <div className="mt-5 flex gap-3">
             {[Facebook, Instagram, Linkedin].map((I, i) => (
-              <a key={i} href="#" className="grid h-10 w-10 place-items-center rounded-full bg-[#001c03] text-emerald-200 transition-colors hover:bg-[#005a0b] hover:text-white border border-emerald-800/50">
+              <a key={i} href="#" className="grid h-10 w-10 place-items-center rounded-full bg-[#122910] text-emerald-200 transition-colors hover:bg-[#386b34] hover:text-white border border-emerald-800/50">
                 <I className="h-4 w-4" />
               </a>
             ))}
@@ -1596,31 +1672,31 @@ function Footer({ t }: { t: typeof TRANSLATIONS["fr"] }) {
 
         {/* COLONNE 2 : NAVIGATION */}
         <div>
-          <p className="text-sm font-bold uppercase tracking-wider text-emerald-400">{t.footerNav}</p>
+          <p className="text-sm font-bold uppercase tracking-wider text-emerald-300">{t.footerNav}</p>
           <ul className="mt-4 space-y-2 text-xs text-emerald-100/70">
-            <li><a href="#partenaires" className="hover:text-emerald-400 transition-colors">{t.navPartners}</a></li>
-            <li><a href="#services" className="hover:text-emerald-400 transition-colors">{t.navServices}</a></li>
-            <li><a href="#kits" className="hover:text-emerald-400 transition-colors">{t.navKits}</a></li>
-            <li><a href="#boutique" className="hover:text-emerald-400 transition-colors">{t.navBoutique}</a></li>
-            <li><a href="#calculateur" className="hover:text-emerald-400 transition-colors">{t.navSimulator}</a></li>
-            <li><a href="#apropos" className="hover:text-emerald-400 transition-colors">Vision & Valeurs</a></li>
+            <li><a href="#partenaires" className="hover:text-emerald-300 transition-colors">{t.navPartners}</a></li>
+            <li><a href="#services" className="hover:text-emerald-300 transition-colors">{t.navServices}</a></li>
+            <li><a href="#kits" className="hover:text-emerald-300 transition-colors">{t.navKits}</a></li>
+            <li><a href="#boutique" className="hover:text-emerald-300 transition-colors">{t.navBoutique}</a></li>
+            <li><a href="#calculateur" className="hover:text-emerald-300 transition-colors">{t.navSimulator}</a></li>
+            <li><a href="#apropos" className="hover:text-emerald-300 transition-colors">Vision & Valeurs</a></li>
           </ul>
         </div>
 
         {/* COLONNE 3 : CONTACT */}
         <div>
-          <p className="text-sm font-bold uppercase tracking-wider text-emerald-400">{t.footerContact}</p>
+          <p className="text-sm font-bold uppercase tracking-wider text-emerald-300">{t.footerContact}</p>
           <ul className="mt-4 space-y-2.5 text-xs text-emerald-100/70">
-            <li className="flex gap-2"><MapPin className="h-4 w-4 shrink-0 text-emerald-400" /> Tradex Olembe, Yaoundé</li>
-            <li className="flex gap-2"><Leaf className="h-4 w-4 shrink-0 text-emerald-400" /> Cameroun & Afrique Centrale</li>
-            <li className="flex gap-2"><Phone className="h-4 w-4 shrink-0 text-emerald-400" /> +237 650544444</li>
-            <li className="flex gap-2"><Mail className="h-4 w-4 shrink-0 text-emerald-400" /> edsolarcam@gmail.com</li>
+            <li className="flex gap-2"><MapPin className="h-4 w-4 shrink-0 text-emerald-300" /> Tradex Olembe, Yaoundé</li>
+            <li className="flex gap-2"><Leaf className="h-4 w-4 shrink-0 text-emerald-300" /> Cameroun & Afrique Centrale</li>
+            <li className="flex gap-2"><Phone className="h-4 w-4 shrink-0 text-emerald-300" /> +237 650544444</li>
+            <li className="flex gap-2"><Mail className="h-4 w-4 shrink-0 text-emerald-300" /> edsolarcam@gmail.com</li>
           </ul>
         </div>
 
         {/* COLONNE 4 : PARTENAIRES AVEC LOGOS VISIBLES */}
         <div>
-          <p className="text-sm font-bold uppercase tracking-wider text-emerald-400">{t.footerPartners}</p>
+          <p className="text-sm font-bold uppercase tracking-wider text-emerald-300">{t.footerPartners}</p>
           <div className="mt-4 grid grid-cols-3 gap-2">
             {PARTNERS_DATA.map((p) => (
               <div key={p.name} className="flex items-center justify-center rounded-lg bg-white p-1.5 shadow-sm border border-emerald-950 h-10">
@@ -1632,13 +1708,13 @@ function Footer({ t }: { t: typeof TRANSLATIONS["fr"] }) {
 
       </div>
 
-      <div className="border-t border-emerald-900/30 bg-[#001c03]">
+      <div className="border-t border-emerald-900/30 bg-[#122910]">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-4 py-5 text-xs text-emerald-100/50 sm:flex-row sm:px-6">
           <p>{t.footerRights}</p>
           <nav className="flex flex-wrap items-center gap-x-4 gap-y-1">
-            <a href="/mentions-legales" className="hover:text-emerald-400">{t.footerLegal}</a>
-            <a href="/confidentialite" className="hover:text-emerald-400">{t.footerPrivacy}</a>
-            <a href="/cookies" className="hover:text-emerald-400">{t.footerCookies}</a>
+            <a href="/mentions-legales" className="hover:text-emerald-300">{t.footerLegal}</a>
+            <a href="/confidentialite" className="hover:text-emerald-300">{t.footerPrivacy}</a>
+            <a href="/cookies" className="hover:text-emerald-300">{t.footerCookies}</a>
           </nav>
         </div>
       </div>
@@ -1687,7 +1763,7 @@ function ScrollToTop() {
 function SectionHeader({ eyebrow, title, description }: { eyebrow: string; title: string; description: string }) {
   return (
     <div className="mx-auto max-w-2xl text-center">
-      <span className="text-xs font-bold uppercase tracking-widest text-[#005a0b] dark:text-emerald-400">{eyebrow}</span>
+      <span className="text-xs font-bold uppercase tracking-widest text-[#386b34] dark:text-emerald-400">{eyebrow}</span>
       <h2 className="mt-2.5 text-2xl font-black tracking-tight text-foreground sm:text-4xl md:text-5xl">{title}</h2>
       <p className="mt-3 sm:mt-4 text-sm sm:text-base text-muted-foreground">{description}</p>
     </div>
@@ -1725,7 +1801,7 @@ function Reviews({ t }: { t: typeof TRANSLATIONS["fr"] }) {
               <div>
                 <label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t.reviewsName}</label>
                 <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required
-                  className="mt-1 w-full rounded-xl border border-input bg-background px-4 py-2.5 text-sm outline-none focus:border-[#005a0b]" />
+                  className="mt-1 w-full rounded-xl border border-input bg-background px-4 py-2.5 text-sm outline-none focus:border-[#386b34]" />
               </div>
               <div>
                 <label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t.reviewsRating}</label>
@@ -1737,7 +1813,7 @@ function Reviews({ t }: { t: typeof TRANSLATIONS["fr"] }) {
                       onMouseLeave={() => setHoverRating(0)}
                       aria-label={`${n} étoile`}
                       className="p-1 transition-transform hover:scale-110">
-                      <Star className={`pointer-events-none h-7 w-7 sm:h-8 sm:w-8 ${n <= (hoverRating || form.rating) ? "fill-[#005a0b] text-[#005a0b]" : "text-muted-foreground/30"}`} />
+                      <Star className={`pointer-events-none h-7 w-7 sm:h-8 sm:w-8 ${n <= (hoverRating || form.rating) ? "fill-[#386b34] text-[#386b34]" : "text-muted-foreground/30"}`} />
                     </button>
                   ))}
                   <span className="ml-2 text-sm font-semibold text-muted-foreground">{form.rating}/5</span>
@@ -1746,12 +1822,12 @@ function Reviews({ t }: { t: typeof TRANSLATIONS["fr"] }) {
               <div>
                 <label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t.reviewsComment}</label>
                 <textarea rows={4} value={form.comment} onChange={(e) => setForm({ ...form, comment: e.target.value })} required
-                  className="mt-1 w-full resize-none rounded-xl border border-input bg-background px-4 py-2.5 text-sm outline-none focus:border-[#005a0b]" />
+                  className="mt-1 w-full resize-none rounded-xl border border-input bg-background px-4 py-2.5 text-sm outline-none focus:border-[#386b34]" />
               </div>
-              <button disabled={busy} className="w-full rounded-full bg-[#005a0b] px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-[#00730d] disabled:opacity-60">
+              <button disabled={busy} className="w-full rounded-full bg-[#386b34] px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-[#2e582b] disabled:opacity-60">
                 {busy ? t.reviewsSending : t.reviewsSubmit}
               </button>
-              {sent && <p className="text-sm text-[#005a0b] font-semibold">{t.reviewsSuccess}</p>}
+              {sent && <p className="text-sm text-[#386b34] font-semibold">{t.reviewsSuccess}</p>}
             </div>
           </form>
           <div className="grid gap-4 sm:grid-cols-2">
@@ -1764,7 +1840,7 @@ function Reviews({ t }: { t: typeof TRANSLATIONS["fr"] }) {
               <div key={r.id} className="rounded-2xl border border-border bg-card p-5 shadow-sm">
                 <div className="flex items-center gap-1">
                   {Array.from({ length: 5 }).map((_, i) => (
-                    <Star key={i} className={`h-4 w-4 ${i < r.rating ? "fill-[#005a0b] text-[#005a0b]" : "text-muted-foreground/30"}`} />
+                    <Star key={i} className={`h-4 w-4 ${i < r.rating ? "fill-[#386b34] text-[#386b34]" : "text-muted-foreground/30"}`} />
                   ))}
                 </div>
                 <p className="mt-3 text-sm leading-relaxed text-foreground/90">"{r.comment}"</p>
