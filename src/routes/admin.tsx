@@ -260,6 +260,11 @@ function PhotosPanel() {
           <Plus className="h-4 w-4" /> Ajouter à la galerie
         </button>
       </form>
+      <BulkPhotoUpload onDone={load} />
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {items.map((p) => (
+          <div key={p.id} className="overflow-hidden rounded-2xl border border-border bg-card">
+            <img src={p.url} alt={p.caption ?? ""} loading="lazy" decoding="async" className="aspect-[4/3] w-full object-cover" />
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         {items.map((p) => (
           <div key={p.id} className="overflow-hidden rounded-2xl border border-border bg-card">
