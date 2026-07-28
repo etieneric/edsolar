@@ -39,25 +39,25 @@
 :root {
   --radius: 0.85rem;
 
-  /* Tech Solar Brand Colors */
-  --primary: oklch(0.21 0.03 260);          /* Slate 900 #0F172A - Confiance Tech */
+  /* Tech Solar Brand Colors — Vert Écologique */
+  --primary: oklch(0.21 0.03 260);          /* Slate 900 #0F172A */
   --primary-foreground: oklch(0.99 0 0);
   --primary-dark: oklch(0.14 0.03 260);     /* Slate 950 #020617 */
   
-  --accent: oklch(0.76 0.17 70);            /* Amber/Solar Amber #F59E0B - Énergie & Soleil */
-  --accent-foreground: oklch(0.15 0.03 260);
+  --accent: oklch(0.65 0.17 160);            /* Vert Émeraude Écologique #059669 */
+  --accent-foreground: oklch(0.99 0 0);
 
   --whatsapp: oklch(0.68 0.17 150);         /* WhatsApp Green #25D366 */
 
   /* Surface & Backgrounds */
-  --background: oklch(0.985 0.005 240);    /* Blanc cassé ultra-propre */
+  --background: oklch(0.985 0.005 240);    /* Blanc cassé épuré */
   --foreground: oklch(0.20 0.03 260);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.20 0.03 260);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.20 0.03 260);
   
-  --secondary: oklch(0.96 0.01 160);        /* Vert Émeraude très doux pour les éléments secondaires */
+  --secondary: oklch(0.96 0.01 160);        /* Vert Émeraude très doux pour les surfaces */
   --secondary-foreground: oklch(0.35 0.10 160);
   
   --muted: oklch(0.96 0.005 240);
@@ -66,7 +66,7 @@
   --destructive-foreground: oklch(0.99 0 0);
   --border: oklch(0.92 0.01 240);
   --input: oklch(0.92 0.01 240);
-  --ring: oklch(0.76 0.17 70);
+  --ring: oklch(0.65 0.17 160);
 }
 
 .dark {
@@ -99,10 +99,10 @@
   }
 }
 
-@utility glow-amber {
+@utility glow-emerald {
   transition: box-shadow 300ms ease, transform 300ms ease;
   &:hover {
-    box-shadow: 0 20px 40px -12px oklch(0.76 0.17 70 / 0.25);
+    box-shadow: 0 20px 40px -12px oklch(0.65 0.17 160 / 0.25);
     transform: translateY(-2px);
   }
 }
