@@ -90,9 +90,9 @@ export const adminUploadImage = createServerFn({ method: "POST" })
     return { url: pub.publicUrl, path: safePath };
   });
 
-// ---- Gallery photos (Corrigé pour ajouter et modifier la localisation) ----
+// ---- Gallery photos (Réalisations + Terrain) ----
 export const adminAddPhoto = createServerFn({ method: "POST" })
-  .inputValidator((d: { url: string; caption?: string; location?: string; sort_order?: number }) => d)
+  .inputValidator((d: { url: string; caption?: string; location?: string; category?: string; sort_order?: number }) => d)
   .handler(async ({ data }) => {
     await requireAdmin();
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
@@ -102,6 +102,7 @@ export const adminAddPhoto = createServerFn({ method: "POST" })
         url: data.url,
         caption: data.caption ?? null,
         location: data.location || "Cameroun",
+        category: data.category || "realisations",
         sort_order: data.sort_order ?? 0,
       })
       .select()
@@ -111,7 +112,7 @@ export const adminAddPhoto = createServerFn({ method: "POST" })
   });
 
 export const adminUpdatePhoto = createServerFn({ method: "POST" })
-  .inputValidator((d: { id: string; url?: string; caption?: string; location?: string }) => d)
+  .inputValidator((d: { id: string; url?: string; caption?: string; location?: string; category?: string }) => d)
   .handler(async ({ data }) => {
     await requireAdmin();
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
@@ -121,6 +122,7 @@ export const adminUpdatePhoto = createServerFn({ method: "POST" })
         ...(data.url !== undefined && { url: data.url }),
         caption: data.caption ?? null,
         location: data.location || "Cameroun",
+        category: data.category || "realisations",
       })
       .eq("id", data.id);
 
