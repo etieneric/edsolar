@@ -7,7 +7,7 @@ import {
   Laptop, Fan, Microwave, CheckCircle2, Star, Award, Clock, Users,
   Facebook, Instagram, Linkedin, Send, Package, Search, ArrowUp,
   Radio, Camera, Video, Sparkles, Globe, CreditCard, ShieldAlert,
-  Check, AlertTriangle, Mail
+  Check, AlertTriangle, Mail, Handshake
 } from "lucide-react";
 import logo from "@/assets/edsolar-logo-new.jpeg";
 import hero from "@/assets/install-panels.jpeg";
@@ -40,6 +40,7 @@ type Lang = "fr" | "en";
 const TRANSLATIONS = {
   fr: {
     navServices: "Services",
+    navPartners: "Partenaires",
     navKits: "Kits",
     navBoutique: "Boutique",
     navSimulator: "Simulateur Devis",
@@ -52,7 +53,7 @@ const TRANSLATIONS = {
     
     heroTag: "Fini les délestages Eneo intempestifs",
     heroTitle1: "L'Énergie Solaire ",
-    heroTitle2: "Autonome & Fiable",
+    heroTitle2: "Autonome & Écologique",
     heroTitle3: " pour Votre Confort",
     heroDesc: "Assurez une électricité 24h/24 à la maison et au bureau. Équipements certifiés Tier 1, installations garanties et SAV réactif à Yaoundé et dans toute l'Afrique Centrale.",
     heroSimulateBtn: "Simuler vos besoins énergétiques",
@@ -62,6 +63,10 @@ const TRANSLATIONS = {
     heroStat3: "Cameroun & Afrique Centrale",
     heroCardTitle: "EDSOLAR Yaoundé",
     heroCardSub: "Contact direct",
+
+    partnersEyebrow: "Confiance & Qualité",
+    partnersTitle: "Nos Marque & Partenaires Officiels",
+    partnersDesc: "Nous collaborons directement avec les leaders mondiaux de la technologie photovoltaïque pour vous garantir du matériel certifié Tier 1.",
     
     servicesEyebrow: "Nos Services",
     servicesTitle: "Une expertise complète en énergie solaire",
@@ -172,6 +177,7 @@ const TRANSLATIONS = {
   },
   en: {
     navServices: "Services",
+    navPartners: "Partners",
     navKits: "Kits",
     navBoutique: "Shop",
     navSimulator: "Quote Simulator",
@@ -183,7 +189,7 @@ const TRANSLATIONS = {
     btnQuote: "Free Quote",
     
     heroTag: "No more unexpected power outages",
-    heroTitle1: "Autonomous & Reliable ",
+    heroTitle1: "Autonomous & Eco-friendly ",
     heroTitle2: "Solar Energy",
     heroTitle3: " for Your Comfort",
     heroDesc: "Ensure 24/7 power at home and office. Tier-1 certified equipment, guaranteed installations, and responsive support in Yaoundé and Central Africa.",
@@ -194,6 +200,10 @@ const TRANSLATIONS = {
     heroStat3: "Cameroon & Central Africa",
     heroCardTitle: "EDSOLAR Yaoundé",
     heroCardSub: "Direct Contact",
+
+    partnersEyebrow: "Trust & Quality",
+    partnersTitle: "Our Official Brands & Partners",
+    partnersDesc: "We partner directly with global leaders in photovoltaic technology to provide you Tier-1 certified equipment.",
     
     servicesEyebrow: "Our Services",
     servicesTitle: "Comprehensive expertise in solar energy",
@@ -304,7 +314,7 @@ const TRANSLATIONS = {
   }
 };
 
-/* ---------------- Traduction dynamique universelle pour la BDD (Supabase) ---------------- */
+/* ---------------- Traduction dynamique universelle pour Supabase ---------------- */
 function translateDynamicText(text: string | null | undefined, lang: Lang): string {
   if (!text) return "";
   if (lang === "fr") return text;
@@ -367,9 +377,10 @@ function Index() {
   const t = TRANSLATIONS[lang];
 
   return (
-    <div className="min-h-screen bg-background text-foreground selection:bg-accent selection:text-accent-foreground">
+    <div className="min-h-screen bg-background text-foreground selection:bg-emerald-600 selection:text-white">
       <Header lang={lang} setLang={setLang} t={t} />
       <Hero t={t} lang={lang} />
+      <Partners t={t} />
       <Services t={t} lang={lang} />
       <Kits t={t} lang={lang} />
       <Calculator t={t} lang={lang} />
@@ -394,6 +405,7 @@ function Header({ lang, setLang, t }: { lang: Lang; setLang: (l: Lang) => void; 
   const [open, setOpen] = useState(false);
 
   const navDesktop = [
+    { href: "#partenaires", label: t.navPartners },
     { href: "#services", label: t.navServices },
     { href: "#kits", label: t.navKits },
     { href: "#boutique", label: t.navBoutique },
@@ -403,6 +415,7 @@ function Header({ lang, setLang, t }: { lang: Lang; setLang: (l: Lang) => void; 
 
   const navMobile = [
     { href: "#accueil", label: t.navHome },
+    { href: "#partenaires", label: t.navPartners },
     { href: "#services", label: t.navServices },
     { href: "#kits", label: t.navKits },
     { href: "#boutique", label: t.navBoutique },
@@ -442,7 +455,7 @@ function Header({ lang, setLang, t }: { lang: Lang; setLang: (l: Lang) => void; 
             <a 
               key={n.href} 
               href={n.href} 
-              className="text-sm font-semibold text-slate-700 transition-colors hover:text-amber-500 dark:text-slate-200 whitespace-nowrap"
+              className="text-sm font-semibold text-slate-700 transition-colors hover:text-emerald-600 dark:text-slate-200 whitespace-nowrap"
             >
               {n.label}
             </a>
@@ -455,14 +468,14 @@ function Header({ lang, setLang, t }: { lang: Lang; setLang: (l: Lang) => void; 
             <button 
               type="button"
               onClick={() => setLang("fr")}
-              className={`rounded-full px-2.5 py-1 text-xs font-bold transition-all ${lang === "fr" ? "bg-amber-500 text-slate-950 shadow" : "text-slate-600 dark:text-slate-400 hover:text-foreground"}`}
+              className={`rounded-full px-2.5 py-1 text-xs font-bold transition-all ${lang === "fr" ? "bg-emerald-600 text-white shadow" : "text-slate-600 dark:text-slate-400 hover:text-foreground"}`}
             >
               FR
             </button>
             <button 
               type="button"
               onClick={() => setLang("en")}
-              className={`rounded-full px-2.5 py-1 text-xs font-bold transition-all ${lang === "en" ? "bg-amber-500 text-slate-950 shadow" : "text-slate-600 dark:text-slate-400 hover:text-foreground"}`}
+              className={`rounded-full px-2.5 py-1 text-xs font-bold transition-all ${lang === "en" ? "bg-emerald-600 text-white shadow" : "text-slate-600 dark:text-slate-400 hover:text-foreground"}`}
             >
               EN
             </button>
@@ -472,9 +485,9 @@ function Header({ lang, setLang, t }: { lang: Lang; setLang: (l: Lang) => void; 
             href={waLink(quoteMsg)} 
             target="_blank" 
             rel="noreferrer"
-            className="inline-flex items-center gap-2 rounded-full bg-amber-500 px-5 py-2.5 text-sm font-bold text-slate-950 shadow-md shadow-amber-500/10 transition-all hover:scale-105 hover:bg-amber-400 whitespace-nowrap"
+            className="inline-flex items-center gap-2 rounded-full bg-emerald-600 px-5 py-2.5 text-sm font-bold text-white shadow-md shadow-emerald-600/20 transition-all hover:scale-105 hover:bg-emerald-500 whitespace-nowrap"
           >
-            <MessageCircle className="h-4 w-4 fill-slate-950" />
+            <MessageCircle className="h-4 w-4 fill-white" />
             <span>{t.btnQuote}</span>
           </a>
         </div>
@@ -485,14 +498,14 @@ function Header({ lang, setLang, t }: { lang: Lang; setLang: (l: Lang) => void; 
             <button 
               type="button"
               onClick={() => setLang("fr")}
-              className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${lang === "fr" ? "bg-amber-500 text-slate-950" : "text-slate-600 dark:text-slate-400"}`}
+              className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${lang === "fr" ? "bg-emerald-600 text-white" : "text-slate-600 dark:text-slate-400"}`}
             >
               FR
             </button>
             <button 
               type="button"
               onClick={() => setLang("en")}
-              className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${lang === "en" ? "bg-amber-500 text-slate-950" : "text-slate-600 dark:text-slate-400"}`}
+              className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${lang === "en" ? "bg-emerald-600 text-white" : "text-slate-600 dark:text-slate-400"}`}
             >
               EN
             </button>
@@ -509,7 +522,7 @@ function Header({ lang, setLang, t }: { lang: Lang; setLang: (l: Lang) => void; 
         </div>
       </div>
 
-      {/* MENU DEROULANT MOBILE */}
+      {/* MENU DÉROULANT MOBILE */}
       {open && (
         <div className="border-t border-slate-200 bg-white/95 px-4 pb-6 pt-3 shadow-2xl backdrop-blur-xl lg:hidden dark:border-slate-800 dark:bg-slate-950/95">
           <div className="mx-auto flex max-w-7xl flex-col gap-1">
@@ -531,9 +544,9 @@ function Header({ lang, setLang, t }: { lang: Lang; setLang: (l: Lang) => void; 
                 target="_blank" 
                 rel="noreferrer"
                 onClick={() => setOpen(false)}
-                className="flex w-full items-center justify-center gap-2 rounded-xl bg-amber-500 py-3.5 text-sm font-bold text-slate-950 shadow-md transition-all active:scale-[0.98]"
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-emerald-600 py-3.5 text-sm font-bold text-white shadow-md transition-all active:scale-[0.98]"
               >
-                <MessageCircle className="h-4 w-4 fill-slate-950" />
+                <MessageCircle className="h-4 w-4 fill-white" />
                 <span>{t.btnQuote}</span>
               </a>
             </div>
@@ -557,26 +570,26 @@ function Hero({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
       <div className="absolute inset-0 -z-10 bg-gradient-to-br from-slate-950/90 via-slate-900/80 to-slate-950/60" />
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-20 sm:px-6 md:py-32 lg:grid-cols-[1.15fr_1fr] lg:py-40">
         <div className="text-white">
-          <span className="inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-amber-400 backdrop-blur">
-            <Zap className="h-3.5 w-3.5 text-amber-400 fill-amber-400" /> {t.heroTag}
+          <span className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-emerald-400 backdrop-blur">
+            <Zap className="h-3.5 w-3.5 text-emerald-400 fill-emerald-400" /> {t.heroTag}
           </span>
           <h1 className="mt-6 text-3xl font-black leading-[1.1] tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
-            {t.heroTitle1}<span className="text-amber-400">{t.heroTitle2}</span>{t.heroTitle3}
+            {t.heroTitle1}<span className="text-emerald-400">{t.heroTitle2}</span>{t.heroTitle3}
           </h1>
           <p className="mt-6 max-w-xl text-base leading-relaxed text-slate-300 sm:text-lg">
             {t.heroDesc}
           </p>
 
-          {/* BANDEAU PAIEMENT MOBILE LOCAL */}
+          {/* BANDEAU PAIEMENT FLEXIBLE */}
           <div className="mt-6 flex flex-wrap items-center gap-2 rounded-2xl border border-white/10 bg-white/5 p-3 backdrop-blur text-xs text-slate-300">
-            <span className="font-bold text-amber-400">{lang === "fr" ? "Paiement flexible :" : "Flexible payment:"}</span>
-            <span className="rounded-md bg-amber-500/20 px-2 py-0.5 text-amber-300 font-semibold">MTN MoMo</span>
-            <span className="rounded-md bg-orange-500/20 px-2 py-0.5 text-orange-300 font-semibold">Orange Money</span>
+            <span className="font-bold text-emerald-400">{lang === "fr" ? "Paiement flexible :" : "Flexible payment:"}</span>
+            <span className="rounded-md bg-emerald-500/20 px-2 py-0.5 text-emerald-300 font-semibold">MTN MoMo</span>
+            <span className="rounded-md bg-emerald-500/20 px-2 py-0.5 text-emerald-300 font-semibold">Orange Money</span>
             <span className="rounded-md bg-blue-500/20 px-2 py-0.5 text-blue-300 font-semibold">{lang === "fr" ? "Traites échelonnées" : "Installment payments"}</span>
           </div>
 
           <div className="mt-8 flex flex-wrap gap-3">
-            <a href="#calculateur" className="inline-flex items-center gap-2 rounded-full bg-amber-500 px-6 py-3.5 text-sm font-bold text-slate-950 shadow-xl shadow-amber-500/20 transition-all hover:scale-105 hover:bg-amber-400">
+            <a href="#calculateur" className="inline-flex items-center gap-2 rounded-full bg-emerald-500 px-6 py-3.5 text-sm font-bold text-slate-950 shadow-xl shadow-emerald-500/20 transition-all hover:scale-105 hover:bg-emerald-400">
               <Zap className="h-4 w-4 fill-slate-950" /> {t.heroSimulateBtn}
             </a>
             <a href={`tel:${PHONE}`} className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-6 py-3.5 text-sm font-semibold text-white backdrop-blur transition-colors hover:bg-white/20">
@@ -599,16 +612,59 @@ function Hero({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
               </div>
             </div>
             <div className="mt-5 space-y-3 text-sm text-slate-300">
-              <div className="flex items-start gap-3"><MapPin className="mt-0.5 h-4 w-4 text-amber-400 shrink-0" /> Tradex Olembe, Yaoundé, Cameroun</div>
+              <div className="flex items-start gap-3"><MapPin className="mt-0.5 h-4 w-4 text-emerald-400 shrink-0" /> Tradex Olembe, Yaoundé, Cameroun</div>
               <div className="flex items-start gap-3"><Leaf className="mt-0.5 h-4 w-4 text-emerald-400 shrink-0" /> {t.heroStat3}</div>
-              <div className="flex items-start gap-3"><Phone className="mt-0.5 h-4 w-4 text-amber-400 shrink-0" /> +237 650544444</div>
-              <div className="flex items-start gap-3"><Mail className="mt-0.5 h-4 w-4 text-amber-400 shrink-0" /> {EMAIL}</div>
+              <div className="flex items-start gap-3"><Phone className="mt-0.5 h-4 w-4 text-emerald-400 shrink-0" /> +237 650544444</div>
+              <div className="flex items-start gap-3"><Mail className="mt-0.5 h-4 w-4 text-emerald-400 shrink-0" /> {EMAIL}</div>
             </div>
             <a href={waLink(waMsg)} target="_blank" rel="noreferrer"
                className="mt-5 flex items-center justify-center gap-2 rounded-full bg-emerald-500 px-4 py-3 text-sm font-bold text-slate-950 transition-all hover:bg-emerald-400">
               <MessageCircle className="h-4 w-4 fill-slate-950" /> WhatsApp direct
             </a>
           </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---------------- PARTENAIRES (SAKO, Felicity, Cworth, Growatt, Longi) ---------------- */
+function Partners({ t }: { t: typeof TRANSLATIONS["fr"] }) {
+  const PARTNERS_LIST = [
+    { name: "SAKO", desc: "Onduleurs & Systèmes Solaires", badge: "Tier 1 Certified" },
+    { name: "Felicity Solar", desc: "Batteries Lithium & Onduleurs", badge: "LiFePO4 Pro" },
+    { name: "Cworth", desc: "Composants & Protections", badge: "IEC Standard" },
+    { name: "Growatt", desc: "Onduleurs Hybrides Intelligents", badge: "Smart Energy" },
+    { name: "LONGi Solar", desc: "Panneaux Photovoltaïques High-Yield", badge: "World Leader" },
+  ];
+
+  return (
+    <section id="partenaires" className="border-y border-border bg-card py-12 sm:py-16">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
+        <div className="text-center max-w-2xl mx-auto mb-10">
+          <span className="text-xs font-bold uppercase tracking-widest text-emerald-600 dark:text-emerald-400 flex items-center justify-center gap-1.5">
+            <Handshake className="h-4 w-4" /> {t.partnersEyebrow}
+          </span>
+          <h2 className="mt-2 text-2xl font-black text-foreground sm:text-3xl">{t.partnersTitle}</h2>
+          <p className="mt-2 text-xs sm:text-sm text-muted-foreground">{t.partnersDesc}</p>
+        </div>
+
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+          {PARTNERS_LIST.map((partner) => (
+            <div 
+              key={partner.name} 
+              className="group flex flex-col items-center justify-center rounded-2xl border border-border bg-background p-5 text-center transition-all hover:border-emerald-500/50 hover:shadow-md"
+            >
+              <div className="grid h-12 w-12 place-items-center rounded-xl bg-emerald-500/10 text-emerald-600 font-black text-xl group-hover:scale-110 transition-transform">
+                {partner.name.charAt(0)}
+              </div>
+              <h3 className="mt-3 text-base font-extrabold text-foreground tracking-tight">{partner.name}</h3>
+              <p className="mt-1 text-[11px] text-muted-foreground leading-tight">{partner.desc}</p>
+              <span className="mt-3 inline-block rounded-full bg-emerald-500/10 px-2.5 py-0.5 text-[9px] font-bold text-emerald-600 dark:text-emerald-400">
+                {partner.badge}
+              </span>
+            </div>
+          ))}
         </div>
       </div>
     </section>
@@ -630,8 +686,8 @@ function Services({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
         <SectionHeader eyebrow={t.servicesEyebrow} title={t.servicesTitle} description={t.servicesDesc} />
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {SERVICES.map((s) => (
-            <div key={s.title} className="group rounded-2xl border border-border bg-card p-6 shadow-sm transition-all hover:border-amber-500/40">
-              <div className="grid h-12 w-12 place-items-center rounded-xl bg-amber-500/10 text-amber-600 transition-colors group-hover:bg-amber-500 group-hover:text-slate-950">
+            <div key={s.title} className="group rounded-2xl border border-border bg-card p-6 shadow-sm transition-all hover:border-emerald-500/40">
+              <div className="grid h-12 w-12 place-items-center rounded-xl bg-emerald-500/10 text-emerald-600 transition-colors group-hover:bg-emerald-600 group-hover:text-white">
                 <s.icon className="h-6 w-6" />
               </div>
               <h3 className="mt-5 text-lg font-bold text-foreground">{s.title}</h3>
@@ -694,8 +750,8 @@ function Kits({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
                   ))}
                 </ul>
                 <a href={waLink(lang === "fr" ? `Bonjour EDSOLAR, je suis intéressé par le ${k.title} (${k.price ?? ""}).` : `Hello EDSOLAR, I am interested in the ${k.title} (${k.price ?? ""}).`)} target="_blank" rel="noreferrer"
-                   className="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-amber-500 px-5 py-3 text-sm font-bold text-slate-950 transition-all hover:bg-amber-400">
-                  <MessageCircle className="h-4 w-4 fill-slate-950" /> {lang === "fr" ? "Demander ce kit" : "Request this kit"}
+                   className="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-emerald-600 px-5 py-3 text-sm font-bold text-white transition-all hover:bg-emerald-500 shadow-md">
+                  <MessageCircle className="h-4 w-4 fill-white" /> {lang === "fr" ? "Demander ce kit" : "Request this kit"}
                 </a>
               </div>
             </article>
@@ -782,9 +838,9 @@ function Calculator({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
                 const n = qty[a.id] ?? 0;
                 const active = n > 0;
                 return (
-                  <div key={a.id} className={`flex items-center justify-between gap-3 rounded-2xl border p-3.5 transition-all ${active ? "border-amber-500/50 bg-amber-500/5" : "border-border bg-background"}`}>
+                  <div key={a.id} className={`flex items-center justify-between gap-3 rounded-2xl border p-3.5 transition-all ${active ? "border-emerald-500/50 bg-emerald-500/5" : "border-border bg-background"}`}>
                     <div className="flex min-w-0 items-center gap-3">
-                      <div className={`grid h-10 w-10 shrink-0 place-items-center rounded-xl ${active ? "bg-amber-500 text-slate-950" : "bg-slate-200 dark:bg-slate-800 text-foreground"}`}>
+                      <div className={`grid h-10 w-10 shrink-0 place-items-center rounded-xl ${active ? "bg-emerald-600 text-white" : "bg-slate-200 dark:bg-slate-800 text-foreground"}`}>
                         <a.icon className="h-5 w-5" />
                       </div>
                       <div className="min-w-0">
@@ -803,7 +859,7 @@ function Calculator({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
             </div>
           </div>
           <div className="rounded-3xl border border-slate-800 bg-slate-950 p-6 text-white shadow-2xl sm:p-8">
-            <p className="text-xs font-bold uppercase tracking-widest text-amber-400">{t.simEyebrow}</p>
+            <p className="text-xs font-bold uppercase tracking-widest text-emerald-400">{t.simEyebrow}</p>
             <h3 className="mt-2 text-2xl font-black">{t.simResultTitle}</h3>
             <div className="mt-6 space-y-3.5">
               <Metric icon={Zap} label={t.simPeakPower} value={`${peakW.toLocaleString()} W`} />
@@ -814,7 +870,7 @@ function Calculator({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
               <Metric icon={Zap} label={t.simBudget} value={priceLabel} highlight />
             </div>
             <a href={`${WA}?text=${msg}`} target="_blank" rel="noreferrer"
-               className="mt-6 flex items-center justify-center gap-2 rounded-full bg-amber-500 px-5 py-3.5 text-sm font-bold text-slate-950 shadow-lg transition-all hover:scale-105 hover:bg-amber-400">
+               className="mt-6 flex items-center justify-center gap-2 rounded-full bg-emerald-500 px-5 py-3.5 text-sm font-bold text-slate-950 shadow-lg transition-all hover:scale-105 hover:bg-emerald-400">
               <MessageCircle className="h-4 w-4 fill-slate-950" /> {t.simSendWA}
             </a>
             <p className="mt-3 text-center text-xs text-slate-400">{t.simNote}</p>
@@ -827,9 +883,9 @@ function Calculator({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
 
 function Metric({ icon: Icon, label, value, highlight }: { icon: any; label: string; value: string; highlight?: boolean }) {
   return (
-    <div className={`flex items-center justify-between rounded-2xl border border-slate-800 ${highlight ? "bg-amber-500/10 border-amber-500/30 text-amber-400" : "bg-slate-900/60"} px-4 py-3`}>
+    <div className={`flex items-center justify-between rounded-2xl border border-slate-800 ${highlight ? "bg-emerald-500/10 border-emerald-500/30 text-emerald-400" : "bg-slate-900/60"} px-4 py-3`}>
       <div className="flex items-center gap-2.5">
-        <Icon className={`h-4 w-4 ${highlight ? "text-amber-400" : "text-slate-400"}`} />
+        <Icon className={`h-4 w-4 ${highlight ? "text-emerald-400" : "text-slate-400"}`} />
         <span className="text-xs sm:text-sm text-slate-300">{label}</span>
       </div>
       <span className="text-base sm:text-lg font-black tabular-nums">{value}</span>
@@ -913,10 +969,10 @@ function Products({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
             <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <input value={q} onChange={(e) => setQ(e.target.value)}
               placeholder={t.shopSearchPlaceholder}
-              className="w-full rounded-full border border-border bg-card py-3 pl-11 pr-4 text-sm outline-none focus:border-amber-500 shadow-sm" />
+              className="w-full rounded-full border border-border bg-card py-3 pl-11 pr-4 text-sm outline-none focus:border-emerald-600 shadow-sm" />
           </div>
           <select value={sort} onChange={(e) => setSort(e.target.value as SortKey)}
-            className="rounded-full border border-border bg-card px-4 py-3 text-sm font-semibold outline-none focus:border-amber-500 shadow-sm">
+            className="rounded-full border border-border bg-card px-4 py-3 text-sm font-semibold outline-none focus:border-emerald-600 shadow-sm">
             <option value="featured">{t.shopSortFeatured}</option>
             <option value="price_asc">{t.shopSortPriceAsc}</option>
             <option value="price_desc">{t.shopSortPriceDesc}</option>
@@ -929,20 +985,20 @@ function Products({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
         <div className="mt-6 flex flex-wrap justify-center gap-2">
           {categories.map((c) => (
             <button key={c} onClick={() => setCat(c)}
-              className={`rounded-full px-5 py-2 text-sm font-semibold transition-all ${cat === c ? "bg-slate-900 text-white shadow-md dark:bg-amber-500 dark:text-slate-950" : "border border-border bg-card text-foreground hover:border-amber-500"}`}>
+              className={`rounded-full px-5 py-2 text-sm font-semibold transition-all ${cat === c ? "bg-slate-900 text-white shadow-md dark:bg-emerald-600 dark:text-white" : "border border-border bg-card text-foreground hover:border-emerald-600"}`}>
               {c === "Tous" ? (lang === "fr" ? "Tous" : "All") : translateDynamicText(c, lang)}
             </button>
           ))}
         </div>
 
         {/* BANDEAU COMBINÉ : PILIERS RÉASSURANCE + CONSEIL TECHNIQUE WHATSAPP */}
-        <div className="mx-auto mt-8 max-w-5xl overflow-hidden rounded-3xl border border-amber-500/20 bg-card p-6 shadow-sm">
+        <div className="mx-auto mt-8 max-w-5xl overflow-hidden rounded-3xl border border-emerald-500/20 bg-card p-6 shadow-sm">
           <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
             
             {/* Les 3 Piliers de Réassurance */}
             <div className="grid gap-4 sm:grid-cols-3">
               <div className="flex items-center gap-3">
-                <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-amber-500/10 text-amber-600">
+                <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-emerald-500/10 text-emerald-600">
                   <ShieldCheck className="h-5 w-5" />
                 </div>
                 <div>
@@ -996,7 +1052,7 @@ function Products({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
                 {p.image_url
                   ? <img src={p.image_url} alt={p.name} loading="lazy" className="h-full w-full object-contain p-3" />
                   : <ShoppingBag className="h-16 w-16 text-slate-400" />}
-                {p.badge && <span className="absolute left-3 top-3 rounded-full bg-amber-500 px-2.5 py-1 text-[10px] font-bold uppercase text-slate-950">{translateDynamicText(p.badge, lang)}</span>}
+                {p.badge && <span className="absolute left-3 top-3 rounded-full bg-emerald-600 px-2.5 py-1 text-[10px] font-bold uppercase text-white">{translateDynamicText(p.badge, lang)}</span>}
               </div>
               <h3 className="mt-4 text-base font-bold">{p.name}</h3>
               {p.description && <p className="mt-1 text-xs text-muted-foreground">{translateDynamicText(p.description, lang)}</p>}
@@ -1005,7 +1061,7 @@ function Products({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
                 {p.warranty && <span className="rounded-full bg-emerald-500/10 px-2 py-0.5 text-emerald-600">{translateDynamicText(p.warranty, lang)}</span>}
               </div>
               <div className="mt-4 flex items-end justify-between gap-2">
-                <span className="text-lg font-black text-amber-600 dark:text-amber-400">{p.price ?? (lang === "fr" ? "Sur devis" : "On request")}</span>
+                <span className="text-lg font-black text-emerald-600 dark:text-emerald-400">{p.price ?? (lang === "fr" ? "Sur devis" : "On request")}</span>
               </div>
               <a href={waLink(buildOrderMsg(p))} target="_blank" rel="noreferrer"
                  className="mt-4 inline-flex items-center justify-center gap-2 rounded-full bg-emerald-600 px-4 py-2.5 text-sm font-bold text-white transition-colors hover:bg-emerald-700">
@@ -1020,7 +1076,7 @@ function Products({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
   );
 }
 
-/* ---------------- SECTION : ANTI-CONTREFAÇON (POURQUOI EDSOLAR) ---------------- */
+/* ---------------- SECTION : ANTI-CONTREFAÇON ---------------- */
 function QualityComparison({ lang }: { lang: Lang }) {
   return (
     <section id="qualite" className="py-16 sm:py-28">
@@ -1100,8 +1156,8 @@ function DiasporaSection({ lang }: { lang: Lang }) {
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
           <div>
-            <span className="inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-amber-400">
-              <Globe className="h-3.5 w-3.5 text-amber-400" /> {lang === "fr" ? "Offre Diaspora Camerounaise" : "Cameroonian Diaspora Offer"}
+            <span className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-emerald-400">
+              <Globe className="h-3.5 w-3.5 text-emerald-400" /> {lang === "fr" ? "Offre Diaspora Camerounaise" : "Cameroonian Diaspora Offer"}
             </span>
             <h2 className="mt-4 text-2xl font-black sm:text-4xl">
               {lang === "fr" ? "Équipez la maison familiale au pays en toute tranquillité" : "Equip your family home back home with total peace of mind"}
@@ -1114,22 +1170,22 @@ function DiasporaSection({ lang }: { lang: Lang }) {
 
             <div className="mt-6 space-y-3">
               <div className="flex items-start gap-3 text-sm text-slate-200">
-                <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-amber-400" />
+                <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-400" />
                 <span>{lang === "fr" ? "Paiement sécurisé à distance (CB Internationale, Virement, Ria/Western Union)." : "Secure remote payment (International Card, Wire transfer, Ria/Western Union)."}</span>
               </div>
               <div className="flex items-start gap-3 text-sm text-slate-200">
-                <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-amber-400" />
+                <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-400" />
                 <span>{lang === "fr" ? "Compte-rendu vidéo WhatsApp direct à chaque étape du chantier." : "Direct WhatsApp video reports at every stage of the installation."}</span>
               </div>
               <div className="flex items-start gap-3 text-sm text-slate-200">
-                <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-amber-400" />
+                <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-400" />
                 <span>{lang === "fr" ? "Visite technique gratuite du logement à Yaoundé, Douala ou en région." : "Free home technical survey in Yaoundé, Douala, or other regions."}</span>
               </div>
             </div>
 
             <div className="mt-8">
               <a href={waLink(diasporaMsg)} target="_blank" rel="noreferrer"
-                 className="inline-flex items-center gap-2 rounded-full bg-amber-500 px-6 py-3.5 text-sm font-bold text-slate-950 transition-transform hover:scale-105 hover:bg-amber-400">
+                 className="inline-flex items-center gap-2 rounded-full bg-emerald-500 px-6 py-3.5 text-sm font-bold text-slate-950 transition-transform hover:scale-105 hover:bg-emerald-400">
                 <MessageCircle className="h-4 w-4 fill-slate-950" />
                 <span>{lang === "fr" ? "Lancer un projet à distance" : "Start a project from abroad"}</span>
               </a>
@@ -1137,7 +1193,7 @@ function DiasporaSection({ lang }: { lang: Lang }) {
           </div>
 
           <div className="relative rounded-3xl border border-slate-800 bg-slate-900/60 p-6 sm:p-8 backdrop-blur">
-            <h3 className="text-lg font-bold text-amber-400">{lang === "fr" ? "Modes de Règlement Acceptés" : "Accepted Payment Methods"}</h3>
+            <h3 className="text-lg font-bold text-emerald-400">{lang === "fr" ? "Modes de Règlement Acceptés" : "Accepted Payment Methods"}</h3>
             <p className="mt-1 text-xs text-slate-400">{lang === "fr" ? "Pour vos proches au pays ou depuis l'étranger :" : "For local relatives or from abroad:"}</p>
 
             <div className="mt-6 grid grid-cols-2 gap-3 text-xs">
@@ -1243,7 +1299,7 @@ function Trust({ t }: { t: typeof TRANSLATIONS["fr"] }) {
         <div className="mt-12 grid gap-4 grid-cols-2 lg:grid-cols-4">
           {STATS.map((s) => (
             <div key={s.label} className="rounded-2xl border border-border bg-card p-5 sm:p-6 text-center shadow-sm transition-transform hover:-translate-y-1">
-              <div className="mx-auto grid h-12 w-12 sm:h-14 sm:w-14 place-items-center rounded-2xl bg-amber-500/10 text-amber-600">
+              <div className="mx-auto grid h-12 w-12 sm:h-14 sm:w-14 place-items-center rounded-2xl bg-emerald-500/10 text-emerald-600">
                 <s.icon className="h-6 w-6 sm:h-7 sm:w-7" />
               </div>
               <div className="mt-3 sm:mt-4 text-2xl sm:text-4xl font-black text-slate-900 dark:text-white">{s.value}</div>
@@ -1298,7 +1354,7 @@ function Realisations({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang })
                   <p className="text-sm font-bold">{translateDynamicText(g.title, lang)}</p>
                   <p className="text-xs text-muted-foreground">{g.loc}</p>
                 </div>
-                <ArrowRight className="h-4 w-4 text-amber-500 shrink-0" />
+                <ArrowRight className="h-4 w-4 text-emerald-600 shrink-0" />
               </figcaption>
             </figure>
           ))}
@@ -1371,7 +1427,7 @@ function Contact({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
               <ContactCard icon={Mail} title={t.contactEmail} lines={[EMAIL]} href={`mailto:${EMAIL}`} />
             </div>
 
-            {/* Carte Google Maps isolée avec sa propre marge propre */}
+            {/* Carte Google Maps isolée */}
             <div className="overflow-hidden rounded-3xl border border-border bg-card shadow-sm h-64 sm:h-72 w-full">
               <iframe 
                 title="EDSOLAR Yaoundé" 
@@ -1391,7 +1447,7 @@ function Contact({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
               <div>
                 <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t.formProjectType}</label>
                 <select value={form.type} onChange={(e) => setForm({ ...form, type: e.target.value })}
-                  className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-amber-500">
+                  className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-emerald-600">
                   <option>{lang === "fr" ? "Maison" : "Home"}</option>
                   <option>{lang === "fr" ? "Commerce" : "Business"}</option>
                   <option>{lang === "fr" ? "Industrie" : "Industry"}</option>
@@ -1402,13 +1458,13 @@ function Contact({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
                 <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t.formNeeds}</label>
                 <input type="text" value={form.needs} onChange={(e) => setForm({ ...form, needs: e.target.value })}
                   placeholder={lang === "fr" ? "Ex: pompage, climatisation, bureaux..." : "Ex: pumping, AC, offices..."}
-                  className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-amber-500" />
+                  className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-emerald-600" />
               </div>
               <div className="sm:col-span-2">
                 <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t.formMessage}</label>
                 <textarea rows={4} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })}
                   placeholder={lang === "fr" ? "Décrivez brièvement votre besoin..." : "Briefly describe your request..."}
-                  className="w-full resize-none rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-amber-500" />
+                  className="w-full resize-none rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-emerald-600" />
               </div>
             </div>
             <button type="submit"
@@ -1427,7 +1483,7 @@ function Contact({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
 function ContactCard({ icon: Icon, title, lines, href }: { icon: any; title: string; lines: string[]; href?: string }) {
   const inner = (
     <div className="flex items-start gap-3.5 rounded-2xl border border-border bg-card p-4 sm:p-5 shadow-sm transition-transform hover:-translate-y-1 h-full">
-      <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-amber-500/10 text-amber-600">
+      <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-emerald-500/10 text-emerald-600">
         <Icon className="h-5 w-5" />
       </div>
       <div className="min-w-0 flex-1">
@@ -1449,7 +1505,7 @@ function Field({ label, value, onChange, required, type = "text", placeholder }:
       <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">{label}</label>
       <input type={type} required={required} value={value} placeholder={placeholder}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-amber-500" />
+        className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-emerald-600" />
     </div>
   );
 }
@@ -1464,7 +1520,7 @@ function Footer({ t }: { t: typeof TRANSLATIONS["fr"] }) {
             <img src={logo} alt="EDSOLAR Énergie Cameroun" className="h-12 w-12 rounded-xl bg-white object-contain p-1 shadow-md" />
             <div>
               <p className="text-lg font-black text-white">EDSOLAR</p>
-              <p className="text-[10px] uppercase tracking-[0.15em] text-amber-400 font-bold">Énergie Cameroun</p>
+              <p className="text-[10px] uppercase tracking-[0.15em] text-emerald-400 font-bold">Énergie Cameroun</p>
             </div>
           </a>
           <p className="mt-4 max-w-md text-sm text-slate-400">
@@ -1472,29 +1528,30 @@ function Footer({ t }: { t: typeof TRANSLATIONS["fr"] }) {
           </p>
           <div className="mt-5 flex gap-3">
             {[Facebook, Instagram, Linkedin].map((I, i) => (
-              <a key={i} href="#" className="grid h-10 w-10 place-items-center rounded-full bg-slate-900 text-slate-300 transition-colors hover:bg-amber-500 hover:text-slate-950">
+              <a key={i} href="#" className="grid h-10 w-10 place-items-center rounded-full bg-slate-900 text-slate-300 transition-colors hover:bg-emerald-600 hover:text-white">
                 <I className="h-4 w-4" />
               </a>
             ))}
           </div>
         </div>
         <div>
-          <p className="text-sm font-bold uppercase tracking-wider text-amber-400">{t.footerNav}</p>
+          <p className="text-sm font-bold uppercase tracking-wider text-emerald-400">{t.footerNav}</p>
           <ul className="mt-4 space-y-2 text-sm text-slate-300">
-            <li><a href="#services" className="hover:text-amber-400 transition-colors">{t.navServices}</a></li>
-            <li><a href="#kits" className="hover:text-amber-400 transition-colors">{t.navKits}</a></li>
-            <li><a href="#boutique" className="hover:text-amber-400 transition-colors">{t.navBoutique}</a></li>
-            <li><a href="#calculateur" className="hover:text-amber-400 transition-colors">{t.navSimulator}</a></li>
-            <li><a href="#realisations" className="hover:text-amber-400 transition-colors">{t.navRealisations}</a></li>
+            <li><a href="#partenaires" className="hover:text-emerald-400 transition-colors">{t.navPartners}</a></li>
+            <li><a href="#services" className="hover:text-emerald-400 transition-colors">{t.navServices}</a></li>
+            <li><a href="#kits" className="hover:text-emerald-400 transition-colors">{t.navKits}</a></li>
+            <li><a href="#boutique" className="hover:text-emerald-400 transition-colors">{t.navBoutique}</a></li>
+            <li><a href="#calculateur" className="hover:text-emerald-400 transition-colors">{t.navSimulator}</a></li>
+            <li><a href="#realisations" className="hover:text-emerald-400 transition-colors">{t.navRealisations}</a></li>
           </ul>
         </div>
         <div>
-          <p className="text-sm font-bold uppercase tracking-wider text-amber-400">{t.footerContact}</p>
+          <p className="text-sm font-bold uppercase tracking-wider text-emerald-400">{t.footerContact}</p>
           <ul className="mt-4 space-y-3 text-sm text-slate-300">
-            <li className="flex gap-2"><MapPin className="h-4 w-4 shrink-0 text-amber-400" /> Tradex Olembe, Yaoundé, Cameroun</li>
+            <li className="flex gap-2"><MapPin className="h-4 w-4 shrink-0 text-emerald-400" /> Tradex Olembe, Yaoundé, Cameroun</li>
             <li className="flex gap-2"><Leaf className="h-4 w-4 shrink-0 text-emerald-400" /> Cameroun & Afrique Centrale</li>
-            <li className="flex gap-2"><Phone className="h-4 w-4 shrink-0 text-amber-400" /> +237 650544444</li>
-            <li className="flex gap-2"><Mail className="h-4 w-4 shrink-0 text-amber-400" /> edsolarcam@gmail.com</li>
+            <li className="flex gap-2"><Phone className="h-4 w-4 shrink-0 text-emerald-400" /> +237 650544444</li>
+            <li className="flex gap-2"><Mail className="h-4 w-4 shrink-0 text-emerald-400" /> edsolarcam@gmail.com</li>
           </ul>
         </div>
       </div>
@@ -1502,9 +1559,9 @@ function Footer({ t }: { t: typeof TRANSLATIONS["fr"] }) {
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-4 py-5 text-xs text-slate-500 sm:flex-row sm:px-6">
           <p>{t.footerRights}</p>
           <nav className="flex flex-wrap items-center gap-x-4 gap-y-1">
-            <a href="/mentions-legales" className="hover:text-amber-400">{t.footerLegal}</a>
-            <a href="/confidentialite" className="hover:text-amber-400">{t.footerPrivacy}</a>
-            <a href="/cookies" className="hover:text-amber-400">{t.footerCookies}</a>
+            <a href="/mentions-legales" className="hover:text-emerald-400">{t.footerLegal}</a>
+            <a href="/confidentialite" className="hover:text-emerald-400">{t.footerPrivacy}</a>
+            <a href="/cookies" className="hover:text-emerald-400">{t.footerCookies}</a>
           </nav>
         </div>
       </div>
@@ -1524,7 +1581,7 @@ function FloatingWhatsApp({ lang }: { lang: Lang }) {
        aria-label="Contacter sur WhatsApp">
       <MessageCircle className="h-5 w-5 fill-slate-950" />
       <span className="hidden sm:inline text-sm">Chat WhatsApp</span>
-      <span className="absolute -right-1 -top-1 grid h-5 w-5 place-items-center rounded-full bg-amber-400 text-[10px] font-black text-slate-950 animate-pulse">1</span>
+      <span className="absolute -right-1 -top-1 grid h-5 w-5 place-items-center rounded-full bg-emerald-400 text-[10px] font-black text-slate-950 animate-pulse">1</span>
     </a>
   );
 }
@@ -1591,7 +1648,7 @@ function Reviews({ t }: { t: typeof TRANSLATIONS["fr"] }) {
               <div>
                 <label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t.reviewsName}</label>
                 <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required
-                  className="mt-1 w-full rounded-xl border border-input bg-background px-4 py-2.5 text-sm outline-none focus:border-amber-500" />
+                  className="mt-1 w-full rounded-xl border border-input bg-background px-4 py-2.5 text-sm outline-none focus:border-emerald-600" />
               </div>
               <div>
                 <label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t.reviewsRating}</label>
@@ -1603,7 +1660,7 @@ function Reviews({ t }: { t: typeof TRANSLATIONS["fr"] }) {
                       onMouseLeave={() => setHoverRating(0)}
                       aria-label={`${n} étoile`}
                       className="p-1 transition-transform hover:scale-110">
-                      <Star className={`pointer-events-none h-7 w-7 sm:h-8 sm:w-8 ${n <= (hoverRating || form.rating) ? "fill-amber-400 text-amber-400" : "text-muted-foreground/30"}`} />
+                      <Star className={`pointer-events-none h-7 w-7 sm:h-8 sm:w-8 ${n <= (hoverRating || form.rating) ? "fill-emerald-500 text-emerald-500" : "text-muted-foreground/30"}`} />
                     </button>
                   ))}
                   <span className="ml-2 text-sm font-semibold text-muted-foreground">{form.rating}/5</span>
@@ -1612,9 +1669,9 @@ function Reviews({ t }: { t: typeof TRANSLATIONS["fr"] }) {
               <div>
                 <label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t.reviewsComment}</label>
                 <textarea rows={4} value={form.comment} onChange={(e) => setForm({ ...form, comment: e.target.value })} required
-                  className="mt-1 w-full resize-none rounded-xl border border-input bg-background px-4 py-2.5 text-sm outline-none focus:border-amber-500" />
+                  className="mt-1 w-full resize-none rounded-xl border border-input bg-background px-4 py-2.5 text-sm outline-none focus:border-emerald-600" />
               </div>
-              <button disabled={busy} className="w-full rounded-full bg-slate-900 px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-slate-800 disabled:opacity-60 dark:bg-amber-500 dark:text-slate-950">
+              <button disabled={busy} className="w-full rounded-full bg-emerald-600 px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-emerald-700 disabled:opacity-60">
                 {busy ? t.reviewsSending : t.reviewsSubmit}
               </button>
               {sent && <p className="text-sm text-emerald-600 font-semibold">{t.reviewsSuccess}</p>}
@@ -1630,7 +1687,7 @@ function Reviews({ t }: { t: typeof TRANSLATIONS["fr"] }) {
               <div key={r.id} className="rounded-2xl border border-border bg-card p-5 shadow-sm">
                 <div className="flex items-center gap-1">
                   {Array.from({ length: 5 }).map((_, i) => (
-                    <Star key={i} className={`h-4 w-4 ${i < r.rating ? "fill-amber-400 text-amber-400" : "text-muted-foreground/30"}`} />
+                    <Star key={i} className={`h-4 w-4 ${i < r.rating ? "fill-emerald-500 text-emerald-500" : "text-muted-foreground/30"}`} />
                   ))}
                 </div>
                 <p className="mt-3 text-sm leading-relaxed text-foreground/90">"{r.comment}"</p>
