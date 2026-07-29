@@ -346,7 +346,6 @@ function PhotosPanel() {
 
   return (
     <section className="space-y-6">
-      {/* Onglets de sélection de section */}
       <div className="flex gap-2 border-b border-border pb-3">
         <button
           type="button"
@@ -675,10 +674,20 @@ function ProductsPanel() {
               {categories.map((c) => <option key={c} value={c} />)}
             </datalist>
           </div>
-          <TxtField label="Prix (affiché - ex: 580 000 FCFA)" v={form.price} onC={(v) => setForm({ ...form, price: v })} placeholder="580 000 FCFA" />
-          <TxtField label="Prix (montant chiffré, pour tri)" v={form.price_amount} onC={(v) => setForm({ ...form, price_amount: v.replace(/\D/g, "") })} placeholder="580000" />
-          <TxtField label="Badge (ex : Best-seller)" v={form.badge} onC={(v) => setForm({ ...form, badge: v })} />
-          <TxtField label="Garantie (ex : 25 ans)" v={form.warranty} onC={(v) => setForm({ ...form, warranty: v })} />
+          <div>
+            <TxtField 
+              label="Prix (affiché)" 
+              v={form.price} 
+              onC={(v) => setForm({ ...form, price: v })} 
+              placeholder="Ex: 100AH = 580 000 FCFA - 200AH = 880 000 FCFA - 300AH = 1 350 000 FCFA" 
+            />
+            <p className="mt-1 text-[11px] text-muted-foreground">
+              Pour plusieurs options, entrez : <code className="font-mono text-[#386b34]">100AH = 580 000 FCFA - 200AH = 880 000 FCFA</code> ou simplement les prix séparés par des tirets <code className="font-mono text-[#386b34]">580 000 FCFA - 880 000 FCFA</code>.
+            </p>
+          </div>
+          <TxtField label="Prix (montant chiffré unique, pour tri)" v={form.price_amount} onC={(v) => setForm({ ...form, price_amount: v.replace(/\D/g, "") })} placeholder="580000" />
+          <TxtField label="Badge (ex : Best-seller / Li-SUN 25.6 V 100AH 2.56 5KWH 5 ANS)" v={form.badge} onC={(v) => setForm({ ...form, badge: v })} />
+          <TxtField label="Garantie (ex : 5 ANS)" v={form.warranty} onC={(v) => setForm({ ...form, warranty: v })} />
           <TxtField label="Popularité (0-100)" v={String(form.popularity)} onC={(v) => setForm({ ...form, popularity: Number(v.replace(/\D/g, "")) || 0 })} placeholder="0" />
           <div>
             <label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">Description</label>
