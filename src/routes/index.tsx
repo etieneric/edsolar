@@ -215,6 +215,139 @@ const TRANSLATIONS = {
     footerLegal: "Mentions légales",
     footerPrivacy: "Confidentialité",
     footerCookies: "Cookies",
+  },
+  en: {
+    navServices: "Services",
+    navPartners: "Partners",
+    navKits: "Kits",
+    navBoutique: "Shop",
+    navSimulator: "Quote Simulator",
+    navRealisations: "Projects",
+    navHome: "Home",
+    navYouTube: "Videos",
+    navReviews: "Customer Reviews",
+    navContact: "Contact",
+    btnQuote: "Free Quote",
+    
+    heroTag: "No more blackout issues with Eneo",
+    heroTitle1: "Solar Energy ",
+    heroTitle2: "Autonomous & Eco-Friendly",
+    heroTitle3: " for Your Comfort",
+    heroDesc: "Ensure 24/7 electricity at home and office. Tier 1 certified equipment, guaranteed installations and responsive after-sales service in Yaoundé and Central Africa.",
+    heroSimulateBtn: "Simulate your energy needs",
+    heroExpertBtn: "Contact an expert",
+    heroStat1: "+500 successful installations",
+    heroStat2: "25-year warranty",
+    heroStat3: "Cameroon & Central Africa",
+    heroCardTitle: "EDSOLAR Yaoundé",
+    heroCardSub: "Direct contact",
+
+    partnersEyebrow: "Trust & Quality",
+    partnersTitle: "Our Official Brands & Partners",
+    partnersDesc: "We work directly with world leaders in solar technology to guarantee Tier 1 certified equipment.",
+
+    servicesEyebrow: "Our Services",
+    servicesTitle: "Complete expertise in solar energy",
+    servicesDesc: "From audit to commissioning, EDSOLAR supports you at every step of your energy transition.",
+    s1Title: "Custom Solar Installation",
+    s1Desc: "Autonomous (Off-Grid), hybrid, and grid-tied systems for residences, businesses, and industries.",
+    s2Title: "Maintenance & Repair",
+    s2Desc: "Technical inspection, panel cleaning, preventive maintenance, and inverter/battery replacement.",
+    s3Title: "Solar Equipment Sales",
+    s3Desc: "Photovoltaic panels, hybrid inverters, Lithium/Gel batteries, and MPPT controllers.",
+    s4Title: "Energy Audit & Consulting",
+    s4Desc: "Precise sizing by qualified engineers to optimize your energy consumption.",
+    learnMore: "Learn more",
+
+    simEyebrow: "Quote Simulator",
+    simTitle: "Estimate your solar setup in 1 minute",
+    simDesc: "Select your appliances. Instantly get recommended capacity and budget estimate.",
+    simResultTitle: "Real-time results",
+    simPeakPower: "Peak power",
+    simDailyCons: "Daily consumption",
+    simRecSystem: "Recommended system",
+    simLithiumBatt: "Lithium batteries",
+    simPanels: "450W solar panels",
+    simBudget: "Estimated budget",
+    simSendWA: "Get quote on WhatsApp",
+    simNote: "Indicative estimation — final validation by our engineers.",
+
+    shopEyebrow: "Shop",
+    shopTitle: "Factory-certified solar equipment",
+    shopDesc: "Panels, Lithium batteries, inverters and full kits — 100% genuine.",
+    shopSearchPlaceholder: "Search equipment (inverter, battery, panel…)",
+    shopSortFeatured: "Sort: Featured",
+    shopSortPriceAsc: "Price: Low to High",
+    shopSortPriceDesc: "Price: High to Low",
+    shopSortPopularity: "Popularity",
+    shopSortWarranty: "Warranty (Long → Short)",
+    shopOrderWA: "Order via WhatsApp",
+    shopNoProduct: "No product matches your search.",
+
+    channelTag: "Field Videos",
+    channelTitle1: "Join the Official ",
+    channelTitle2: "YouTube Channel EDSOLAR",
+    channelDesc: "Subscribe to our channel to watch video project tours, tutorials and product demos.",
+    channelSubscribers: "Watch exclusive videos on YouTube!",
+    channelSubNote: "Subscribe for free to @EDSOLAR237",
+    channelBtn: "Subscribe on YouTube",
+
+    trustEyebrow: "Why choose us?",
+    trustTitle: "Trusted by hundreds of customers",
+    trustDesc: "100% local expertise serving Cameroon and Central Africa 🌍.",
+    trustStat1: "Installations completed",
+    trustStat2: "Customer satisfaction",
+    trustStat3: "Intervention in Yaoundé",
+    trustStat4: "Years of experience",
+
+    realEyebrow: "Our Projects",
+    realTitle: "Recent projects in Cameroon",
+    realDesc: "Explore our latest residential and commercial solar installations.",
+
+    reviewsEyebrow: "Reviews",
+    reviewsTitle: "Share your experience with EDSOLAR",
+    reviewsDesc: "Your feedback matters. Leave a review — published upon team validation.",
+    reviewsLeaveTitle: "Write a review",
+    reviewsName: "Name",
+    reviewsRating: "Rating",
+    reviewsComment: "Your comment",
+    reviewsSubmit: "Publish review",
+    reviewsSending: "Sending…",
+    reviewsSuccess: "Thank you! Your review will be published after validation.",
+    reviewsEmpty: "Be the first to share your experience!",
+
+    aboutEyebrow: "Our Vision & Mission",
+    aboutTitle: "EDSOLAR — Strong commitment to sustainable well-being",
+    aboutPillarsText: "EDSOLAR stands on four main pillars: Gratitude, Abundance, Love and Compassion.",
+    aboutMissionText: "Our mission is to help people access affordable solar energy.",
+    aboutVisionText: "Our vision is a future where every household and business enjoys clean, reliable and accessible energy.",
+    aboutPresenceText: "Since 2017, we operate throughout Cameroon.",
+    aboutEcosystemTitle: "This vision progressively expands to other essential services:",
+    aboutConclusion: "EDSOLAR is more than a company. It is a vision, commitment and movement for total well-being.",
+
+    contactEyebrow: "Contact",
+    contactTitle: "Let's discuss your solar project",
+    contactDesc: "Fill the form or contact us — an expert responds within 24h.",
+    contactHeadquarters: "Headquarters",
+    contactZone: "Intervention zone",
+    contactPhone: "Phone / WhatsApp",
+    contactEmail: "E-mail Address",
+    formName: "Full name",
+    formPhone: "Phone",
+    formLocation: "Location / City",
+    formProjectType: "Project type",
+    formNeeds: "Specific requirements",
+    formMessage: "Message",
+    formSubmit: "Send via WhatsApp",
+    formSuccess: "Thank you! Message prepared on WhatsApp.",
+
+    footerNav: "Navigation",
+    footerContact: "Contact",
+    footerPartners: "Certified Partners",
+    footerRights: "© 2026 Bimedia Connect Agency. All rights reserved.",
+    footerLegal: "Legal notice",
+    footerPrivacy: "Privacy policy",
+    footerCookies: "Cookies",
   }
 };
 
@@ -278,10 +411,10 @@ function translateDynamicText(text: string | null | undefined, lang: Lang): stri
 
 function Index() {
   const [lang, setLang] = useState<Lang>("fr");
-  const t = TRANSLATIONS[lang];
+  const t = TRANSLATIONS[lang] || TRANSLATIONS.fr;
 
   return (
-    <div className="min-h-screen bg-background text-foreground selection:bg-[#386b34] selection:text-white">
+    <div className="min-h-screen bg-background text-foreground selection:bg-[#386b34] selection:text-white overflow-x-hidden">
       <Header lang={lang} setLang={setLang} t={t} />
       <Hero t={t} lang={lang} />
       <Partners t={t} />
@@ -342,24 +475,24 @@ function Header({ lang, setLang, t }: { lang: Lang; setLang: (l: Lang) => void; 
   return (
     <header className="sticky top-0 z-50 border-b border-emerald-900/10 bg-white/90 backdrop-blur-md dark:border-emerald-900/30 dark:bg-[#20401d]/90 transition-all">
       <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-2.5 sm:px-6">
-        <a href="#accueil" className="flex items-center gap-2.5 shrink-0">
+        <a href="#accueil" className="flex items-center gap-2 shrink-0">
           <img 
             src={logo} 
             alt="EDSOLAR Énergie Cameroun" 
-            className="h-10 w-10 sm:h-11 sm:w-11 rounded-xl bg-white object-contain p-0.5 shadow-sm border border-slate-100" 
+            className="h-9 w-9 sm:h-11 sm:w-11 rounded-xl bg-white object-contain p-0.5 shadow-sm border border-slate-100" 
           />
           <span className="flex flex-col leading-tight">
-            <span className="text-base sm:text-lg font-black tracking-tight text-slate-900 dark:text-white">EDSOLAR</span>
-            <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.15em] text-[#386b34]">Énergie Cameroun</span>
+            <span className="text-sm sm:text-lg font-black tracking-tight text-slate-900 dark:text-white">EDSOLAR</span>
+            <span className="text-[8px] sm:text-[10px] font-bold uppercase tracking-[0.12em] text-[#386b34]">Énergie Cameroun</span>
           </span>
         </a>
 
-        <nav className="hidden items-center gap-6 xl:gap-8 lg:flex">
+        <nav className="hidden items-center gap-5 xl:gap-8 lg:flex">
           {navDesktop.map((n) => (
             <a 
               key={n.href} 
               href={n.href} 
-              className="text-sm font-semibold text-slate-700 transition-colors hover:text-[#386b34] dark:text-slate-200 whitespace-nowrap"
+              className="text-xs xl:text-sm font-semibold text-slate-700 transition-colors hover:text-[#386b34] dark:text-slate-200 whitespace-nowrap"
             >
               {n.label}
             </a>
@@ -388,7 +521,7 @@ function Header({ lang, setLang, t }: { lang: Lang; setLang: (l: Lang) => void; 
             href={waLink(quoteMsg)} 
             target="_blank" 
             rel="noreferrer"
-            className="inline-flex items-center gap-2 rounded-full bg-[#386b34] px-5 py-2.5 text-sm font-bold text-white shadow-md shadow-[#386b34]/20 transition-all hover:scale-105 hover:bg-[#2e582b] whitespace-nowrap"
+            className="inline-flex items-center gap-2 rounded-full bg-[#386b34] px-4 py-2 sm:px-5 sm:py-2.5 text-xs sm:text-sm font-bold text-white shadow-md shadow-[#386b34]/20 transition-all hover:scale-105 hover:bg-[#2e582b] whitespace-nowrap"
           >
             <MessageCircle className="h-4 w-4 fill-white" />
             <span>{t.btnQuote}</span>
@@ -396,18 +529,18 @@ function Header({ lang, setLang, t }: { lang: Lang; setLang: (l: Lang) => void; 
         </div>
 
         <div className="flex items-center gap-2 lg:hidden">
-          <div className="flex items-center rounded-full border border-slate-200 bg-slate-100 p-1 dark:border-slate-800 dark:bg-slate-900">
+          <div className="flex items-center rounded-full border border-slate-200 bg-slate-100 p-0.5 dark:border-slate-800 dark:bg-slate-900">
             <button 
               type="button"
               onClick={() => setLang("fr")}
-              className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${lang === "fr" ? "bg-[#386b34] text-white" : "text-slate-600 dark:text-slate-400"}`}
+              className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${lang === "fr" ? "bg-[#386b34] text-white" : "text-slate-600 dark:text-slate-400"}`}
             >
               FR
             </button>
             <button 
               type="button"
               onClick={() => setLang("en")}
-              className={`rounded-full px-2 py-0.5 text-[11px] font-bold ${lang === "en" ? "bg-[#386b34] text-white" : "text-slate-600 dark:text-slate-400"}`}
+              className={`rounded-full px-2 py-0.5 text-[10px] font-bold ${lang === "en" ? "bg-[#386b34] text-white" : "text-slate-600 dark:text-slate-400"}`}
             >
               EN
             </button>
@@ -415,7 +548,7 @@ function Header({ lang, setLang, t }: { lang: Lang; setLang: (l: Lang) => void; 
 
           <button 
             type="button"
-            className="grid h-10 w-10 place-items-center rounded-xl border border-slate-200 bg-slate-50 text-slate-800 transition-colors hover:bg-slate-100 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-100" 
+            className="grid h-9 w-9 place-items-center rounded-xl border border-slate-200 bg-slate-50 text-slate-800 transition-colors hover:bg-slate-100 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-100" 
             onClick={() => setOpen((v) => !v)} 
             aria-label="Menu"
           >
@@ -425,14 +558,14 @@ function Header({ lang, setLang, t }: { lang: Lang; setLang: (l: Lang) => void; 
       </div>
 
       {open && (
-        <div className="border-t border-slate-200 bg-white/95 px-4 pb-6 pt-3 shadow-2xl backdrop-blur-xl lg:hidden dark:border-slate-800 dark:bg-slate-950/95">
+        <div className="border-t border-slate-200 bg-white/95 px-4 pb-6 pt-3 shadow-2xl backdrop-blur-xl lg:hidden dark:border-slate-800 dark:bg-slate-950/95 max-h-[80vh] overflow-y-auto">
           <div className="mx-auto flex max-w-7xl flex-col gap-1">
             {navMobile.map((n) => (
               <a 
                 key={n.href} 
                 href={n.href} 
                 onClick={() => setOpen(false)}
-                className="flex items-center justify-between rounded-xl px-4 py-3 text-sm font-semibold text-slate-800 transition-colors hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-900"
+                className="flex items-center justify-between rounded-xl px-4 py-2.5 text-xs sm:text-sm font-semibold text-slate-800 transition-colors hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-900"
               >
                 <span>{n.label}</span>
                 <ArrowRight className="h-4 w-4 text-slate-400" />
@@ -445,7 +578,7 @@ function Header({ lang, setLang, t }: { lang: Lang; setLang: (l: Lang) => void; 
                 target="_blank" 
                 rel="noreferrer"
                 onClick={() => setOpen(false)}
-                className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#386b34] py-3.5 text-sm font-bold text-white shadow-md transition-all active:scale-[0.98]"
+                className="flex w-full items-center justify-center gap-2 rounded-xl bg-[#386b34] py-3 text-xs sm:text-sm font-bold text-white shadow-md transition-all active:scale-[0.98]"
               >
                 <MessageCircle className="h-4 w-4 fill-white" />
                 <span>{t.btnQuote}</span>
@@ -469,44 +602,44 @@ function Hero({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
       <img src={hero} alt="Installateurs solaires EDSOLAR sur un toit à Yaoundé" width={1920} height={1080}
            decoding="async" loading="eager" className="absolute inset-0 -z-10 h-full w-full object-cover" />
       <div className="absolute inset-0 -z-10 bg-gradient-to-br from-[#234d20]/95 via-[#1a3818]/90 to-[#234d20]/80" />
-      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-20 sm:px-6 md:py-32 lg:grid-cols-[1.15fr_1fr] lg:py-40">
+      <div className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 sm:py-20 md:py-28 lg:grid-cols-[1.15fr_1fr] lg:py-36">
         <div className="text-white">
-          <span className="inline-flex items-center gap-2 rounded-full border border-emerald-300/30 bg-[#386b34]/30 px-4 py-1.5 text-xs font-bold uppercase tracking-wider text-emerald-200 backdrop-blur">
-            <Zap className="h-3.5 w-3.5 text-emerald-300 fill-emerald-300" /> {t.heroTag}
+          <span className="inline-flex items-center gap-1.5 sm:gap-2 rounded-full border border-emerald-300/30 bg-[#386b34]/30 px-3 py-1 sm:px-4 sm:py-1.5 text-[10px] sm:text-xs font-bold uppercase tracking-wider text-emerald-200 backdrop-blur">
+            <Zap className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-emerald-300 fill-emerald-300" /> {t.heroTag}
           </span>
-          <h1 className="mt-6 text-3xl font-black leading-[1.1] tracking-tight sm:text-5xl md:text-6xl lg:text-7xl">
+          <h1 className="mt-4 sm:mt-6 text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black leading-[1.15] tracking-tight">
             {t.heroTitle1}<span className="text-emerald-300">{t.heroTitle2}</span>{t.heroTitle3}
           </h1>
-          <p className="mt-6 max-w-xl text-base leading-relaxed text-emerald-100/90 sm:text-lg">
+          <p className="mt-4 sm:mt-6 max-w-xl text-xs sm:text-base md:text-lg leading-relaxed text-emerald-100/90">
             {t.heroDesc}
           </p>
 
-          <div className="mt-6 flex flex-wrap items-center gap-3 rounded-2xl border border-white/15 bg-white/10 p-3 backdrop-blur text-xs text-slate-200">
+          <div className="mt-5 sm:mt-6 flex flex-wrap items-center gap-2 sm:gap-3 rounded-2xl border border-white/15 bg-white/10 p-2.5 sm:p-3 backdrop-blur text-[11px] sm:text-xs text-slate-200">
             <span className="font-bold text-emerald-300">{lang === "fr" ? "Paiement flexible :" : "Flexible payment:"}</span>
-            <div className="flex items-center gap-2">
-              <span className="flex items-center gap-1.5 rounded-xl bg-white px-3 py-1.5 text-slate-900 font-extrabold shadow-sm">
-                <img src={momoLogo} alt="MTN MoMo" className="h-4 w-auto object-contain shrink-0" decoding="async" />
+            <div className="flex items-center gap-1.5 sm:gap-2">
+              <span className="flex items-center gap-1 sm:gap-1.5 rounded-xl bg-white px-2.5 py-1 text-slate-900 font-extrabold shadow-sm text-[10px] sm:text-xs">
+                <img src={momoLogo} alt="MTN MoMo" className="h-3.5 sm:h-4 w-auto object-contain shrink-0" decoding="async" />
                 <span>MTN MoMo</span>
               </span>
-              <span className="flex items-center gap-1.5 rounded-xl bg-white px-3 py-1.5 text-slate-900 font-extrabold shadow-sm">
-                <img src={orangeMoneyLogo} alt="Orange Money" className="h-4 w-auto object-contain shrink-0" decoding="async" />
+              <span className="flex items-center gap-1 sm:gap-1.5 rounded-xl bg-white px-2.5 py-1 text-slate-900 font-extrabold shadow-sm text-[10px] sm:text-xs">
+                <img src={orangeMoneyLogo} alt="Orange Money" className="h-3.5 sm:h-4 w-auto object-contain shrink-0" decoding="async" />
               </span>
             </div>
-            <span className="rounded-xl bg-[#386b34]/60 border border-emerald-400/30 px-2.5 py-1 text-emerald-100 font-semibold">{lang === "fr" ? "Traites échelonnées" : "Installments"}</span>
+            <span className="rounded-xl bg-[#386b34]/60 border border-emerald-400/30 px-2 py-0.5 sm:px-2.5 sm:py-1 text-emerald-100 font-semibold text-[10px] sm:text-xs">{lang === "fr" ? "Traites échelonnées" : "Installments"}</span>
           </div>
 
-          <div className="mt-8 flex flex-wrap gap-3">
-            <a href="#calculateur" className="inline-flex items-center gap-2 rounded-full bg-[#386b34] px-6 py-3.5 text-sm font-bold text-white shadow-xl shadow-[#386b34]/30 transition-all hover:scale-105 hover:bg-[#4a8344]">
+          <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row gap-3">
+            <a href="#calculateur" className="inline-flex items-center justify-center gap-2 rounded-full bg-[#386b34] px-5 py-3 text-xs sm:text-sm font-bold text-white shadow-xl shadow-[#386b34]/30 transition-all hover:bg-[#4a8344]">
               <Zap className="h-4 w-4 fill-white" /> {t.heroSimulateBtn}
             </a>
-            <a href={`tel:${PHONE}`} className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-6 py-3.5 text-sm font-semibold text-white backdrop-blur transition-colors hover:bg-white/20">
+            <a href={`tel:${PHONE}`} className="inline-flex items-center justify-center gap-2 rounded-full border border-white/20 bg-white/10 px-5 py-3 text-xs sm:text-sm font-semibold text-white backdrop-blur transition-colors hover:bg-white/20">
               <Phone className="h-4 w-4" /> {t.heroExpertBtn}
             </a>
           </div>
-          <div className="mt-10 flex flex-wrap items-center gap-6 text-sm text-emerald-100/90">
-            <div className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-emerald-300" /> {t.heroStat1}</div>
-            <div className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-emerald-300" /> {t.heroStat2}</div>
-            <div className="flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-emerald-300" /> {t.heroStat3}</div>
+          <div className="mt-8 sm:mt-10 flex flex-wrap items-center gap-4 sm:gap-6 text-xs sm:text-sm text-emerald-100/90">
+            <div className="flex items-center gap-1.5 sm:gap-2"><CheckCircle2 className="h-4 w-4 text-emerald-300 shrink-0" /> {t.heroStat1}</div>
+            <div className="flex items-center gap-1.5 sm:gap-2"><CheckCircle2 className="h-4 w-4 text-emerald-300 shrink-0" /> {t.heroStat2}</div>
+            <div className="flex items-center gap-1.5 sm:gap-2"><CheckCircle2 className="h-4 w-4 text-emerald-300 shrink-0" /> {t.heroStat3}</div>
           </div>
         </div>
         <div className="hidden lg:block">
@@ -538,28 +671,28 @@ function Hero({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
 /* ---------------- PARTENAIRES ---------------- */
 function Partners({ t }: { t: typeof TRANSLATIONS["fr"] }) {
   return (
-    <section id="partenaires" className="border-y border-emerald-900/10 bg-card py-12 sm:py-16">
+    <section id="partenaires" className="border-y border-emerald-900/10 bg-card py-10 sm:py-16">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="text-center max-w-2xl mx-auto mb-10">
-          <span className="text-xs font-bold uppercase tracking-widest text-[#386b34] dark:text-emerald-400 flex items-center justify-center gap-1.5">
-            <Handshake className="h-4 w-4" /> {t.partnersEyebrow}
+        <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-10">
+          <span className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-[#386b34] dark:text-emerald-400 flex items-center justify-center gap-1.5">
+            <Handshake className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> {t.partnersEyebrow}
           </span>
-          <h2 className="mt-2 text-2xl font-black text-foreground sm:text-3xl">{t.partnersTitle}</h2>
+          <h2 className="mt-2 text-xl sm:text-3xl font-black text-foreground">{t.partnersTitle}</h2>
           <p className="mt-2 text-xs sm:text-sm text-muted-foreground">{t.partnersDesc}</p>
         </div>
 
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
           {PARTNERS_DATA.map((partner) => (
             <div 
               key={partner.name} 
-              className="group flex flex-col items-center justify-center rounded-2xl border border-border bg-white p-5 text-center shadow-sm transition-all hover:border-[#386b34]/50 hover:shadow-md dark:bg-slate-900/80"
+              className="group flex flex-col items-center justify-center rounded-2xl border border-border bg-white p-3.5 sm:p-5 text-center shadow-sm transition-all hover:border-[#386b34]/50 hover:shadow-md dark:bg-slate-900/80"
             >
-              <div className="flex h-16 w-full items-center justify-center p-2 rounded-xl bg-white">
+              <div className="flex h-12 sm:h-16 w-full items-center justify-center p-1 sm:p-2 rounded-xl bg-white">
                 <img src={partner.logo} alt={`Logo ${partner.name}`} loading="lazy" decoding="async" className="max-h-full max-w-full object-contain transition-transform group-hover:scale-105" />
               </div>
-              <h3 className="mt-3 text-sm font-extrabold text-foreground">{partner.name}</h3>
-              <p className="mt-1 text-[11px] text-muted-foreground leading-tight">{partner.desc}</p>
-              <span className="mt-3 inline-block rounded-full bg-[#386b34]/10 px-2.5 py-0.5 text-[9px] font-bold text-[#386b34] dark:text-emerald-400">
+              <h3 className="mt-2 sm:mt-3 text-xs sm:text-sm font-extrabold text-foreground">{partner.name}</h3>
+              <p className="mt-0.5 sm:mt-1 text-[10px] sm:text-[11px] text-muted-foreground leading-tight">{partner.desc}</p>
+              <span className="mt-2 sm:mt-3 inline-block rounded-full bg-[#386b34]/10 px-2 py-0.5 text-[8px] sm:text-[9px] font-bold text-[#386b34] dark:text-emerald-400">
                 {partner.badge}
               </span>
             </div>
@@ -580,19 +713,21 @@ function Services({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
   ];
 
   return (
-    <section id="services" className="bg-slate-100/70 dark:bg-slate-900/50 py-16 sm:py-28">
+    <section id="services" className="bg-slate-100/70 dark:bg-slate-900/50 py-12 sm:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <SectionHeader eyebrow={t.servicesEyebrow} title={t.servicesTitle} description={t.servicesDesc} />
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-8 sm:mt-12 grid gap-4 sm:gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {SERVICES.map((s) => (
-            <div key={s.title} className="group rounded-2xl border border-border bg-card p-6 shadow-sm transition-all hover:border-[#386b34]/40">
-              <div className="grid h-12 w-12 place-items-center rounded-xl bg-[#386b34]/10 text-[#386b34] transition-colors group-hover:bg-[#386b34] group-hover:text-white">
-                <s.icon className="h-6 w-6" />
+            <div key={s.title} className="group rounded-2xl border border-border bg-card p-5 sm:p-6 shadow-sm transition-all hover:border-[#386b34]/40 flex flex-col justify-between">
+              <div>
+                <div className="grid h-10 w-10 sm:h-12 sm:w-12 place-items-center rounded-xl bg-[#386b34]/10 text-[#386b34] transition-colors group-hover:bg-[#386b34] group-hover:text-white">
+                  <s.icon className="h-5 w-5 sm:h-6 sm:w-6" />
+                </div>
+                <h3 className="mt-4 sm:mt-5 text-base sm:text-lg font-bold text-foreground">{s.title}</h3>
+                <p className="mt-2 text-xs sm:text-sm leading-relaxed text-muted-foreground">{s.desc}</p>
               </div>
-              <h3 className="mt-5 text-lg font-bold text-foreground">{s.title}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{s.desc}</p>
               <a href={waLink(lang === "fr" ? `Bonjour EDSOLAR, je suis intéressé par: ${s.title}` : `Hello EDSOLAR, I am interested in: ${s.title}`)} target="_blank" rel="noreferrer"
-                 className="mt-4 inline-flex items-center gap-1 text-sm font-bold text-[#386b34] hover:gap-2 transition-all">
+                 className="mt-4 inline-flex items-center gap-1 text-xs sm:text-sm font-bold text-[#386b34] hover:gap-2 transition-all">
                 {t.learnMore} <ArrowRight className="h-4 w-4" />
               </a>
             </div>
@@ -603,7 +738,7 @@ function Services({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
   );
 }
 
-/* ---------------- Kits (Avec Lightbox Modal Zoom) ---------------- */
+/* ---------------- Kits ---------------- */
 const DEFAULT_KITS = [
   { id: "d1", slug: "prestige", title: "Kit Prestige", subtitle: "CONFORT HAUT DE GAMME POUR VILLAS ET GRANDES RÉSIDENCES", description: "Le Kit Prestige 1500W (1.5 kVA) est la solution idéale pour les foyers souhaitant bénéficier d'une alimentation électrique fiable, écologique et sans coupures.", price: "500 000 FCFA", image_url: null as string | null, features: ["2 panneaux solaires de 200 Wc", "1 onduleur EDSOLAR 1500W (1.5 kVA)", "1 batterie Lithium 12V 100Ah", "1 contrôleur de charge MPPT 20A", "08 ampoules LED offertes", "Installation et mise en service gratuites"] },
   { id: "d2", slug: "congelateur", title: "Kit Congélateur", subtitle: "SOLUTION DÉDIÉE AUX COMMERCES ET POISSONNERIES", description: "Kit spécifiquement dimensionné pour maintenir un ou plusieurs congélateurs en fonctionnement continu, idéal pour boutiques, poissonneries et restaurants.", price: "1 700 000 FCFA", image_url: null, features: ["Onduleur 2 kVA / 24V", "Batterie lithium 25.6V 200Ah", "4 panneaux 450W", "Autonomie 12h", "Protection surtension"] },
@@ -620,10 +755,10 @@ function Kits({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
   }, []);
 
   return (
-    <section id="kits" className="py-16 sm:py-28">
+    <section id="kits" className="py-12 sm:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <SectionHeader eyebrow={t.navKits} title={lang === "fr" ? "Des solutions solaires prêtes à l'emploi" : "Ready-to-use solar solutions"} description={t.servicesDesc} />
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 md:grid-cols-3">
+        <div className="mt-8 sm:mt-12 grid gap-6 sm:grid-cols-2 md:grid-cols-3">
           {items.map((k) => {
             const kitImgSrc = k.image_url ? (k.image_url.startsWith("http") ? k.image_url : `/assets/${k.image_url}`) : null;
             return (
@@ -656,22 +791,22 @@ function Kits({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
                     <Package className="h-16 w-16 text-slate-400" />
                   </div>
                   {k.price && (
-                    <span className="absolute right-3 top-3 rounded-full bg-slate-900 px-3 py-1 text-xs font-bold text-white shadow z-10">
+                    <span className="absolute right-3 top-3 rounded-full bg-slate-900 px-3 py-1 text-[11px] sm:text-xs font-bold text-white shadow z-10">
                       {k.price}
                     </span>
                   )}
                 </div>
-                <div className="flex flex-1 flex-col p-6">
-                  <p className="text-xs font-bold uppercase tracking-widest text-[#386b34]">{translateDynamicText(k.subtitle, lang)}</p>
-                  <h3 className="mt-1 text-xl font-black">{translateDynamicText(k.title, lang)}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{translateDynamicText(k.description, lang)}</p>
-                  <ul className="mt-4 space-y-2 text-sm">
+                <div className="flex flex-1 flex-col p-5 sm:p-6">
+                  <p className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-[#386b34]">{translateDynamicText(k.subtitle, lang)}</p>
+                  <h3 className="mt-1 text-lg sm:text-xl font-black">{translateDynamicText(k.title, lang)}</h3>
+                  <p className="mt-2 text-xs sm:text-sm leading-relaxed text-muted-foreground">{translateDynamicText(k.description, lang)}</p>
+                  <ul className="mt-4 space-y-1.5 sm:space-y-2 text-xs sm:text-sm">
                     {(k.features ?? []).map((f: string) => (
-                      <li key={f} className="flex items-start gap-2"><CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-[#386b34]" /> {translateDynamicText(f, lang)}</li>
+                      <li key={f} className="flex items-start gap-2"><CheckCircle2 className="mt-0.5 h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0 text-[#386b34]" /> {translateDynamicText(f, lang)}</li>
                     ))}
                   </ul>
                   <a href={waLink(lang === "fr" ? `Bonjour EDSOLAR, je suis intéressé par le ${k.title} (${k.price ?? ""}).` : `Hello EDSOLAR, I am interested in the ${k.title} (${k.price ?? ""}).`)} target="_blank" rel="noreferrer"
-                     className="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-[#386b34] px-5 py-3 text-sm font-bold text-white transition-all hover:bg-[#2e582b] shadow-md">
+                     className="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-[#386b34] px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-bold text-white transition-all hover:bg-[#2e582b] shadow-md">
                     <MessageCircle className="h-4 w-4 fill-white" /> {lang === "fr" ? "Demander ce kit" : "Request this kit"}
                   </a>
                 </div>
@@ -684,31 +819,31 @@ function Kits({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
       {/* LIGHTBOX MODAL - ZOOM SUR UN KIT */}
       {selectedKit && (
         <div 
-          className="fixed inset-0 z-50 grid place-items-center bg-slate-950/90 p-4 backdrop-blur-md transition-all"
+          className="fixed inset-0 z-50 grid place-items-center bg-slate-950/90 p-3 sm:p-4 backdrop-blur-md transition-all"
           onClick={() => setSelectedKit(null)}
         >
           <div 
-            className="relative flex max-h-[90vh] max-w-4xl flex-col items-center justify-center overflow-hidden rounded-3xl bg-slate-900 border border-emerald-900/40 shadow-2xl p-4 w-full"
+            className="relative flex max-h-[85vh] max-w-4xl flex-col items-center justify-center overflow-hidden rounded-3xl bg-slate-900 border border-emerald-900/40 shadow-2xl p-3 sm:p-4 w-full"
             onClick={(e) => e.stopPropagation()}
           >
             <button 
               onClick={() => setSelectedKit(null)}
-              className="absolute right-4 top-4 z-10 grid h-10 w-10 place-items-center rounded-full bg-slate-950/80 text-white hover:bg-[#386b34] transition-colors"
+              className="absolute right-3 top-3 z-10 grid h-8 w-8 sm:h-10 sm:w-10 place-items-center rounded-full bg-slate-950/80 text-white hover:bg-[#386b34] transition-colors"
               aria-label="Fermer"
             >
-              <X className="h-5 w-5" />
+              <X className="h-4 w-4 sm:h-5 sm:w-5" />
             </button>
             
             <img 
               src={selectedKit.image_url.startsWith("http") ? selectedKit.image_url : `/assets/${selectedKit.image_url}`} 
               alt={selectedKit.title} 
-              className="max-h-[60vh] w-auto max-w-full rounded-2xl object-contain"
+              className="max-h-[55vh] w-auto max-w-full rounded-2xl object-contain"
             />
             
-            <div className="mt-4 w-full text-center px-4">
-              <p className="text-xs font-bold uppercase tracking-widest text-emerald-400">{translateDynamicText(selectedKit.subtitle, lang)}</p>
-              <p className="text-lg sm:text-2xl font-black text-white mt-1">{translateDynamicText(selectedKit.title, lang)}</p>
-              {selectedKit.price && <p className="text-base sm:text-lg font-extrabold text-[#386b34] dark:text-emerald-400 mt-1">{selectedKit.price}</p>}
+            <div className="mt-3 w-full text-center px-2 sm:px-4">
+              <p className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-emerald-400">{translateDynamicText(selectedKit.subtitle, lang)}</p>
+              <p className="text-base sm:text-2xl font-black text-white mt-0.5">{translateDynamicText(selectedKit.title, lang)}</p>
+              {selectedKit.price && <p className="text-sm sm:text-lg font-extrabold text-[#386b34] dark:text-emerald-400 mt-0.5">{selectedKit.price}</p>}
             </div>
           </div>
         </div>
@@ -783,40 +918,40 @@ function Calculator({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
     : `Hello EDSOLAR,%0AHere is my solar estimation:%0A- Peak Power: ${peakW} W%0A- Daily Consumption: ${dailyWh.toFixed(0)} Wh%0A- Recommended System: ${systemKva} kVA ${systemVoltage}V%0A- Lithium Batteries: ${batteryCount} x ${systemVoltage}V ${batteryUnitAh}Ah%0A- Solar Panels: ${panelsCount} x 450W%0A- Estimated Budget: ${priceLabel}`;
 
   return (
-    <section id="calculateur" className="py-16 sm:py-28">
+    <section id="calculateur" className="py-12 sm:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <SectionHeader eyebrow={t.simEyebrow} title={t.simTitle} description={t.simDesc} />
-        <div className="mt-12 grid gap-8 lg:grid-cols-[1.4fr_1fr]">
-          <div className="rounded-3xl border border-border bg-card p-5 sm:p-8 shadow-sm">
-            <div className="grid gap-3 sm:grid-cols-2">
+        <div className="mt-8 sm:mt-12 grid gap-6 lg:grid-cols-[1.4fr_1fr]">
+          <div className="rounded-3xl border border-border bg-card p-4 sm:p-8 shadow-sm">
+            <div className="grid gap-2.5 sm:gap-3 sm:grid-cols-2">
               {APPLIANCES.map((a) => {
                 const n = qty[a.id] ?? 0;
                 const active = n > 0;
                 return (
-                  <div key={a.id} className={`flex items-center justify-between gap-3 rounded-2xl border p-3.5 transition-all ${active ? "border-[#386b34]/50 bg-[#386b34]/5" : "border-border bg-background"}`}>
-                    <div className="flex min-w-0 items-center gap-3">
-                      <div className={`grid h-10 w-10 shrink-0 place-items-center rounded-xl ${active ? "bg-[#386b34] text-white" : "bg-slate-200 dark:bg-slate-800 text-foreground"}`}>
-                        <a.icon className="h-5 w-5" />
+                  <div key={a.id} className={`flex items-center justify-between gap-2.5 rounded-2xl border p-2.5 sm:p-3.5 transition-all ${active ? "border-[#386b34]/50 bg-[#386b34]/5" : "border-border bg-background"}`}>
+                    <div className="flex min-w-0 items-center gap-2.5">
+                      <div className={`grid h-8 w-8 sm:h-10 sm:w-10 shrink-0 place-items-center rounded-xl ${active ? "bg-[#386b34] text-white" : "bg-slate-200 dark:bg-slate-800 text-foreground"}`}>
+                        <a.icon className="h-4 w-4 sm:h-5 sm:w-5" />
                       </div>
                       <div className="min-w-0">
-                        <p className="truncate text-sm font-semibold">{lang === "fr" ? a.name : a.nameEn}</p>
-                        <p className="text-xs text-muted-foreground">{a.watts} W · {a.hours}h/{lang === "fr" ? "jour" : "day"}</p>
+                        <p className="truncate text-xs sm:text-sm font-semibold">{lang === "fr" ? a.name : a.nameEn}</p>
+                        <p className="text-[10px] sm:text-xs text-muted-foreground">{a.watts} W · {a.hours}h/{lang === "fr" ? "j" : "d"}</p>
                       </div>
                     </div>
-                    <div className="flex items-center gap-1.5 shrink-0">
-                      <button onClick={() => set(a.id, n - 1)} className="grid h-8 w-8 place-items-center rounded-full border border-border text-lg font-bold hover:bg-secondary" aria-label="moins">−</button>
-                      <span className="w-5 text-center text-sm font-bold tabular-nums">{n}</span>
-                      <button onClick={() => set(a.id, n + 1)} className="grid h-8 w-8 place-items-center rounded-full bg-slate-900 text-lg font-bold text-white hover:bg-slate-800 dark:bg-slate-100 dark:text-slate-900" aria-label="plus">+</button>
+                    <div className="flex items-center gap-1 shrink-0">
+                      <button onClick={() => set(a.id, n - 1)} className="grid h-7 w-7 sm:h-8 sm:w-8 place-items-center rounded-full border border-border text-base sm:text-lg font-bold hover:bg-secondary" aria-label="moins">−</button>
+                      <span className="w-4 sm:w-5 text-center text-xs sm:text-sm font-bold tabular-nums">{n}</span>
+                      <button onClick={() => set(a.id, n + 1)} className="grid h-7 w-7 sm:h-8 sm:w-8 place-items-center rounded-full bg-slate-900 text-base sm:text-lg font-bold text-white hover:bg-slate-800 dark:bg-slate-100 dark:text-slate-900" aria-label="plus">+</button>
                     </div>
                   </div>
                 );
               })}
             </div>
           </div>
-          <div className="rounded-3xl border border-emerald-900/40 bg-[#234d20] p-6 text-white shadow-2xl sm:p-8">
-            <p className="text-xs font-bold uppercase tracking-widest text-emerald-300">{t.simEyebrow}</p>
-            <h3 className="mt-2 text-2xl font-black">{t.simResultTitle}</h3>
-            <div className="mt-6 space-y-3.5">
+          <div className="rounded-3xl border border-emerald-900/40 bg-[#234d20] p-5 sm:p-8 text-white shadow-2xl">
+            <p className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-emerald-300">{t.simEyebrow}</p>
+            <h3 className="mt-1 sm:mt-2 text-xl sm:text-2xl font-black">{t.simResultTitle}</h3>
+            <div className="mt-4 sm:mt-6 space-y-2.5 sm:space-y-3.5">
               <Metric icon={Zap} label={t.simPeakPower} value={`${peakW.toLocaleString()} W`} />
               <Metric icon={Sun} label={t.simDailyCons} value={`${dailyWh.toLocaleString(undefined, { maximumFractionDigits: 0 })} Wh`} />
               <Metric icon={Cpu} label={t.simRecSystem} value={`${systemKva} kVA ${systemVoltage}V`} highlight />
@@ -825,10 +960,10 @@ function Calculator({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
               <Metric icon={Zap} label={t.simBudget} value={priceLabel} highlight />
             </div>
             <a href={`${WA}?text=${msg}`} target="_blank" rel="noreferrer"
-               className="mt-6 flex items-center justify-center gap-2 rounded-full bg-[#386b34] px-5 py-3.5 text-sm font-bold text-white shadow-lg transition-all hover:scale-105 hover:bg-[#2e582b]">
+               className="mt-5 sm:mt-6 flex items-center justify-center gap-2 rounded-full bg-[#386b34] px-4 py-3 text-xs sm:text-sm font-bold text-white shadow-lg transition-all hover:bg-[#2e582b]">
               <MessageCircle className="h-4 w-4 fill-white" /> {t.simSendWA}
             </a>
-            <p className="mt-3 text-center text-xs text-emerald-100/70">{t.simNote}</p>
+            <p className="mt-2.5 text-center text-[10px] sm:text-xs text-emerald-100/70">{t.simNote}</p>
           </div>
         </div>
       </div>
@@ -838,12 +973,12 @@ function Calculator({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
 
 function Metric({ icon: Icon, label, value, highlight }: { icon: any; label: string; value: string; highlight?: boolean }) {
   return (
-    <div className={`flex items-center justify-between rounded-2xl border ${highlight ? "bg-[#386b34]/30 border-emerald-400/40 text-emerald-200" : "bg-[#1a3818]/70 border-emerald-900/40"} px-4 py-3`}>
-      <div className="flex items-center gap-2.5">
-        <Icon className={`h-4 w-4 ${highlight ? "text-emerald-300" : "text-emerald-200/70"}`} />
-        <span className="text-xs sm:text-sm text-emerald-100/90">{label}</span>
+    <div className={`flex items-center justify-between rounded-2xl border ${highlight ? "bg-[#386b34]/30 border-emerald-400/40 text-emerald-200" : "bg-[#1a3818]/70 border-emerald-900/40"} px-3 py-2 sm:px-4 sm:py-3`}>
+      <div className="flex items-center gap-2">
+        <Icon className={`h-3.5 w-3.5 sm:h-4 sm:w-4 ${highlight ? "text-emerald-300" : "text-emerald-200/70"}`} />
+        <span className="text-[11px] sm:text-sm text-emerald-100/90">{label}</span>
       </div>
-      <span className="text-base sm:text-lg font-black tabular-nums">{value}</span>
+      <span className="text-sm sm:text-lg font-black tabular-nums">{value}</span>
     </div>
   );
 }
@@ -861,7 +996,6 @@ function parseProductVariants(
   const rawString = priceRaw.trim();
   if (!rawString) return [];
 
-  // 1. Découpage pour paires explicites "100AH = 580 000 FCFA - 200AH = 880 000 FCFA"
   if (rawString.includes("=") || rawString.includes(":")) {
     const delim = rawString.includes("\n") ? "\n" : (rawString.includes("-") ? "-" : ",");
     const parts = rawString.split(delim).map((s) => s.trim()).filter(Boolean);
@@ -881,7 +1015,6 @@ function parseProductVariants(
     if (explicitVariants.length > 0) return explicitVariants;
   }
 
-  // 2. Découpage standard par tiret "-" (ex: "580,000 FCFA- 880,000FCFA-1350,000FCFA")
   const priceParts = rawString.split("-").map((s) => s.trim()).filter(Boolean);
   if (priceParts.length === 0) return [];
 
@@ -894,7 +1027,6 @@ function parseProductVariants(
     return [{ label: "Base", priceDisplay: formattedPrices[0] }];
   }
 
-  // 3. Extraction intelligente des capacités (ex: 100AH, 200AH, 300AH) dans le nom/badge/description
   const combinedText = `${name} ${badge || ""} ${description || ""}`;
   const matches = combinedText.match(/\b\d+(?:\.\d+)?\s*(?:AH|Ah|KVA|kVA|KWH|kWh|W|kW)\b/g);
   let uniqueLabels: string[] = [];
@@ -918,7 +1050,7 @@ function parseProductVariants(
   });
 }
 
-/* ---------------- Products / Boutique (Avec Variantes de Prix & Lightbox) ---------------- */
+/* ---------------- Products / Boutique ---------------- */
 type Product = {
   id: string; name: string; category: string; price: string | null; badge: string | null;
   description: string | null; image_url: string | null;
@@ -956,7 +1088,7 @@ function ProductCard({ p, lang, t, onSelectImage }: { p: Product; lang: Lang; t:
   const prodImgSrc = p.image_url ? (p.image_url.startsWith("http") ? p.image_url : `/assets/${p.image_url}`) : null;
 
   return (
-    <div className="flex flex-col justify-between rounded-2xl border border-border bg-card p-5 shadow-sm transition-transform hover:-translate-y-1">
+    <div className="flex flex-col justify-between rounded-2xl border border-border bg-card p-4 sm:p-5 shadow-sm transition-transform hover:-translate-y-1">
       <div>
         <div 
           onClick={() => prodImgSrc && onSelectImage(p)}
@@ -969,46 +1101,46 @@ function ProductCard({ p, lang, t, onSelectImage }: { p: Product; lang: Lang; t:
                 alt={p.name} 
                 loading="lazy" 
                 decoding="async" 
-                className="h-full w-full object-contain p-3 transition-transform duration-500 group-hover:scale-105"
+                className="h-full w-full object-contain p-2 sm:p-3 transition-transform duration-500 group-hover:scale-105"
                 onError={(e) => {
                   (e.target as HTMLElement).style.display = 'none';
                   (e.target as HTMLElement).nextElementSibling?.classList.remove('hidden');
                 }}
               />
               <div className="absolute inset-0 bg-slate-950/20 opacity-0 transition-opacity group-hover:opacity-100 flex items-center justify-center">
-                <div className="grid h-10 w-10 place-items-center rounded-full bg-[#386b34] text-white shadow-xl">
-                  <ZoomIn className="h-5 w-5" />
+                <div className="grid h-9 w-9 sm:h-10 sm:w-10 place-items-center rounded-full bg-[#386b34] text-white shadow-xl">
+                  <ZoomIn className="h-4 w-4 sm:h-5 sm:w-5" />
                 </div>
               </div>
             </>
           ) : null}
           <div className={`grid h-full w-full place-items-center ${prodImgSrc ? 'hidden' : ''}`}>
-            <ShoppingBag className="h-16 w-16 text-slate-400" />
+            <ShoppingBag className="h-12 w-12 sm:h-16 sm:w-16 text-slate-400" />
           </div>
-          {p.badge && <span className="absolute left-3 top-3 rounded-full bg-[#386b34] px-2.5 py-1 text-[10px] font-bold uppercase text-white z-10">{translateDynamicText(p.badge, lang)}</span>}
+          {p.badge && <span className="absolute left-2.5 top-2.5 sm:left-3 sm:top-3 rounded-full bg-[#386b34] px-2 py-0.5 sm:px-2.5 sm:py-1 text-[9px] sm:text-[10px] font-bold uppercase text-white z-10 max-w-[85%] truncate">{translateDynamicText(p.badge, lang)}</span>}
         </div>
 
-        <h3 className="mt-4 text-base font-bold">{p.name}</h3>
-        {p.description && <p className="mt-1 text-xs text-muted-foreground">{translateDynamicText(p.description, lang)}</p>}
+        <h3 className="mt-3 sm:mt-4 text-sm sm:text-base font-bold line-clamp-2">{p.name}</h3>
+        {p.description && <p className="mt-1 text-[11px] sm:text-xs text-muted-foreground line-clamp-2">{translateDynamicText(p.description, lang)}</p>}
 
-        <div className="mt-2 flex flex-wrap gap-1.5 text-[10px] font-semibold">
+        <div className="mt-2 flex flex-wrap gap-1 text-[9px] sm:text-[10px] font-semibold">
           <span className="rounded-full bg-slate-100 dark:bg-slate-800 px-2 py-0.5 text-slate-700 dark:text-slate-300">{translateDynamicText(p.category, lang)}</span>
           {p.warranty && <span className="rounded-full bg-[#386b34]/10 px-2 py-0.5 text-[#386b34]">{translateDynamicText(p.warranty, lang)}</span>}
         </div>
 
-        {/* Variantes sous forme de puces interactives (comme sur Photo 2) */}
+        {/* Variantes sous forme de puces interactives */}
         {variants.length > 1 && (
-          <div className="mt-4 pt-3 border-t border-border">
-            <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-2">
+          <div className="mt-3 sm:mt-4 pt-2.5 sm:pt-3 border-t border-border">
+            <p className="text-[9px] sm:text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-1.5 sm:mb-2">
               {lang === "fr" ? "CHOISIR LA CAPACITÉ :" : "SELECT CAPACITY:"}
             </p>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-1.5 sm:gap-2">
               {variants.map((v, idx) => (
                 <button
                   key={idx}
                   type="button"
                   onClick={() => setSelectedIndex(idx)}
-                  className={`rounded-xl px-3 py-1.5 text-xs font-black transition-all ${
+                  className={`rounded-xl px-2.5 py-1 text-[11px] sm:text-xs font-black transition-all ${
                     selectedIndex === idx
                       ? "bg-[#386b34] text-white shadow-md ring-2 ring-[#386b34]/30"
                       : "border border-border bg-background text-foreground hover:bg-secondary"
@@ -1022,15 +1154,15 @@ function ProductCard({ p, lang, t, onSelectImage }: { p: Product; lang: Lang; t:
         )}
       </div>
 
-      <div className="mt-5 pt-3 border-t border-border">
-        <div className="flex items-baseline justify-between gap-2 mb-3">
-          <span className="text-[11px] font-bold uppercase text-muted-foreground">PRIX :</span>
-          <span className="text-xl font-black text-[#386b34] dark:text-emerald-400">{activePrice}</span>
+      <div className="mt-4 sm:mt-5 pt-2.5 sm:pt-3 border-t border-border">
+        <div className="flex items-baseline justify-between gap-1 mb-2.5 sm:mb-3">
+          <span className="text-[10px] sm:text-[11px] font-bold uppercase text-muted-foreground">PRIX :</span>
+          <span className="text-base sm:text-xl font-black text-[#386b34] dark:text-emerald-400 break-all">{activePrice}</span>
         </div>
 
         <a href={waLink(buildOrderMsg())} target="_blank" rel="noreferrer"
-           className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#386b34] px-4 py-2.5 text-sm font-bold text-white shadow transition-all hover:bg-[#2e582b] hover:scale-[1.02]">
-          <MessageCircle className="h-4 w-4" /> {t.shopOrderWA}
+           className="inline-flex w-full items-center justify-center gap-1.5 sm:gap-2 rounded-full bg-[#386b34] px-3.5 py-2 sm:px-4 sm:py-2.5 text-xs sm:text-sm font-bold text-white shadow transition-all hover:bg-[#2e582b]">
+          <MessageCircle className="h-3.5 w-3.5 sm:h-4 sm:w-4" /> {t.shopOrderWA}
         </a>
       </div>
     </div>
@@ -1077,20 +1209,20 @@ function Products({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
     : "Hello EDSOLAR, I need technical advice to select my solar equipment.";
 
   return (
-    <section id="boutique" className="bg-slate-100/70 dark:bg-slate-900/50 py-16 sm:py-28">
+    <section id="boutique" className="bg-slate-100/70 dark:bg-slate-900/50 py-12 sm:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <SectionHeader eyebrow={t.shopEyebrow} title={t.shopTitle} description={t.shopDesc} />
 
         {/* RECHERCHE & TRI */}
-        <div className="mx-auto mt-8 grid max-w-4xl gap-3 sm:grid-cols-[1fr_auto]">
+        <div className="mx-auto mt-6 sm:mt-8 grid max-w-4xl gap-2.5 sm:gap-3 sm:grid-cols-[1fr_auto]">
           <div className="relative">
-            <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <input value={q} onChange={(e) => setQ(e.target.value)}
               placeholder={t.shopSearchPlaceholder}
-              className="w-full rounded-full border border-border bg-card py-3 pl-11 pr-4 text-sm outline-none focus:border-[#386b34] shadow-sm" />
+              className="w-full rounded-full border border-border bg-card py-2.5 sm:py-3 pl-10 pr-4 text-xs sm:text-sm outline-none focus:border-[#386b34] shadow-sm" />
           </div>
           <select value={sort} onChange={(e) => setSort(e.target.value as SortKey)}
-            className="rounded-full border border-border bg-card px-4 py-3 text-sm font-semibold outline-none focus:border-[#386b34] shadow-sm">
+            className="rounded-full border border-border bg-card px-3 sm:px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-semibold outline-none focus:border-[#386b34] shadow-sm">
             <option value="featured">{t.shopSortFeatured}</option>
             <option value="price_asc">{t.shopSortPriceAsc}</option>
             <option value="price_desc">{t.shopSortPriceDesc}</option>
@@ -1100,58 +1232,58 @@ function Products({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
         </div>
 
         {/* FILTRES CATÉGORIES */}
-        <div className="mt-6 flex flex-wrap justify-center gap-2">
+        <div className="mt-4 sm:mt-6 flex flex-wrap justify-center gap-1.5 sm:gap-2">
           {categories.map((c) => (
             <button key={c} onClick={() => setCat(c)}
-              className={`rounded-full px-5 py-2 text-sm font-semibold transition-all ${cat === c ? "bg-[#386b34] text-white shadow-md" : "border border-border bg-card text-foreground hover:border-[#386b34]"}`}>
+              className={`rounded-full px-3.5 py-1.5 sm:px-5 sm:py-2 text-xs sm:text-sm font-semibold transition-all ${cat === c ? "bg-[#386b34] text-white shadow-md" : "border border-border bg-card text-foreground hover:border-[#386b34]"}`}>
               {c === "Tous" ? (lang === "fr" ? "Tous" : "All") : translateDynamicText(c, lang)}
             </button>
           ))}
         </div>
 
         {/* BANDEAU REASSURANCE */}
-        <div className="mx-auto mt-8 max-w-5xl overflow-hidden rounded-3xl border border-[#386b34]/20 bg-card p-6 shadow-sm">
-          <div className="grid gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
-            <div className="grid gap-4 sm:grid-cols-3">
-              <div className="flex items-center gap-3">
-                <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[#386b34]/10 text-[#386b34]">
-                  <ShieldCheck className="h-5 w-5" />
+        <div className="mx-auto mt-6 sm:mt-8 max-w-5xl overflow-hidden rounded-3xl border border-[#386b34]/20 bg-card p-4 sm:p-6 shadow-sm">
+          <div className="grid gap-4 sm:gap-6 lg:grid-cols-[1fr_auto] lg:items-center">
+            <div className="grid gap-3 sm:grid-cols-3">
+              <div className="flex items-center gap-2.5">
+                <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-[#386b34]/10 text-[#386b34]">
+                  <ShieldCheck className="h-4 w-4 sm:h-5 sm:w-5" />
                 </div>
                 <div>
                   <p className="text-xs font-bold text-foreground">{lang === "fr" ? "Matériel Certifié" : "Certified Equipment"}</p>
-                  <p className="text-[11px] text-muted-foreground">{lang === "fr" ? "Produits Tier 1 garantis" : "Guaranteed Tier-1 products"}</p>
+                  <p className="text-[10px] sm:text-[11px] text-muted-foreground">{lang === "fr" ? "Tier 1 garantis" : "Tier-1 guaranteed"}</p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-3">
-                <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[#386b34]/10 text-[#386b34]">
-                  <Package className="h-5 w-5" />
+              <div className="flex items-center gap-2.5">
+                <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-[#386b34]/10 text-[#386b34]">
+                  <Package className="h-4 w-4 sm:h-5 sm:w-5" />
                 </div>
                 <div>
                   <p className="text-xs font-bold text-foreground">{lang === "fr" ? "Livraison Cameroun" : "Cameroon Shipping"}</p>
-                  <p className="text-[11px] text-muted-foreground">{lang === "fr" ? "Yaoundé & toutes régions" : "Yaoundé & all regions"}</p>
+                  <p className="text-[10px] sm:text-[11px] text-muted-foreground">{lang === "fr" ? "Yaoundé & régions" : "Yaoundé & regions"}</p>
                 </div>
               </div>
 
-              <div className="flex items-center gap-3">
-                <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[#386b34]/10 text-[#386b34]">
-                  <Wrench className="h-5 w-5" />
+              <div className="flex items-center gap-2.5">
+                <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-[#386b34]/10 text-[#386b34]">
+                  <Wrench className="h-4 w-4 sm:h-5 sm:w-5" />
                 </div>
                 <div>
                   <p className="text-xs font-bold text-foreground">{lang === "fr" ? "SAV & Support" : "After-Sales Support"}</p>
-                  <p className="text-[11px] text-muted-foreground">{lang === "fr" ? "Assistance technique 7j/7" : "7/7 Technical assistance"}</p>
+                  <p className="text-[10px] sm:text-[11px] text-muted-foreground">{lang === "fr" ? "Support 7j/7" : "7/7 Support"}</p>
                 </div>
               </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row items-center justify-between lg:justify-end gap-3 pt-4 border-t border-border lg:border-t-0 lg:border-l lg:pt-0 lg:pl-6">
+            <div className="flex flex-col sm:flex-row items-center justify-between lg:justify-end gap-2.5 pt-3 border-t border-border lg:border-t-0 lg:border-l lg:pt-0 lg:pl-6">
               <div className="text-center sm:text-left lg:text-right">
-                <p className="text-xs font-bold text-foreground">{lang === "fr" ? "Besoin d'aide pour choisir ?" : "Need help choosing?"}</p>
-                <p className="text-[11px] text-muted-foreground">{lang === "fr" ? "Parlez à un ingénieur" : "Talk to a solar engineer"}</p>
+                <p className="text-xs font-bold text-foreground">{lang === "fr" ? "Besoin d'aide ?" : "Need help?"}</p>
+                <p className="text-[10px] sm:text-[11px] text-muted-foreground">{lang === "fr" ? "Parlez à un ingénieur" : "Talk to an engineer"}</p>
               </div>
               <a href={waLink(adviceMsg)} target="_blank" rel="noreferrer"
-                 className="inline-flex shrink-0 items-center gap-2 rounded-full bg-[#386b34] px-4 py-2.5 text-xs font-bold text-white shadow-md transition-all hover:scale-105 hover:bg-[#2e582b]">
-                <MessageCircle className="h-4 w-4" />
+                 className="inline-flex shrink-0 items-center gap-1.5 rounded-full bg-[#386b34] px-3.5 py-2 text-xs font-bold text-white shadow-md transition-all hover:bg-[#2e582b]">
+                <MessageCircle className="h-3.5 w-3.5" />
                 <span>{lang === "fr" ? "Conseil WhatsApp" : "WhatsApp Advice"}</span>
               </a>
             </div>
@@ -1159,42 +1291,42 @@ function Products({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
         </div>
 
         {/* GRILLE DE PRODUITS */}
-        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-8 sm:mt-10 grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
           {list.map((p) => (
             <ProductCard key={p.id} p={p} lang={lang} t={t} onSelectImage={setSelectedProduct} />
           ))}
-          {list.length === 0 && <p className="col-span-full text-center text-sm text-muted-foreground">{t.shopNoProduct}</p>}
+          {list.length === 0 && <p className="col-span-full text-center text-xs sm:text-sm text-muted-foreground">{t.shopNoProduct}</p>}
         </div>
       </div>
 
       {/* LIGHTBOX MODAL - ZOOM SUR UN PRODUIT */}
       {selectedProduct && (
         <div 
-          className="fixed inset-0 z-50 grid place-items-center bg-slate-950/90 p-4 backdrop-blur-md transition-all"
+          className="fixed inset-0 z-50 grid place-items-center bg-slate-950/90 p-3 sm:p-4 backdrop-blur-md transition-all"
           onClick={() => setSelectedProduct(null)}
         >
           <div 
-            className="relative flex max-h-[90vh] max-w-4xl flex-col items-center justify-center overflow-hidden rounded-3xl bg-slate-900 border border-emerald-900/40 shadow-2xl p-4 w-full"
+            className="relative flex max-h-[85vh] max-w-4xl flex-col items-center justify-center overflow-hidden rounded-3xl bg-slate-900 border border-emerald-900/40 shadow-2xl p-3 sm:p-4 w-full"
             onClick={(e) => e.stopPropagation()}
           >
             <button 
               onClick={() => setSelectedProduct(null)}
-              className="absolute right-4 top-4 z-10 grid h-10 w-10 place-items-center rounded-full bg-slate-950/80 text-white hover:bg-[#386b34] transition-colors"
+              className="absolute right-3 top-3 z-10 grid h-8 w-8 sm:h-10 sm:w-10 place-items-center rounded-full bg-slate-950/80 text-white hover:bg-[#386b34] transition-colors"
               aria-label="Fermer"
             >
-              <X className="h-5 w-5" />
+              <X className="h-4 w-4 sm:h-5 sm:w-5" />
             </button>
             
             <img 
               src={selectedProduct.image_url?.startsWith("http") ? selectedProduct.image_url : `/assets/${selectedProduct.image_url}`} 
               alt={selectedProduct.name} 
-              className="max-h-[60vh] w-auto max-w-full rounded-2xl object-contain bg-white p-4"
+              className="max-h-[55vh] w-auto max-w-full rounded-2xl object-contain bg-white p-3 sm:p-4"
             />
             
-            <div className="mt-4 w-full text-center px-4">
-              <p className="text-lg sm:text-2xl font-black text-white">{selectedProduct.name}</p>
-              {selectedProduct.description && <p className="text-xs sm:text-sm text-emerald-200/80 mt-1 max-w-xl mx-auto">{translateDynamicText(selectedProduct.description, lang)}</p>}
-              {selectedProduct.price && <p className="text-base sm:text-lg font-extrabold text-[#386b34] dark:text-emerald-400 mt-2">{selectedProduct.price}</p>}
+            <div className="mt-3 w-full text-center px-2 sm:px-4">
+              <p className="text-base sm:text-2xl font-black text-white">{selectedProduct.name}</p>
+              {selectedProduct.description && <p className="text-[11px] sm:text-sm text-emerald-200/80 mt-1 max-w-xl mx-auto">{translateDynamicText(selectedProduct.description, lang)}</p>}
+              {selectedProduct.price && <p className="text-sm sm:text-lg font-extrabold text-[#386b34] dark:text-emerald-400 mt-1.5">{selectedProduct.price}</p>}
             </div>
           </div>
         </div>
@@ -1206,7 +1338,7 @@ function Products({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
 /* ---------------- SECTION : ANTI-CONTREFAÇON ---------------- */
 function QualityComparison({ lang }: { lang: Lang }) {
   return (
-    <section id="qualite" className="py-16 sm:py-28">
+    <section id="qualite" className="py-12 sm:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <SectionHeader 
           eyebrow={lang === "fr" ? "Sécurité & Transparence" : "Safety & Transparency"} 
@@ -1214,54 +1346,54 @@ function QualityComparison({ lang }: { lang: Lang }) {
           description={lang === "fr" ? "Évitez les pièges de la contrefaçon. Découvrez ce qui fait la différence pour la sécurité de votre famille." : "Avoid counterfeit traps. See what makes the difference for your family's safety."} 
         />
 
-        <div className="mt-12 grid gap-6 md:grid-cols-2">
+        <div className="mt-8 sm:mt-12 grid gap-6 md:grid-cols-2">
           {/* Mauvaise Qualité */}
-          <div className="rounded-3xl border border-red-500/20 bg-red-500/5 p-6 sm:p-8">
-            <div className="flex items-center gap-3 text-red-600 dark:text-red-400">
-              <AlertTriangle className="h-6 w-6 shrink-0" />
-              <h3 className="text-lg font-bold">{lang === "fr" ? "Matériel Bas de Gamme du Marché" : "Low Quality Market Equipment"}</h3>
+          <div className="rounded-3xl border border-red-500/20 bg-red-500/5 p-5 sm:p-8">
+            <div className="flex items-center gap-2.5 sm:gap-3 text-red-600 dark:text-red-400">
+              <AlertTriangle className="h-5 w-5 sm:h-6 sm:w-6 shrink-0" />
+              <h3 className="text-base sm:text-lg font-bold">{lang === "fr" ? "Matériel Bas de Gamme du Marché" : "Low Quality Market Equipment"}</h3>
             </div>
-            <ul className="mt-6 space-y-3.5 text-sm text-muted-foreground">
-              <li className="flex items-start gap-3">
-                <X className="mt-0.5 h-5 w-5 shrink-0 text-red-500" />
+            <ul className="mt-4 sm:mt-6 space-y-2.5 sm:space-y-3.5 text-xs sm:text-sm text-muted-foreground">
+              <li className="flex items-start gap-2.5">
+                <X className="mt-0.5 h-4 w-4 sm:h-5 sm:w-5 shrink-0 text-red-500" />
                 <span>{lang === "fr" ? "Batteries GEL/Plomb périmées qui lâchent après 12 mois." : "Expired Gel/Lead batteries failing after 12 months."}</span>
               </li>
-              <li className="flex items-start gap-3">
-                <X className="mt-0.5 h-5 w-5 shrink-0 text-red-500" />
+              <li className="flex items-start gap-2.5">
+                <X className="mt-0.5 h-4 w-4 sm:h-5 sm:w-5 shrink-0 text-red-500" />
                 <span>{lang === "fr" ? "Onduleurs sans protection surtension (risque d'incendie)." : "Inverters lacking surge protection (fire risk)."}</span>
               </li>
-              <li className="flex items-start gap-3">
-                <X className="mt-0.5 h-5 w-5 shrink-0 text-red-500" />
+              <li className="flex items-start gap-2.5">
+                <X className="mt-0.5 h-4 w-4 sm:h-5 sm:w-5 shrink-0 text-red-500" />
                 <span>{lang === "fr" ? "Panneaux sous-dimensionnés et garanties fictives." : "Undersized panels and fake warranties."}</span>
               </li>
-              <li className="flex items-start gap-3">
-                <X className="mt-0.5 h-5 w-5 shrink-0 text-red-500" />
+              <li className="flex items-start gap-2.5">
+                <X className="mt-0.5 h-4 w-4 sm:h-5 sm:w-5 shrink-0 text-red-500" />
                 <span>{lang === "fr" ? "Aucun SAV après encaissement de votre argent." : "No after-sales support once paid."}</span>
               </li>
             </ul>
           </div>
 
           {/* Qualité EDSOLAR */}
-          <div className="rounded-3xl border border-[#386b34]/30 bg-[#386b34]/5 p-6 sm:p-8 shadow-md">
-            <div className="flex items-center gap-3 text-[#386b34] dark:text-emerald-400">
-              <ShieldCheck className="h-6 w-6 shrink-0" />
-              <h3 className="text-lg font-bold">{lang === "fr" ? "Engagement & Qualité EDSOLAR" : "EDSOLAR Commitment & Quality"}</h3>
+          <div className="rounded-3xl border border-[#386b34]/30 bg-[#386b34]/5 p-5 sm:p-8 shadow-md">
+            <div className="flex items-center gap-2.5 sm:gap-3 text-[#386b34] dark:text-emerald-400">
+              <ShieldCheck className="h-5 w-5 sm:h-6 sm:w-6 shrink-0" />
+              <h3 className="text-base sm:text-lg font-bold">{lang === "fr" ? "Engagement & Qualité EDSOLAR" : "EDSOLAR Commitment & Quality"}</h3>
             </div>
-            <ul className="mt-6 space-y-3.5 text-sm text-foreground">
-              <li className="flex items-start gap-3">
-                <Check className="mt-0.5 h-5 w-5 shrink-0 text-[#386b34]" />
+            <ul className="mt-4 sm:mt-6 space-y-2.5 sm:space-y-3.5 text-xs sm:text-sm text-foreground">
+              <li className="flex items-start gap-2.5">
+                <Check className="mt-0.5 h-4 w-4 sm:h-5 sm:w-5 shrink-0 text-[#386b34]" />
                 <span><strong>{lang === "fr" ? "Batteries Lithium LiFePO4 :" : "Lithium LiFePO4 Batteries:"}</strong> {lang === "fr" ? "Durée de vie +10 ans, tolérance aux fortes chaleurs." : "+10 year lifespan, heat tolerant."}</span>
               </li>
-              <li className="flex items-start gap-3">
-                <Check className="mt-0.5 h-5 w-5 shrink-0 text-[#386b34]" />
+              <li className="flex items-start gap-2.5">
+                <Check className="mt-0.5 h-4 w-4 sm:h-5 sm:w-5 shrink-0 text-[#386b34]" />
                 <span><strong>{lang === "fr" ? "Onduleurs Hybrides Certifiés :" : "Certified Hybrid Inverters:"}</strong> {lang === "fr" ? "Protections intégrées contre les coupures brutales." : "Built-in protection against brutal outages."}</span>
               </li>
-              <li className="flex items-start gap-3">
-                <Check className="mt-0.5 h-5 w-5 shrink-0 text-[#386b34]" />
+              <li className="flex items-start gap-2.5">
+                <Check className="mt-0.5 h-4 w-4 sm:h-5 sm:w-5 shrink-0 text-[#386b34]" />
                 <span><strong>{lang === "fr" ? "Panneaux Tier 1 :" : "Tier-1 Panels:"}</strong> {lang === "fr" ? "Production optimale même par temps nuageux, garantie 25 ans." : "Optimal yield even on cloudy days, 25yr warranty."}</span>
               </li>
-              <li className="flex items-start gap-3">
-                <Check className="mt-0.5 h-5 w-5 shrink-0 text-[#386b34]" />
+              <li className="flex items-start gap-2.5">
+                <Check className="mt-0.5 h-4 w-4 sm:h-5 sm:w-5 shrink-0 text-[#386b34]" />
                 <span><strong>{lang === "fr" ? "Équipe sur place à Yaoundé :" : "On-site Team in Yaoundé:"}</strong> {lang === "fr" ? "Intervention garantie et suivi personnalisé." : "Guaranteed intervention and personal follow-up."}</span>
               </li>
             </ul>
@@ -1279,74 +1411,74 @@ function DiasporaSection({ lang }: { lang: Lang }) {
     : "Hello EDSOLAR, I live abroad (Diaspora) and want to equip my family home back in Cameroon.";
 
   return (
-    <section id="diaspora" className="bg-[#234d20] py-16 text-white sm:py-28 border-t border-emerald-900/30">
+    <section id="diaspora" className="bg-[#234d20] py-12 text-white sm:py-24 border-t border-emerald-900/30">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="grid gap-10 lg:grid-cols-2 lg:items-center">
+        <div className="grid gap-8 lg:grid-cols-2 lg:items-center">
           <div>
-            <span className="inline-flex items-center gap-2 rounded-full border border-emerald-300/30 bg-emerald-500/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-emerald-300">
+            <span className="inline-flex items-center gap-1.5 sm:gap-2 rounded-full border border-emerald-300/30 bg-emerald-500/10 px-3 py-1 sm:px-4 sm:py-1.5 text-[10px] sm:text-xs font-bold uppercase tracking-widest text-emerald-300">
               <Globe className="h-3.5 w-3.5 text-emerald-300" /> {lang === "fr" ? "Offre Diaspora Camerounaise" : "Cameroonian Diaspora Offer"}
             </span>
-            <h2 className="mt-4 text-2xl font-black sm:text-4xl text-white">
+            <h2 className="mt-3 sm:mt-4 text-xl sm:text-3xl md:text-4xl font-black text-white">
               {lang === "fr" ? "Équipez la maison familiale au pays en toute tranquillité" : "Equip your family home back home with total peace of mind"}
             </h2>
-            <p className="mt-4 text-sm leading-relaxed text-emerald-100/90 sm:text-base">
+            <p className="mt-3 sm:mt-4 text-xs sm:text-base leading-relaxed text-emerald-100/90">
               {lang === "fr"
                 ? "Vous vivez en France, au Canada, aux USA ou en Europe ? Offrez le confort solaire à vos parents et vos proches au Cameroun sans stress. Nous gérons tout de A à Z avec un suivi photos/vidéos en direct."
                 : "Living in France, Canada, USA, or Europe? Provide solar comfort to your family in Cameroon stress-free. We manage everything from A to Z with live photo/video updates."}
             </p>
 
-            <div className="mt-6 space-y-3">
-              <div className="flex items-start gap-3 text-sm text-emerald-100/90">
-                <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-300" />
+            <div className="mt-5 space-y-2.5 sm:space-y-3">
+              <div className="flex items-start gap-2.5 text-xs sm:text-sm text-emerald-100/90">
+                <CheckCircle2 className="mt-0.5 h-4 w-4 sm:h-5 sm:w-5 shrink-0 text-emerald-300" />
                 <span>{lang === "fr" ? "Paiement sécurisé à distance (CB Internationale, Virement, Ria/Western Union)." : "Secure remote payment (International Card, Wire transfer, Ria/Western Union)."}</span>
               </div>
-              <div className="flex items-start gap-3 text-sm text-emerald-100/90">
-                <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-300" />
+              <div className="flex items-start gap-2.5 text-xs sm:text-sm text-emerald-100/90">
+                <CheckCircle2 className="mt-0.5 h-4 w-4 sm:h-5 sm:w-5 shrink-0 text-emerald-300" />
                 <span>{lang === "fr" ? "Compte-rendu vidéo WhatsApp direct à chaque étape du chantier." : "Direct WhatsApp video reports at every stage of the installation."}</span>
               </div>
-              <div className="flex items-start gap-3 text-sm text-emerald-100/90">
-                <CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-emerald-300" />
+              <div className="flex items-start gap-2.5 text-xs sm:text-sm text-emerald-100/90">
+                <CheckCircle2 className="mt-0.5 h-4 w-4 sm:h-5 sm:w-5 shrink-0 text-emerald-300" />
                 <span>{lang === "fr" ? "Visite technique gratuite du logement à Yaoundé, Douala ou en région." : "Free home technical survey in Yaoundé, Douala, or other regions."}</span>
               </div>
             </div>
 
-            <div className="mt-8">
+            <div className="mt-6 sm:mt-8">
               <a href={waLink(diasporaMsg)} target="_blank" rel="noreferrer"
-                 className="inline-flex items-center gap-2 rounded-full bg-[#386b34] px-6 py-3.5 text-sm font-bold text-white transition-transform hover:scale-105 hover:bg-[#2e582b]">
+                 className="inline-flex items-center gap-2 rounded-full bg-[#386b34] px-5 py-3 text-xs sm:text-sm font-bold text-white transition-transform hover:bg-[#2e582b]">
                 <MessageCircle className="h-4 w-4 fill-white" />
                 <span>{lang === "fr" ? "Lancer un projet à distance" : "Start a project from abroad"}</span>
               </a>
             </div>
           </div>
 
-          <div className="relative rounded-3xl border border-emerald-700/40 bg-[#1a3818]/90 p-6 sm:p-8 backdrop-blur shadow-2xl">
-            <h3 className="text-lg font-bold text-emerald-300">{lang === "fr" ? "Modes de Règlement Acceptés" : "Accepted Payment Methods"}</h3>
-            <p className="mt-1 text-xs text-emerald-200/70">{lang === "fr" ? "Pour vos proches au pays ou depuis l'étranger :" : "For local relatives or from abroad:"}</p>
+          <div className="relative rounded-3xl border border-emerald-700/40 bg-[#1a3818]/90 p-5 sm:p-8 backdrop-blur shadow-2xl">
+            <h3 className="text-base sm:text-lg font-bold text-emerald-300">{lang === "fr" ? "Modes de Règlement Acceptés" : "Accepted Payment Methods"}</h3>
+            <p className="mt-0.5 text-[11px] sm:text-xs text-emerald-200/70">{lang === "fr" ? "Pour vos proches au pays ou depuis l'étranger :" : "For local relatives or from abroad:"}</p>
 
-            <div className="mt-6 grid grid-cols-2 gap-3 text-xs">
-              <div className="flex flex-col justify-between rounded-2xl border border-slate-200 bg-white p-3.5 text-slate-900 shadow-md">
-                <div className="flex items-center gap-2">
-                  <img src={momoLogo} alt="MTN MoMo" className="h-5 w-auto object-contain shrink-0" decoding="async" />
-                  <span className="font-extrabold text-xs text-slate-900">MTN MoMo</span>
+            <div className="mt-4 sm:mt-6 grid grid-cols-2 gap-2.5 sm:gap-3 text-xs">
+              <div className="flex flex-col justify-between rounded-2xl border border-slate-200 bg-white p-3 text-slate-900 shadow-md">
+                <div className="flex items-center gap-1.5">
+                  <img src={momoLogo} alt="MTN MoMo" className="h-4 sm:h-5 w-auto object-contain shrink-0" decoding="async" />
+                  <span className="font-extrabold text-[11px] sm:text-xs text-slate-900">MTN MoMo</span>
                 </div>
-                <span className="text-slate-500 text-[10px] mt-1.5 font-medium">{lang === "fr" ? "Règlement local rapide" : "Fast local payment"}</span>
+                <span className="text-slate-500 text-[9px] sm:text-[10px] mt-1 font-medium">{lang === "fr" ? "Règlement local rapide" : "Fast local payment"}</span>
               </div>
 
-              <div className="flex flex-col justify-between rounded-2xl border border-slate-200 bg-white p-3.5 text-slate-900 shadow-md">
-                <div className="flex items-center gap-2">
-                  <img src={orangeMoneyLogo} alt="Orange Money" className="h-5 w-auto object-contain shrink-0" decoding="async" />
+              <div className="flex flex-col justify-between rounded-2xl border border-slate-200 bg-white p-3 text-slate-900 shadow-md">
+                <div className="flex items-center gap-1.5">
+                  <img src={orangeMoneyLogo} alt="Orange Money" className="h-4 sm:h-5 w-auto object-contain shrink-0" decoding="async" />
                 </div>
-                <span className="text-slate-500 text-[10px] mt-1.5 font-medium">{lang === "fr" ? "Règlement local rapide" : "Fast local payment"}</span>
+                <span className="text-slate-500 text-[9px] sm:text-[10px] mt-1 font-medium">{lang === "fr" ? "Règlement local rapide" : "Fast local payment"}</span>
               </div>
 
-              <div className="rounded-2xl border border-emerald-800/60 bg-[#122910]/80 p-3.5">
-                <span className="font-bold text-white block">Carte Visa / Mastercard</span>
-                <span className="text-emerald-200/60 text-[10px]">{lang === "fr" ? "Paiement en ligne sécurisé" : "Secure online payment"}</span>
+              <div className="rounded-2xl border border-emerald-800/60 bg-[#122910]/80 p-3">
+                <span className="font-bold text-white text-[11px] sm:text-xs block">Carte Visa / Mastercard</span>
+                <span className="text-emerald-200/60 text-[9px] sm:text-[10px]">{lang === "fr" ? "Paiement en ligne sécurisé" : "Secure online payment"}</span>
               </div>
 
-              <div className="rounded-2xl border border-emerald-800/60 bg-[#122910]/80 p-3.5">
-                <span className="font-bold text-white block">Virement & Agence</span>
-                <span className="text-emerald-200/60 text-[10px]">{lang === "fr" ? "SEPA / Swift / Ria / WU" : "SEPA / Swift / Ria / WU"}</span>
+              <div className="rounded-2xl border border-emerald-800/60 bg-[#122910]/80 p-3">
+                <span className="font-bold text-white text-[11px] sm:text-xs block">Virement & Agence</span>
+                <span className="text-emerald-200/60 text-[9px] sm:text-[10px]">{lang === "fr" ? "SEPA / Swift / Ria / WU" : "SEPA / Swift / Ria / WU"}</span>
               </div>
             </div>
           </div>
@@ -1384,29 +1516,29 @@ function YouTubeSection({ t }: { t: typeof TRANSLATIONS["fr"] }) {
   }, []);
 
   return (
-    <section id="videos" className="relative overflow-hidden bg-[#234d20] py-16 text-slate-100 sm:py-28 border-t border-emerald-900/30">
-      <div className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#386b34]/20 blur-[120px]" />
+    <section id="videos" className="relative overflow-hidden bg-[#234d20] py-12 text-slate-100 sm:py-24 border-t border-emerald-900/30">
+      <div className="pointer-events-none absolute left-1/2 top-1/2 -z-10 h-[300px] w-[300px] sm:h-[500px] sm:w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[#386b34]/20 blur-[100px]" />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="mx-auto max-w-3xl text-center">
-          <span className="inline-flex items-center gap-2 rounded-full border border-emerald-300/30 bg-[#386b34]/30 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-emerald-200 backdrop-blur">
-            <Youtube className="h-4 w-4 text-emerald-300" /> {t.channelTag}
+          <span className="inline-flex items-center gap-1.5 sm:gap-2 rounded-full border border-emerald-300/30 bg-[#386b34]/30 px-3 py-1 sm:px-4 sm:py-1.5 text-[10px] sm:text-xs font-bold uppercase tracking-widest text-emerald-200 backdrop-blur">
+            <Youtube className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-emerald-300" /> {t.channelTag}
           </span>
-          <h2 className="mt-4 text-2xl font-black tracking-tight text-white sm:text-4xl md:text-5xl">
+          <h2 className="mt-3 sm:mt-4 text-xl sm:text-3xl md:text-4xl font-black tracking-tight text-white">
             {t.channelTitle1}<span className="text-emerald-300">{t.channelTitle2}</span>
           </h2>
-          <p className="mt-4 text-sm text-emerald-100/80 sm:text-lg">
+          <p className="mt-2 sm:mt-4 text-xs sm:text-base text-emerald-100/80">
             {t.channelDesc}
           </p>
         </div>
 
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 md:grid-cols-3">
+        <div className="mt-8 sm:mt-12 grid gap-4 sm:gap-6 sm:grid-cols-2 md:grid-cols-3">
           {videos.length > 0 ? (
             videos.map((v) => (
               <div 
                 key={v.id} 
                 onClick={() => setActiveVideo(v.youtubeId)}
-                className="group relative cursor-pointer overflow-hidden rounded-3xl border border-emerald-800/40 bg-[#1a3818]/80 shadow-lg transition-all hover:-translate-y-1 hover:border-emerald-400/50"
+                className="group relative cursor-pointer overflow-hidden rounded-3xl border border-emerald-800/40 bg-[#1a3818]/80 shadow-lg transition-all hover:border-emerald-400/50"
               >
                 <div className="relative aspect-video w-full overflow-hidden bg-slate-900">
                   <img 
@@ -1417,18 +1549,18 @@ function YouTubeSection({ t }: { t: typeof TRANSLATIONS["fr"] }) {
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" 
                   />
                   <div className="absolute inset-0 bg-slate-950/40 group-hover:bg-slate-950/20 transition-colors flex items-center justify-center">
-                    <div className="grid h-12 w-12 place-items-center rounded-full bg-[#386b34] text-white shadow-xl group-hover:scale-110 transition-transform">
-                      <Play className="h-5 w-5 fill-white ml-0.5" />
+                    <div className="grid h-10 w-10 sm:h-12 sm:w-12 place-items-center rounded-full bg-[#386b34] text-white shadow-xl transition-transform group-hover:scale-110">
+                      <Play className="h-4 w-4 sm:h-5 sm:w-5 fill-white ml-0.5" />
                     </div>
                   </div>
                   {v.date && (
-                    <span className="absolute bottom-3 right-3 rounded-lg bg-slate-950/80 px-2 py-1 text-[10px] font-bold text-white backdrop-blur">
+                    <span className="absolute bottom-2.5 right-2.5 rounded-lg bg-slate-950/80 px-2 py-0.5 text-[9px] sm:text-[10px] font-bold text-white backdrop-blur">
                       {v.date}
                     </span>
                   )}
                 </div>
-                <div className="p-4">
-                  <h3 className="text-sm font-bold text-white line-clamp-2 leading-snug group-hover:text-emerald-300 transition-colors">
+                <div className="p-3.5 sm:p-4">
+                  <h3 className="text-xs sm:text-sm font-bold text-white line-clamp-2 leading-snug group-hover:text-emerald-300 transition-colors">
                     {v.title}
                   </h3>
                 </div>
@@ -1437,39 +1569,39 @@ function YouTubeSection({ t }: { t: typeof TRANSLATIONS["fr"] }) {
           ) : (
             <div 
               onClick={() => setActiveVideo(`playlist:${YOUTUBE_UPLOADS_PLAYLIST}`)}
-              className="col-span-full mx-auto max-w-lg cursor-pointer overflow-hidden rounded-3xl border border-emerald-800/40 bg-[#1a3818]/80 p-8 text-center shadow-lg transition-all hover:border-emerald-400/50"
+              className="col-span-full mx-auto max-w-lg cursor-pointer overflow-hidden rounded-3xl border border-emerald-800/40 bg-[#1a3818]/80 p-6 sm:p-8 text-center shadow-lg transition-all hover:border-emerald-400/50"
             >
-              <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-[#386b34] text-white shadow-xl">
-                <Play className="h-7 w-7 fill-white ml-1" />
+              <div className="mx-auto grid h-12 w-12 sm:h-16 sm:w-16 place-items-center rounded-full bg-[#386b34] text-white shadow-xl">
+                <Play className="h-5 w-5 sm:h-7 sm:w-7 fill-white ml-0.5" />
               </div>
-              <h3 className="mt-4 text-base font-bold text-white">Vidéos de la chaîne @EDSOLAR237</h3>
-              <p className="mt-1 text-xs text-emerald-200/70">Cliquez pour lire directement la chaîne officielle sur le site</p>
+              <h3 className="mt-3 sm:mt-4 text-sm sm:text-base font-bold text-white">Vidéos de la chaîne @EDSOLAR237</h3>
+              <p className="mt-1 text-[11px] sm:text-xs text-emerald-200/70">Cliquez pour lire directement la chaîne officielle sur le site</p>
             </div>
           )}
         </div>
 
-        <div className="mt-12 rounded-3xl border border-emerald-800/50 bg-[#1a3818] p-6 shadow-2xl backdrop-blur sm:p-10">
-          <div className="mx-auto flex max-w-2xl flex-col items-center gap-6 text-center sm:flex-row sm:justify-between sm:text-left">
+        <div className="mt-8 sm:mt-12 rounded-3xl border border-emerald-800/50 bg-[#1a3818] p-5 sm:p-8 shadow-2xl backdrop-blur">
+          <div className="mx-auto flex max-w-2xl flex-col items-center gap-4 sm:gap-6 text-center sm:flex-row sm:justify-between sm:text-left">
             <div>
-              <p className="text-lg sm:text-xl font-bold text-white">{t.channelSubscribers}</p>
-              <p className="mt-1 text-xs sm:text-sm text-emerald-200/70">{t.channelSubNote}</p>
+              <p className="text-base sm:text-xl font-bold text-white">{t.channelSubscribers}</p>
+              <p className="mt-1 text-[11px] sm:text-xs text-emerald-200/70">{t.channelSubNote}</p>
             </div>
             <a href={YOUTUBE_CHANNEL_URL} target="_blank" rel="noreferrer"
-               className="inline-flex shrink-0 items-center gap-2.5 rounded-full bg-[#386b34] px-6 py-3.5 text-sm sm:text-base font-bold text-white shadow-lg transition-all hover:scale-105 hover:bg-[#4a8344]">
-              <Youtube className="h-5 w-5 text-white" /> {t.channelBtn}
+               className="inline-flex shrink-0 items-center gap-2 rounded-full bg-[#386b34] px-5 py-3 text-xs sm:text-sm font-bold text-white shadow-lg transition-all hover:bg-[#4a8344]">
+              <Youtube className="h-4 w-4 sm:h-5 sm:w-5 text-white" /> {t.channelBtn}
             </a>
           </div>
         </div>
       </div>
 
       {activeVideo && (
-        <div className="fixed inset-0 z-50 grid place-items-center bg-slate-950/80 p-4 backdrop-blur-md" onClick={() => setActiveVideo(null)}>
+        <div className="fixed inset-0 z-50 grid place-items-center bg-slate-950/80 p-3 sm:p-4 backdrop-blur-md" onClick={() => setActiveVideo(null)}>
           <div className="relative w-full max-w-4xl overflow-hidden rounded-3xl bg-slate-900 shadow-2xl" onClick={(e) => e.stopPropagation()}>
             <button 
               onClick={() => setActiveVideo(null)}
-              className="absolute right-4 top-4 z-10 grid h-10 w-10 place-items-center rounded-full bg-slate-950/80 text-white hover:bg-[#386b34] transition-colors"
+              className="absolute right-3 top-3 z-10 grid h-8 w-8 sm:h-10 sm:w-10 place-items-center rounded-full bg-slate-950/80 text-white hover:bg-[#386b34] transition-colors"
             >
-              <X className="h-5 w-5" />
+              <X className="h-4 w-4 sm:h-5 sm:w-5" />
             </button>
             <div className="relative aspect-video w-full">
               <iframe 
@@ -1501,25 +1633,25 @@ function Trust({ t }: { t: typeof TRANSLATIONS["fr"] }) {
   ];
 
   return (
-    <section className="py-16 sm:py-28">
+    <section className="py-12 sm:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <SectionHeader eyebrow={t.trustEyebrow} title={t.trustTitle} description={t.trustDesc} />
-        <div className="mt-12 grid gap-4 grid-cols-2 lg:grid-cols-4">
+        <div className="mt-8 sm:mt-12 grid gap-3 sm:gap-4 grid-cols-2 lg:grid-cols-4">
           {STATS.map((s) => (
-            <div key={s.label} className="rounded-2xl border border-border bg-card p-5 sm:p-6 text-center shadow-sm transition-transform hover:-translate-y-1">
-              <div className="mx-auto grid h-12 w-12 sm:h-14 sm:w-14 place-items-center rounded-2xl bg-[#386b34]/10 text-[#386b34]">
-                <s.icon className="h-6 w-6 sm:h-7 sm:w-7" />
+            <div key={s.label} className="rounded-2xl border border-border bg-card p-4 sm:p-6 text-center shadow-sm transition-transform hover:-translate-y-1">
+              <div className="mx-auto grid h-10 w-10 sm:h-14 sm:w-14 place-items-center rounded-2xl bg-[#386b34]/10 text-[#386b34]">
+                <s.icon className="h-5 w-5 sm:h-7 sm:w-7" />
               </div>
-              <div className="mt-3 sm:mt-4 text-2xl sm:text-4xl font-black text-slate-900 dark:text-white">{s.value}</div>
-              <div className="mt-1 text-xs sm:text-sm text-muted-foreground">{s.label}</div>
+              <div className="mt-2 sm:mt-4 text-xl sm:text-4xl font-black text-slate-900 dark:text-white">{s.value}</div>
+              <div className="mt-0.5 sm:mt-1 text-[11px] sm:text-sm text-muted-foreground">{s.label}</div>
             </div>
           ))}
         </div>
 
-        <div className="mt-10 sm:mt-14 flex flex-wrap items-center justify-center gap-2.5 sm:gap-4">
+        <div className="mt-8 sm:mt-14 flex flex-wrap items-center justify-center gap-2 sm:gap-4">
           {["Normes IEC 61215", "ISO 9001", "Garantie 25 ans", "Ingénieurs certifiés", "Support 7j/7"].map((b) => (
-            <span key={b} className="inline-flex items-center gap-1.5 sm:gap-2 rounded-full border border-[#386b34]/20 bg-[#386b34]/10 px-3.5 py-1.5 text-[11px] sm:text-xs font-semibold text-[#386b34] dark:text-emerald-400">
-              <ShieldCheck className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-[#386b34]" /> {b}
+            <span key={b} className="inline-flex items-center gap-1.5 rounded-full border border-[#386b34]/20 bg-[#386b34]/10 px-3 py-1 text-[10px] sm:text-xs font-semibold text-[#386b34] dark:text-emerald-400">
+              <ShieldCheck className="h-3.5 w-3.5 text-[#386b34]" /> {b}
             </span>
           ))}
         </div>
@@ -1587,11 +1719,11 @@ function Realisations({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang })
   };
 
   return (
-    <section id="realisations" className="bg-slate-100/70 dark:bg-slate-900/50 py-16 sm:py-28">
+    <section id="realisations" className="bg-slate-100/70 dark:bg-slate-900/50 py-12 sm:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <SectionHeader eyebrow={t.realEyebrow} title={t.realTitle} description={t.realDesc} />
         
-        <div className="mt-12 grid gap-6 sm:grid-cols-2 md:grid-cols-3">
+        <div className="mt-8 sm:mt-12 grid gap-4 sm:gap-6 sm:grid-cols-2 md:grid-cols-3">
           {items.map((g, i) => (
             <figure 
               key={`${g.src}-${i}`} 
@@ -1614,8 +1746,8 @@ function Realisations({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang })
                       }}
                     />
                     <div className="absolute inset-0 bg-slate-950/30 opacity-0 transition-opacity group-hover:opacity-100 flex items-center justify-center">
-                      <div className="grid h-12 w-12 place-items-center rounded-full bg-[#386b34] text-white shadow-xl transition-transform group-hover:scale-110">
-                        <ZoomIn className="h-6 w-6" />
+                      <div className="grid h-10 w-10 sm:h-12 sm:w-12 place-items-center rounded-full bg-[#386b34] text-white shadow-xl transition-transform group-hover:scale-110">
+                        <ZoomIn className="h-5 w-5 sm:h-6 sm:w-6" />
                       </div>
                     </div>
                   </>
@@ -1623,11 +1755,11 @@ function Realisations({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang })
                   <div className="grid h-full w-full place-items-center text-xs text-muted-foreground">Photo indisponible</div>
                 )}
               </div>
-              <figcaption className="flex items-center justify-between p-4">
-                <div>
-                  <p className="text-sm font-bold">{translateDynamicText(g.title, lang)}</p>
-                  <p className="text-xs text-muted-foreground flex items-center gap-1 mt-0.5">
-                    <MapPin className="h-3 w-3 text-[#386b34]" /> {g.loc}
+              <figcaption className="flex items-center justify-between p-3.5 sm:p-4">
+                <div className="min-w-0 pr-2">
+                  <p className="text-xs sm:text-sm font-bold truncate">{translateDynamicText(g.title, lang)}</p>
+                  <p className="text-[10px] sm:text-xs text-muted-foreground flex items-center gap-1 mt-0.5 truncate">
+                    <MapPin className="h-3 w-3 text-[#386b34] shrink-0" /> {g.loc}
                   </p>
                 </div>
                 <ArrowRight className="h-4 w-4 text-[#386b34] shrink-0" />
@@ -1637,7 +1769,7 @@ function Realisations({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang })
         </div>
 
         {items.length === 0 && (
-          <p className="text-center text-sm text-muted-foreground mt-8">
+          <p className="text-center text-xs sm:text-sm text-muted-foreground mt-8">
             {lang === "fr" ? "Aucune réalisation à afficher pour le moment." : "No projects to display at the moment."}
           </p>
         )}
@@ -1645,76 +1777,76 @@ function Realisations({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang })
 
       {selectedPhoto && (
         <div 
-          className="fixed inset-0 z-50 grid place-items-center bg-slate-950/90 p-4 backdrop-blur-md transition-all"
+          className="fixed inset-0 z-50 grid place-items-center bg-slate-950/90 p-3 sm:p-4 backdrop-blur-md transition-all"
           onClick={() => setSelectedPhoto(null)}
         >
           <div 
-            className="relative flex max-h-[90vh] max-w-5xl flex-col items-center justify-center overflow-hidden rounded-3xl bg-slate-900 border border-emerald-900/40 shadow-2xl p-4 w-full"
+            className="relative flex max-h-[85vh] max-w-5xl flex-col items-center justify-center overflow-hidden rounded-3xl bg-slate-900 border border-emerald-900/40 shadow-2xl p-3 sm:p-4 w-full"
             onClick={(e) => e.stopPropagation()}
           >
             <button 
               onClick={() => setSelectedPhoto(null)}
-              className="absolute right-4 top-4 z-10 grid h-10 w-10 place-items-center rounded-full bg-slate-950/80 text-white hover:bg-[#386b34] transition-colors"
+              className="absolute right-3 top-3 z-10 grid h-8 w-8 sm:h-10 sm:w-10 place-items-center rounded-full bg-slate-950/80 text-white hover:bg-[#386b34] transition-colors"
               aria-label="Fermer"
             >
-              <X className="h-5 w-5" />
+              <X className="h-4 w-4 sm:h-5 sm:w-5" />
             </button>
             
             <img 
               src={selectedPhoto.src} 
               alt={selectedPhoto.title} 
-              className="max-h-[65vh] w-auto max-w-full rounded-2xl object-contain"
+              className="max-h-[60vh] w-auto max-w-full rounded-2xl object-contain"
             />
             
-            <div className="mt-4 w-full max-w-2xl text-center px-4">
+            <div className="mt-3 w-full max-w-2xl text-center px-2 sm:px-4">
               {!isEditing ? (
-                <div className="flex flex-col items-center gap-2">
-                  <p className="text-base sm:text-xl font-black text-white">{selectedPhoto.title}</p>
-                  <p className="text-xs sm:text-sm text-emerald-400 font-bold flex items-center justify-center gap-1.5">
-                    <MapPin className="h-4 w-4 text-emerald-400" /> {selectedPhoto.loc}
+                <div className="flex flex-col items-center gap-1.5">
+                  <p className="text-sm sm:text-xl font-black text-white">{selectedPhoto.title}</p>
+                  <p className="text-xs sm:text-sm text-emerald-400 font-bold flex items-center justify-center gap-1">
+                    <MapPin className="h-3.5 w-3.5 text-emerald-400" /> {selectedPhoto.loc}
                   </p>
                   {isAdmin && (
                     <button 
                       onClick={() => setIsEditing(true)}
-                      className="mt-2 inline-flex items-center gap-1.5 rounded-full bg-[#386b34] px-4 py-1.5 text-xs font-bold text-white hover:bg-[#4a8344] transition-all shadow-md"
+                      className="mt-1.5 inline-flex items-center gap-1 rounded-full bg-[#386b34] px-3 py-1 text-xs font-bold text-white hover:bg-[#4a8344]"
                     >
-                      <Edit2 className="h-3.5 w-3.5" /> Éditer la légende & le lieu
+                      <Edit2 className="h-3 w-3" /> Éditer la légende & le lieu
                     </button>
                   )}
                 </div>
               ) : (
-                <div className="flex flex-col gap-3 bg-slate-950/80 p-4 rounded-2xl border border-emerald-800/50">
+                <div className="flex flex-col gap-2.5 bg-slate-950/80 p-3 rounded-2xl border border-emerald-800/50">
                   <div>
-                    <label className="block text-[11px] font-bold text-emerald-400 uppercase text-left mb-1">Légende de la photo</label>
+                    <label className="block text-[10px] font-bold text-emerald-400 uppercase text-left mb-1">Légende de la photo</label>
                     <input 
                       type="text" 
                       value={editTitle} 
                       onChange={(e) => setEditTitle(e.target.value)}
-                      className="w-full rounded-xl bg-slate-800 border border-slate-700 px-3 py-2 text-sm text-white outline-none focus:border-[#386b34]"
+                      className="w-full rounded-xl bg-slate-800 border border-slate-700 px-3 py-1.5 text-xs text-white outline-none focus:border-[#386b34]"
                     />
                   </div>
                   <div>
-                    <label className="block text-[11px] font-bold text-emerald-400 uppercase text-left mb-1">Lieu / Ville au choix</label>
+                    <label className="block text-[10px] font-bold text-emerald-400 uppercase text-left mb-1">Lieu / Ville</label>
                     <input 
                       type="text" 
                       value={editLoc} 
                       placeholder="Ex: Douala, Bonanjo"
                       onChange={(e) => setEditLoc(e.target.value)}
-                      className="w-full rounded-xl bg-slate-800 border border-slate-700 px-3 py-2 text-sm text-white outline-none focus:border-[#386b34]"
+                      className="w-full rounded-xl bg-slate-800 border border-slate-700 px-3 py-1.5 text-xs text-white outline-none focus:border-[#386b34]"
                     />
                   </div>
                   <div className="flex items-center justify-end gap-2 mt-1">
                     <button 
                       onClick={() => setIsEditing(false)}
-                      className="rounded-full bg-slate-800 px-4 py-1.5 text-xs font-bold text-slate-300 hover:bg-slate-700"
+                      className="rounded-full bg-slate-800 px-3 py-1 text-xs font-bold text-slate-300"
                     >
                       Annuler
                     </button>
                     <button 
                       onClick={handleSave}
-                      className="inline-flex items-center gap-1.5 rounded-full bg-[#386b34] px-4 py-1.5 text-xs font-bold text-white hover:bg-[#4a8344]"
+                      className="inline-flex items-center gap-1 rounded-full bg-[#386b34] px-3 py-1 text-xs font-bold text-white"
                     >
-                      <Save className="h-3.5 w-3.5" /> Enregistrer dans la base
+                      <Save className="h-3 w-3" /> Enregistrer
                     </button>
                   </div>
                 </div>
@@ -1748,20 +1880,20 @@ function Reviews({ t }: { t: typeof TRANSLATIONS["fr"] }) {
   };
 
   return (
-    <section id="avis" className="bg-slate-100/70 dark:bg-slate-900/50 py-16 sm:py-28">
+    <section id="avis" className="bg-slate-100/70 dark:bg-slate-900/50 py-12 sm:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <SectionHeader eyebrow={t.reviewsEyebrow} title={t.reviewsTitle} description={t.reviewsDesc} />
-        <div className="mt-12 grid gap-8 lg:grid-cols-[1fr_1.3fr]">
+        <div className="mt-8 sm:mt-12 grid gap-6 sm:gap-8 lg:grid-cols-[1fr_1.3fr]">
           <form onSubmit={submit} className="h-fit rounded-3xl border border-border bg-card p-5 sm:p-8 shadow-sm">
-            <p className="text-sm font-bold">{t.reviewsLeaveTitle}</p>
-            <div className="mt-4 space-y-3">
+            <p className="text-xs sm:text-sm font-bold">{t.reviewsLeaveTitle}</p>
+            <div className="mt-3 sm:mt-4 space-y-3">
               <div>
-                <label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t.reviewsName}</label>
+                <label className="text-[10px] sm:text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t.reviewsName}</label>
                 <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} required
-                  className="mt-1 w-full rounded-xl border border-input bg-background px-4 py-2.5 text-sm outline-none focus:border-[#386b34]" />
+                  className="mt-1 w-full rounded-xl border border-input bg-background px-3.5 py-2 sm:px-4 sm:py-2.5 text-xs sm:text-sm outline-none focus:border-[#386b34]" />
               </div>
               <div>
-                <label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t.reviewsRating}</label>
+                <label className="text-[10px] sm:text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t.reviewsRating}</label>
                 <div className="mt-1 flex items-center gap-1">
                   {[1, 2, 3, 4, 5].map((n) => (
                     <button type="button" key={n}
@@ -1769,40 +1901,40 @@ function Reviews({ t }: { t: typeof TRANSLATIONS["fr"] }) {
                       onMouseEnter={() => setHoverRating(n)}
                       onMouseLeave={() => setHoverRating(0)}
                       aria-label={`${n} étoile`}
-                      className="p-1 transition-transform hover:scale-110">
-                      <Star className={`pointer-events-none h-7 w-7 sm:h-8 sm:w-8 ${n <= (hoverRating || form.rating) ? "fill-[#386b34] text-[#386b34]" : "text-muted-foreground/30"}`} />
+                      className="p-0.5 transition-transform hover:scale-110">
+                      <Star className={`pointer-events-none h-6 w-6 sm:h-8 sm:w-8 ${n <= (hoverRating || form.rating) ? "fill-[#386b34] text-[#386b34]" : "text-muted-foreground/30"}`} />
                     </button>
                   ))}
-                  <span className="ml-2 text-sm font-semibold text-muted-foreground">{form.rating}/5</span>
+                  <span className="ml-1.5 text-xs sm:text-sm font-semibold text-muted-foreground">{form.rating}/5</span>
                 </div>
               </div>
               <div>
-                <label className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t.reviewsComment}</label>
-                <textarea rows={4} value={form.comment} onChange={(e) => setForm({ ...form, comment: e.target.value })} required
-                  className="mt-1 w-full resize-none rounded-xl border border-input bg-background px-4 py-2.5 text-sm outline-none focus:border-[#386b34]" />
+                <label className="text-[10px] sm:text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t.reviewsComment}</label>
+                <textarea rows={3} value={form.comment} onChange={(e) => setForm({ ...form, comment: e.target.value })} required
+                  className="mt-1 w-full resize-none rounded-xl border border-input bg-background px-3.5 py-2 sm:px-4 sm:py-2.5 text-xs sm:text-sm outline-none focus:border-[#386b34]" />
               </div>
-              <button disabled={busy} className="w-full rounded-full bg-[#386b34] px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-[#2e582b] disabled:opacity-60">
+              <button disabled={busy} className="w-full rounded-full bg-[#386b34] px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-bold text-white transition-colors hover:bg-[#2e582b] disabled:opacity-60">
                 {busy ? t.reviewsSending : t.reviewsSubmit}
               </button>
-              {sent && <p className="text-sm text-[#386b34] font-semibold">{t.reviewsSuccess}</p>}
+              {sent && <p className="text-xs sm:text-sm text-[#386b34] font-semibold">{t.reviewsSuccess}</p>}
             </div>
           </form>
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid gap-3 sm:gap-4 sm:grid-cols-2">
             {items.length === 0 && (
-              <p className="col-span-full rounded-2xl border border-dashed border-border p-6 text-center text-sm text-muted-foreground">
+              <p className="col-span-full rounded-2xl border border-dashed border-border p-5 text-center text-xs sm:text-sm text-muted-foreground">
                 {t.reviewsEmpty}
               </p>
             )}
             {items.map((r) => (
-              <div key={r.id} className="rounded-2xl border border-border bg-card p-5 shadow-sm">
-                <div className="flex items-center gap-1">
+              <div key={r.id} className="rounded-2xl border border-border bg-card p-4 sm:p-5 shadow-sm">
+                <div className="flex items-center gap-0.5">
                   {Array.from({ length: 5 }).map((_, i) => (
-                    <Star key={i} className={`h-4 w-4 ${i < r.rating ? "fill-[#386b34] text-[#386b34]" : "text-muted-foreground/30"}`} />
+                    <Star key={i} className={`h-3.5 w-3.5 ${i < r.rating ? "fill-[#386b34] text-[#386b34]" : "text-muted-foreground/30"}`} />
                   ))}
                 </div>
-                <p className="mt-3 text-sm leading-relaxed text-foreground/90">"{r.comment}"</p>
-                <p className="mt-3 text-sm font-bold">{r.name}</p>
-                <p className="text-xs text-muted-foreground">{new Date(r.created_at).toLocaleDateString("fr-FR")}</p>
+                <p className="mt-2.5 text-xs sm:text-sm leading-relaxed text-foreground/90">"{r.comment}"</p>
+                <p className="mt-2 text-xs sm:text-sm font-bold">{r.name}</p>
+                <p className="text-[10px] text-muted-foreground">{new Date(r.created_at).toLocaleDateString("fr-FR")}</p>
               </div>
             ))}
           </div>
@@ -1851,54 +1983,54 @@ function About({ t }: { t: typeof TRANSLATIONS["fr"] }) {
     { name: "EDSHOP", tag: "Commerce & Distribution", icon: ShoppingBag },
     { name: "EDFOOD", tag: "Alimentation & Nutrition", icon: Utensils },
     { name: "EDCARE", tag: "Santé & Services Médicaux", icon: Stethoscope },
-    { name: "EDSERVICE", tag: "Services à domicile (nettoyage, garde, etc.)", icon: Home },
+    { name: "EDSERVICE", tag: "Services à domicile", icon: Home },
     { name: "EDAUTO", tag: "Véhicule écologique", icon: Car },
   ];
 
   return (
-    <section id="apropos" className="py-16 sm:py-28 bg-card border-t border-border">
+    <section id="apropos" className="py-12 sm:py-24 bg-card border-t border-border">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
-        <div className="grid gap-12 lg:grid-cols-2 lg:items-start">
+        <div className="grid gap-8 sm:gap-12 lg:grid-cols-2 lg:items-start">
           <div>
-            <span className="text-xs font-bold uppercase tracking-widest text-[#386b34]">{t.aboutEyebrow}</span>
-            <h2 className="mt-3 text-2xl sm:text-4xl font-black tracking-tight leading-tight">
+            <span className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-[#386b34]">{t.aboutEyebrow}</span>
+            <h2 className="mt-2 text-xl sm:text-3xl md:text-4xl font-black tracking-tight leading-tight">
               {t.aboutTitle}
             </h2>
             
-            <p className="mt-4 text-base font-semibold text-foreground leading-relaxed">
+            <p className="mt-3 sm:mt-4 text-xs sm:text-base font-semibold text-foreground leading-relaxed">
               {t.aboutPillarsText}
             </p>
 
-            <div className="mt-5 grid grid-cols-2 gap-3">
+            <div className="mt-4 sm:mt-5 grid grid-cols-2 gap-2.5 sm:gap-3">
               {PILLARS.map((v) => (
-                <div key={v.name} className="flex items-start gap-3 rounded-2xl border border-[#386b34]/20 bg-[#386b34]/5 p-3.5">
-                  <div className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-[#386b34] text-white">
-                    <v.icon className="h-4 w-4" />
+                <div key={v.name} className="flex items-start gap-2 sm:gap-3 rounded-2xl border border-[#386b34]/20 bg-[#386b34]/5 p-3">
+                  <div className="grid h-7 w-7 sm:h-9 sm:w-9 shrink-0 place-items-center rounded-xl bg-[#386b34] text-white">
+                    <v.icon className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
                   </div>
                   <div>
-                    <h4 className="text-sm font-extrabold text-foreground">{v.name}</h4>
-                    <p className="text-[11px] text-muted-foreground leading-tight">{v.desc}</p>
+                    <h4 className="text-xs sm:text-sm font-extrabold text-foreground">{v.name}</h4>
+                    <p className="text-[9px] sm:text-[11px] text-muted-foreground leading-tight">{v.desc}</p>
                   </div>
                 </div>
               ))}
             </div>
 
-            <div className="mt-6 space-y-3.5 text-sm text-muted-foreground leading-relaxed">
-              <p className="border-l-4 border-[#386b34] pl-3 py-1 bg-emerald-500/5 rounded-r-xl">
+            <div className="mt-5 space-y-2.5 text-xs sm:text-sm text-muted-foreground leading-relaxed">
+              <p className="border-l-4 border-[#386b34] pl-2.5 sm:pl-3 py-0.5 bg-emerald-500/5 rounded-r-xl">
                 <strong className="text-foreground">Notre mission :</strong> {t.aboutMissionText}
               </p>
-              <p className="border-l-4 border-[#386b34] pl-3 py-1 bg-emerald-500/5 rounded-r-xl">
+              <p className="border-l-4 border-[#386b34] pl-2.5 sm:pl-3 py-0.5 bg-emerald-500/5 rounded-r-xl">
                 <strong className="text-foreground">Notre vision :</strong> {t.aboutVisionText}
               </p>
             </div>
 
-            <div className="mt-6 flex items-start gap-3 rounded-2xl border border-[#386b34]/30 bg-[#386b34]/10 p-4">
-              <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[#386b34] text-white">
-                <Compass className="h-5 w-5" />
+            <div className="mt-5 flex items-start gap-2.5 sm:gap-3 rounded-2xl border border-[#386b34]/30 bg-[#386b34]/10 p-3 sm:p-4">
+              <div className="grid h-8 w-8 sm:h-10 sm:w-10 shrink-0 place-items-center rounded-xl bg-[#386b34] text-white">
+                <Compass className="h-4 w-4 sm:h-5 sm:w-5" />
               </div>
               <div>
-                <span className="text-xs font-bold uppercase tracking-wider text-[#386b34]">Présence sur le terrain</span>
-                <p className="mt-0.5 text-sm font-bold text-foreground leading-snug">
+                <span className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-[#386b34]">Présence sur le terrain</span>
+                <p className="mt-0.5 text-xs sm:text-sm font-bold text-foreground leading-snug">
                   {t.aboutPresenceText}
                 </p>
               </div>
@@ -1906,35 +2038,35 @@ function About({ t }: { t: typeof TRANSLATIONS["fr"] }) {
           </div>
 
           <div className="flex flex-col gap-6">
-            <div className="rounded-3xl border border-emerald-900/30 bg-[#234d20] p-6 text-white shadow-xl">
-              <h3 className="text-base font-extrabold text-emerald-300">{t.aboutEcosystemTitle}</h3>
-              <div className="mt-4 grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+            <div className="rounded-3xl border border-emerald-900/30 bg-[#234d20] p-5 sm:p-6 text-white shadow-xl">
+              <h3 className="text-xs sm:text-base font-extrabold text-emerald-300">{t.aboutEcosystemTitle}</h3>
+              <div className="mt-3 sm:mt-4 grid grid-cols-1 gap-2 sm:grid-cols-2">
                 {ECOSYSTEM.map((e) => (
-                  <div key={e.name} className="flex items-center gap-2.5 rounded-xl bg-[#1a3818]/80 p-2.5 border border-emerald-800/40">
-                    <e.icon className="h-4 w-4 text-emerald-300 shrink-0" />
+                  <div key={e.name} className="flex items-center gap-2 rounded-xl bg-[#1a3818]/80 p-2 sm:p-2.5 border border-emerald-800/40">
+                    <e.icon className="h-3.5 w-3.5 sm:h-4 sm:w-4 text-emerald-300 shrink-0" />
                     <div>
                       <span className="text-xs font-black text-white block">{e.name}</span>
-                      <span className="text-[10px] text-emerald-200/70 block leading-tight">{e.tag}</span>
+                      <span className="text-[9px] sm:text-[10px] text-emerald-200/70 block leading-tight">{e.tag}</span>
                     </div>
                   </div>
                 ))}
               </div>
-              <p className="mt-5 text-xs text-emerald-100/90 italic leading-relaxed border-t border-emerald-800/50 pt-4">
+              <p className="mt-4 text-[11px] sm:text-xs text-emerald-100/90 italic leading-relaxed border-t border-emerald-800/50 pt-3">
                 "{t.aboutConclusion}"
               </p>
             </div>
 
             <div>
-              <h3 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-3 flex items-center justify-between">
+              <h3 className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-muted-foreground mb-2 sm:mb-3 flex items-center justify-between">
                 <span>En direct du terrain — Nos équipes à l'œuvre</span>
-                <span className="text-[10px] font-normal text-[#386b34]">(Cliquez pour agrandir)</span>
+                <span className="text-[9px] font-normal text-[#386b34]">(Cliquez pour agrandir)</span>
               </h3>
-              <div className="grid grid-cols-3 gap-2.5 sm:gap-3">
+              <div className="grid grid-cols-3 gap-2 sm:gap-3">
                 {fieldPhotos.map((img, idx) => (
                   <div 
                     key={idx} 
                     onClick={() => openPhoto(idx, img)}
-                    className="group relative aspect-square cursor-pointer overflow-hidden rounded-2xl border border-border bg-slate-100 shadow-sm transition-all hover:scale-[1.02] hover:shadow-md"
+                    className="group relative aspect-square cursor-pointer overflow-hidden rounded-2xl border border-border bg-slate-100 shadow-sm transition-all hover:scale-[1.02]"
                   >
                     <img 
                       src={img.src} 
@@ -1946,14 +2078,14 @@ function About({ t }: { t: typeof TRANSLATIONS["fr"] }) {
                         (e.target as HTMLElement).style.display = 'none';
                       }}
                     />
-                    <div className="absolute inset-0 bg-slate-950/50 opacity-0 transition-opacity group-hover:opacity-100 flex flex-col justify-between p-2">
-                      <div className="ml-auto grid h-7 w-7 place-items-center rounded-full bg-[#386b34] text-white shadow-md">
-                        <ZoomIn className="h-3.5 w-3.5" />
+                    <div className="absolute inset-0 bg-slate-950/50 opacity-0 transition-opacity group-hover:opacity-100 flex flex-col justify-between p-1.5 sm:p-2">
+                      <div className="ml-auto grid h-6 w-6 sm:h-7 sm:w-7 place-items-center rounded-full bg-[#386b34] text-white shadow-md">
+                        <ZoomIn className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
                       </div>
                       <div>
-                        <p className="text-[9px] sm:text-[10px] font-bold text-white leading-tight line-clamp-1">{img.caption}</p>
-                        <p className="text-[8px] sm:text-[9px] font-semibold text-emerald-300 flex items-center gap-0.5 mt-0.5">
-                          <MapPin className="h-2.5 w-2.5" /> {img.location}
+                        <p className="text-[8px] sm:text-[10px] font-bold text-white leading-tight line-clamp-1">{img.caption}</p>
+                        <p className="text-[7px] sm:text-[9px] font-semibold text-emerald-300 flex items-center gap-0.5 mt-0.5">
+                          <MapPin className="h-2 w-2 sm:h-2.5 sm:w-2.5" /> {img.location}
                         </p>
                       </div>
                     </div>
@@ -1968,31 +2100,31 @@ function About({ t }: { t: typeof TRANSLATIONS["fr"] }) {
 
       {selectedPhoto && (
         <div 
-          className="fixed inset-0 z-50 grid place-items-center bg-slate-950/90 p-4 backdrop-blur-md transition-all"
+          className="fixed inset-0 z-50 grid place-items-center bg-slate-950/90 p-3 sm:p-4 backdrop-blur-md transition-all"
           onClick={() => setSelectedPhoto(null)}
         >
           <div 
-            className="relative flex max-h-[90vh] max-w-5xl flex-col items-center justify-center overflow-hidden rounded-3xl bg-slate-900 border border-emerald-900/40 shadow-2xl p-4 w-full"
+            className="relative flex max-h-[85vh] max-w-5xl flex-col items-center justify-center overflow-hidden rounded-3xl bg-slate-900 border border-emerald-900/40 shadow-2xl p-3 sm:p-4 w-full"
             onClick={(e) => e.stopPropagation()}
           >
             <button 
               onClick={() => setSelectedPhoto(null)}
-              className="absolute right-4 top-4 z-10 grid h-10 w-10 place-items-center rounded-full bg-slate-950/80 text-white hover:bg-[#386b34] transition-colors"
+              className="absolute right-3 top-3 z-10 grid h-8 w-8 sm:h-10 sm:w-10 place-items-center rounded-full bg-slate-950/80 text-white hover:bg-[#386b34] transition-colors"
               aria-label="Fermer"
             >
-              <X className="h-5 w-5" />
+              <X className="h-4 w-4 sm:h-5 sm:w-5" />
             </button>
             
             <img 
               src={selectedPhoto.src} 
               alt={selectedPhoto.caption} 
-              className="max-h-[65vh] w-auto max-w-full rounded-2xl object-contain"
+              className="max-h-[60vh] w-auto max-w-full rounded-2xl object-contain"
             />
             
-            <div className="mt-4 w-full max-w-2xl text-center px-4">
-              <p className="text-base sm:text-xl font-bold text-white">{selectedPhoto.caption}</p>
-              <p className="text-xs sm:text-sm text-emerald-400 font-bold flex items-center justify-center gap-1.5 mt-1">
-                <MapPin className="h-4 w-4 text-emerald-400" /> {selectedPhoto.location}
+            <div className="mt-3 w-full max-w-2xl text-center px-2 sm:px-4">
+              <p className="text-sm sm:text-xl font-bold text-white">{selectedPhoto.caption}</p>
+              <p className="text-xs sm:text-sm text-emerald-400 font-bold flex items-center justify-center gap-1 mt-0.5">
+                <MapPin className="h-3.5 w-3.5 text-emerald-400" /> {selectedPhoto.location}
               </p>
             </div>
           </div>
@@ -2017,21 +2149,21 @@ function Contact({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
   };
 
   return (
-    <section id="contact" className="bg-slate-100/70 dark:bg-slate-900/50 py-16 sm:py-28">
+    <section id="contact" className="bg-slate-100/70 dark:bg-slate-900/50 py-12 sm:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <SectionHeader eyebrow={t.contactEyebrow} title={t.contactTitle} description={t.contactDesc} />
         
-        <div className="mt-12 grid gap-8 lg:grid-cols-[1.1fr_1.2fr] items-start">
+        <div className="mt-8 sm:mt-12 grid gap-6 sm:gap-8 lg:grid-cols-[1.1fr_1.2fr] items-start">
           
-          <div className="flex flex-col gap-6">
-            <div className="grid gap-4 sm:grid-cols-2">
+          <div className="flex flex-col gap-4 sm:gap-6">
+            <div className="grid gap-3 sm:gap-4 grid-cols-1 sm:grid-cols-2">
               <ContactCard icon={MapPin} title={t.contactHeadquarters} lines={["Tradex Olembe", "Yaoundé, Cameroun"]} />
               <ContactCard icon={Leaf} title={t.contactZone} lines={["Tout le Cameroun", "& Afrique Centrale"]} />
               <ContactCard icon={Phone} title={t.contactPhone} lines={["+237 650544444"]} href={`tel:${PHONE}`} />
               <ContactCard icon={Mail} title={t.contactEmail} lines={[EMAIL]} href={`mailto:${EMAIL}`} />
             </div>
 
-            <div className="overflow-hidden rounded-3xl border border-border bg-card shadow-sm h-64 sm:h-72 w-full">
+            <div className="overflow-hidden rounded-3xl border border-border bg-card shadow-sm h-52 sm:h-72 w-full">
               <iframe 
                 title="EDSOLAR Yaoundé" 
                 className="h-full w-full border-0"
@@ -2041,15 +2173,15 @@ function Contact({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
             </div>
           </div>
 
-          <form onSubmit={submit} className="rounded-3xl border border-border bg-card p-6 sm:p-8 shadow-sm">
-            <div className="grid gap-4 sm:grid-cols-2">
+          <form onSubmit={submit} className="rounded-3xl border border-border bg-card p-5 sm:p-8 shadow-sm">
+            <div className="grid gap-3 sm:gap-4 sm:grid-cols-2">
               <Field label={t.formName} value={form.name} onChange={(v) => setForm({ ...form, name: v })} required />
               <Field label={t.formPhone} value={form.phone} onChange={(v) => setForm({ ...form, phone: v })} required type="tel" />
               <Field label={t.formLocation} value={form.location} onChange={(v) => setForm({ ...form, location: v })} placeholder="Ex: Bastos, Yaoundé" />
               <div>
-                <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t.formProjectType}</label>
+                <label className="mb-1 block text-[10px] sm:text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t.formProjectType}</label>
                 <select value={form.type} onChange={(e) => setForm({ ...form, type: e.target.value })}
-                  className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-[#386b34]">
+                  className="w-full rounded-xl border border-input bg-background px-3.5 py-2.5 sm:px-4 sm:py-3 text-xs sm:text-sm outline-none focus:border-[#386b34]">
                   <option>{lang === "fr" ? "Maison" : "Home"}</option>
                   <option>{lang === "fr" ? "Commerce" : "Business"}</option>
                   <option>{lang === "fr" ? "Industrie" : "Industry"}</option>
@@ -2057,23 +2189,23 @@ function Contact({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
                 </select>
               </div>
               <div className="sm:col-span-2">
-                <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t.formNeeds}</label>
+                <label className="mb-1 block text-[10px] sm:text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t.formNeeds}</label>
                 <input type="text" value={form.needs} onChange={(e) => setForm({ ...form, needs: e.target.value })}
                   placeholder={lang === "fr" ? "Ex: pompage, climatisation, bureaux..." : "Ex: pumping, AC, offices..."}
-                  className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-[#386b34]" />
+                  className="w-full rounded-xl border border-input bg-background px-3.5 py-2.5 sm:px-4 sm:py-3 text-xs sm:text-sm outline-none focus:border-[#386b34]" />
               </div>
               <div className="sm:col-span-2">
-                <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t.formMessage}</label>
-                <textarea rows={4} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })}
+                <label className="mb-1 block text-[10px] sm:text-xs font-semibold uppercase tracking-wide text-muted-foreground">{t.formMessage}</label>
+                <textarea rows={3} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })}
                   placeholder={lang === "fr" ? "Décrivez brièvement votre besoin..." : "Briefly describe your request..."}
-                  className="w-full resize-none rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-[#386b34]" />
+                  className="w-full resize-none rounded-xl border border-input bg-background px-3.5 py-2.5 sm:px-4 sm:py-3 text-xs sm:text-sm outline-none focus:border-[#386b34]" />
               </div>
             </div>
             <button type="submit"
-              className="mt-6 inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#386b34] px-6 py-3.5 text-sm font-bold text-white shadow-lg transition-colors hover:bg-[#2e582b] sm:w-auto">
+              className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#386b34] px-5 py-3 text-xs sm:text-sm font-bold text-white shadow-lg transition-colors hover:bg-[#2e582b] sm:w-auto">
               <Send className="h-4 w-4" /> {t.formSubmit}
             </button>
-            {sent && <p className="mt-3 text-sm text-[#386b34] font-semibold">{t.formSuccess}</p>}
+            {sent && <p className="mt-2 text-xs sm:text-sm text-[#386b34] font-semibold">{t.formSuccess}</p>}
           </form>
 
         </div>
@@ -2084,14 +2216,14 @@ function Contact({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
 
 function ContactCard({ icon: Icon, title, lines, href }: { icon: any; title: string; lines: string[]; href?: string }) {
   const inner = (
-    <div className="flex items-start gap-3.5 rounded-2xl border border-border bg-card p-4 sm:p-5 shadow-sm transition-transform hover:-translate-y-1 h-full">
-      <div className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[#386b34]/10 text-[#386b34]">
-        <Icon className="h-5 w-5" />
+    <div className="flex items-start gap-3 rounded-2xl border border-border bg-card p-3.5 sm:p-5 shadow-sm transition-transform hover:-translate-y-1 h-full">
+      <div className="grid h-9 w-9 sm:h-10 sm:w-10 shrink-0 place-items-center rounded-xl bg-[#386b34]/10 text-[#386b34]">
+        <Icon className="h-4 w-4 sm:h-5 sm:w-5" />
       </div>
       <div className="min-w-0 flex-1">
-        <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground">{title}</p>
+        <p className="text-[10px] sm:text-xs font-bold uppercase tracking-wider text-muted-foreground">{title}</p>
         {lines.map((l) => (
-          <p key={l} className="mt-0.5 text-sm font-bold text-foreground break-all">{l}</p>
+          <p key={l} className="mt-0.5 text-xs sm:text-sm font-bold text-foreground break-all">{l}</p>
         ))}
       </div>
     </div>
@@ -2104,10 +2236,10 @@ function Field({ label, value, onChange, required, type = "text", placeholder }:
 }) {
   return (
     <div>
-      <label className="mb-1.5 block text-xs font-semibold uppercase tracking-wide text-muted-foreground">{label}</label>
+      <label className="mb-1 block text-[10px] sm:text-xs font-semibold uppercase tracking-wide text-muted-foreground">{label}</label>
       <input type={type} required={required} value={value} placeholder={placeholder}
         onChange={(e) => onChange(e.target.value)}
-        className="w-full rounded-xl border border-input bg-background px-4 py-3 text-sm outline-none focus:border-[#386b34]" />
+        className="w-full rounded-xl border border-input bg-background px-3.5 py-2.5 sm:px-4 sm:py-3 text-xs sm:text-sm outline-none focus:border-[#386b34]" />
     </div>
   );
 }
@@ -2116,31 +2248,31 @@ function Field({ label, value, onChange, required, type = "text", placeholder }:
 function Footer({ t }: { t: typeof TRANSLATIONS["fr"] }) {
   return (
     <footer className="border-t border-emerald-900/40 bg-[#1d3d19] text-white">
-      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-14 sm:px-6 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mx-auto grid max-w-7xl gap-8 px-4 py-10 sm:px-6 sm:grid-cols-2 lg:grid-cols-4 sm:py-14">
         
         <div>
-          <a href="/" className="inline-flex items-center gap-3" aria-label="Retour à l'accueil">
-            <img src={logo} alt="EDSOLAR Énergie Cameroun" className="h-12 w-12 rounded-xl bg-white object-contain p-1 shadow-md" />
+          <a href="/" className="inline-flex items-center gap-2.5" aria-label="Retour à l'accueil">
+            <img src={logo} alt="EDSOLAR Énergie Cameroun" className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl bg-white object-contain p-1 shadow-md" />
             <div>
-              <p className="text-lg font-black text-white">EDSOLAR</p>
-              <p className="text-[10px] uppercase tracking-[0.15em] text-emerald-300 font-bold">Énergie Cameroun</p>
+              <p className="text-base sm:text-lg font-black text-white">EDSOLAR</p>
+              <p className="text-[9px] sm:text-[10px] uppercase tracking-[0.15em] text-emerald-300 font-bold">Énergie Cameroun</p>
             </div>
           </a>
-          <p className="mt-4 text-xs leading-relaxed text-emerald-100/70">
+          <p className="mt-3 text-xs leading-relaxed text-emerald-100/70">
             Solutions solaires photovoltaïques haute performance et certifiées Tier 1 au Cameroun et en Afrique Centrale.
           </p>
-          <div className="mt-5 flex gap-3">
+          <div className="mt-4 flex gap-2.5">
             {[Facebook, Instagram, Linkedin].map((I, i) => (
-              <a key={i} href="#" className="grid h-10 w-10 place-items-center rounded-full bg-[#122910] text-emerald-200 transition-colors hover:bg-[#386b34] hover:text-white border border-emerald-800/50">
-                <I className="h-4 w-4" />
+              <a key={i} href="#" className="grid h-8 w-8 sm:h-10 sm:w-10 place-items-center rounded-full bg-[#122910] text-emerald-200 transition-colors hover:bg-[#386b34] hover:text-white border border-emerald-800/50">
+                <I className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
               </a>
             ))}
           </div>
         </div>
 
         <div>
-          <p className="text-sm font-bold uppercase tracking-wider text-emerald-300">{t.footerNav}</p>
-          <ul className="mt-4 space-y-2 text-xs text-emerald-100/70">
+          <p className="text-xs sm:text-sm font-bold uppercase tracking-wider text-emerald-300">{t.footerNav}</p>
+          <ul className="mt-3 space-y-1.5 sm:space-y-2 text-xs text-emerald-100/70">
             <li><a href="#partenaires" className="hover:text-emerald-300 transition-colors">{t.navPartners}</a></li>
             <li><a href="#services" className="hover:text-emerald-300 transition-colors">{t.navServices}</a></li>
             <li><a href="#kits" className="hover:text-emerald-300 transition-colors">{t.navKits}</a></li>
@@ -2152,8 +2284,8 @@ function Footer({ t }: { t: typeof TRANSLATIONS["fr"] }) {
         </div>
 
         <div>
-          <p className="text-sm font-bold uppercase tracking-wider text-emerald-300">{t.footerContact}</p>
-          <ul className="mt-4 space-y-2.5 text-xs text-emerald-100/70">
+          <p className="text-xs sm:text-sm font-bold uppercase tracking-wider text-emerald-300">{t.footerContact}</p>
+          <ul className="mt-3 space-y-2 text-xs text-emerald-100/70">
             <li className="flex gap-2"><MapPin className="h-4 w-4 shrink-0 text-emerald-300" /> Tradex Olembe, Yaoundé</li>
             <li className="flex gap-2"><Leaf className="h-4 w-4 shrink-0 text-emerald-300" /> Cameroun & Afrique Centrale</li>
             <li className="flex gap-2"><Phone className="h-4 w-4 shrink-0 text-emerald-300" /> +237 650544444</li>
@@ -2162,10 +2294,10 @@ function Footer({ t }: { t: typeof TRANSLATIONS["fr"] }) {
         </div>
 
         <div>
-          <p className="text-sm font-bold uppercase tracking-wider text-emerald-300">{t.footerPartners}</p>
-          <div className="mt-4 grid grid-cols-3 gap-2">
+          <p className="text-xs sm:text-sm font-bold uppercase tracking-wider text-emerald-300">{t.footerPartners}</p>
+          <div className="mt-3 grid grid-cols-3 gap-2">
             {PARTNERS_DATA.map((p) => (
-              <div key={p.name} className="flex items-center justify-center rounded-lg bg-white p-1.5 shadow-sm border border-emerald-950 h-10">
+              <div key={p.name} className="flex items-center justify-center rounded-lg bg-white p-1 shadow-sm border border-emerald-950 h-9">
                 <img src={p.logo} alt={p.name} loading="lazy" decoding="async" className="max-h-full max-w-full object-contain" />
               </div>
             ))}
@@ -2175,9 +2307,9 @@ function Footer({ t }: { t: typeof TRANSLATIONS["fr"] }) {
       </div>
 
       <div className="border-t border-emerald-900/30 bg-[#122910]">
-        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-4 py-5 text-xs text-emerald-100/50 sm:flex-row sm:px-6">
-          <p>{t.footerRights}</p>
-          <nav className="flex flex-wrap items-center gap-x-4 gap-y-1">
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2.5 px-4 py-4 text-[11px] sm:text-xs text-emerald-100/50 sm:flex-row sm:px-6">
+          <p className="text-center sm:text-left">{t.footerRights}</p>
+          <nav className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1">
             <a href="/mentions-legales" className="hover:text-emerald-300">{t.footerLegal}</a>
             <a href="/confidentialite" className="hover:text-emerald-300">{t.footerPrivacy}</a>
             <a href="/cookies" className="hover:text-emerald-300">{t.footerCookies}</a>
@@ -2196,11 +2328,11 @@ function FloatingWhatsApp({ lang }: { lang: Lang }) {
 
   return (
     <a href={waLink(waMsg)} target="_blank" rel="noreferrer"
-       className="fixed bottom-5 right-5 z-50 flex items-center gap-2 rounded-full bg-[#25D366] px-4 py-3 sm:px-5 sm:py-3.5 font-bold text-slate-950 shadow-2xl transition-transform hover:scale-105"
+       className="fixed bottom-4 right-4 sm:bottom-5 sm:right-5 z-50 flex items-center gap-2 rounded-full bg-[#25D366] px-3.5 py-2.5 sm:px-5 sm:py-3.5 font-bold text-slate-950 shadow-2xl transition-transform hover:scale-105"
        aria-label="Contacter sur WhatsApp">
-      <MessageCircle className="h-5 w-5 fill-slate-950" />
-      <span className="hidden sm:inline text-sm">Chat WhatsApp</span>
-      <span className="absolute -right-1 -top-1 grid h-5 w-5 place-items-center rounded-full bg-emerald-400 text-[10px] font-black text-slate-950 animate-pulse">1</span>
+      <MessageCircle className="h-4 w-4 sm:h-5 sm:w-5 fill-slate-950" />
+      <span className="hidden sm:inline text-xs sm:text-sm">Chat WhatsApp</span>
+      <span className="absolute -right-1 -top-1 grid h-4 w-4 sm:h-5 sm:w-5 place-items-center rounded-full bg-emerald-400 text-[9px] sm:text-[10px] font-black text-slate-950 animate-pulse">1</span>
     </a>
   );
 }
@@ -2219,8 +2351,8 @@ function ScrollToTop() {
     <button onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
       type="button"
       aria-label="Revenir en haut"
-      className="fixed bottom-20 sm:bottom-24 right-5 sm:right-6 z-50 grid h-10 w-10 sm:h-11 sm:w-11 place-items-center rounded-full border border-border bg-card text-foreground shadow-xl transition-transform hover:scale-110">
-      <ArrowUp className="h-5 w-5" />
+      className="fixed bottom-16 sm:bottom-24 right-4 sm:right-6 z-50 grid h-9 w-9 sm:h-11 sm:w-11 place-items-center rounded-full border border-border bg-card text-foreground shadow-xl transition-transform hover:scale-110">
+      <ArrowUp className="h-4 w-4 sm:h-5 sm:w-5" />
     </button>
   );
 }
@@ -2228,10 +2360,10 @@ function ScrollToTop() {
 /* ---------------- Shared ---------------- */
 function SectionHeader({ eyebrow, title, description }: { eyebrow: string; title: string; description: string }) {
   return (
-    <div className="mx-auto max-w-2xl text-center">
-      <span className="text-xs font-bold uppercase tracking-widest text-[#386b34] dark:text-emerald-400">{eyebrow}</span>
-      <h2 className="mt-2.5 text-2xl font-black tracking-tight text-foreground sm:text-4xl md:text-5xl">{title}</h2>
-      <p className="mt-3 sm:mt-4 text-sm sm:text-base text-muted-foreground">{description}</p>
+    <div className="mx-auto max-w-2xl text-center px-2">
+      <span className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-[#386b34] dark:text-emerald-400">{eyebrow}</span>
+      <h2 className="mt-1.5 sm:mt-2.5 text-xl sm:text-3xl md:text-4xl font-black tracking-tight text-foreground">{title}</h2>
+      <p className="mt-2 sm:mt-3 text-xs sm:text-base text-muted-foreground">{description}</p>
     </div>
   );
 }
