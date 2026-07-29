@@ -151,11 +151,11 @@ const TRANSLATIONS = {
     shopOrderWA: "Commander via WhatsApp",
     shopNoProduct: "Aucun équipement ne correspond à votre recherche.",
 
-    channelTag: "Vidéos du terrain",
+    channelTag: "Vidéos & Shorts du terrain",
     channelTitle1: "Rejoignez la Chaîne ",
     channelTitle2: "YouTube EDSOLAR",
-    channelDesc: "Abonnez-vous à notre chaîne officielle pour découvrir nos réalisations en vidéo, tutoriels d'utilisation et démonstrations du matériel.",
-    channelSubscribers: "Suivez nos vidéos exclusives sur YouTube !",
+    channelDesc: "Abonnez-vous à notre chaîne officielle pour découvrir nos réalisations en vidéo, tutoriels et démonstrations du matériel.",
+    channelSubscribers: "Suivez nos vidéos & Shorts exclusifs sur YouTube !",
     channelSubNote: "Abonnez-vous gratuitement à la chaîne @EDSOLAR237",
     channelBtn: "S'abonner sur YouTube",
 
@@ -187,10 +187,10 @@ const TRANSLATIONS = {
     aboutTitle: "EDSOLAR — Un engagement fort pour le bien-être durable",
     aboutPillarsText: "EDSOLAR repose sur quatre Grands Piliers fondamentaux : la Gratitude, l'Abondance, l'Amour et la Compassion.",
     aboutMissionText: "Notre mission est d'aider les gens à accéder à l'énergie solaire à moindre coût.",
-    aboutVisionText: "Notre vision est de bâtir un avenir où chaque famille, chaque entreprise et chaque communauté bénéficie d'une énergie propre, fiable et accessible : un monde sans délestage, avec moins de pollution, un environnement mieux protégé, des coûts énergétiques réduits et une véritable indépendance énergétique.",
+    aboutVisionText: "Notre vision est de bâtir un avenir où chaque famille, chaque entreprise et chaque communauté bénéficie d'une énergie propre, fiable et accessible.",
     aboutPresenceText: "Depuis 2017, nous déployons nos activités et notre savoir-faire sur l'ensemble du territoire camerounais.",
     aboutEcosystemTitle: "Cette vision s'étendra progressivement à d'autres domaines essentiels du quotidien :",
-    aboutConclusion: "EDSOLAR, ce n'est pas seulement une entreprise. C'est une vision, un engagement et un mouvement au service du bien-être total des générations d'aujourd'hui et de demain.",
+    aboutConclusion: "EDSOLAR, ce n'est pas seulement une entreprise. C'est une vision, un engagement et un mouvement au service du bien-être total.",
 
     contactEyebrow: "Contact",
     contactTitle: "Parlons de votre projet solaire",
@@ -233,7 +233,7 @@ const TRANSLATIONS = {
     heroTitle1: "Solar Energy ",
     heroTitle2: "Autonomous & Eco-Friendly",
     heroTitle3: " for Your Comfort",
-    heroDesc: "Ensure 24/7 electricity at home and office. Tier 1 certified equipment, guaranteed installations and responsive after-sales service in Yaoundé and Central Africa.",
+    heroDesc: "Ensure 24/7 electricity at home and office. Tier 1 certified equipment, guaranteed installations and responsive after-sales service.",
     heroSimulateBtn: "Simulate your energy needs",
     heroExpertBtn: "Contact an expert",
     heroStat1: "+500 successful installations",
@@ -284,11 +284,11 @@ const TRANSLATIONS = {
     shopOrderWA: "Order via WhatsApp",
     shopNoProduct: "No product matches your search.",
 
-    channelTag: "Field Videos",
+    channelTag: "Field Videos & Shorts",
     channelTitle1: "Join the Official ",
     channelTitle2: "YouTube Channel EDSOLAR",
-    channelDesc: "Subscribe to our channel to watch video project tours, tutorials and product demos.",
-    channelSubscribers: "Watch exclusive videos on YouTube!",
+    channelDesc: "Subscribe to our channel to watch video project tours, Shorts, tutorials and demos.",
+    channelSubscribers: "Watch exclusive videos & Shorts on YouTube!",
     channelSubNote: "Subscribe for free to @EDSOLAR237",
     channelBtn: "Subscribe on YouTube",
 
@@ -1488,25 +1488,31 @@ function DiasporaSection({ lang }: { lang: Lang }) {
   );
 }
 
-/* ---------------- SECTION CHAÎNE YOUTUBE ---------------- */
+/* ---------------- SECTION CHAÎNE YOUTUBE (AVEC SUPPORT COMPLET DES SHORTS & VIDEOS) ---------------- */
 function YouTubeSection({ t }: { t: typeof TRANSLATIONS["fr"] }) {
-  const [activeVideo, setActiveVideo] = useState<string | null>(null);
-  const [videos, setVideos] = useState<Array<{ id: string; title: string; youtubeId: string; thumbnail: string; date?: string }>>([]);
+  const [activeVideo, setActiveVideo] = useState<{ id: string; isShort: boolean } | null>(null);
+  const [videos, setVideos] = useState<Array<{ id: string; title: string; youtubeId: string; thumbnail: string; date?: string; isShort: boolean }>>([]);
 
   useEffect(() => {
-    const rssUrl = encodeURIComponent(`https://www.youtube.com/feeds/videos.xml?channel_id=${YOUTUBE_CHANNEL_ID}`);
+    // Interrogation du flux de la PLAYLIST globale des uploads (récupère TOUTES les vidéos et Shorts de la chaîne)
+    const rssUrl = encodeURIComponent(`https://www.youtube.com/feeds/videos.xml?playlist_id=${YOUTUBE_UPLOADS_PLAYLIST}`);
     fetch(`https://api.rss2json.com/v1/api.json?rss_url=${rssUrl}`)
       .then((res) => res.json())
       .then((data) => {
         if (data && data.items && data.items.length > 0) {
           const parsed = data.items.map((item: any) => {
             const videoId = item.guid ? item.guid.replace("yt:video:", "") : (item.link?.split("v=")[1] || "");
+            const title = item.title || "";
+            const isShort = item.link?.includes("/shorts/") || title.toLowerCase().includes("short") || item.thumbnail?.includes("hqdefault");
+            
             return {
               id: videoId || item.link,
-              title: item.title,
+              title: title,
               youtubeId: videoId,
+              // Pour les Shorts, on privilégie l'image haute qualité centrée
               thumbnail: item.thumbnail || `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`,
               date: item.pubDate ? new Date(item.pubDate).toLocaleDateString("fr-FR") : "",
+              isShort: isShort,
             };
           }).filter((v: any) => v.youtubeId);
           setVideos(parsed);
@@ -1532,15 +1538,16 @@ function YouTubeSection({ t }: { t: typeof TRANSLATIONS["fr"] }) {
           </p>
         </div>
 
-        <div className="mt-8 sm:mt-12 grid gap-4 sm:gap-6 sm:grid-cols-2 md:grid-cols-3">
+        {/* Grille adaptative pour vidéos et Shorts verticalisés */}
+        <div className="mt-8 sm:mt-12 grid gap-3 sm:gap-6 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
           {videos.length > 0 ? (
             videos.map((v) => (
               <div 
                 key={v.id} 
-                onClick={() => setActiveVideo(v.youtubeId)}
-                className="group relative cursor-pointer overflow-hidden rounded-3xl border border-emerald-800/40 bg-[#1a3818]/80 shadow-lg transition-all hover:border-emerald-400/50"
+                onClick={() => setActiveVideo({ id: v.youtubeId, isShort: v.isShort })}
+                className="group relative cursor-pointer overflow-hidden rounded-2xl border border-emerald-800/40 bg-[#1a3818]/80 shadow-lg transition-all hover:-translate-y-1 hover:border-emerald-400/50 flex flex-col justify-between"
               >
-                <div className="relative aspect-video w-full overflow-hidden bg-slate-900">
+                <div className="relative aspect-[9/16] w-full overflow-hidden bg-slate-900">
                   <img 
                     src={v.thumbnail} 
                     alt={v.title} 
@@ -1548,19 +1555,24 @@ function YouTubeSection({ t }: { t: typeof TRANSLATIONS["fr"] }) {
                     decoding="async" 
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" 
                   />
-                  <div className="absolute inset-0 bg-slate-950/40 group-hover:bg-slate-950/20 transition-colors flex items-center justify-center">
+                  <div className="absolute inset-0 bg-slate-950/30 group-hover:bg-slate-950/10 transition-colors flex items-center justify-center">
                     <div className="grid h-10 w-10 sm:h-12 sm:w-12 place-items-center rounded-full bg-[#386b34] text-white shadow-xl transition-transform group-hover:scale-110">
                       <Play className="h-4 w-4 sm:h-5 sm:w-5 fill-white ml-0.5" />
                     </div>
                   </div>
                   {v.date && (
-                    <span className="absolute bottom-2.5 right-2.5 rounded-lg bg-slate-950/80 px-2 py-0.5 text-[9px] sm:text-[10px] font-bold text-white backdrop-blur">
+                    <span className="absolute bottom-2 right-2 rounded-md bg-slate-950/80 px-1.5 py-0.5 text-[8px] sm:text-[10px] font-bold text-white backdrop-blur">
                       {v.date}
                     </span>
                   )}
+                  {v.isShort && (
+                    <span className="absolute top-2 left-2 rounded-md bg-red-600/90 px-1.5 py-0.5 text-[8px] sm:text-[9px] font-extrabold uppercase text-white shadow">
+                      Short
+                    </span>
+                  )}
                 </div>
-                <div className="p-3.5 sm:p-4">
-                  <h3 className="text-xs sm:text-sm font-bold text-white line-clamp-2 leading-snug group-hover:text-emerald-300 transition-colors">
+                <div className="p-2.5 sm:p-3">
+                  <h3 className="text-[11px] sm:text-xs font-bold text-white line-clamp-2 leading-snug group-hover:text-emerald-300 transition-colors">
                     {v.title}
                   </h3>
                 </div>
@@ -1568,13 +1580,13 @@ function YouTubeSection({ t }: { t: typeof TRANSLATIONS["fr"] }) {
             ))
           ) : (
             <div 
-              onClick={() => setActiveVideo(`playlist:${YOUTUBE_UPLOADS_PLAYLIST}`)}
+              onClick={() => setActiveVideo({ id: `playlist:${YOUTUBE_UPLOADS_PLAYLIST}`, isShort: false })}
               className="col-span-full mx-auto max-w-lg cursor-pointer overflow-hidden rounded-3xl border border-emerald-800/40 bg-[#1a3818]/80 p-6 sm:p-8 text-center shadow-lg transition-all hover:border-emerald-400/50"
             >
               <div className="mx-auto grid h-12 w-12 sm:h-16 sm:w-16 place-items-center rounded-full bg-[#386b34] text-white shadow-xl">
                 <Play className="h-5 w-5 sm:h-7 sm:w-7 fill-white ml-0.5" />
               </div>
-              <h3 className="mt-3 sm:mt-4 text-sm sm:text-base font-bold text-white">Vidéos de la chaîne @EDSOLAR237</h3>
+              <h3 className="mt-3 sm:mt-4 text-sm sm:text-base font-bold text-white">Vidéos & Shorts @EDSOLAR237</h3>
               <p className="mt-1 text-[11px] sm:text-xs text-emerald-200/70">Cliquez pour lire directement la chaîne officielle sur le site</p>
             </div>
           )}
@@ -1594,28 +1606,27 @@ function YouTubeSection({ t }: { t: typeof TRANSLATIONS["fr"] }) {
         </div>
       </div>
 
+      {/* Lecteur Lightbox responsive pour Vidéos et Shorts */}
       {activeVideo && (
-        <div className="fixed inset-0 z-50 grid place-items-center bg-slate-950/80 p-3 sm:p-4 backdrop-blur-md" onClick={() => setActiveVideo(null)}>
-          <div className="relative w-full max-w-4xl overflow-hidden rounded-3xl bg-slate-900 shadow-2xl" onClick={(e) => e.stopPropagation()}>
+        <div className="fixed inset-0 z-50 grid place-items-center bg-slate-950/85 p-3 sm:p-4 backdrop-blur-md" onClick={() => setActiveVideo(null)}>
+          <div className={`relative w-full ${activeVideo.isShort ? "max-w-sm aspect-[9/16]" : "max-w-4xl aspect-video"} overflow-hidden rounded-3xl bg-slate-900 shadow-2xl`} onClick={(e) => e.stopPropagation()}>
             <button 
               onClick={() => setActiveVideo(null)}
               className="absolute right-3 top-3 z-10 grid h-8 w-8 sm:h-10 sm:w-10 place-items-center rounded-full bg-slate-950/80 text-white hover:bg-[#386b34] transition-colors"
             >
               <X className="h-4 w-4 sm:h-5 sm:w-5" />
             </button>
-            <div className="relative aspect-video w-full">
-              <iframe 
-                src={
-                  activeVideo.startsWith("playlist:")
-                    ? `https://www.youtube.com/embed/videoseries?list=${activeVideo.replace("playlist:", "")}&autoplay=1`
-                    : `https://www.youtube.com/embed/${activeVideo}?autoplay=1`
-                } 
-                title="EDSOLAR YouTube Player"
-                className="h-full w-full border-0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                allowFullScreen
-              />
-            </div>
+            <iframe 
+              src={
+                activeVideo.id.startsWith("playlist:")
+                  ? `https://www.youtube.com/embed/videoseries?list=${activeVideo.id.replace("playlist:", "")}&autoplay=1`
+                  : `https://www.youtube.com/embed/${activeVideo.id}?autoplay=1`
+              } 
+              title="EDSOLAR YouTube Player"
+              className="h-full w-full border-0 rounded-3xl"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
           </div>
         </div>
       )}
