@@ -1488,13 +1488,13 @@ function DiasporaSection({ lang }: { lang: Lang }) {
   );
 }
 
-/* ---------------- SECTION CHAÎNE YOUTUBE (AVEC SUPPORT COMPLET DES SHORTS & VIDEOS) ---------------- */
+/* ---------------- SECTION CHAÎNE YOUTUBE (FILTRAGE AUTOMATIQUE & DYNAMIQUE) ---------------- */
 function YouTubeSection({ t }: { t: typeof TRANSLATIONS["fr"] }) {
   const [activeVideo, setActiveVideo] = useState<{ id: string; isShort: boolean } | null>(null);
   const [videos, setVideos] = useState<Array<{ id: string; title: string; youtubeId: string; thumbnail: string; date?: string; isShort: boolean }>>([]);
 
   useEffect(() => {
-    // Interrogation du flux de la PLAYLIST globale des uploads (récupère TOUTES les vidéos et Shorts de la chaîne)
+    // Interrogation du flux RSS de la PLAYLIST globale des uploads
     const rssUrl = encodeURIComponent(`https://www.youtube.com/feeds/videos.xml?playlist_id=${YOUTUBE_UPLOADS_PLAYLIST}`);
     fetch(`https://api.rss2json.com/v1/api.json?rss_url=${rssUrl}`)
       .then((res) => res.json())
@@ -1503,23 +1503,29 @@ function YouTubeSection({ t }: { t: typeof TRANSLATIONS["fr"] }) {
           const parsed = data.items.map((item: any) => {
             const videoId = item.guid ? item.guid.replace("yt:video:", "") : (item.link?.split("v=")[1] || "");
             const title = item.title || "";
-            const isShort = item.link?.includes("/shorts/") || title.toLowerCase().includes("short") || item.thumbnail?.includes("hqdefault");
-            
+            // Détection stricte d'un Short (lien direct /shorts/ ou mot-clé "short")
+            const isShort = item.link?.includes("/shorts/") || title.toLowerCase().includes("short");
+
             return {
               id: videoId || item.link,
               title: title,
               youtubeId: videoId,
-              // Pour les Shorts, on privilégie l'image haute qualité centrée
-              thumbnail: item.thumbnail || `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`,
+              thumbnail: `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`,
               date: item.pubDate ? new Date(item.pubDate).toLocaleDateString("fr-FR") : "",
               isShort: isShort,
             };
           }).filter((v: any) => v.youtubeId);
+
           setVideos(parsed);
         }
       })
       .catch(() => {});
   }, []);
+
+  // Retire automatiquement du DOM les vidéos supprimées de YouTube dont la miniature renvoie une erreur
+  const handleImageError = (videoIdToRemove: string) => {
+    setVideos((prev) => prev.filter((v) => v.youtubeId !== videoIdToRemove));
+  };
 
   return (
     <section id="videos" className="relative overflow-hidden bg-[#234d20] py-12 text-slate-100 sm:py-24 border-t border-emerald-900/30">
@@ -1538,7 +1544,7 @@ function YouTubeSection({ t }: { t: typeof TRANSLATIONS["fr"] }) {
           </p>
         </div>
 
-        {/* Grille adaptative pour vidéos et Shorts verticalisés */}
+        {/* Grille adaptative pour vidéos longues et Shorts */}
         <div className="mt-8 sm:mt-12 grid gap-3 sm:gap-6 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
           {videos.length > 0 ? (
             videos.map((v) => (
@@ -1547,12 +1553,13 @@ function YouTubeSection({ t }: { t: typeof TRANSLATIONS["fr"] }) {
                 onClick={() => setActiveVideo({ id: v.youtubeId, isShort: v.isShort })}
                 className="group relative cursor-pointer overflow-hidden rounded-2xl border border-emerald-800/40 bg-[#1a3818]/80 shadow-lg transition-all hover:-translate-y-1 hover:border-emerald-400/50 flex flex-col justify-between"
               >
-                <div className="relative aspect-[9/16] w-full overflow-hidden bg-slate-900">
+                <div className={`relative ${v.isShort ? "aspect-[9/16]" : "aspect-video"} w-full overflow-hidden bg-slate-900`}>
                   <img 
                     src={v.thumbnail} 
                     alt={v.title} 
                     loading="lazy" 
                     decoding="async" 
+                    onError={() => handleImageError(v.youtubeId)}
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" 
                   />
                   <div className="absolute inset-0 bg-slate-950/30 group-hover:bg-slate-950/10 transition-colors flex items-center justify-center">
@@ -1580,14 +1587,14 @@ function YouTubeSection({ t }: { t: typeof TRANSLATIONS["fr"] }) {
             ))
           ) : (
             <div 
-              onClick={() => setActiveVideo({ id: `playlist:${YOUTUBE_UPLOADS_PLAYLIST}`, isShort: false })}
+              onClick={() => window.open(YOUTUBE_CHANNEL_URL, "_blank")}
               className="col-span-full mx-auto max-w-lg cursor-pointer overflow-hidden rounded-3xl border border-emerald-800/40 bg-[#1a3818]/80 p-6 sm:p-8 text-center shadow-lg transition-all hover:border-emerald-400/50"
             >
               <div className="mx-auto grid h-12 w-12 sm:h-16 sm:w-16 place-items-center rounded-full bg-[#386b34] text-white shadow-xl">
                 <Play className="h-5 w-5 sm:h-7 sm:w-7 fill-white ml-0.5" />
               </div>
               <h3 className="mt-3 sm:mt-4 text-sm sm:text-base font-bold text-white">Vidéos & Shorts @EDSOLAR237</h3>
-              <p className="mt-1 text-[11px] sm:text-xs text-emerald-200/70">Cliquez pour lire directement la chaîne officielle sur le site</p>
+              <p className="mt-1 text-[11px] sm:text-xs text-emerald-200/70">Cliquez pour voir la chaîne officielle YouTube</p>
             </div>
           )}
         </div>
@@ -1617,11 +1624,7 @@ function YouTubeSection({ t }: { t: typeof TRANSLATIONS["fr"] }) {
               <X className="h-4 w-4 sm:h-5 sm:w-5" />
             </button>
             <iframe 
-              src={
-                activeVideo.id.startsWith("playlist:")
-                  ? `https://www.youtube.com/embed/videoseries?list=${activeVideo.id.replace("playlist:", "")}&autoplay=1`
-                  : `https://www.youtube.com/embed/${activeVideo.id}?autoplay=1`
-              } 
+              src={`https://www.youtube.com/embed/${activeVideo.id}?autoplay=1`} 
               title="EDSOLAR YouTube Player"
               className="h-full w-full border-0 rounded-3xl"
               allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
