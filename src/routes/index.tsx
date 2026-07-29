@@ -1488,22 +1488,20 @@ function DiasporaSection({ lang }: { lang: Lang }) {
   );
 }
 
-/* ---------------- SECTION CHAÎNE YOUTUBE (FILTRAGE AUTOMATIQUE & DYNAMIQUE) ---------------- */
+/* ---------------- SECTION CHAÎNE YOUTUBE (INSPECTION ASYNCHRONE DES MINIATURES) ---------------- */
 function YouTubeSection({ t }: { t: typeof TRANSLATIONS["fr"] }) {
   const [activeVideo, setActiveVideo] = useState<{ id: string; isShort: boolean } | null>(null);
   const [videos, setVideos] = useState<Array<{ id: string; title: string; youtubeId: string; thumbnail: string; date?: string; isShort: boolean }>>([]);
 
   useEffect(() => {
-    // Interrogation du flux RSS de la PLAYLIST globale des uploads
     const rssUrl = encodeURIComponent(`https://www.youtube.com/feeds/videos.xml?playlist_id=${YOUTUBE_UPLOADS_PLAYLIST}`);
     fetch(`https://api.rss2json.com/v1/api.json?rss_url=${rssUrl}`)
       .then((res) => res.json())
-      .then((data) => {
+      .then(async (data) => {
         if (data && data.items && data.items.length > 0) {
-          const parsed = data.items.map((item: any) => {
+          const rawParsed = data.items.map((item: any) => {
             const videoId = item.guid ? item.guid.replace("yt:video:", "") : (item.link?.split("v=")[1] || "");
             const title = item.title || "";
-            // Détection stricte d'un Short (lien direct /shorts/ ou mot-clé "short")
             const isShort = item.link?.includes("/shorts/") || title.toLowerCase().includes("short");
 
             return {
@@ -1516,16 +1514,32 @@ function YouTubeSection({ t }: { t: typeof TRANSLATIONS["fr"] }) {
             };
           }).filter((v: any) => v.youtubeId);
 
-          setVideos(parsed);
+          // Inspection réelle et asynchrone des images pour éliminer les miniatures supprimées/grises (120px)
+          const validated = await Promise.all(
+            rawParsed.map((v: any) => {
+              return new Promise<any>((resolve) => {
+                const img = new Image();
+                img.src = v.thumbnail;
+                img.onload = () => {
+                  // Si l'image renvoyée fait 120px de haut, c'est l'image d'erreur par défaut de YouTube
+                  if (img.naturalHeight === 120 || img.naturalWidth === 120) {
+                    resolve(null);
+                  } else {
+                    // Ajuste dynamically l'orientation réelle de l'image
+                    const actualIsShort = v.isShort || (img.naturalHeight > img.naturalWidth);
+                    resolve({ ...v, isShort: actualIsShort });
+                  }
+                };
+                img.onerror = () => resolve(null);
+              });
+            })
+          );
+
+          setVideos(validated.filter(Boolean));
         }
       })
       .catch(() => {});
   }, []);
-
-  // Retire automatiquement du DOM les vidéos supprimées de YouTube dont la miniature renvoie une erreur
-  const handleImageError = (videoIdToRemove: string) => {
-    setVideos((prev) => prev.filter((v) => v.youtubeId !== videoIdToRemove));
-  };
 
   return (
     <section id="videos" className="relative overflow-hidden bg-[#234d20] py-12 text-slate-100 sm:py-24 border-t border-emerald-900/30">
@@ -1544,7 +1558,7 @@ function YouTubeSection({ t }: { t: typeof TRANSLATIONS["fr"] }) {
           </p>
         </div>
 
-        {/* Grille adaptative pour vidéos longues et Shorts */}
+        {/* Grille adaptative pour vidéos et Shorts */}
         <div className="mt-8 sm:mt-12 grid gap-3 sm:gap-6 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
           {videos.length > 0 ? (
             videos.map((v) => (
@@ -1559,7 +1573,6 @@ function YouTubeSection({ t }: { t: typeof TRANSLATIONS["fr"] }) {
                     alt={v.title} 
                     loading="lazy" 
                     decoding="async" 
-                    onError={() => handleImageError(v.youtubeId)}
                     className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" 
                   />
                   <div className="absolute inset-0 bg-slate-950/30 group-hover:bg-slate-950/10 transition-colors flex items-center justify-center">
@@ -1619,7 +1632,7 @@ function YouTubeSection({ t }: { t: typeof TRANSLATIONS["fr"] }) {
           <div className={`relative w-full ${activeVideo.isShort ? "max-w-sm aspect-[9/16]" : "max-w-4xl aspect-video"} overflow-hidden rounded-3xl bg-slate-900 shadow-2xl`} onClick={(e) => e.stopPropagation()}>
             <button 
               onClick={() => setActiveVideo(null)}
-              className="absolute right-3 top-3 z-10 grid h-8 w-8 sm:h-10 sm:w-10 place-items-center rounded-full bg-slate-950/80 text-white hover:bg-[#386b34] transition-colors"
+              className="absolute right-3 top-3 z-10 grid h-8 w-8 sm:h-10 sm:w-10 place-items-center rounded-full bg-[#386b34] text-white shadow-lg"
             >
               <X className="h-4 w-4 sm:h-5 sm:w-5" />
             </button>
