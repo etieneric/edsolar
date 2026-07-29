@@ -851,39 +851,70 @@ function Metric({ icon: Icon, label, value, highlight }: { icon: any; label: str
 /* ---------------- Helper Parser de Variantes ---------------- */
 type VariantItem = { label: string; priceDisplay: string };
 
-function parseProductVariants(priceRaw: string | null | undefined, name: string): VariantItem[] {
+function parseProductVariants(
+  priceRaw: string | null | undefined, 
+  name: string, 
+  badge?: string | null, 
+  description?: string | null
+): VariantItem[] {
   if (!priceRaw) return [];
+  const rawString = priceRaw.trim();
+  if (!rawString) return [];
 
-  // Découpage par tiret (dash)
-  const rawParts = priceRaw.split("-").map((s) => s.trim()).filter(Boolean);
-  if (rawParts.length === 0) return [];
+  // 1. Découpage pour paires explicites "100AH = 580 000 FCFA - 200AH = 880 000 FCFA"
+  if (rawString.includes("=") || rawString.includes(":")) {
+    const delim = rawString.includes("\n") ? "\n" : (rawString.includes("-") ? "-" : ",");
+    const parts = rawString.split(delim).map((s) => s.trim()).filter(Boolean);
+    const explicitVariants: VariantItem[] = [];
 
-  // Chercher des mentions de capacités dans le nom du produit (ex: "100AH/200AH/300AH")
-  const ahMatches = name.match(/(\d+\s*AH)/gi);
-  
-  // Détection par défaut pour batteries
-  const defaultCapacityLabels = ["100Ah", "200Ah", "300Ah", "400Ah", "500Ah"];
-  const isBattery = /li-sun|25\.6v|51\.2v|batterie/i.test(name);
-
-  return rawParts.map((part, idx) => {
-    // Extrait uniquement les chiffres du prix
-    const numeric = Number(part.replace(/\D/g, ""));
-    const formattedPrice = numeric > 0 
-      ? `${new Intl.NumberFormat("fr-FR").format(numeric)} FCFA`
-      : part;
-
-    let label = formattedPrice;
-    if (rawParts.length > 1) {
-      if (ahMatches && ahMatches[idx]) {
-        label = ahMatches[idx].toUpperCase();
-      } else if (isBattery && defaultCapacityLabels[idx]) {
-        label = defaultCapacityLabels[idx];
-      } else {
-        label = `Option ${idx + 1}`;
+    for (const part of parts) {
+      if (part.includes("=") || part.includes(":")) {
+        const sep = part.includes("=") ? "=" : ":";
+        const [lbl, prc] = part.split(sep).map((s) => s.trim());
+        if (lbl && prc) {
+          const num = Number(prc.replace(/\D/g, ""));
+          const formatted = num > 0 ? `${new Intl.NumberFormat("fr-FR").format(num)} FCFA` : prc;
+          explicitVariants.push({ label: lbl.toUpperCase(), priceDisplay: formatted });
+        }
       }
     }
+    if (explicitVariants.length > 0) return explicitVariants;
+  }
 
-    return { label, priceDisplay: formattedPrice };
+  // 2. Découpage standard par tiret "-" (ex: "580,000 FCFA- 880,000FCFA-1350,000FCFA")
+  const priceParts = rawString.split("-").map((s) => s.trim()).filter(Boolean);
+  if (priceParts.length === 0) return [];
+
+  const formattedPrices = priceParts.map((part) => {
+    const num = Number(part.replace(/\D/g, ""));
+    return num > 0 ? `${new Intl.NumberFormat("fr-FR").format(num)} FCFA` : part;
+  });
+
+  if (formattedPrices.length === 1) {
+    return [{ label: "Base", priceDisplay: formattedPrices[0] }];
+  }
+
+  // 3. Extraction intelligente des capacités (ex: 100AH, 200AH, 300AH) dans le nom/badge/description
+  const combinedText = `${name} ${badge || ""} ${description || ""}`;
+  const matches = combinedText.match(/\b\d+(?:\.\d+)?\s*(?:AH|Ah|KVA|kVA|KWH|kWh|W|kW)\b/g);
+  let uniqueLabels: string[] = [];
+  if (matches) {
+    uniqueLabels = Array.from(new Set(matches.map((m) => m.toUpperCase().replace(/\s+/g, ""))));
+  }
+
+  const defaultBatteryLabels = ["100AH", "200AH", "300AH", "400AH", "500AH"];
+  const isBattery = /li-sun|25\.6v|51\.2v|batterie|battery/i.test(combinedText);
+
+  return formattedPrices.map((priceDisplay, idx) => {
+    let label = "";
+    if (uniqueLabels.length >= formattedPrices.length) {
+      label = uniqueLabels[idx];
+    } else if (isBattery && defaultBatteryLabels[idx]) {
+      label = defaultBatteryLabels[idx];
+    } else {
+      label = `Option ${idx + 1}`;
+    }
+    return { label, priceDisplay };
   });
 }
 
@@ -909,14 +940,14 @@ function parseWarranty(p: Product): number {
 }
 
 function ProductCard({ p, lang, t, onSelectImage }: { p: Product; lang: Lang; t: typeof TRANSLATIONS["fr"]; onSelectImage: (p: Product) => void }) {
-  const variants = useMemo(() => parseProductVariants(p.price, p.name), [p.price, p.name]);
+  const variants = useMemo(() => parseProductVariants(p.price, p.name, p.badge, p.description), [p.price, p.name, p.badge, p.description]);
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   const activeVariant = variants[selectedIndex] || variants[0];
   const activePrice = activeVariant ? activeVariant.priceDisplay : (p.price || (lang === "fr" ? "Sur devis" : "On request"));
 
   const buildOrderMsg = () => {
-    const variantInfo = variants.length > 1 ? `\n• Capacité/Option : ${activeVariant?.label}` : "";
+    const variantInfo = variants.length > 1 ? `\n• Capacité / Option : ${activeVariant?.label}` : "";
     return lang === "fr" 
       ? `Bonjour EDSOLAR, je souhaite commander :\n• Produit : ${p.name}${variantInfo}\n• Prix : ${activePrice}\n\nMerci de me confirmer la disponibilité.`
       : `Hello EDSOLAR, I would like to order:\n• Product: ${p.name}${variantInfo}\n• Price: ${activePrice}\n\nPlease confirm availability.`;
@@ -965,17 +996,19 @@ function ProductCard({ p, lang, t, onSelectImage }: { p: Product; lang: Lang; t:
           {p.warranty && <span className="rounded-full bg-[#386b34]/10 px-2 py-0.5 text-[#386b34]">{translateDynamicText(p.warranty, lang)}</span>}
         </div>
 
-        {/* Variantes sous forme de boutons de choix */}
+        {/* Variantes sous forme de puces interactives (comme sur Photo 2) */}
         {variants.length > 1 && (
           <div className="mt-4 pt-3 border-t border-border">
-            <p className="text-[10px] font-bold uppercase text-muted-foreground mb-2">Choisir la capacité :</p>
-            <div className="flex flex-wrap gap-1.5">
+            <p className="text-[10px] font-bold uppercase tracking-wider text-muted-foreground mb-2">
+              {lang === "fr" ? "CHOISIR LA CAPACITÉ :" : "SELECT CAPACITY:"}
+            </p>
+            <div className="flex flex-wrap gap-2">
               {variants.map((v, idx) => (
                 <button
                   key={idx}
                   type="button"
                   onClick={() => setSelectedIndex(idx)}
-                  className={`rounded-xl px-3 py-1.5 text-xs font-bold transition-all ${
+                  className={`rounded-xl px-3 py-1.5 text-xs font-black transition-all ${
                     selectedIndex === idx
                       ? "bg-[#386b34] text-white shadow-md ring-2 ring-[#386b34]/30"
                       : "border border-border bg-background text-foreground hover:bg-secondary"
@@ -991,7 +1024,7 @@ function ProductCard({ p, lang, t, onSelectImage }: { p: Product; lang: Lang; t:
 
       <div className="mt-5 pt-3 border-t border-border">
         <div className="flex items-baseline justify-between gap-2 mb-3">
-          <span className="text-[11px] font-bold uppercase text-muted-foreground">Prix :</span>
+          <span className="text-[11px] font-bold uppercase text-muted-foreground">PRIX :</span>
           <span className="text-xl font-black text-[#386b34] dark:text-emerald-400">{activePrice}</span>
         </div>
 
