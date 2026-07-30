@@ -411,7 +411,7 @@ function translateDynamicText(text: string | null | undefined, lang: Lang): stri
 
 /* ---------------- INTERRUPTEUR DE MAINTENANCE ---------------- */
 // Passe cette variable à "false" pour rétablir le site normal immédiatement.
-const IS_MAINTENANCE_MODE = true;
+const IS_MAINTENANCE_MODE = false;
 
 function MaintenanceView() {
   return (
