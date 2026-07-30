@@ -40,12 +40,34 @@ import { supabase } from "@/integrations/supabase/client";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "EDSOLAR Énergie Cameroun — Installation Solaire à Yaoundé & Afrique Centrale" },
-      { name: "description", content: "Solutions anti-délestage Eneo, installation de panneaux solaires, batteries Lithium et matériel certifié à Yaoundé. Contactez-nous à edsolarcam@gmail.com ou au +237 650544444." },
-      { property: "og:title", content: "EDSOLAR Énergie Cameroun — Installation Solaire & Anti-Délestage" },
-      { property: "og:description", content: "Fini les coupures Eneo. Équipements solaires certifiés Tier 1 à Yaoundé et livraison dans toute l'Afrique Centrale." },
+      {
+        title: "EDSOLAR Énergie Cameroun — Installation Solaire à Yaoundé & Afrique Centrale",
+      },
+      {
+        name: "description",
+        content:
+          "Solutions anti-délestage Eneo, installation de panneaux solaires, batteries Lithium et matériel certifié à Yaoundé. Contactez-nous à edsolarcam@gmail.com ou au +237 650544444.",
+      },
+      {
+        property: "og:title",
+        content:
+          "EDSOLAR Énergie Cameroun — Installation Solaire & Anti-Délestage",
+      },
+      {
+        property: "og:description",
+        content:
+          "Fini les coupures Eneo. Équipements solaires certifiés Tier 1 à Yaoundé et livraison dans toute l'Afrique Centrale.",
+      },
+
+      // Vérification Google Search Console
+      {
+        name: "google-site-verification",
+        content: "AZgs_Swa5ZCBipELur5gmowIYDrg1h_3VuNUvaQugEk",
+      },
     ],
   }),
+  component: Index,
+});
   component: Index,
 });
 
