@@ -46,7 +46,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "L'Énergie Solaire Autonome & Écologique pour Votre Confort, installation de panneaux solaires, batteries Lithium et matériel certifié à Yaoundé. Contactez-nous à edsolarcam@gmail.com ou au +237 650544444.",
+          "L'Énergie Solaire Autonome & Écologique pour Votre Confort, EDSOLAR accompagne les particuliers et les entreprises au Cameroun avec des solutions d'énergie solaire fiables : panneaux solaires, batteries lithium, onduleurs hybrides et installations photovoltaïques à Yaoundé et dans tout le pays. Contactez-nous à edsolarcam@gmail.com ou au +237 650544444.",
       },
       {
         property: "og:title",
