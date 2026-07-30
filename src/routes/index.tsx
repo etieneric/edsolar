@@ -409,9 +409,55 @@ function translateDynamicText(text: string | null | undefined, lang: Lang): stri
   return translated;
 }
 
+/* ---------------- INTERRUPTEUR DE MAINTENANCE ---------------- */
+// Passe cette variable à "false" pour rétablir le site normal immédiatement.
+const IS_MAINTENANCE_MODE = true;
+
+function MaintenanceView() {
+  return (
+    <div className="min-h-screen bg-slate-950 text-white flex flex-col items-center justify-center p-6 text-center selection:bg-[#386b34] selection:text-white">
+      <div className="max-w-md rounded-3xl bg-slate-900 p-8 border border-emerald-900/40 shadow-2xl relative overflow-hidden">
+        <div className="mx-auto mb-5 grid h-16 w-16 place-items-center rounded-2xl bg-[#386b34]/20 text-[#386b34] border border-[#386b34]/30">
+          <Wrench className="h-8 w-8 text-emerald-400" />
+        </div>
+        
+        <div className="inline-flex items-center gap-2 rounded-full bg-amber-500/10 border border-amber-500/20 px-3 py-1 text-xs font-bold text-amber-400 mb-4">
+          <AlertTriangle className="h-3.5 w-3.5" /> Maintenance technique en cours
+        </div>
+
+        <h1 className="text-2xl font-black tracking-tight text-white sm:text-3xl">EDSOLAR Énergie</h1>
+        
+        <p className="mt-3 text-xs sm:text-sm text-slate-300 leading-relaxed">
+          Notre plateforme est actuellement en cours de mise à jour et de maintenance technique planifiée. 
+          L'accès aux services en ligne sera rétabli sous peu.
+        </p>
+
+        <div className="mt-6 pt-6 border-t border-slate-800 flex flex-col items-center justify-center gap-2 text-xs text-slate-400">
+          <p>Pour toute urgence technique ou commerciale :</p>
+          <a 
+            href={`tel:${PHONE}`} 
+            className="inline-flex items-center gap-1.5 font-bold text-emerald-400 hover:underline"
+          >
+            <Phone className="h-3.5 w-3.5" /> +237 650544444
+          </a>
+        </div>
+
+        <p className="mt-6 text-[10px] text-slate-600 uppercase tracking-widest font-semibold">
+          Code Référence : MAINT-503-SYS
+        </p>
+      </div>
+    </div>
+  );
+}
+
 function Index() {
   const [lang, setLang] = useState<Lang>("fr");
   const t = TRANSLATIONS[lang] || TRANSLATIONS.fr;
+
+  // Si le mode maintenance est activé, seul le composant de maintenance est rendu
+  if (IS_MAINTENANCE_MODE) {
+    return <MaintenanceView />;
+  }
 
   return (
     <div className="min-h-screen bg-background text-foreground selection:bg-[#386b34] selection:text-white overflow-x-hidden">
@@ -1521,11 +1567,9 @@ function YouTubeSection({ t }: { t: typeof TRANSLATIONS["fr"] }) {
                 const img = new Image();
                 img.src = v.thumbnail;
                 img.onload = () => {
-                  // Si l'image renvoyée fait 120px de haut, c'est l'image d'erreur par défaut de YouTube
                   if (img.naturalHeight === 120 || img.naturalWidth === 120) {
                     resolve(null);
                   } else {
-                    // Ajuste dynamically l'orientation réelle de l'image
                     const actualIsShort = v.isShort || (img.naturalHeight > img.naturalWidth);
                     resolve({ ...v, isShort: actualIsShort });
                   }
