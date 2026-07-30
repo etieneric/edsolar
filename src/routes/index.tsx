@@ -46,7 +46,7 @@ export const Route = createFileRoute("/")({
       {
         name: "description",
         content:
-          "Solutions anti-délestage Eneo, installation de panneaux solaires, batteries Lithium et matériel certifié à Yaoundé. Contactez-nous à edsolarcam@gmail.com ou au +237 650544444.",
+          "L'Énergie Solaire Autonome & Écologique pour Votre Confort, installation de panneaux solaires, batteries Lithium et matériel certifié à Yaoundé. Contactez-nous à edsolarcam@gmail.com ou au +237 650544444.",
       },
       {
         property: "og:title",
@@ -56,7 +56,7 @@ export const Route = createFileRoute("/")({
       {
         property: "og:description",
         content:
-          "Fini les coupures Eneo. Équipements solaires certifiés Tier 1 à Yaoundé et livraison dans toute l'Afrique Centrale.",
+          "Fini les délestages. Équipements solaires certifiés Tier 1 à Yaoundé et livraison dans toute l'Afrique Centrale.",
       },
 
       // Vérification Google Search Console
