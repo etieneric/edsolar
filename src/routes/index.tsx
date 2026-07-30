@@ -68,8 +68,6 @@ export const Route = createFileRoute("/")({
   }),
   component: Index,
 });
-  component: Index,
-});
 
 const PHONE = "+237650544444";
 const EMAIL = "edsolarcam@gmail.com";
