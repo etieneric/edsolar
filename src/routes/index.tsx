@@ -49,6 +49,11 @@ export const Route = createFileRoute("/")({
           "L'Énergie Solaire Autonome & Écologique pour Votre Confort, EDSOLAR accompagne les particuliers et les entreprises au Cameroun avec des solutions d'énergie solaire fiables : panneaux solaires, batteries lithium, onduleurs hybrides et installations photovoltaïques à Yaoundé et dans tout le pays. Contactez-nous à edsolarcam@gmail.com ou au +237 650544444.",
       },
       {
+        property: "og:locale",
+        content:
+          "fr_FR",
+      },
+      {
         property: "og:title",
         content:
           "EDSOLAR Énergie Cameroun — Installation Solaire & Anti-Délestage",
