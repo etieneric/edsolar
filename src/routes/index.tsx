@@ -1037,7 +1037,7 @@ const generatePDFAndSendWA = ({
   doc.text("• Ce devis est une estimation indicative. Une visite technique validera le schéma final.", 14, finalY + 16);
 
   // 5. Sauvegarde du fichier PDF
-  const safeName = (clientName || "Prospect").replace(/[^a-[#0-9]/gi, "_");
+  const safeName = (clientName || "Prospect").replace(/[^a-zA-Z0-9]/gi, "_");
   doc.save(`Devis_EDSOLAR_${safeName}.pdf`);
 
   // 6. Ouverture automatique de WhatsApp
