@@ -1009,7 +1009,8 @@ const generatePDFAndSendWA = ({
     doc.setTextColor(56, 107, 52);
     doc.text("1. Inventaire & Consommation des Équipements Client", 14, 70);
 
-    (doc as any).autoTable({
+    // Appel direct de autoTable au lieu de doc.autoTable
+    autoTable(doc, {
       head: [["Équipement", "Qté", "Puiss. Unitaire", "Puiss. Totale", "Utilisation", "Conso. Estimée"]],
       body: selectedApplianceRows.length > 0 ? selectedApplianceRows : [["Aucun appareil sélectionné", "-", "-", "-", "-", "-"]],
       startY: 73,
@@ -1043,7 +1044,7 @@ const generatePDFAndSendWA = ({
       ["ESTIMATION BUDGÉTAIRE GLOBALE", priceLabel || "Sur devis"],
     ];
 
-    (doc as any).autoTable({
+    autoTable(doc, {
       head: [["Composant / Caractéristique", "Spécification Recommandée"]],
       body: techRows,
       startY: startYTable2 + 3,
@@ -1076,14 +1077,14 @@ const generatePDFAndSendWA = ({
     const safeName = (clientName || "Prospect").replace(/[^a-zA-Z0-9]/gi, "_");
     doc.save(`Devis_EDSOLAR_${safeName}.pdf`);
 
-    // Redirection WhatsApp (contourne le filtre anti-popup du navigateur)
+    // Redirection WhatsApp
     const rawWaText = lang === "fr"
       ? `Bonjour EDSOLAR,\nJ'ai généré mon devis PDF complet (${systemKva} kVA - ${priceLabel}).\nNom : ${clientName || "Prospect"}\nVille : ${clientCity || "Cameroun"}.\nJ'aimerais valider mon devis avec un ingénieur.`
       : `Hello EDSOLAR,\nI generated my complete PDF quote (${systemKva} kVA - ${priceLabel}).\nName: ${clientName || "Prospect"}\nCity: ${clientCity || "Cameroon"}.`;
 
     window.location.href = `https://wa.me/237650544444?text=${encodeURIComponent(rawWaText)}`;
   } catch (error) {
-    console.error("Erreur lors de la génération du PDF / WhatsApp:", error);
+    console.error("Erreur génération PDF:", error);
   }
 }
 
@@ -1216,12 +1217,13 @@ function Calculator({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
                   batteryUnitAh,
                   panelsCount,
                   priceLabel,
+                  qty,
+                  appliances,
                   lang
                 })}
-                className="flex w-full items-center justify-center gap-2 rounded-full bg-[#386b34] px-4 py-3 text-xs sm:text-sm font-bold text-white shadow-lg transition-all hover:bg-[#2e582b] hover:scale-[1.02]"
+                className="w-full sm:w-auto px-6 py-3.5 bg-[#386b34] hover:bg-[#2e572b] text-white font-semibold rounded-xl shadow-lg transition-all flex items-center justify-center gap-2 cursor-pointer"
               >
-                <FileText className="h-4 w-4 text-white" />
-                <span>{t.simSendWA}</span>
+               📄 Télécharger mon Devis PDF & Contacter un Ingénieur
               </button>
               <p className="mt-2.5 text-center text-[10px] sm:text-xs text-emerald-100/70">{t.simNote}</p>
             </div>
