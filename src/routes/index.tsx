@@ -948,104 +948,143 @@ const generatePDFAndSendWA = ({
   batteryUnitAh,
   panelsCount,
   priceLabel,
+  qty,
+  appliances,
   lang,
 }: any) => {
-  // Création du document PDF
-  const doc = new jsPDF({
-    orientation: "portrait",
-    unit: "mm",
-    format: "a4",
-  });
+  try {
+    const doc = new jsPDF({
+      orientation: "portrait",
+      unit: "mm",
+      format: "a4",
+    });
 
-  // 1. En-tête Vert EDSOLAR
-  doc.setFillColor(56, 107, 52); // Vert EDSOLAR #386b34
-  doc.rect(0, 0, 210, 40, "F");
+    // 1. En-tête Vert EDSOLAR
+    doc.setFillColor(56, 107, 52); // Vert EDSOLAR #386b34
+    doc.rect(0, 0, 210, 38, "F");
 
-  // Insérer le logo textuel & visuel
-  doc.setTextColor(255, 255, 255);
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(22);
-  doc.text("EDSOLAR", 14, 20);
+    // Nom de la marque & Contacts
+    doc.setTextColor(255, 255, 255);
+    doc.setFont("helvetica", "bold");
+    doc.setFontSize(22);
+    doc.text("EDSOLAR", 14, 18);
 
-  doc.setFontSize(9);
-  doc.setFont("helvetica", "normal");
-  doc.text("ÉNERGIE CAMEROUN — SOLUTIONS SOLAIRES & ANTI-DÉLESTAGE", 14, 28);
-  doc.text("Tradex Olembe, Yaoundé | +237 650544444 | edsolarcam@gmail.com", 14, 34);
+    doc.setFontSize(9);
+    doc.setFont("helvetica", "normal");
+    doc.text("ÉNERGIE CAMEROUN — SOLUTIONS SOLAIRES & ANTI-DÉLESTAGE", 14, 25);
+    doc.text("Tradex Olembe, Yaoundé | +237 650544444 | edsolarcam@gmail.com", 14, 31);
 
-  // 2. Titre Devis & Infos Client
-  doc.setTextColor(40, 40, 40);
-  doc.setFontSize(14);
-  doc.setFont("helvetica", "bold");
-  doc.text("DEVIS ESTIMATIF TECHNIQUE & FINANCIER", 14, 52);
+    // 2. Titre Devis & Infos Client
+    doc.setTextColor(40, 40, 40);
+    doc.setFontSize(13);
+    doc.setFont("helvetica", "bold");
+    doc.text("DEVIS ESTIMATIF TECHNIQUE & FINANCIER", 14, 48);
 
-  doc.setFontSize(10);
-  doc.setFont("helvetica", "normal");
-  doc.text(`Nom du Client : ${clientName || "Client Prospect"}`, 14, 60);
-  doc.text(`Localisation : ${clientCity || "Yaoundé / Cameroun"}`, 14, 66);
-  doc.text(`Date d'émission : ${new Date().toLocaleDateString("fr-FR")}`, 140, 60);
-  doc.text(`Référence : EDS-${Math.floor(1000 + Math.random() * 9000)}`, 140, 66);
+    doc.setFontSize(9.5);
+    doc.setFont("helvetica", "normal");
+    doc.text(`Nom du Client : ${clientName || "Client Prospect"}`, 14, 55);
+    doc.text(`Localisation : ${clientCity || "Yaoundé / Cameroun"}`, 14, 60);
+    doc.text(`Date d'émission : ${new Date().toLocaleDateString("fr-FR")}`, 140, 55);
+    doc.text(`Référence : EDS-${Math.floor(1000 + Math.random() * 9000)}`, 140, 60);
 
-  // 3. Tableau des équipements (Utilisation directe d'autoTable)
-  const tableColumn = ["Composant / Caractéristique", "Spécification Recommandée"];
-  const tableRows = [
-    ["Puissance de Pointe Requis", `${peakW.toLocaleString()} Watts`],
-    ["Consommation Estimée par jour", `${dailyWh.toFixed(0)} Wh / jour`],
-    ["Onduleur Hybride Certifié", `${systemKva} kVA (Tension système : ${systemVoltage}V)`],
-    ["Parc de Batteries Lithium LiFePO4", `${batteryCount} x ${systemVoltage}V ${batteryUnitAh}Ah`],
-    ["Champ Photovoltaïque (Panneaux 450W)", `${panelsCount} Panneaux Solaires Monocristallins`],
-    ["ESTIMATION BUDGÉTAIRE GLOBALE", priceLabel],
-  ];
+    // 3. TABLEAU 1 : Inventaire des Appareils du Client
+    const selectedApplianceRows = (appliances || [])
+      .filter((a: any) => (qty?.[a.id] ?? 0) > 0)
+      .map((a: any) => {
+        const count = qty[a.id];
+        const totalWatts = count * a.watts;
+        const dailyWhApp = totalWatts * a.hours;
+        return [
+          lang === "fr" ? a.name : a.nameEn,
+          `${count}`,
+          `${a.watts} W`,
+          `${totalWatts} W`,
+          `${a.hours} h/j`,
+          `${dailyWhApp.toLocaleString()} Wh`,
+        ];
+      });
 
-  // Génération du tableau avec le module autoTable
-  (doc as any).autoTable({
-    head: [tableColumn],
-    body: tableRows,
-    startY: 75,
-    theme: "grid",
-    headStyles: {
-      fillColor: [56, 107, 52],
-      textColor: [255, 255, 255],
-      fontSize: 10,
-      fontStyle: "bold",
-    },
-    bodyStyles: {
-      fontSize: 9,
-      textColor: [50, 50, 50],
-    },
-    alternateRowStyles: {
-      fillColor: [245, 247, 245],
-    },
-    columnStyles: {
-      0: { fontStyle: "bold", cellWidth: 90 },
-      1: { cellWidth: 95 },
-    },
-  });
+    doc.setFontSize(11);
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(56, 107, 52);
+    doc.text("1. Inventaire & Consommation des Équipements Client", 14, 70);
 
-  // 4. Notes & Garanties après le tableau
-  const finalY = (doc as any).lastAutoTable.finalY + 12;
+    (doc as any).autoTable({
+      head: [["Équipement", "Qté", "Puiss. Unitaire", "Puiss. Totale", "Utilisation", "Conso. Estimée"]],
+      body: selectedApplianceRows.length > 0 ? selectedApplianceRows : [["Aucun appareil sélectionné", "-", "-", "-", "-", "-"]],
+      startY: 73,
+      theme: "striped",
+      headStyles: { fillColor: [56, 107, 52], textColor: [255, 255, 255], fontSize: 9, fontStyle: "bold" },
+      bodyStyles: { fontSize: 8.5, textColor: [50, 50, 50] },
+      columnStyles: {
+        0: { fontStyle: "bold", cellWidth: 50 },
+        1: { halign: "center", cellWidth: 15 },
+        2: { halign: "right", cellWidth: 30 },
+        3: { halign: "right", cellWidth: 30 },
+        4: { halign: "center", cellWidth: 25 },
+        5: { halign: "right", cellWidth: 35 },
+      },
+    });
 
-  doc.setFontSize(10);
-  doc.setFont("helvetica", "bold");
-  doc.setTextColor(56, 107, 52);
-  doc.text("Engagements & Garanties EDSOLAR :", 14, finalY);
+    // 4. TABLEAU 2 : Recommandations Système & Budget
+    const startYTable2 = ((doc as any).lastAutoTable?.finalY || 120) + 10;
 
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(8.5);
-  doc.setTextColor(80, 80, 80);
-  doc.text("• Équipements certifiés d'usine Tier 1 avec garantie jusqu'à 25 ans sur les panneaux.", 14, finalY + 6);
-  doc.text("• Installation effectuée par des techniciens qualifiés sur l'ensemble du territoire camerounais.", 14, finalY + 11);
-  doc.text("• Ce devis est une estimation indicative. Une visite technique validera le schéma final.", 14, finalY + 16);
+    doc.setFontSize(11);
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(56, 107, 52);
+    doc.text("2. Dimensionnement & Solution Technique Recommandée", 14, startYTable2);
 
-  // 5. Sauvegarde du fichier PDF
-  const safeName = (clientName || "Prospect").replace(/[^a-zA-Z0-9]/gi, "_");
-  doc.save(`Devis_EDSOLAR_${safeName}.pdf`);
+    const techRows = [
+      ["Puissance de Pointe Requis (Crête)", `${(peakW || 0).toLocaleString()} Watts`],
+      ["Consommation Totale Journalière", `${(dailyWh || 0).toFixed(0)} Wh / jour`],
+      ["Onduleur Hybride Certifié", `${systemKva || 0} kVA (Tension système : ${systemVoltage || 0}V)`],
+      ["Stockage Lithium LiFePO4", `${batteryCount || 0} x ${systemVoltage || 0}V ${batteryUnitAh || 0}Ah`],
+      ["Champ Photovoltaïque (Panneaux 450W)", `${panelsCount || 0} Panneaux Solaires Monocristallins`],
+      ["ESTIMATION BUDGÉTAIRE GLOBALE", priceLabel || "Sur devis"],
+    ];
 
-  // 6. Ouverture automatique de WhatsApp
-  const waMessage = lang === "fr"
-    ? `Bonjour EDSOLAR,%0AJ'ai téléchargé mon devis PDF pour un système de ${systemKva} kVA (${priceLabel}).%0ANom : ${clientName || "Prospect"}%0AVille : ${clientCity || "Cameroun"}.%0AJ'aimerais planifier une visite technique.`
-    : `Hello EDSOLAR,%0AI downloaded my PDF estimate for a ${systemKva} kVA system (${priceLabel}).%0AName: ${clientName || "Prospect"}%0ACity: ${clientCity || "Cameroon"}.`;
+    (doc as any).autoTable({
+      head: [["Composant / Caractéristique", "Spécification Recommandée"]],
+      body: techRows,
+      startY: startYTable2 + 3,
+      theme: "grid",
+      headStyles: { fillColor: [40, 40, 40], textColor: [255, 255, 255], fontSize: 9, fontStyle: "bold" },
+      bodyStyles: { fontSize: 8.5, textColor: [50, 50, 50] },
+      alternateRowStyles: { fillColor: [245, 247, 245] },
+      columnStyles: {
+        0: { fontStyle: "bold", cellWidth: 95 },
+        1: { cellWidth: 90 },
+      },
+    });
 
-  window.open(`https://wa.me/237650544444?text=${waMessage}`, "_blank");
+    // 5. Engagements & Pied de Page
+    const finalY = ((doc as any).lastAutoTable?.finalY || 200) + 10;
+
+    doc.setFontSize(9.5);
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(56, 107, 52);
+    doc.text("Engagements & Garanties EDSOLAR :", 14, finalY);
+
+    doc.setFont("helvetica", "normal");
+    doc.setFontSize(8);
+    doc.setTextColor(80, 80, 80);
+    doc.text("• Équipements certifiés d'usine Tier 1 avec garantie jusqu'à 25 ans sur les panneaux solaires.", 14, finalY + 5);
+    doc.text("• Installation effectuée par des techniciens qualifiés sur l'ensemble du territoire camerounais.", 14, finalY + 9);
+    doc.text("• Ce devis est une estimation indicative. Une visite technique validera le schéma électrique définitif.", 14, finalY + 13);
+
+    // Sauvegarde du PDF
+    const safeName = (clientName || "Prospect").replace(/[^a-zA-Z0-9]/gi, "_");
+    doc.save(`Devis_EDSOLAR_${safeName}.pdf`);
+
+    // Redirection WhatsApp (contourne le filtre anti-popup du navigateur)
+    const rawWaText = lang === "fr"
+      ? `Bonjour EDSOLAR,\nJ'ai généré mon devis PDF complet (${systemKva} kVA - ${priceLabel}).\nNom : ${clientName || "Prospect"}\nVille : ${clientCity || "Cameroun"}.\nJ'aimerais valider mon devis avec un ingénieur.`
+      : `Hello EDSOLAR,\nI generated my complete PDF quote (${systemKva} kVA - ${priceLabel}).\nName: ${clientName || "Prospect"}\nCity: ${clientCity || "Cameroon"}.`;
+
+    window.location.href = `https://wa.me/237650544444?text=${encodeURIComponent(rawWaText)}`;
+  } catch (error) {
+    console.error("Erreur lors de la génération du PDF / WhatsApp:", error);
+  }
 }
 
 function Calculator({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
