@@ -985,7 +985,7 @@ const generatePDFAndSendWA = ({
   doc.text(`Date d'émission : ${new Date().toLocaleDateString("fr-FR")}`, 140, 60);
   doc.text(`Référence : EDS-${Math.floor(1000 + Math.random() * 9000)}`, 140, 66);
 
-  // 3. Tableau des équipements (Utilisation directe d'autoTable)
+  // 3. Tableau des équipements
   const tableColumn = ["Composant / Caractéristique", "Spécification Recommandée"];
   const tableRows = [
     ["Puissance de Pointe Requis", `${peakW.toLocaleString()} Watts`],
@@ -996,8 +996,8 @@ const generatePDFAndSendWA = ({
     ["ESTIMATION BUDGÉTAIRE GLOBALE", priceLabel],
   ];
 
-  // Génération du tableau avec le module autoTable
-  (doc as any).autoTable({
+  // Appel direct de la fonction autoTable avec l'instance doc
+  autoTable(doc, {
     head: [tableColumn],
     body: tableRows,
     startY: 75,
@@ -1022,7 +1022,7 @@ const generatePDFAndSendWA = ({
   });
 
   // 4. Notes & Garanties après le tableau
-  const finalY = (doc as any).lastAutoTable.finalY + 12;
+  const finalY = ((doc as any).lastAutoTable?.finalY ?? 130) + 12;
 
   doc.setFontSize(10);
   doc.setFont("helvetica", "bold");
@@ -1037,7 +1037,7 @@ const generatePDFAndSendWA = ({
   doc.text("• Ce devis est une estimation indicative. Une visite technique validera le schéma final.", 14, finalY + 16);
 
   // 5. Sauvegarde du fichier PDF
-  const safeName = (clientName || "Prospect").replace(/[^a-zA-Z0-9]/gi, "_");
+  const safeName = (clientName || "Prospect").replace(/[^a-z0-9]/gi, "_");
   doc.save(`Devis_EDSOLAR_${safeName}.pdf`);
 
   // 6. Ouverture automatique de WhatsApp
