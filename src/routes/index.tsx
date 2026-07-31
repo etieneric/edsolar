@@ -937,7 +937,7 @@ const APPLIANCES: Appliance[] = [
 ];
 
 /* Fonction utilitaire de génération PDF & Envoi WhatsApp */
-function generatePDFAndSendWA({
+const generatePDFAndSendWA = ({
   clientName,
   clientCity,
   peakW,
@@ -949,72 +949,101 @@ function generatePDFAndSendWA({
   panelsCount,
   priceLabel,
   lang,
-}: any) {
-  const doc = new jsPDF();
-
-  // 1. En-tête Vert EDSOLAR
-  doc.setFillColor(56, 107, 52); // Couleur #386b34
-  doc.rect(0, 0, 210, 35, "F");
-
-  // Titre & Sous-titre dans l'en-tête
-  doc.setTextColor(255, 255, 255);
-  doc.setFont("helvetica", "bold");
-  doc.setFontSize(20);
-  doc.text("EDSOLAR Énergie Cameroun", 14, 18);
-
-  doc.setFontSize(10);
-  doc.setFont("helvetica", "normal");
-  doc.text("Solutions Solaires, Batteries Lithium & Onduleurs — Yaoundé", 14, 26);
-
-  // 2. Informations du devis
-  doc.setTextColor(40, 40, 40);
-  doc.setFontSize(13);
-  doc.setFont("helvetica", "bold");
-  doc.text("DEVIS ESTIMATIF SOLAIRE", 14, 48);
-
-  doc.setFontSize(10);
-  doc.setFont("helvetica", "normal");
-  doc.text(`Client : ${clientName || "Client EDSOLAR"}`, 14, 56);
-  doc.text(`Ville / Quartier : ${clientCity || "Cameroun"}`, 14, 62);
-  doc.text(`Date : ${new Date().toLocaleDateString("fr-FR")}`, 140, 56);
-
-  // 3. Tableau des équipements recommandés
-  autoTable(doc, {
-    startY: 70,
-    head: [["Équipement / Caractéristique", "Recommandation Technique"]],
-    body: [
-      ["Puissance de Pointe", `${peakW.toLocaleString()} W`],
-      ["Consommation Estimée", `${dailyWh.toFixed(0)} Wh / jour`],
-      ["Système / Onduleur Hybride", `${systemKva} kVA (${systemVoltage}V)`],
-      ["Stockage Batteries Lithium", `${batteryCount} x ${systemVoltage}V ${batteryUnitAh}Ah`],
-      ["Panneaux Solaires", `${panelsCount} x Panneaux 450W Monocristallin`],
-      ["Estimation Budgétaire Global", priceLabel],
-    ],
-    theme: "striped",
-    headStyles: { fillColor: [56, 107, 52], fontSize: 11, fontStyle: "bold" },
-    bodyStyles: { fontSize: 10 },
+}: any) => {
+  // Création du document PDF
+  const doc = new jsPDF({
+    orientation: "portrait",
+    unit: "mm",
+    format: "a4",
   });
 
-  // 4. Pied de page & Contact
-  const finalY = (doc as any).lastAutoTable.finalY + 15;
-  
+  // 1. En-tête Vert EDSOLAR
+  doc.setFillColor(56, 107, 52); // Vert EDSOLAR #386b34
+  doc.rect(0, 0, 210, 40, "F");
+
+  // Insérer le logo textuel & visuel
+  doc.setTextColor(255, 255, 255);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(22);
+  doc.text("EDSOLAR", 14, 20);
+
+  doc.setFontSize(9);
+  doc.setFont("helvetica", "normal");
+  doc.text("ÉNERGIE CAMEROUN — SOLUTIONS SOLAIRES & ANTI-DÉLESTAGE", 14, 28);
+  doc.text("Tradex Olembe, Yaoundé | +237 650544444 | edsolarcam@gmail.com", 14, 34);
+
+  // 2. Titre Devis & Infos Client
+  doc.setTextColor(40, 40, 40);
+  doc.setFontSize(14);
+  doc.setFont("helvetica", "bold");
+  doc.text("DEVIS ESTIMATIF TECHNIQUE & FINANCIER", 14, 52);
+
+  doc.setFontSize(10);
+  doc.setFont("helvetica", "normal");
+  doc.text(`Nom du Client : ${clientName || "Client Prospect"}`, 14, 60);
+  doc.text(`Localisation : ${clientCity || "Yaoundé / Cameroun"}`, 14, 66);
+  doc.text(`Date d'émission : ${new Date().toLocaleDateString("fr-FR")}`, 140, 60);
+  doc.text(`Référence : EDS-${Math.floor(1000 + Math.random() * 9000)}`, 140, 66);
+
+  // 3. Tableau des équipements (Utilisation directe d'autoTable)
+  const tableColumn = ["Composant / Caractéristique", "Spécification Recommandée"];
+  const tableRows = [
+    ["Puissance de Pointe Requis", `${peakW.toLocaleString()} Watts`],
+    ["Consommation Estimée par jour", `${dailyWh.toFixed(0)} Wh / jour`],
+    ["Onduleur Hybride Certifié", `${systemKva} kVA (Tension système : ${systemVoltage}V)`],
+    ["Parc de Batteries Lithium LiFePO4", `${batteryCount} x ${systemVoltage}V ${batteryUnitAh}Ah`],
+    ["Champ Photovoltaïque (Panneaux 450W)", `${panelsCount} Panneaux Solaires Monocristallins`],
+    ["ESTIMATION BUDGÉTAIRE GLOBALE", priceLabel],
+  ];
+
+  // Génération du tableau avec le module autoTable
+  (doc as any).autoTable({
+    head: [tableColumn],
+    body: tableRows,
+    startY: 75,
+    theme: "grid",
+    headStyles: {
+      fillColor: [56, 107, 52],
+      textColor: [255, 255, 255],
+      fontSize: 10,
+      fontStyle: "bold",
+    },
+    bodyStyles: {
+      fontSize: 9,
+      textColor: [50, 50, 50],
+    },
+    alternateRowStyles: {
+      fillColor: [245, 247, 245],
+    },
+    columnStyles: {
+      0: { fontStyle: "bold", cellWidth: 90 },
+      1: { cellWidth: 95 },
+    },
+  });
+
+  // 4. Notes & Garanties après le tableau
+  const finalY = (doc as any).lastAutoTable.finalY + 12;
+
   doc.setFontSize(10);
   doc.setFont("helvetica", "bold");
-  doc.text("Besoin d'une validation technique sur le terrain ?", 14, finalY);
-  
+  doc.setTextColor(56, 107, 52);
+  doc.text("Engagements & Garanties EDSOLAR :", 14, finalY);
+
   doc.setFont("helvetica", "normal");
-  doc.setFontSize(9);
-  doc.text("Contactez notre équipe : +237 650544444 | edsolarcam@gmail.com", 14, finalY + 6);
-  doc.text("Adresse : Tradex Olembe, Yaoundé, Cameroun", 14, finalY + 11);
+  doc.setFontSize(8.5);
+  doc.setTextColor(80, 80, 80);
+  doc.text("• Équipements certifiés d'usine Tier 1 avec garantie jusqu'à 25 ans sur les panneaux.", 14, finalY + 6);
+  doc.text("• Installation effectuée par des techniciens qualifiés sur l'ensemble du territoire camerounais.", 14, finalY + 11);
+  doc.text("• Ce devis est une estimation indicative. Une visite technique validera le schéma final.", 14, finalY + 16);
 
-  // Télécharger le PDF
-  const fileName = `Devis_EDSOLAR_${(clientName || "Client").replace(/\s+/g, "_")}.pdf`;
-  doc.save(fileName);
+  // 5. Sauvegarde du fichier PDF
+  const safeName = (clientName || "Prospect").replace(/[^a-[#0-9]/gi, "_");
+  doc.save(`Devis_EDSOLAR_${safeName}.pdf`);
 
-  // 5. Redirection automatique vers WhatsApp
+  // 6. Ouverture automatique de WhatsApp
   const waMessage = lang === "fr"
-    ? `Bonjour EDSOLAR,%0AJ'ai généré mon devis PDF pour un système de ${systemKva} kVA (${priceLabel}).%0ANom : ${clientName || "Prospect"}%0AVille : ${clientCity || "Cameroun"}.%0AJ'aimerais valider la disponibilité.`
-    : `Hello EDSOLAR,%0AI generated my PDF estimate for a ${systemKva} kVA system (${priceLabel}).%0AName: ${clientName || "Prospect"}%0ACity: ${clientCity || "Cameroon"}.`;
+    ? `Bonjour EDSOLAR,%0AJ'ai téléchargé mon devis PDF pour un système de ${systemKva} kVA (${priceLabel}).%0ANom : ${clientName || "Prospect"}%0AVille : ${clientCity || "Cameroun"}.%0AJ'aimerais planifier une visite technique.`
+    : `Hello EDSOLAR,%0AI downloaded my PDF estimate for a ${systemKva} kVA system (${priceLabel}).%0AName: ${clientName || "Prospect"}%0ACity: ${clientCity || "Cameroon"}.`;
 
   window.open(`https://wa.me/237650544444?text=${waMessage}`, "_blank");
 }
