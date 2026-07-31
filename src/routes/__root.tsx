@@ -77,8 +77,9 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "EDSOLAR Énergie Cameroun — Installation Solaire à Yaoundé" },
-      { name: "description", content: "Installation de panneaux solaires, maintenance et vente d'équipements solaires à Yaoundé. Calculateur solaire, devis gratuit au +237 650544444." },
+      { property: "og:locale",content: "fr_FR" },
+      { title: "EDSOLAR Énergie Cameroun — Installation Solaire & Anti-Délestage" },
+      { name: "description", content: "L'Énergie Solaire Autonome & Écologique pour Votre Confort, EDSOLAR accompagne les particuliers et les entreprises au Cameroun avec des solutions d'énergie solaire fiables : panneaux solaires, batteries lithium, onduleurs hybrides et installations photovoltaïques à Yaoundé et dans tout le pays. Contactez-nous à edsolarcam@gmail.com ou au +237 650544444." },
       { name: "author", content: "EDSOLAR Énergie Cameroun" },
       { property: "og:title", content: "EDSOLAR Énergie Cameroun — Installation Solaire à Yaoundé" },
       { property: "og:description", content: "Installation de panneaux solaires, maintenance et vente d'équipements solaires à Yaoundé. Calculateur solaire, devis gratuit au +237 650544444." },
