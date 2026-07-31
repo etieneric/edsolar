@@ -77,7 +77,6 @@ const WA = `https://wa.me/${PHONE.replace("+", "")}`;
 const YOUTUBE_CHANNEL_URL = "https://www.youtube.com/@EDSOLAR237";
 const YOUTUBE_CHANNEL_ID = "UCCfnDu6TV2B-_NO6E_tWm7Q";
 const YOUTUBE_UPLOADS_PLAYLIST = "UUCfnDu6TV2B-_NO6E_tWm7Q";
-const FACEBOOK_URL = "https://www.facebook.com/profile.php?id=100078652876510";
 
 const waLink = (msg: string) => `${WA}?text=${encodeURIComponent(msg)}`;
 
@@ -937,7 +936,7 @@ const APPLIANCES: Appliance[] = [
   { id: "pc", name: "Ordinateur", nameEn: "Computer", watts: 150, icon: Laptop, hours: 5 },
 ];
 
-/* Fonction utilitaire de génération PDF complet & Envoi WhatsApp */
+/* Fonction utilitaire de génération PDF & Envoi WhatsApp */
 const generatePDFAndSendWA = ({
   clientName,
   clientCity,
@@ -949,10 +948,9 @@ const generatePDFAndSendWA = ({
   batteryUnitAh,
   panelsCount,
   priceLabel,
-  qty,
-  appliances,
   lang,
 }: any) => {
+  // Création du document PDF
   const doc = new jsPDF({
     orientation: "portrait",
     unit: "mm",
@@ -961,128 +959,94 @@ const generatePDFAndSendWA = ({
 
   // 1. En-tête Vert EDSOLAR
   doc.setFillColor(56, 107, 52); // Vert EDSOLAR #386b34
-  doc.rect(0, 0, 210, 38, "F");
+  doc.rect(0, 0, 210, 40, "F");
 
-  // Nom de la marque & Contacts
+  // Insérer le logo textuel & visuel
   doc.setTextColor(255, 255, 255);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(22);
-  doc.text("EDSOLAR", 14, 18);
+  doc.text("EDSOLAR", 14, 20);
 
   doc.setFontSize(9);
   doc.setFont("helvetica", "normal");
-  doc.text("ÉNERGIE CAMEROUN — SOLUTIONS SOLAIRES & ANTI-DÉLESTAGE", 14, 25);
-  doc.text("Tradex Olembe, Yaoundé | +237 650544444 | edsolarcam@gmail.com", 14, 31);
+  doc.text("ÉNERGIE CAMEROUN — SOLUTIONS SOLAIRES & ANTI-DÉLESTAGE", 14, 28);
+  doc.text("Tradex Olembe, Yaoundé | +237 650544444 | edsolarcam@gmail.com", 14, 34);
 
   // 2. Titre Devis & Infos Client
   doc.setTextColor(40, 40, 40);
-  doc.setFontSize(13);
+  doc.setFontSize(14);
   doc.setFont("helvetica", "bold");
-  doc.text("DEVIS ESTIMATIF TECHNIQUE & FINANCIER", 14, 48);
+  doc.text("DEVIS ESTIMATIF TECHNIQUE & FINANCIER", 14, 52);
 
-  doc.setFontSize(9.5);
+  doc.setFontSize(10);
   doc.setFont("helvetica", "normal");
-  doc.text(`Nom du Client : ${clientName || "Client Prospect"}`, 14, 55);
-  doc.text(`Localisation : ${clientCity || "Yaoundé / Cameroun"}`, 14, 60);
-  doc.text(`Date d'émission : ${new Date().toLocaleDateString("fr-FR")}`, 140, 55);
-  doc.text(`Référence : EDS-${Math.floor(1000 + Math.random() * 9000)}`, 140, 60);
+  doc.text(`Nom du Client : ${clientName || "Client Prospect"}`, 14, 60);
+  doc.text(`Localisation : ${clientCity || "Yaoundé / Cameroun"}`, 14, 66);
+  doc.text(`Date d'émission : ${new Date().toLocaleDateString("fr-FR")}`, 140, 60);
+  doc.text(`Référence : EDS-${Math.floor(1000 + Math.random() * 9000)}`, 140, 66);
 
-  // 3. TABLEAU 1 : Inventaire des Appareils du Client
-  const selectedApplianceRows = (appliances || [])
-    .filter((a: any) => (qty[a.id] ?? 0) > 0)
-    .map((a: any) => {
-      const count = qty[a.id];
-      const totalWatts = count * a.watts;
-      const dailyWhApp = totalWatts * a.hours;
-      return [
-        lang === "fr" ? a.name : a.nameEn,
-        `${count}`,
-        `${a.watts} W`,
-        `${totalWatts} W`,
-        `${a.hours} h/j`,
-        `${dailyWhApp.toLocaleString()} Wh`,
-      ];
-    });
-
-  doc.setFontSize(11);
-  doc.setFont("helvetica", "bold");
-  doc.setTextColor(56, 107, 52);
-  doc.text("1. Inventaire & Consommation des Équipements Client", 14, 70);
-
-  (doc as any).autoTable({
-    head: [["Équipement", "Qté", "Puiss. Unitaire", "Puiss. Totale", "Utilisation", "Conso. Estimée"]],
-    body: selectedApplianceRows.length > 0 ? selectedApplianceRows : [["Aucun appareil sélectionné", "-", "-", "-", "-", "-"]],
-    startY: 73,
-    theme: "striped",
-    headStyles: { fillColor: [56, 107, 52], textColor: [255, 255, 255], fontSize: 9, fontStyle: "bold" },
-    bodyStyles: { fontSize: 8.5, textColor: [50, 50, 50] },
-    columnStyles: {
-      0: { fontStyle: "bold", cellWidth: 50 },
-      1: { halign: "center", cellWidth: 15 },
-      2: { halign: "right", cellWidth: 30 },
-      3: { halign: "right", cellWidth: 30 },
-      4: { halign: "center", cellWidth: 25 },
-      5: { halign: "right", cellWidth: 35 },
-    },
-  });
-
-  // 4. TABLEAU 2 : Recommandations Système & Budget
-  const startYTable2 = (doc as any).lastAutoTable.finalY + 10;
-
-  doc.setFontSize(11);
-  doc.setFont("helvetica", "bold");
-  doc.setTextColor(56, 107, 52);
-  doc.text("2. Dimensionnement & Solution Technique Recommandée", 14, startYTable2);
-
-  const techRows = [
-    ["Puissance de Pointe Requis (Crête)", `${peakW.toLocaleString()} Watts`],
-    ["Consommation Totale Journalière", `${dailyWh.toFixed(0)} Wh / jour`],
+  // 3. Tableau des équipements (Utilisation directe d'autoTable)
+  const tableColumn = ["Composant / Caractéristique", "Spécification Recommandée"];
+  const tableRows = [
+    ["Puissance de Pointe Requis", `${peakW.toLocaleString()} Watts`],
+    ["Consommation Estimée par jour", `${dailyWh.toFixed(0)} Wh / jour`],
     ["Onduleur Hybride Certifié", `${systemKva} kVA (Tension système : ${systemVoltage}V)`],
-    ["Stockage Lithium LiFePO4", `${batteryCount} x ${systemVoltage}V ${batteryUnitAh}Ah`],
+    ["Parc de Batteries Lithium LiFePO4", `${batteryCount} x ${systemVoltage}V ${batteryUnitAh}Ah`],
     ["Champ Photovoltaïque (Panneaux 450W)", `${panelsCount} Panneaux Solaires Monocristallins`],
     ["ESTIMATION BUDGÉTAIRE GLOBALE", priceLabel],
   ];
 
+  // Génération du tableau avec le module autoTable
   (doc as any).autoTable({
-    head: [["Composant / Caractéristique", "Spécification Recommandée"]],
-    body: techRows,
-    startY: startYTable2 + 3,
+    head: [tableColumn],
+    body: tableRows,
+    startY: 75,
     theme: "grid",
-    headStyles: { fillColor: [40, 40, 40], textColor: [255, 255, 255], fontSize: 9, fontStyle: "bold" },
-    bodyStyles: { fontSize: 8.5, textColor: [50, 50, 50] },
-    alternateRowStyles: { fillColor: [245, 247, 245] },
+    headStyles: {
+      fillColor: [56, 107, 52],
+      textColor: [255, 255, 255],
+      fontSize: 10,
+      fontStyle: "bold",
+    },
+    bodyStyles: {
+      fontSize: 9,
+      textColor: [50, 50, 50],
+    },
+    alternateRowStyles: {
+      fillColor: [245, 247, 245],
+    },
     columnStyles: {
-      0: { fontStyle: "bold", cellWidth: 95 },
-      1: { cellWidth: 90 },
+      0: { fontStyle: "bold", cellWidth: 90 },
+      1: { cellWidth: 95 },
     },
   });
 
-  // 5. Engagements & Pied de Page
-  const finalY = (doc as any).lastAutoTable.finalY + 10;
+  // 4. Notes & Garanties après le tableau
+  const finalY = (doc as any).lastAutoTable.finalY + 12;
 
-  doc.setFontSize(9.5);
+  doc.setFontSize(10);
   doc.setFont("helvetica", "bold");
   doc.setTextColor(56, 107, 52);
   doc.text("Engagements & Garanties EDSOLAR :", 14, finalY);
 
   doc.setFont("helvetica", "normal");
-  doc.setFontSize(8);
+  doc.setFontSize(8.5);
   doc.setTextColor(80, 80, 80);
-  doc.text("• Équipements certifiés d'usine Tier 1 avec garantie jusqu'à 25 ans sur les panneaux solaires.", 14, finalY + 5);
-  doc.text("• Installation effectuée par des techniciens qualifiés sur l'ensemble du territoire camerounais.", 14, finalY + 9);
-  doc.text("• Ce devis est une estimation indicative. Une visite technique validera le schéma électrique définitif.", 14, finalY + 13);
+  doc.text("• Équipements certifiés d'usine Tier 1 avec garantie jusqu'à 25 ans sur les panneaux.", 14, finalY + 6);
+  doc.text("• Installation effectuée par des techniciens qualifiés sur l'ensemble du territoire camerounais.", 14, finalY + 11);
+  doc.text("• Ce devis est une estimation indicative. Une visite technique validera le schéma final.", 14, finalY + 16);
 
-  // Sauvegarde
-  const safeName = (clientName || "Prospect").replace(/[^a-zA-Z0-9]/gi, "_");
+  // 5. Sauvegarde du fichier PDF
+  const safeName = (clientName || "Prospect").replace(/[^a-[#0-9]/gi, "_");
   doc.save(`Devis_EDSOLAR_${safeName}.pdf`);
 
-  // WhatsApp
+  // 6. Ouverture automatique de WhatsApp
   const waMessage = lang === "fr"
-    ? `Bonjour EDSOLAR,%0AJ'ai généré mon devis PDF complet (${systemKva} kVA - ${priceLabel}).%0ANom : ${clientName || "Prospect"}%0AVille : ${clientCity || "Cameroun"}.%0AJ'aimerais valider mon devis avec un ingénieur.`
-    : `Hello EDSOLAR,%0AI generated my complete PDF quote (${systemKva} kVA - ${priceLabel}).%0AName: ${clientName || "Prospect"}%0ACity: ${clientCity || "Cameroon"}.`;
+    ? `Bonjour EDSOLAR,%0AJ'ai téléchargé mon devis PDF pour un système de ${systemKva} kVA (${priceLabel}).%0ANom : ${clientName || "Prospect"}%0AVille : ${clientCity || "Cameroun"}.%0AJ'aimerais planifier une visite technique.`
+    : `Hello EDSOLAR,%0AI downloaded my PDF estimate for a ${systemKva} kVA system (${priceLabel}).%0AName: ${clientName || "Prospect"}%0ACity: ${clientCity || "Cameroon"}.`;
 
   window.open(`https://wa.me/237650544444?text=${waMessage}`, "_blank");
-};
+}
 
 function Calculator({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
   const [qty, setQty] = useState<Record<string, number>>({ led: 4, tv: 1, fridge: 1 });
@@ -1202,23 +1166,19 @@ function Calculator({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
             <div className="mt-5 sm:mt-6">
               <button
                 type="button"
-                onClick={() =>
-                  generatePDFAndSendWA({
-                    clientName,
-                    clientCity,
-                    peakW,
-                    dailyWh,
-                    systemKva,
-                    systemVoltage,
-                    batteryCount,
-                    batteryUnitAh,
-                    panelsCount,
-                    priceLabel,
-                    qty,
-                    appliances: APPLIANCES,
-                    lang,
-                  })
-                }
+                onClick={() => generatePDFAndSendWA({
+                  clientName,
+                  clientCity,
+                  peakW,
+                  dailyWh,
+                  systemKva,
+                  systemVoltage,
+                  batteryCount,
+                  batteryUnitAh,
+                  panelsCount,
+                  priceLabel,
+                  lang
+                })}
                 className="flex w-full items-center justify-center gap-2 rounded-full bg-[#386b34] px-4 py-3 text-xs sm:text-sm font-bold text-white shadow-lg transition-all hover:bg-[#2e582b] hover:scale-[1.02]"
               >
                 <FileText className="h-4 w-4 text-white" />
@@ -2548,34 +2508,12 @@ function Footer({ t }: { t: typeof TRANSLATIONS["fr"] }) {
           <p className="mt-3 text-xs leading-relaxed text-emerald-100/70">
             Solutions solaires photovoltaïques haute performance et certifiées Tier 1 au Cameroun et en Afrique Centrale.
           </p>
-          
-          {/* Réseaux Sociaux */}
           <div className="mt-4 flex gap-2.5">
-            <a 
-              href={FACEBOOK_URL} 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              className="grid h-8 w-8 sm:h-10 sm:w-10 place-items-center rounded-full bg-[#122910] text-emerald-200 transition-colors hover:bg-[#386b34] hover:text-white border border-emerald-800/50"
-              aria-label="Facebook EDSOLAR"
-            >
-              <Facebook className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-            </a>
-
-            <a 
-              href="#" 
-              className="grid h-8 w-8 sm:h-10 sm:w-10 place-items-center rounded-full bg-[#122910] text-emerald-200 transition-colors hover:bg-[#386b34] hover:text-white border border-emerald-800/50"
-              aria-label="Instagram EDSOLAR"
-            >
-              <Instagram className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-            </a>
-
-            <a 
-              href="#" 
-              className="grid h-8 w-8 sm:h-10 sm:w-10 place-items-center rounded-full bg-[#122910] text-emerald-200 transition-colors hover:bg-[#386b34] hover:text-white border border-emerald-800/50"
-              aria-label="LinkedIn EDSOLAR"
-            >
-              <Linkedin className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
-            </a>
+            {[Facebook, Instagram, Linkedin].map((I, i) => (
+              <a key={i} href="#" className="grid h-8 w-8 sm:h-10 sm:w-10 place-items-center rounded-full bg-[#122910] text-emerald-200 transition-colors hover:bg-[#386b34] hover:text-white border border-emerald-800/50">
+                <I className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
+              </a>
+            ))}
           </div>
         </div>
 
