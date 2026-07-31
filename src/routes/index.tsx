@@ -1,5 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 import {
   Sun, Leaf, Phone, MapPin, MessageCircle, Menu, X, ArrowRight,
   Wrench, ShoppingBag, ClipboardCheck, ShieldCheck, Battery,
@@ -7,7 +9,7 @@ import {
   Laptop, Fan, Microwave, CheckCircle2, Star, Award, Clock, Users,
   Facebook, Instagram, Linkedin, Send, Package, Search, ArrowUp,
   Sparkles, Globe, ZoomIn, Edit2, Save, Check, AlertTriangle, Mail, Handshake, Heart, Smile, Utensils, Stethoscope, Car, Home,
-  Compass, Play, Youtube
+  Compass, Play, Youtube, FileText
 } from "lucide-react";
 
 import logo from "@/assets/edsolar-logo-new.jpeg";
@@ -50,21 +52,16 @@ export const Route = createFileRoute("/")({
       },
       {
         property: "og:locale",
-        content:
-          "fr_FR",
+        content: "fr_FR",
       },
       {
         property: "og:title",
-        content:
-          "EDSOLAR Énergie Cameroun — Installation Solaire & Anti-Délestage",
+        content: "EDSOLAR Énergie Cameroun — Installation Solaire & Anti-Délestage",
       },
       {
         property: "og:description",
-        content:
-          "Fini les délestages. Équipements solaires certifiés Tier 1 à Yaoundé et livraison dans toute l'Afrique Centrale.",
+        content: "Fini les délestages. Équipements solaires certifiés Tier 1 à Yaoundé et livraison dans toute l'Afrique Centrale.",
       },
-
-      // Vérification Google Search Console
       {
         name: "google-site-verification",
         content: "AZgs_Swa5ZCBipELur5gmowIYDrg1h_3VuNUvaQugEk",
@@ -161,7 +158,7 @@ const TRANSLATIONS = {
     simLithiumBatt: "Batteries lithium",
     simPanels: "Panneaux solaires 450W",
     simBudget: "Budget estimatif",
-    simSendWA: "Recevoir l'estimation sur WhatsApp",
+    simSendWA: "Générer Devis PDF & Envoyer WhatsApp",
     simNote: "Estimation indicative — nos ingénieurs valident le dimensionnement final.",
 
     shopEyebrow: "Boutique",
@@ -294,7 +291,7 @@ const TRANSLATIONS = {
     simLithiumBatt: "Lithium batteries",
     simPanels: "450W solar panels",
     simBudget: "Estimated budget",
-    simSendWA: "Get quote on WhatsApp",
+    simSendWA: "Generate PDF Quote & Send WhatsApp",
     simNote: "Indicative estimation — final validation by our engineers.",
 
     shopEyebrow: "Shop",
@@ -385,14 +382,12 @@ function translateDynamicText(text: string | null | undefined, lang: Lang): stri
     ["CONFORT HAUT DE GAMME POUR VILLAS ET GRANDES RÉSIDENCES", "HIGH-END COMFORT FOR VILLAS & LARGE RESIDENCES"],
     ["SOLUTION DÉDIÉE AUX COMMERCES ET POISSONNERIES", "SOLUTION FOR SHOPS, BUSINESSES & FISH MARKETS"],
     ["PROMOTION EXCEPTIONNELLE", "SPECIAL PROMOTION"],
-    
     [/Alimentez votre maison avec (.*?) d'énergie propre et durable\./gi, "Power your home with $1 of clean, sustainable energy."],
     [/Paiement en plusieurs tranches : (.*?) d'avance puis (.*?)\/mois pendant (.*?)\. Installation gratuite offerte\./gi, "Installment payment: $1 upfront then $2/month for $3. Free installation included."],
     [/Le Kit Prestige (.*?) est la solution idéale pour les foyers souhaitant bénéficier d'une alimentation électrique fiable, écologique et sans coupures\./gi, "The Prestige $1 Kit is the ideal solar solution for households looking for reliable, eco-friendly, blackout-free power."],
     [/Conçu pour répondre aux besoins essentiels d'une maison, il vous permet de profiter de l'électricité même en cas de coupure du réseau\./gi, "Designed to meet essential home energy needs, keeping your power on even during grid outages."],
     [/Paiement comptant (.*?) FCFA ═ Paiement échelonné (.*?) d'avance (.*?)\/mois pendant (.*?)/gi, "Cash payment $1 FCFA ═ Installment payment $2 upfront, $3/month for $4"],
     [/Kit spécifiquement dimensionné pour maintenir un ou plusieurs congélateurs en fonctionnement continu, idéal pour boutiques, poissonneries et restaurants\./gi, "System specifically sized to keep one or multiple freezers running continuously, ideal for shops, fish markets, and restaurants."],
-    
     [/(\d+) panneaux solaires de (\d+)Wc?/gi, "$1 x $2W solar panels"],
     [/(\d+) panneaux (\d+)W/gi, "$1 x $2W solar panels"],
     [/Onduleur EDSOLAR (.*)/gi, "EDSOLAR Inverter $1"],
@@ -411,7 +406,6 @@ function translateDynamicText(text: string | null | undefined, lang: Lang): stri
     ["Autonomie 24h", "24-hour autonomy"],
     ["Autonomie 48h", "48-hour autonomy"],
     ["Protection surtension", "Surge protection"],
-
     ["Panneaux solaires", "Solar Panels"],
     ["Batterie Lithium", "Lithium Battery"],
     ["Batteries lithium", "Lithium Batteries"],
@@ -435,7 +429,6 @@ function translateDynamicText(text: string | null | undefined, lang: Lang): stri
 }
 
 /* ---------------- INTERRUPTEUR DE MAINTENANCE ---------------- */
-// Passe cette variable à "false" pour rétablir le site normal immédiatement.
 const IS_MAINTENANCE_MODE = false;
 
 function MaintenanceView() {
@@ -479,7 +472,6 @@ function Index() {
   const [lang, setLang] = useState<Lang>("fr");
   const t = TRANSLATIONS[lang] || TRANSLATIONS.fr;
 
-  // Si le mode maintenance est activé, seul le composant de maintenance est rendu
   if (IS_MAINTENANCE_MODE) {
     return <MaintenanceView />;
   }
@@ -673,11 +665,13 @@ function Hero({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
       <img src={hero} alt="Installateurs solaires EDSOLAR sur un toit à Yaoundé" width={1920} height={1080}
            decoding="async" loading="eager" className="absolute inset-0 -z-10 h-full w-full object-cover" />
       <div className="absolute inset-0 -z-10 bg-gradient-to-br from-[#234d20]/95 via-[#1a3818]/90 to-[#234d20]/80" />
+
       <div className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 sm:py-20 md:py-28 lg:grid-cols-[1.15fr_1fr] lg:py-36">
         <div className="text-white">
           <span className="inline-flex items-center gap-1.5 sm:gap-2 rounded-full border border-emerald-300/30 bg-[#386b34]/30 px-3 py-1 sm:px-4 sm:py-1.5 text-[10px] sm:text-xs font-bold uppercase tracking-wider text-emerald-200 backdrop-blur">
             <Zap className="h-3 w-3 sm:h-3.5 sm:w-3.5 text-emerald-300 fill-emerald-300" /> {t.heroTag}
           </span>
+
           <h1 className="mt-4 sm:mt-6 text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black leading-[1.15] tracking-tight">
             {t.heroTitle1}<span className="text-emerald-300">{t.heroTitle2}</span>{t.heroTitle3}
           </h1>
@@ -707,12 +701,14 @@ function Hero({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
               <Phone className="h-4 w-4" /> {t.heroExpertBtn}
             </a>
           </div>
+
           <div className="mt-8 sm:mt-10 flex flex-wrap items-center gap-4 sm:gap-6 text-xs sm:text-sm text-emerald-100/90">
             <div className="flex items-center gap-1.5 sm:gap-2"><CheckCircle2 className="h-4 w-4 text-emerald-300 shrink-0" /> {t.heroStat1}</div>
             <div className="flex items-center gap-1.5 sm:gap-2"><CheckCircle2 className="h-4 w-4 text-emerald-300 shrink-0" /> {t.heroStat2}</div>
             <div className="flex items-center gap-1.5 sm:gap-2"><CheckCircle2 className="h-4 w-4 text-emerald-300 shrink-0" /> {t.heroStat3}</div>
           </div>
         </div>
+
         <div className="hidden lg:block">
           <div className="ml-auto max-w-sm rounded-3xl border border-emerald-400/20 bg-[#1a3818]/85 p-6 text-white shadow-2xl backdrop-blur-xl">
             <div className="flex items-center gap-3">
@@ -797,6 +793,7 @@ function Services({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
                 <h3 className="mt-4 sm:mt-5 text-base sm:text-lg font-bold text-foreground">{s.title}</h3>
                 <p className="mt-2 text-xs sm:text-sm leading-relaxed text-muted-foreground">{s.desc}</p>
               </div>
+
               <a href={waLink(lang === "fr" ? `Bonjour EDSOLAR, je suis intéressé par: ${s.title}` : `Hello EDSOLAR, I am interested in: ${s.title}`)} target="_blank" rel="noreferrer"
                  className="mt-4 inline-flex items-center gap-1 text-xs sm:text-sm font-bold text-[#386b34] hover:gap-2 transition-all">
                 {t.learnMore} <ArrowRight className="h-4 w-4" />
@@ -876,7 +873,9 @@ function Kits({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
                       <li key={f} className="flex items-start gap-2"><CheckCircle2 className="mt-0.5 h-3.5 w-3.5 sm:h-4 sm:w-4 shrink-0 text-[#386b34]" /> {translateDynamicText(f, lang)}</li>
                     ))}
                   </ul>
-                  <a href={waLink(lang === "fr" ? `Bonjour EDSOLAR, je suis intéressé par le ${k.title} (${k.price ?? ""}).` : `Hello EDSOLAR, I am interested in the ${k.title} (${k.price ?? ""}).`)} target="_blank" rel="noreferrer"
+
+                  <a href={waLink(lang === "fr" ? `Bonjour EDSOLAR, je suis intéressé par le ${k.title} (${k.price ?? ""}).` : `Hello EDSOLAR, I am interested in the ${k.title} (${k.price ?? ""}).`)} 
+                     target="_blank" rel="noreferrer"
                      className="mt-6 inline-flex items-center justify-center gap-2 rounded-full bg-[#386b34] px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-bold text-white transition-all hover:bg-[#2e582b] shadow-md">
                     <MessageCircle className="h-4 w-4 fill-white" /> {lang === "fr" ? "Demander ce kit" : "Request this kit"}
                   </a>
@@ -937,8 +936,94 @@ const APPLIANCES: Appliance[] = [
   { id: "pc", name: "Ordinateur", nameEn: "Computer", watts: 150, icon: Laptop, hours: 5 },
 ];
 
+/* Fonction utilitaire de génération PDF & Envoi WhatsApp */
+function generatePDFAndSendWA({
+  clientName,
+  clientCity,
+  peakW,
+  dailyWh,
+  systemKva,
+  systemVoltage,
+  batteryCount,
+  batteryUnitAh,
+  panelsCount,
+  priceLabel,
+  lang,
+}: any) {
+  const doc = new jsPDF();
+
+  // 1. En-tête Vert EDSOLAR
+  doc.setFillColor(56, 107, 52); // Couleur #386b34
+  doc.rect(0, 0, 210, 35, "F");
+
+  // Titre & Sous-titre dans l'en-tête
+  doc.setTextColor(255, 255, 255);
+  doc.setFont("helvetica", "bold");
+  doc.setFontSize(20);
+  doc.text("EDSOLAR Énergie Cameroun", 14, 18);
+
+  doc.setFontSize(10);
+  doc.setFont("helvetica", "normal");
+  doc.text("Solutions Solaires, Batteries Lithium & Onduleurs — Yaoundé", 14, 26);
+
+  // 2. Informations du devis
+  doc.setTextColor(40, 40, 40);
+  doc.setFontSize(13);
+  doc.setFont("helvetica", "bold");
+  doc.text("DEVIS ESTIMATIF SOLAIRE", 14, 48);
+
+  doc.setFontSize(10);
+  doc.setFont("helvetica", "normal");
+  doc.text(`Client : ${clientName || "Client EDSOLAR"}`, 14, 56);
+  doc.text(`Ville / Quartier : ${clientCity || "Cameroun"}`, 14, 62);
+  doc.text(`Date : ${new Date().toLocaleDateString("fr-FR")}`, 140, 56);
+
+  // 3. Tableau des équipements recommandés
+  autoTable(doc, {
+    startY: 70,
+    head: [["Équipement / Caractéristique", "Recommandation Technique"]],
+    body: [
+      ["Puissance de Pointe", `${peakW.toLocaleString()} W`],
+      ["Consommation Estimée", `${dailyWh.toFixed(0)} Wh / jour`],
+      ["Système / Onduleur Hybride", `${systemKva} kVA (${systemVoltage}V)`],
+      ["Stockage Batteries Lithium", `${batteryCount} x ${systemVoltage}V ${batteryUnitAh}Ah`],
+      ["Panneaux Solaires", `${panelsCount} x Panneaux 450W Monocristallin`],
+      ["Estimation Budgétaire Global", priceLabel],
+    ],
+    theme: "striped",
+    headStyles: { fillColor: [56, 107, 52], fontSize: 11, fontStyle: "bold" },
+    bodyStyles: { fontSize: 10 },
+  });
+
+  // 4. Pied de page & Contact
+  const finalY = (doc as any).lastAutoTable.finalY + 15;
+  
+  doc.setFontSize(10);
+  doc.setFont("helvetica", "bold");
+  doc.text("Besoin d'une validation technique sur le terrain ?", 14, finalY);
+  
+  doc.setFont("helvetica", "normal");
+  doc.setFontSize(9);
+  doc.text("Contactez notre équipe : +237 650544444 | edsolarcam@gmail.com", 14, finalY + 6);
+  doc.text("Adresse : Tradex Olembe, Yaoundé, Cameroun", 14, finalY + 11);
+
+  // Télécharger le PDF
+  const fileName = `Devis_EDSOLAR_${(clientName || "Client").replace(/\s+/g, "_")}.pdf`;
+  doc.save(fileName);
+
+  // 5. Redirection automatique vers WhatsApp
+  const waMessage = lang === "fr"
+    ? `Bonjour EDSOLAR,%0AJ'ai généré mon devis PDF pour un système de ${systemKva} kVA (${priceLabel}).%0ANom : ${clientName || "Prospect"}%0AVille : ${clientCity || "Cameroun"}.%0AJ'aimerais valider la disponibilité.`
+    : `Hello EDSOLAR,%0AI generated my PDF estimate for a ${systemKva} kVA system (${priceLabel}).%0AName: ${clientName || "Prospect"}%0ACity: ${clientCity || "Cameroon"}.`;
+
+  window.open(`https://wa.me/237650544444?text=${waMessage}`, "_blank");
+}
+
 function Calculator({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
   const [qty, setQty] = useState<Record<string, number>>({ led: 4, tv: 1, fridge: 1 });
+  const [clientName, setClientName] = useState("");
+  const [clientCity, setClientCity] = useState("");
+
   const set = (id: string, v: number) => setQty((q) => ({ ...q, [id]: Math.max(0, v) }));
 
   const { peakW, dailyWh, systemKva, systemVoltage, batteryUnitAh, batteryCount, panelsCount, priceFcfa } = useMemo(() => {
@@ -983,10 +1068,6 @@ function Calculator({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
   }, [qty]);
 
   const priceLabel = priceFcfa > 0 ? `${priceFcfa.toLocaleString("fr-FR")} FCFA` : "—";
-  
-  const msg = lang === "fr" 
-    ? `Bonjour EDSOLAR,%0AVoici mon estimation solaire:%0A- Puissance de pointe: ${peakW} W%0A- Consommation journalière: ${dailyWh.toFixed(0)} Wh%0A- Système recommandé: ${systemKva} kVA ${systemVoltage}V%0A- Batteries lithium: ${batteryCount} x ${systemVoltage}V ${batteryUnitAh}Ah%0A- Panneaux solaires: ${panelsCount} x 450W%0A- Budget estimatif: ${priceLabel}`
-    : `Hello EDSOLAR,%0AHere is my solar estimation:%0A- Peak Power: ${peakW} W%0A- Daily Consumption: ${dailyWh.toFixed(0)} Wh%0A- Recommended System: ${systemKva} kVA ${systemVoltage}V%0A- Lithium Batteries: ${batteryCount} x ${systemVoltage}V ${batteryUnitAh}Ah%0A- Solar Panels: ${panelsCount} x 450W%0A- Estimated Budget: ${priceLabel}`;
 
   return (
     <section id="calculateur" className="py-12 sm:py-24">
@@ -999,7 +1080,8 @@ function Calculator({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
                 const n = qty[a.id] ?? 0;
                 const active = n > 0;
                 return (
-                  <div key={a.id} className={`flex items-center justify-between gap-2.5 rounded-2xl border p-2.5 sm:p-3.5 transition-all ${active ? "border-[#386b34]/50 bg-[#386b34]/5" : "border-border bg-background"}`}>
+                  <div key={a.id}
+                       className={`flex items-center justify-between gap-2.5 rounded-2xl border p-2.5 sm:p-3.5 transition-all ${active ? "border-[#386b34]/50 bg-[#386b34]/5" : "border-border bg-background"}`}>
                     <div className="flex min-w-0 items-center gap-2.5">
                       <div className={`grid h-8 w-8 sm:h-10 sm:w-10 shrink-0 place-items-center rounded-xl ${active ? "bg-[#386b34] text-white" : "bg-slate-200 dark:bg-slate-800 text-foreground"}`}>
                         <a.icon className="h-4 w-4 sm:h-5 sm:w-5" />
@@ -1019,22 +1101,62 @@ function Calculator({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
               })}
             </div>
           </div>
-          <div className="rounded-3xl border border-emerald-900/40 bg-[#234d20] p-5 sm:p-8 text-white shadow-2xl">
-            <p className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-emerald-300">{t.simEyebrow}</p>
-            <h3 className="mt-1 sm:mt-2 text-xl sm:text-2xl font-black">{t.simResultTitle}</h3>
-            <div className="mt-4 sm:mt-6 space-y-2.5 sm:space-y-3.5">
-              <Metric icon={Zap} label={t.simPeakPower} value={`${peakW.toLocaleString()} W`} />
-              <Metric icon={Sun} label={t.simDailyCons} value={`${dailyWh.toLocaleString(undefined, { maximumFractionDigits: 0 })} Wh`} />
-              <Metric icon={Cpu} label={t.simRecSystem} value={`${systemKva} kVA ${systemVoltage}V`} highlight />
-              <Metric icon={Battery} label={`${t.simLithiumBatt} ${systemVoltage}V`} value={`${batteryCount} × ${batteryUnitAh} Ah`} />
-              <Metric icon={Sun} label={t.simPanels} value={`${panelsCount} ${lang === "fr" ? "panneaux" : "panels"}`} />
-              <Metric icon={Zap} label={t.simBudget} value={priceLabel} highlight />
+
+          <div className="rounded-3xl border border-emerald-900/40 bg-[#234d20] p-5 sm:p-8 text-white shadow-2xl flex flex-col justify-between">
+            <div>
+              <p className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-emerald-300">{t.simEyebrow}</p>
+              <h3 className="mt-1 sm:mt-2 text-xl sm:text-2xl font-black">{t.simResultTitle}</h3>
+              <div className="mt-4 sm:mt-6 space-y-2.5 sm:space-y-3.5">
+                <Metric icon={Zap} label={t.simPeakPower} value={`${peakW.toLocaleString()} W`} />
+                <Metric icon={Sun} label={t.simDailyCons} value={`${dailyWh.toLocaleString(undefined, { maximumFractionDigits: 0 })} Wh`} />
+                <Metric icon={Cpu} label={t.simRecSystem} value={`${systemKva} kVA ${systemVoltage}V`} highlight />
+                <Metric icon={Battery} label={`${t.simLithiumBatt} ${systemVoltage}V`} value={`${batteryCount} × ${batteryUnitAh} Ah`} />
+                <Metric icon={Sun} label={t.simPanels} value={`${panelsCount} ${lang === "fr" ? "panneaux" : "panels"}`} />
+                <Metric icon={Zap} label={t.simBudget} value={priceLabel} highlight />
+              </div>
+
+              {/* Champs Nom & Ville pour personnaliser le Devis PDF */}
+              <div className="mt-4 space-y-2">
+                <input 
+                  type="text" 
+                  placeholder={lang === "fr" ? "Votre nom complet (optionnel)" : "Your full name (optional)"} 
+                  value={clientName} 
+                  onChange={(e) => setClientName(e.target.value)}
+                  className="w-full rounded-xl bg-white/10 px-3.5 py-2 text-xs text-white placeholder-emerald-200/60 outline-none border border-emerald-400/20 focus:border-emerald-300"
+                />
+                <input 
+                  type="text" 
+                  placeholder={lang === "fr" ? "Votre ville / quartier (ex: Yaoundé, Bastos)" : "Your city / location"} 
+                  value={clientCity} 
+                  onChange={(e) => setClientCity(e.target.value)}
+                  className="w-full rounded-xl bg-white/10 px-3.5 py-2 text-xs text-white placeholder-emerald-200/60 outline-none border border-emerald-400/20 focus:border-emerald-300"
+                />
+              </div>
             </div>
-            <a href={`${WA}?text=${msg}`} target="_blank" rel="noreferrer"
-               className="mt-5 sm:mt-6 flex items-center justify-center gap-2 rounded-full bg-[#386b34] px-4 py-3 text-xs sm:text-sm font-bold text-white shadow-lg transition-all hover:bg-[#2e582b]">
-              <MessageCircle className="h-4 w-4 fill-white" /> {t.simSendWA}
-            </a>
-            <p className="mt-2.5 text-center text-[10px] sm:text-xs text-emerald-100/70">{t.simNote}</p>
+
+            <div className="mt-5 sm:mt-6">
+              <button
+                type="button"
+                onClick={() => generatePDFAndSendWA({
+                  clientName,
+                  clientCity,
+                  peakW,
+                  dailyWh,
+                  systemKva,
+                  systemVoltage,
+                  batteryCount,
+                  batteryUnitAh,
+                  panelsCount,
+                  priceLabel,
+                  lang
+                })}
+                className="flex w-full items-center justify-center gap-2 rounded-full bg-[#386b34] px-4 py-3 text-xs sm:text-sm font-bold text-white shadow-lg transition-all hover:bg-[#2e582b] hover:scale-[1.02]"
+              >
+                <FileText className="h-4 w-4 text-white" />
+                <span>{t.simSendWA}</span>
+              </button>
+              <p className="mt-2.5 text-center text-[10px] sm:text-xs text-emerald-100/70">{t.simNote}</p>
+            </div>
           </div>
         </div>
       </div>
@@ -1188,6 +1310,7 @@ function ProductCard({ p, lang, t, onSelectImage }: { p: Product; lang: Lang; t:
           <div className={`grid h-full w-full place-items-center ${prodImgSrc ? 'hidden' : ''}`}>
             <ShoppingBag className="h-12 w-12 sm:h-16 sm:w-16 text-slate-400" />
           </div>
+
           {p.badge && <span className="absolute left-2.5 top-2.5 sm:left-3 sm:top-3 rounded-full bg-[#386b34] px-2 py-0.5 sm:px-2.5 sm:py-1 text-[9px] sm:text-[10px] font-bold uppercase text-white z-10 max-w-[85%] truncate">{translateDynamicText(p.badge, lang)}</span>}
         </div>
 
@@ -1559,7 +1682,7 @@ function DiasporaSection({ lang }: { lang: Lang }) {
   );
 }
 
-/* ---------------- SECTION CHAÎNE YOUTUBE (INSPECTION ASYNCHRONE DES MINIATURES) ---------------- */
+/* ---------------- SECTION CHAÎNE YOUTUBE ---------------- */
 function YouTubeSection({ t }: { t: typeof TRANSLATIONS["fr"] }) {
   const [activeVideo, setActiveVideo] = useState<{ id: string; isShort: boolean } | null>(null);
   const [videos, setVideos] = useState<Array<{ id: string; title: string; youtubeId: string; thumbnail: string; date?: string; isShort: boolean }>>([]);
@@ -1585,7 +1708,6 @@ function YouTubeSection({ t }: { t: typeof TRANSLATIONS["fr"] }) {
             };
           }).filter((v: any) => v.youtubeId);
 
-          // Inspection réelle et asynchrone des images pour éliminer les miniatures supprimées/grises (120px)
           const validated = await Promise.all(
             rawParsed.map((v: any) => {
               return new Promise<any>((resolve) => {
@@ -1627,7 +1749,6 @@ function YouTubeSection({ t }: { t: typeof TRANSLATIONS["fr"] }) {
           </p>
         </div>
 
-        {/* Grille adaptative pour vidéos et Shorts */}
         <div className="mt-8 sm:mt-12 grid gap-3 sm:gap-6 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
           {videos.length > 0 ? (
             videos.map((v) => (
@@ -1695,7 +1816,6 @@ function YouTubeSection({ t }: { t: typeof TRANSLATIONS["fr"] }) {
         </div>
       </div>
 
-      {/* Lecteur Lightbox responsive pour Vidéos et Shorts */}
       {activeVideo && (
         <div className="fixed inset-0 z-50 grid place-items-center bg-slate-950/85 p-3 sm:p-4 backdrop-blur-md" onClick={() => setActiveVideo(null)}>
           <div className={`relative w-full ${activeVideo.isShort ? "max-w-sm aspect-[9/16]" : "max-w-4xl aspect-video"} overflow-hidden rounded-3xl bg-slate-900 shadow-2xl`} onClick={(e) => e.stopPropagation()}>
@@ -2009,6 +2129,7 @@ function Reviews({ t }: { t: typeof TRANSLATIONS["fr"] }) {
                 <textarea rows={3} value={form.comment} onChange={(e) => setForm({ ...form, comment: e.target.value })} required
                   className="mt-1 w-full resize-none rounded-xl border border-input bg-background px-3.5 py-2 sm:px-4 sm:py-2.5 text-xs sm:text-sm outline-none focus:border-[#386b34]" />
               </div>
+
               <button disabled={busy} className="w-full rounded-full bg-[#386b34] px-4 py-2.5 sm:py-3 text-xs sm:text-sm font-bold text-white transition-colors hover:bg-[#2e582b] disabled:opacity-60">
                 {busy ? t.reviewsSending : t.reviewsSubmit}
               </button>
@@ -2147,6 +2268,7 @@ function About({ t }: { t: typeof TRANSLATIONS["fr"] }) {
                   </div>
                 ))}
               </div>
+
               <p className="mt-4 text-[11px] sm:text-xs text-emerald-100/90 italic leading-relaxed border-t border-emerald-800/50 pt-3">
                 "{t.aboutConclusion}"
               </p>
