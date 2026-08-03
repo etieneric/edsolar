@@ -2509,12 +2509,18 @@ function Footer({ t }: { t: typeof TRANSLATIONS["fr"] }) {
             Solutions solaires photovoltaïques haute performance et certifiées Tier 1 au Cameroun et en Afrique Centrale.
           </p>
           <div className="mt-4 flex gap-2.5">
-            {[Facebook, Instagram, Linkedin].map((I, i) => (
-              <a key={i} href="#" className="grid h-8 w-8 sm:h-10 sm:w-10 place-items-center rounded-full bg-[#122910] text-emerald-200 transition-colors hover:bg-[#386b34] hover:text-white border border-emerald-800/50">
+            {[
+              { I: Facebook, href: FACEBOOK_URL, label: "Facebook EDSOLAR" },
+              { I: Youtube, href: YOUTUBE_CHANNEL_URL, label: "YouTube EDSOLAR" },
+              { I: Instagram, href: FACEBOOK_URL, label: "Instagram" },
+              { I: Linkedin, href: FACEBOOK_URL, label: "LinkedIn" },
+            ].map(({ I, href, label }, i) => (
+              <a key={i} href={href} target="_blank" rel="noopener noreferrer" aria-label={label} className="grid h-8 w-8 sm:h-10 sm:w-10 place-items-center rounded-full bg-[#122910] text-emerald-200 transition-colors hover:bg-[#386b34] hover:text-white border border-emerald-800/50">
                 <I className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
               </a>
             ))}
           </div>
+
         </div>
 
         <div>
