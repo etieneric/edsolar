@@ -429,7 +429,7 @@ function translateDynamicText(text: string | null | undefined, lang: Lang): stri
 }
 
 /* ---------------- INTERRUPTEUR DE MAINTENANCE ---------------- */
-const IS_MAINTENANCE_MODE = false;
+const IS_MAINTENANCE_MODE = true;
 
 function MaintenanceView() {
   return (
