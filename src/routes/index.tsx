@@ -75,7 +75,6 @@ const PHONE = "+237650544444";
 const EMAIL = "edsolarcam@gmail.com";
 const WA = `https://wa.me/${PHONE.replace("+", "")}`;
 const YOUTUBE_CHANNEL_URL = "https://www.youtube.com/@EDSOLAR237";
-const FACEBOOK_URL = "https://www.facebook.com/profile.php?id=100078652876510";
 const YOUTUBE_CHANNEL_ID = "UCCfnDu6TV2B-_NO6E_tWm7Q";
 const YOUTUBE_UPLOADS_PLAYLIST = "UUCfnDu6TV2B-_NO6E_tWm7Q";
 
@@ -430,7 +429,7 @@ function translateDynamicText(text: string | null | undefined, lang: Lang): stri
 }
 
 /* ---------------- INTERRUPTEUR DE MAINTENANCE ---------------- */
-const IS_MAINTENANCE_MODE = false;
+const IS_MAINTENANCE_MODE = true;
 
 function MaintenanceView() {
   return (
@@ -2510,18 +2509,12 @@ function Footer({ t }: { t: typeof TRANSLATIONS["fr"] }) {
             Solutions solaires photovoltaïques haute performance et certifiées Tier 1 au Cameroun et en Afrique Centrale.
           </p>
           <div className="mt-4 flex gap-2.5">
-            {[
-              { I: Facebook, href: FACEBOOK_URL, label: "Facebook EDSOLAR" },
-              { I: Youtube, href: YOUTUBE_CHANNEL_URL, label: "YouTube EDSOLAR" },
-              { I: Instagram, href: FACEBOOK_URL, label: "Instagram" },
-              { I: Linkedin, href: FACEBOOK_URL, label: "LinkedIn" },
-            ].map(({ I, href, label }, i) => (
-              <a key={i} href={href} target="_blank" rel="noopener noreferrer" aria-label={label} className="grid h-8 w-8 sm:h-10 sm:w-10 place-items-center rounded-full bg-[#122910] text-emerald-200 transition-colors hover:bg-[#386b34] hover:text-white border border-emerald-800/50">
+            {[Facebook, Instagram, Linkedin].map((I, i) => (
+              <a key={i} href="#" className="grid h-8 w-8 sm:h-10 sm:w-10 place-items-center rounded-full bg-[#122910] text-emerald-200 transition-colors hover:bg-[#386b34] hover:text-white border border-emerald-800/50">
                 <I className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
               </a>
             ))}
           </div>
-
         </div>
 
         <div>
