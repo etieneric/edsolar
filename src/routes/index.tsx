@@ -75,6 +75,7 @@ const PHONE = "+237650544444";
 const EMAIL = "edsolarcam@gmail.com";
 const WA = `https://wa.me/${PHONE.replace("+", "")}`;
 const YOUTUBE_CHANNEL_URL = "https://www.youtube.com/@EDSOLAR237";
+const FACEBOOK_URL = "https://www.facebook.com/profile.php?id=100078652876510";
 const YOUTUBE_CHANNEL_ID = "UCCfnDu6TV2B-_NO6E_tWm7Q";
 const YOUTUBE_UPLOADS_PLAYLIST = "UUCfnDu6TV2B-_NO6E_tWm7Q";
 
