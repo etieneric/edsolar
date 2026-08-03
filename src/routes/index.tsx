@@ -1,7 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
-import jsPDF from "jspdf";
-import autoTable from "jspdf-autotable";
 import {
   Sun, Leaf, Phone, MapPin, MessageCircle, Menu, X, ArrowRight,
   Wrench, ShoppingBag, ClipboardCheck, ShieldCheck, Battery,
@@ -429,7 +427,7 @@ function translateDynamicText(text: string | null | undefined, lang: Lang): stri
 }
 
 /* ---------------- INTERRUPTEUR DE MAINTENANCE ---------------- */
-const IS_MAINTENANCE_MODE = true;
+const IS_MAINTENANCE_MODE = false;
 
 function MaintenanceView() {
   return (
@@ -686,10 +684,12 @@ function Hero({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
                 <img src={momoLogo} alt="MTN MoMo" className="h-3.5 sm:h-4 w-auto object-contain shrink-0" decoding="async" />
                 <span>MTN MoMo</span>
               </span>
+
               <span className="flex items-center gap-1 sm:gap-1.5 rounded-xl bg-white px-2.5 py-1 text-slate-900 font-extrabold shadow-sm text-[10px] sm:text-xs">
                 <img src={orangeMoneyLogo} alt="Orange Money" className="h-3.5 sm:h-4 w-auto object-contain shrink-0" decoding="async" />
               </span>
             </div>
+
             <span className="rounded-xl bg-[#386b34]/60 border border-emerald-400/30 px-2 py-0.5 sm:px-2.5 sm:py-1 text-emerald-100 font-semibold text-[10px] sm:text-xs">{lang === "fr" ? "Traites échelonnées" : "Installments"}</span>
           </div>
 
@@ -697,6 +697,7 @@ function Hero({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
             <a href="#calculateur" className="inline-flex items-center justify-center gap-2 rounded-full bg-[#386b34] px-5 py-3 text-xs sm:text-sm font-bold text-white shadow-xl shadow-[#386b34]/30 transition-all hover:bg-[#4a8344]">
               <Zap className="h-4 w-4 fill-white" /> {t.heroSimulateBtn}
             </a>
+
             <a href={`tel:${PHONE}`} className="inline-flex items-center justify-center gap-2 rounded-full border border-white/20 bg-white/10 px-5 py-3 text-xs sm:text-sm font-semibold text-white backdrop-blur transition-colors hover:bg-white/20">
               <Phone className="h-4 w-4" /> {t.heroExpertBtn}
             </a>
@@ -937,7 +938,7 @@ const APPLIANCES: Appliance[] = [
 ];
 
 /* Fonction utilitaire de génération PDF & Envoi WhatsApp */
-const generatePDFAndSendWA = ({
+const generatePDFAndSendWA = async ({
   clientName,
   clientCity,
   peakW,
@@ -950,6 +951,10 @@ const generatePDFAndSendWA = ({
   priceLabel,
   lang,
 }: any) => {
+  // Imports dynamiques côté client (évite le crash SSR Cloudflare)
+  const { default: jsPDF } = await import("jspdf");
+  const { default: autoTable } = await import("jspdf-autotable");
+
   // Création du document PDF
   const doc = new jsPDF({
     orientation: "portrait",
@@ -996,7 +1001,6 @@ const generatePDFAndSendWA = ({
     ["ESTIMATION BUDGÉTAIRE GLOBALE", priceLabel],
   ];
 
-  // Appel direct de la fonction autoTable avec l'instance doc
   autoTable(doc, {
     head: [tableColumn],
     body: tableRows,
@@ -1046,7 +1050,7 @@ const generatePDFAndSendWA = ({
     : `Hello EDSOLAR,%0AI downloaded my PDF estimate for a ${systemKva} kVA system (${priceLabel}).%0AName: ${clientName || "Prospect"}%0ACity: ${clientCity || "Cameroon"}.`;
 
   window.open(`https://wa.me/237650544444?text=${waMessage}`, "_blank");
-}
+};
 
 function Calculator({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
   const [qty, setQty] = useState<Record<string, number>>({ led: 4, tv: 1, fridge: 1 });
@@ -1646,8 +1650,8 @@ function DiasporaSection({ lang }: { lang: Lang }) {
             </h2>
             <p className="mt-3 sm:mt-4 text-xs sm:text-base leading-relaxed text-emerald-100/90">
               {lang === "fr"
-                ? "Vous vivez en France, au Canada, aux USA ou en Europe ? Offrez le confort solaire à vos parents et vos proches au Cameroun sans stress. Nous gérons tout de A à Z avec un suivi photos/vidéos en direct."
-                : "Living in France, Canada, USA, or Europe? Provide solar comfort to your family in Cameroon stress-free. We manage everything from A to Z with live photo/video updates."}
+              ? "Vous vivez en France, au Canada, aux USA ou en Europe ? Offrez le confort solaire à vos parents et vos proches au Cameroun sans stress. Nous gérons tout de A à Z avec un suivi photos/vidéos en direct."
+              : "Living in France, Canada, USA, or Europe? Provide solar comfort to your family in Cameroon stress-free. We manage everything from A to Z with live photo/video updates."}
             </p>
 
             <div className="mt-5 space-y-2.5 sm:space-y-3">
@@ -2325,6 +2329,7 @@ function About({ t }: { t: typeof TRANSLATIONS["fr"] }) {
                         (e.target as HTMLElement).style.display = 'none';
                       }}
                     />
+
                     <div className="absolute inset-0 bg-slate-950/50 opacity-0 transition-opacity group-hover:opacity-100 flex flex-col justify-between p-1.5 sm:p-2">
                       <div className="ml-auto grid h-6 w-6 sm:h-7 sm:w-7 place-items-center rounded-full bg-[#386b34] text-white shadow-md">
                         <ZoomIn className="h-3 w-3 sm:h-3.5 sm:w-3.5" />
