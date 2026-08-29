@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 
 import logo from "@/assets/edsolar-logo-new.jpeg";
-import pdfLogoAsset from "@/assets/edsolar-logo-pdf.png.asset.json";
+import pdfLogoAsset from "@/assets/edsolar-logo-pdf.png";
 import hero from "@/assets/install-panels.jpeg";
 
 // Imports des 9 images de terrain locales
