@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 
 import logo from "@/assets/edsolar-logo-new.jpeg";
+import pdfLogoAsset from "@/assets/edsolar-logo-pdf.png";
 import hero from "@/assets/install-panels.jpeg";
 
 // Imports des 9 images de terrain locales
@@ -75,6 +76,8 @@ const WA = `https://wa.me/${PHONE.replace("+", "")}`;
 const YOUTUBE_CHANNEL_URL = "https://www.youtube.com/@EDSOLAR237";
 const YOUTUBE_CHANNEL_ID = "UCCfnDu6TV2B-_NO6E_tWm7Q";
 const YOUTUBE_UPLOADS_PLAYLIST = "UUCfnDu6TV2B-_NO6E_tWm7Q";
+const FACEBOOK_URL = "https://www.facebook.com/profile.php?id=100078652876510";
+const LINKEDIN_URL = "https://cm.linkedin.com/in/ed-solar-885470169";
 
 const waLink = (msg: string) => `${WA}?text=${encodeURIComponent(msg)}`;
 
@@ -937,6 +940,23 @@ const APPLIANCES: Appliance[] = [
   { id: "pc", name: "Ordinateur", nameEn: "Computer", watts: 150, icon: Laptop, hours: 5 },
 ];
 
+/* Charge une image et la convertit en dataURL (pour jsPDF) */
+async function loadImageAsDataUrl(src: string): Promise<string | null> {
+  try {
+    const res = await fetch(src);
+    if (!res.ok) return null;
+    const blob = await res.blob();
+    return await new Promise<string | null>((resolve) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(typeof reader.result === "string" ? reader.result : null);
+      reader.onerror = () => resolve(null);
+      reader.readAsDataURL(blob);
+    });
+  } catch {
+    return null;
+  }
+}
+
 /* Fonction utilitaire de génération PDF & Envoi WhatsApp */
 const generatePDFAndSendWA = async ({
   clientName,
@@ -949,11 +969,25 @@ const generatePDFAndSendWA = async ({
   batteryUnitAh,
   panelsCount,
   priceLabel,
+  appliances,
   lang,
 }: any) => {
   // Imports dynamiques côté client (évite le crash SSR Cloudflare)
-  const { default: jsPDF } = await import("jspdf");
-  const { default: autoTable } = await import("jspdf-autotable");
+  const jsPDFmod: any = await import("jspdf");
+  const jsPDF = jsPDFmod.default ?? jsPDFmod.jsPDF ?? jsPDFmod;
+  const autoTableMod: any = await import("jspdf-autotable");
+  const autoTableFn =
+    typeof autoTableMod === "function"
+      ? autoTableMod
+      : typeof autoTableMod.default === "function"
+        ? autoTableMod.default
+        : typeof autoTableMod.default?.default === "function"
+          ? autoTableMod.default.default
+          : null;
+  // Repli sur le plugin attaché au prototype jsPDF si l'export n'est pas une fonction
+  const autoTable = (docInstance: any, options: any) =>
+    autoTableFn ? autoTableFn(docInstance, options) : docInstance.autoTable(options);
+
 
   // Création du document PDF
   const doc = new jsPDF({
@@ -964,18 +998,32 @@ const generatePDFAndSendWA = async ({
 
   // 1. En-tête Vert EDSOLAR
   doc.setFillColor(56, 107, 52); // Vert EDSOLAR #386b34
-  doc.rect(0, 0, 210, 40, "F");
+  doc.rect(0, 0, 210, 46, "F");
+
+  // Logo officiel EDSOLAR sur pastille blanche
+  let textX = 14;
+  try {
+    const dataUrl = await loadImageAsDataUrl(pdfLogoAsset.url);
+    if (dataUrl) {
+      doc.setFillColor(255, 255, 255);
+      doc.roundedRect(12, 8, 44, 30, 3, 3, "F");
+      doc.addImage(dataUrl, "PNG", 15, 11, 38, 24, undefined, "FAST");
+      textX = 62;
+    }
+  } catch {
+    /* le devis reste généré même si le logo ne charge pas */
+  }
 
   // Insérer le logo textuel & visuel
   doc.setTextColor(255, 255, 255);
   doc.setFont("helvetica", "bold");
   doc.setFontSize(22);
-  doc.text("EDSOLAR", 14, 20);
+  doc.text("EDSOLAR", textX, 20);
 
   doc.setFontSize(9);
   doc.setFont("helvetica", "normal");
-  doc.text("ÉNERGIE CAMEROUN — SOLUTIONS SOLAIRES & ANTI-DÉLESTAGE", 14, 28);
-  doc.text("Tradex Olembe, Yaoundé | +237 650544444 | edsolarcam@gmail.com", 14, 34);
+  doc.text("ÉNERGIE CAMEROUN — SOLUTIONS SOLAIRES & ANTI-DÉLESTAGE", textX, 28);
+  doc.text("Tradex Olembe, Yaoundé | +237 650544444 | edsolarcam@gmail.com", textX, 34);
 
   // 2. Titre Devis & Infos Client
   doc.setTextColor(40, 40, 40);
@@ -990,10 +1038,54 @@ const generatePDFAndSendWA = async ({
   doc.text(`Date d'émission : ${new Date().toLocaleDateString("fr-FR")}`, 140, 60);
   doc.text(`Référence : EDS-${Math.floor(1000 + Math.random() * 9000)}`, 140, 66);
 
-  // 3. Tableau des équipements
+  // 3. Tableau des appareils sélectionnés (quantités)
+  const appliancesRows = (appliances ?? []).map((a: any) => [
+    a.name,
+    String(a.qty),
+    `${a.watts} W`,
+    `${a.hours} h/j`,
+    `${(a.qty * a.watts).toLocaleString("fr-FR")} W`,
+    `${(a.qty * a.watts * a.hours).toLocaleString("fr-FR")} Wh`,
+  ]);
+
+  let tablesStartY = 75;
+
+  if (appliancesRows.length > 0) {
+    doc.setFontSize(11);
+    doc.setFont("helvetica", "bold");
+    doc.setTextColor(56, 107, 52);
+    doc.text("APPAREILS À ALIMENTER", 14, tablesStartY);
+
+    autoTable(doc, {
+      head: [["Appareil", "Qté", "Puissance unit.", "Usage", "Total W", "Conso / jour"]],
+      body: appliancesRows,
+      startY: tablesStartY + 4,
+      theme: "grid",
+      headStyles: { fillColor: [56, 107, 52], textColor: [255, 255, 255], fontSize: 9, fontStyle: "bold" },
+      bodyStyles: { fontSize: 8.5, textColor: [50, 50, 50] },
+      alternateRowStyles: { fillColor: [245, 247, 245] },
+      columnStyles: {
+        0: { fontStyle: "bold", cellWidth: 52 },
+        1: { cellWidth: 14, halign: "center" },
+        2: { cellWidth: 28, halign: "center" },
+        3: { cellWidth: 22, halign: "center" },
+        4: { cellWidth: 30, halign: "right" },
+        5: { cellWidth: 36, halign: "right" },
+      },
+    });
+
+    tablesStartY = ((doc as any).lastAutoTable?.finalY ?? tablesStartY) + 12;
+  }
+
+  // 4. Tableau technique
+  doc.setFontSize(11);
+  doc.setFont("helvetica", "bold");
+  doc.setTextColor(56, 107, 52);
+  doc.text("DIMENSIONNEMENT RECOMMANDÉ", 14, tablesStartY);
+
   const tableColumn = ["Composant / Caractéristique", "Spécification Recommandée"];
   const tableRows = [
-    ["Puissance de Pointe Requis", `${peakW.toLocaleString()} Watts`],
+    ["Puissance de Pointe Requis", `${peakW.toLocaleString("fr-FR")} Watts`],
     ["Consommation Estimée par jour", `${dailyWh.toFixed(0)} Wh / jour`],
     ["Onduleur Hybride Certifié", `${systemKva} kVA (Tension système : ${systemVoltage}V)`],
     ["Parc de Batteries Lithium LiFePO4", `${batteryCount} x ${systemVoltage}V ${batteryUnitAh}Ah`],
@@ -1004,7 +1096,7 @@ const generatePDFAndSendWA = async ({
   autoTable(doc, {
     head: [tableColumn],
     body: tableRows,
-    startY: 75,
+    startY: tablesStartY + 4,
     theme: "grid",
     headStyles: {
       fillColor: [56, 107, 52],
@@ -1040,17 +1132,33 @@ const generatePDFAndSendWA = async ({
   doc.text("• Installation effectuée par des techniciens qualifiés sur l'ensemble du territoire camerounais.", 14, finalY + 11);
   doc.text("• Ce devis est une estimation indicative. Une visite technique validera le schéma final.", 14, finalY + 16);
 
-  // 5. Sauvegarde du fichier PDF
+  // 5. Sauvegarde du fichier PDF (téléchargement forcé via blob)
   const safeName = (clientName || "Prospect").replace(/[^a-z0-9]/gi, "_");
-  doc.save(`Devis_EDSOLAR_${safeName}.pdf`);
+  try {
+    const blob = doc.output("blob");
+    const blobUrl = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = blobUrl;
+    a.download = `Devis_EDSOLAR_${safeName}.pdf`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(blobUrl), 4000);
+  } catch {
+    doc.save(`Devis_EDSOLAR_${safeName}.pdf`);
+  }
 
   // 6. Ouverture automatique de WhatsApp
-  const waMessage = lang === "fr"
-    ? `Bonjour EDSOLAR,%0AJ'ai téléchargé mon devis PDF pour un système de ${systemKva} kVA (${priceLabel}).%0ANom : ${clientName || "Prospect"}%0AVille : ${clientCity || "Cameroun"}.%0AJ'aimerais planifier une visite technique.`
-    : `Hello EDSOLAR,%0AI downloaded my PDF estimate for a ${systemKva} kVA system (${priceLabel}).%0AName: ${clientName || "Prospect"}%0ACity: ${clientCity || "Cameroon"}.`;
+  const waText =
+    lang === "fr"
+      ? `Bonjour EDSOLAR,\nJ'ai téléchargé mon devis PDF pour un système de ${systemKva} kVA (${priceLabel}).\nNom : ${clientName || "Prospect"}\nVille : ${clientCity || "Cameroun"}.\nJ'aimerais planifier une visite technique.`
+      : `Hello EDSOLAR,\nI downloaded my PDF estimate for a ${systemKva} kVA system (${priceLabel}).\nName: ${clientName || "Prospect"}\nCity: ${clientCity || "Cameroon"}.`;
 
-  window.open(`https://wa.me/237650544444?text=${waMessage}`, "_blank");
+  const waUrl = `https://wa.me/237650544444?text=${encodeURIComponent(waText)}`;
+  const win = window.open(waUrl, "_blank", "noopener,noreferrer");
+  if (!win) window.location.href = waUrl;
 };
+
 
 function Calculator({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
   const [qty, setQty] = useState<Record<string, number>>({ led: 4, tv: 1, fridge: 1 });
@@ -1140,8 +1248,9 @@ function Calculator({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
               <p className="text-[10px] sm:text-xs font-bold uppercase tracking-widest text-emerald-300">{t.simEyebrow}</p>
               <h3 className="mt-1 sm:mt-2 text-xl sm:text-2xl font-black">{t.simResultTitle}</h3>
               <div className="mt-4 sm:mt-6 space-y-2.5 sm:space-y-3.5">
-                <Metric icon={Zap} label={t.simPeakPower} value={`${peakW.toLocaleString()} W`} />
-                <Metric icon={Sun} label={t.simDailyCons} value={`${dailyWh.toLocaleString(undefined, { maximumFractionDigits: 0 })} Wh`} />
+                <Metric icon={Zap} label={t.simPeakPower} value={`${peakW.toLocaleString("fr-FR")} W`} />
+                <Metric icon={Sun} label={t.simDailyCons} value={`${dailyWh.toLocaleString("fr-FR", { maximumFractionDigits: 0 })} Wh`} />
+
                 <Metric icon={Cpu} label={t.simRecSystem} value={`${systemKva} kVA ${systemVoltage}V`} highlight />
                 <Metric icon={Battery} label={`${t.simLithiumBatt} ${systemVoltage}V`} value={`${batteryCount} × ${batteryUnitAh} Ah`} />
                 <Metric icon={Sun} label={t.simPanels} value={`${panelsCount} ${lang === "fr" ? "panneaux" : "panels"}`} />
@@ -1181,6 +1290,14 @@ function Calculator({ t, lang }: { t: typeof TRANSLATIONS["fr"]; lang: Lang }) {
                   batteryUnitAh,
                   panelsCount,
                   priceLabel,
+                  appliances: APPLIANCES
+                    .filter((a) => (qty[a.id] ?? 0) > 0)
+                    .map((a) => ({
+                      name: lang === "fr" ? a.name : a.nameEn,
+                      qty: qty[a.id] ?? 0,
+                      watts: a.watts,
+                      hours: a.hours,
+                    })),
                   lang
                 })}
                 className="flex w-full items-center justify-center gap-2 rounded-full bg-[#386b34] px-4 py-3 text-xs sm:text-sm font-bold text-white shadow-lg transition-all hover:bg-[#2e582b] hover:scale-[1.02]"
@@ -2514,8 +2631,12 @@ function Footer({ t }: { t: typeof TRANSLATIONS["fr"] }) {
             Solutions solaires photovoltaïques haute performance et certifiées Tier 1 au Cameroun et en Afrique Centrale.
           </p>
           <div className="mt-4 flex gap-2.5">
-            {[Facebook, Instagram, Linkedin].map((I, i) => (
-              <a key={i} href="#" className="grid h-8 w-8 sm:h-10 sm:w-10 place-items-center rounded-full bg-[#122910] text-emerald-200 transition-colors hover:bg-[#386b34] hover:text-white border border-emerald-800/50">
+            {[
+              { I: Facebook, href: FACEBOOK_URL, label: "Facebook EDSOLAR" },
+              { I: Linkedin, href: LINKEDIN_URL, label: "LinkedIn EDSOLAR" },
+              { I: Youtube, href: YOUTUBE_CHANNEL_URL, label: "YouTube EDSOLAR" },
+            ].map(({ I, href, label }, i) => (
+              <a key={i} href={href} target="_blank" rel="noopener noreferrer" aria-label={label} className="grid h-8 w-8 sm:h-10 sm:w-10 place-items-center rounded-full bg-[#122910] text-emerald-200 transition-colors hover:bg-[#386b34] hover:text-white border border-emerald-800/50">
                 <I className="h-3.5 w-3.5 sm:h-4 sm:w-4" />
               </a>
             ))}
