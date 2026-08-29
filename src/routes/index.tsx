@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 
 import logo from "@/assets/edsolar-logo-new.jpeg";
-import pdfLogoAsset from "@/assets/edsolar-logo-pdf.png";
+import pdfLogoAsset from "@/assets/edsolar-logo-pdf.png.asset.json";
 import hero from "@/assets/install-panels.jpeg";
 
 // Imports des 9 images de terrain locales
@@ -943,15 +943,24 @@ const APPLIANCES: Appliance[] = [
 /* Charge une image et la convertit en dataURL (pour jsPDF) */
 async function loadImageAsDataUrl(src: string): Promise<string | null> {
   try {
-    const res = await fetch(src);
-    if (!res.ok) return null;
-    const blob = await res.blob();
-    return await new Promise<string | null>((resolve) => {
-      const reader = new FileReader();
-      reader.onloadend = () => resolve(typeof reader.result === "string" ? reader.result : null);
-      reader.onerror = () => resolve(null);
-      reader.readAsDataURL(blob);
+    // Charge l'image et l'aplatit sur fond blanc via canvas :
+    // jsPDF échoue silencieusement avec les PNG à canal alpha (RGBA).
+    const img = await new Promise<HTMLImageElement>((resolve, reject) => {
+      const el = new Image();
+      el.crossOrigin = "anonymous";
+      el.onload = () => resolve(el);
+      el.onerror = reject;
+      el.src = src;
     });
+    const canvas = document.createElement("canvas");
+    canvas.width = img.naturalWidth || img.width;
+    canvas.height = img.naturalHeight || img.height;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return null;
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.drawImage(img, 0, 0);
+    return canvas.toDataURL("image/jpeg", 0.92);
   } catch {
     return null;
   }
@@ -1007,7 +1016,7 @@ const generatePDFAndSendWA = async ({
     if (dataUrl) {
       doc.setFillColor(255, 255, 255);
       doc.roundedRect(12, 8, 44, 30, 3, 3, "F");
-      doc.addImage(dataUrl, "PNG", 15, 11, 38, 24, undefined, "FAST");
+      doc.addImage(dataUrl, "JPEG", 15, 11, 38, 24, undefined, "FAST");
       textX = 62;
     }
   } catch {
